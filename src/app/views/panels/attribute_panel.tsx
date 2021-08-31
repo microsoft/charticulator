@@ -18,6 +18,7 @@ import {
   MarkSelection,
 } from "../../stores";
 import { FluentUIWidgetManager } from "./widgets/fluentui_manager";
+import { strings } from "../../../strings";
 
 function getObjectIcon(classID: string) {
   return R.getSVGIcon(
@@ -68,9 +69,7 @@ export class AttributePanel extends React.Component<
     if (selection) {
       if (selection instanceof GlyphSelection) {
         if (!selection.plotSegment) {
-          return this.renderUnexpectedState(
-            "To edit this glyph, please create a plot segment with it."
-          );
+          return this.renderUnexpectedState(strings.canvas.markContainer);
         }
         const glyph = selection.glyph;
         object = glyph;
@@ -90,9 +89,7 @@ export class AttributePanel extends React.Component<
       }
       if (selection instanceof MarkSelection) {
         if (!selection.plotSegment) {
-          return this.renderUnexpectedState(
-            "To edit this glyph, please create a plot segment with it."
-          );
+          return this.renderUnexpectedState(strings.canvas.markContainer);
         }
         const glyph = selection.glyph;
         const mark = selection.mark;

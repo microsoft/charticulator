@@ -230,24 +230,26 @@ export abstract class LegendClass extends ChartElementClass {
               label: strings.objects.legend.markerShape,
             }
           ),
-          manager.label("Ordering"),
-          manager.reorderWidget(
-            {
-              property: "order",
-            },
-            {
-              items: this.getOrderingObjects(),
-              onConfirm: (items: string[]) => {
-                manager.emitSetProperty(
-                  {
-                    property: "order",
-                    field: null,
+          this.object.classID === "legend.categorical"
+            ? (manager.label("Ordering"),
+              manager.reorderWidget(
+                {
+                  property: "order",
+                },
+                {
+                  items: this.getOrderingObjects(),
+                  onConfirm: (items: string[]) => {
+                    manager.emitSetProperty(
+                      {
+                        property: "order",
+                        field: null,
+                      },
+                      items
+                    );
                   },
-                  items
-                );
-              },
-            }
-          ),
+                }
+              ))
+            : null,
         ]
       ),
       manager.verticalGroup(

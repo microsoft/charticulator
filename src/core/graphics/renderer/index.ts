@@ -8,12 +8,14 @@
  * @preferred
  */
 
+import { ReactElement } from "react";
 import {
   getById,
   MultistringHashMap,
   Point,
   transpose,
   zipArray,
+  ZoomInfo,
 } from "../../common";
 import * as Dataset from "../../dataset";
 import * as Prototypes from "../../prototypes";
@@ -232,6 +234,38 @@ export class ChartRenderer {
     }
 
     return makeGroup([chartEventHandlerRect, ...graphics]);
+  }
+
+  public renderControls(
+    chart: Specification.Chart,
+    chartState: Specification.ChartState,
+    zoom: ZoomInfo
+  ) {
+    const elementsAndStates = zipArray(chart.elements, chartState.elements);
+
+    let controls: ReactElement<any>[] = [];
+
+    // Render control graphics
+    for (const [element, elementState] of elementsAndStates) {
+      if (!element.properties.visible) {
+        continue;
+      }
+      // Render plotsegment controls
+      if (Prototypes.isType(element.classID, "plot-segment")) {
+        const plotSegmentState = <Specification.PlotSegmentState>elementState;
+        const plotSegmentClass = this.manager.getPlotSegmentClass(
+          plotSegmentState
+        );
+        const plotSegmentBackgroundControlElements = plotSegmentClass.renderControls(
+          this.manager,
+          zoom
+        );
+
+        controls = controls.concat(plotSegmentBackgroundControlElements);
+      }
+    }
+
+    return controls;
   }
 
   public render(): Group {

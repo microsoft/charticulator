@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { forceSimulation, forceCollide, forceX, forceY } from "d3-force";
+import { AxisMode } from "../../prototypes/plot_segments/axis";
 import { ConstraintPlugin, ConstraintSolver, Variable } from "../abstract";
 
 interface NodeType {
@@ -30,7 +31,7 @@ export class PackingPlugin extends ConstraintPlugin {
     cx: Variable,
     cy: Variable,
     points: [Variable, Variable, number][],
-    axisOnly?: "x" | "y",
+    axisOnly?: AxisMode,
     getXYScale?: () => { x: number; y: number },
     options?: PackingPluginOptions
   ) {

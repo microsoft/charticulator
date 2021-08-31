@@ -13,10 +13,8 @@ import {
   Specification,
 } from "../../../../core";
 import { DragData } from "../../../actions";
-import { ColorPicker } from "../../../components";
+import { ColorPicker } from "../../../components/fluentui_color_picker";
 import { ContextedComponent } from "../../../context_component";
-import { PopupView } from "../../../controllers";
-import * as globals from "../../../globals";
 import { isKindAcceptable, type2DerivedColumns } from "../../dataset/common";
 import { ScaleEditor } from "../scale_editor";
 import { CharticulatorPropertyAccessors, DropZoneView } from "./manager";
@@ -42,9 +40,6 @@ import {
   defultComponentsHeight,
   FluentActionButton,
   FluentButton,
-  FluentDataBindingMenuItem,
-  FluentDataBindingMenuLabel,
-  FluentRowLayout,
   labelRender,
 } from "./controls/fluentui_customized_components";
 import { ObjectClass } from "../../../../core/prototypes";
@@ -288,6 +283,7 @@ export class FluentMappingEditor extends React.Component<
                 }
                 this.changeColorPickerState();
               }}
+              parent={this}
             />
           </Callout>
         )}

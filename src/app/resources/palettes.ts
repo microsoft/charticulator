@@ -1,6 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Color, colorFromHTMLColor, getColorConverter } from "../../core";
+import {
+  Color,
+  colorFromHTMLColor,
+  getColorConverter,
+  getDefaultColorGeneratorResetFunction,
+  getDefaultColorPalette,
+} from "../../core";
 
 /** A color scheme is a source of colors for categorical/ordinal/numerical scales */
 export interface ColorPalette {
@@ -28,6 +34,49 @@ export function addPalette(
       })
     ),
   });
+}
+
+export function transformPowerBIThemeColors(colors: Color[]): Color[][] {
+  const columnAmount = 10;
+  const newColors = [];
+  for (let i = 0; i < columnAmount; i++) {
+    newColors.push([]);
+  }
+  for (let i = 0; i < colors.length; i++) {
+    newColors[i % columnAmount].push(colors[i]);
+  }
+  return newColors;
+}
+
+export function addPowerBIThemeColors(): void {
+  const amount = 60;
+  const colors = getDefaultColorPalette(amount);
+  if (colors.length == amount) {
+    const newColorArr = transformPowerBIThemeColors(colors);
+    const colorPalette: ColorPalette = {
+      name: "Palette/Power BI Theme",
+      type: "palette",
+      colors: newColorArr,
+    };
+    addColorPalette(colorPalette);
+    const resetFn = getDefaultColorGeneratorResetFunction();
+    if (resetFn) {
+      resetFn();
+    }
+  }
+}
+
+/* eslint-disable no-var */
+//singleton
+var flag: boolean = false;
+
+export function addColorPalette(colorPalette: ColorPalette) {
+  if (!flag) {
+    predefinedPalettes.push({
+      ...colorPalette,
+    });
+    flag = true;
+  }
 }
 
 // D3 colors

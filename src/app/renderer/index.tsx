@@ -249,6 +249,10 @@ export function renderGraphicalElementSVG(
     onMouseEnter?: (e: React.MouseEvent<Element>) => void;
     onMouseLeave?: (e: React.MouseEvent<Element>) => void;
     onContextMenu?: (e: React.MouseEvent<Element>) => void;
+    onMouseDown?: (e: React.MouseEvent<Element>) => void;
+    onMouseUp?: (e: React.MouseEvent<Element>) => void;
+    onWheel?: (e: React.MouseEvent<Element>) => void;
+    onMouseMove?: (e: React.MouseEvent<Element>) => void;
   } = {};
   if (element.selectable) {
     style.cursor = "pointer";
@@ -297,8 +301,27 @@ export function renderGraphicalElementSVG(
     }
   }
 
+
   const replaceNan = (value: number) => {
     return isNaN(value) ? 0 : value;
+  };
+  
+  if (element.interactable) {
+    if (element.interactable.onClick) {
+      mouseEvents.onClick = element.interactable.onClick;
+    }
+    if (element.interactable.onMousedown) {
+      mouseEvents.onMouseDown = element.interactable.onMousedown;
+    }
+    if (element.interactable.onMouseup) {
+      mouseEvents.onMouseUp = element.interactable.onMouseup;
+    }
+    if (element.interactable.onMousewheel) {
+      mouseEvents.onWheel = element.interactable.onMousewheel;
+    }
+    if (element.interactable.onMousemove) {
+      mouseEvents.onMouseMove = element.interactable.onMousemove;
+    }
   }
 
   switch (element.type) {

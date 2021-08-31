@@ -20,7 +20,7 @@ import {
   getById,
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
-import { ButtonRaised, GradientPicker } from "../../../components";
+import { ButtonRaised } from "../../../components";
 import { SVGImageIcon } from "../../../components/icons";
 import { getAlignment, PopupView } from "../../../controllers";
 import {
@@ -115,6 +115,7 @@ import { CollapsiblePanel } from "./controls/collapsiblePanel";
 import { OpenNestedEditor } from "../../../actions/actions";
 import { FilterPanel } from "./fluentui_filter";
 import { EventManager, EventType, UIManagerListener } from "./observer";
+import { FluentUIGradientPicker } from "../../../components/fluent_ui_gradient_picker";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -140,6 +141,8 @@ export class FluentUIWidgetManager
     this.director = new Director();
     this.director.setBuilder(new MenuItemBuilder());
     this.eventManager = new EventManager();
+    this.eventListener = new UIManagerListener(this);
+    this.eventManager.subscribe(EventType.UPDATE_FIELD, this.eventListener);
   }
 
   public onMapDataHandler: OnMapDataHandler;
@@ -353,6 +356,11 @@ export class FluentUIWidgetManager
         key={this.getKeyFromProperty(property)}
         defaultValue={value}
         onEnter={(value) => {
+          if (value == null) {
+            this.emitSetProperty(property, null);
+          } else {
+            this.emitSetProperty(property, value);
+          }
           if (options.observerConfig?.isObserver) {
             if (options.observerConfig?.properties instanceof Array) {
               options.observerConfig?.properties.forEach((property) =>
@@ -370,13 +378,7 @@ export class FluentUIWidgetManager
               );
             }
           }
-          if (value == null) {
-            this.emitSetProperty(property, null);
-            return true;
-          } else {
-            this.emitSetProperty(property, value);
-            return true;
-          }
+          return true;
         }}
       />
     );
@@ -633,8 +635,6 @@ export class FluentUIWidgetManager
   ) {
     const property: Prototypes.Controls.Property =
       properties instanceof Array ? properties[0] : properties;
-    this.eventListener = new UIManagerListener(this);
-    this.eventManager.subscribe(EventType.UPDATE_FIELD, this.eventListener);
     switch (options.type) {
       case "checkbox-fill-width":
       case "checkbox": {
@@ -654,7 +654,6 @@ export class FluentUIWidgetManager
                   },
                 }}
                 onChange={(ev, v) => {
-                  this.defaultNotification(options.observerConfig);
                   if (properties instanceof Array) {
                     properties.forEach((property) =>
                       this.emitSetProperty(property, v)
@@ -662,6 +661,7 @@ export class FluentUIWidgetManager
                   } else {
                     this.emitSetProperty(property, v);
                   }
+                  this.defaultNotification(options.observerConfig);
                 }}
               />
             </FluentCheckbox>
@@ -789,7 +789,7 @@ export class FluentUIWidgetManager
     if (inline) {
       return (
         <span className="charticulator__widget-control-input-color-gradient-inline">
-          <GradientPicker
+          <FluentUIGradientPicker
             key={this.getKeyFromProperty(property)}
             defaultValue={gradient}
             onPick={(value: any) => {

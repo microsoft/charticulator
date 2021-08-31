@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 import { Geometry } from "./math";
+import { Colorspace } from "../../app/components/fluent_ui_gradient_picker";
 
 /** Color in RGB */
 export interface Color {
@@ -12,7 +13,7 @@ export interface Color {
 
 /** Color gradient */
 export interface ColorGradient {
-  colorspace: "hcl" | "lab";
+  colorspace: Colorspace;
   colors: Color[];
 }
 
@@ -353,6 +354,7 @@ const brewer12 = [
 ].map(colorFromHTMLColor);
 
 let defaultColorGeneratorFunction: (key: string) => Color = null;
+let defaultColorGeneratorResetFunction: () => void;
 
 export function setDefaultColorPaletteGenerator(
   generatorFunction: (key: string) => Color
@@ -362,6 +364,15 @@ export function setDefaultColorPaletteGenerator(
 
 export function getDefaultColorPaletteGenerator() {
   return defaultColorGeneratorFunction;
+}
+export function setDefaultColorGeneratorResetFunction(
+  resetFunction: () => void
+) {
+  defaultColorGeneratorResetFunction = resetFunction;
+}
+
+export function getDefaultColorGeneratorResetFunction() {
+  return defaultColorGeneratorResetFunction;
 }
 
 // eslint-disable-next-line
