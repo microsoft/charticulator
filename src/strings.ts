@@ -398,6 +398,7 @@ export const strings = {
       stackingSuffix: ": Stacking",
       tickFormat: "Tick Format",
       tickData: "Tick Data",
+      tickDataFormatType: "Tick format type",
       from: "from",
       to: "to",
       gap: "Gap",
