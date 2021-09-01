@@ -332,6 +332,8 @@ export function renderGraphicalElementSVG(
           y={-Math.max(rect.y1, rect.y2)}
           width={Math.abs(rect.x1 - rect.x2)}
           height={Math.abs(rect.y1 - rect.y2)}
+          rx={rect.rx}
+          ry={rect.ry}
         />
       );
     }

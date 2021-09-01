@@ -5,8 +5,8 @@
 import { Point, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
-import { DataKind, AttributeType, MappingType } from "../../specification";
 import * as Specification from "../../specification";
+import { AttributeType, DataKind, MappingType } from "../../specification";
 import {
   BoundingBox,
   Controls,
@@ -30,6 +30,12 @@ import { strings } from "../../../strings";
 
 export { RectElementAttributes, RectElementProperties };
 
+export enum ShapeType {
+  Rectangle = "rectangle",
+  Triangle = "triangle",
+  Ellips = "ellipse",
+}
+
 export class RectElementClass extends EmphasizableMarkClass<
   RectElementProperties,
   RectElementAttributes
@@ -41,7 +47,7 @@ export class RectElementClass extends EmphasizableMarkClass<
     displayName: "Shape",
     iconPath: "RectangleShape",
     creatingInteraction: {
-      type: "rectangle",
+      type: ShapeType.Rectangle,
       mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" },
     },
   };
@@ -50,8 +56,10 @@ export class RectElementClass extends EmphasizableMarkClass<
     ...ObjectClass.defaultProperties,
     visible: true,
     strokeStyle: "solid",
-    shape: "rectangle",
+    shape: ShapeType.Rectangle,
     allowFlipping: true,
+    rx: 0,
+    ry: 0,
   };
 
   public static defaultMappingValues: Partial<RectElementAttributes> = {
@@ -162,6 +170,23 @@ export class RectElementClass extends EmphasizableMarkClass<
         default: this.state.attributes.opacity,
       });
     }
+    properties.push({
+      objectID: this.object._id,
+      target: {
+        property: "rx",
+      },
+      type: Specification.AttributeType.Number,
+      default: 0,
+    });
+
+    properties.push({
+      objectID: this.object._id,
+      target: {
+        property: "ry",
+      },
+      type: Specification.AttributeType.Number,
+      default: 0,
+    });
 
     return {
       properties,
@@ -201,7 +226,11 @@ export class RectElementClass extends EmphasizableMarkClass<
                 strings.objects.rect.shapes.triangle,
                 strings.objects.rect.shapes.ellipse,
               ],
-              options: ["rectangle", "triangle", "ellipse"],
+              options: [
+                ShapeType.Rectangle,
+                ShapeType.Triangle,
+                ShapeType.Ellips,
+              ],
             }
           ),
           manager.inputBoolean(
@@ -269,6 +298,30 @@ export class RectElementClass extends EmphasizableMarkClass<
               step: 0.1,
             },
           }),
+          this.object.properties.shape === ShapeType.Rectangle
+            ? manager.inputNumber(
+                {
+                  property: "rx",
+                },
+                {
+                  label: strings.objects.roundX,
+                  showUpdown: true,
+                  updownTick: 1,
+                }
+              )
+            : null,
+          this.object.properties.shape === ShapeType.Rectangle
+            ? manager.inputNumber(
+                {
+                  property: "ry",
+                },
+                {
+                  label: strings.objects.roundY,
+                  showUpdown: true,
+                  updownTick: 1,
+                }
+              )
+            : null,
         ]
       ),
     ];
@@ -369,12 +422,13 @@ export class RectElementClass extends EmphasizableMarkClass<
     empasized?: boolean
   ): Graphics.Element {
     const attrs = this.state.attributes;
+    const properties = this.object.properties;
     if (!attrs.visible || !this.object.properties.visible) {
       return null;
     }
     const helper = new Graphics.CoordinateSystemHelper(cs);
     switch (this.object.properties.shape) {
-      case "ellipse": {
+      case ShapeType.Ellips: {
         return helper.ellipse(
           attrs.x1 + offset.x,
           attrs.y1 + offset.y,
@@ -393,7 +447,7 @@ export class RectElementClass extends EmphasizableMarkClass<
           }
         );
       }
-      case "triangle": {
+      case ShapeType.Triangle: {
         const pathMaker = new Graphics.PathMaker();
         helper.lineTo(
           pathMaker,
@@ -426,7 +480,7 @@ export class RectElementClass extends EmphasizableMarkClass<
         };
         return path;
       }
-      case "rectangle":
+      case ShapeType.Rectangle:
       default: {
         return helper.rect(
           attrs.x1 + offset.x,
@@ -443,7 +497,9 @@ export class RectElementClass extends EmphasizableMarkClass<
             fillColor: attrs.fill,
             opacity: attrs.opacity,
             ...this.generateEmphasisStyle(empasized),
-          }
+          },
+          properties.rx,
+          properties.ry
         );
       }
     }

@@ -119,6 +119,8 @@ export interface Rect extends Element {
   y1: number;
   x2: number;
   y2: number;
+  rx?: number;
+  ry?: number;
 }
 
 export interface Line extends Element {
@@ -201,9 +203,11 @@ export function makeRect(
   y1: number,
   x2: number,
   y2: number,
-  style?: Style
+  style?: Style,
+  rx?: number,
+  ry?: number
 ): Rect {
-  return { type: "rect", x1, x2, y1, y2, style };
+  return { type: "rect", x1, x2, y1, y2, style, rx, ry };
 }
 
 export function makeCircle(
