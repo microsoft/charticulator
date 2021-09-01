@@ -3,16 +3,17 @@
 // Licensed under the MIT license.
 
 import {
+  applyDateFormat,
+  Color,
   deepClone,
   fillDefaults,
-  Scale,
-  rgbToHex,
-  splitStringByNewLine,
-  replaceSymbolByTab,
-  replaceSymbolByNewLine,
-  Color,
   Geometry,
   getFormat,
+  replaceSymbolByNewLine,
+  replaceSymbolByTab,
+  rgbToHex,
+  Scale,
+  splitStringByNewLine,
   tickFormatParserExpression,
   ZoomInfo,
 } from "../../common";
@@ -21,8 +22,8 @@ import {
   Group,
   makeGroup,
   makeLine,
-  makeText,
   makePath,
+  makeText,
   Style,
 } from "../../graphics";
 import {
@@ -34,8 +35,11 @@ import { Controls, strokeStyleToDashArray } from "../common";
 import { AttributeMap, DataType } from "../../specification";
 import { strings } from "../../../strings";
 import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
-import { AxisDataBindingType, NumericalMode } from "../../specification/types";
-
+import {
+  AxisDataBindingType,
+  NumericalMode,
+  TickFormatType,
+} from "../../specification/types";
 import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
 import React = require("react");
 
@@ -168,11 +172,32 @@ export class AxisRenderer {
   }
 
   public ticksData: { tick: any; value: any }[];
-  public setTicksByData(ticks: { tick: any; value: any }[]) {
+  public setTicksByData(
+    ticks: { tick: any; value: any }[],
+    tickFormatString: string,
+    tickFormatType: TickFormatType
+  ) {
     const position2Tick = new Map<number, string>();
     for (const tick of ticks) {
       const pos = this.valueToPosition(tick.value);
-      position2Tick.set(pos, <string>tick.tick);
+      let label;
+      const tickFormat = tickFormatString
+        ? tickFormatString?.replace(tickFormatParserExpression(), "$1")
+        : null;
+
+      if (!tickFormat) {
+        label = <string>tick.tick;
+      } else {
+        if (tickFormatType === TickFormatType.Number) {
+          label = getFormat()(tickFormat)(tick.tick);
+        } else if (tickFormatType === TickFormatType.Date) {
+          label = applyDateFormat(new Date(tick.tick), tickFormat);
+        } else {
+          label = <string>tick.tick;
+        }
+      }
+
+      position2Tick.set(pos, label);
     }
     this.ticks = [];
     for (const [pos, tick] of position2Tick.entries()) {
@@ -1369,6 +1394,20 @@ export function buildAxisWidgets(
                     label: strings.objects.axes.tickData,
                   }
                 ),
+                manager.inputSelect(
+                  { property: axisProperty, field: "tickFormatType" },
+                  {
+                    options: [
+                      TickFormatType.None,
+                      TickFormatType.Date,
+                      TickFormatType.Number,
+                    ],
+                    labels: ["None", "Date", "Number"],
+                    showLabel: true,
+                    type: "dropdown",
+                    label: strings.objects.axes.tickDataFormatType,
+                  }
+                ),
                 manager.inputFormat(
                   {
                     property: axisProperty,
@@ -1774,6 +1813,17 @@ export function buildAxisProperties(
       },
       type: Specification.AttributeType.Text,
       default: null,
+    },
+    {
+      objectID: plotSegment._id,
+      target: {
+        property: {
+          property,
+          field: "tickFormatType",
+        },
+      },
+      type: Specification.AttributeType.Enum,
+      default: TickFormatType.None,
     },
     {
       objectID: plotSegment._id,

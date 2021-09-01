@@ -63,6 +63,7 @@ import {
   AxisRenderingStyle,
   NumericalMode,
   OrderMode,
+  TickFormatType,
 } from "../../core/specification/types";
 import {
   NumericalNumberLegendAttributeNames,
@@ -1732,6 +1733,9 @@ export class AppStore extends BaseStore {
         <string>objectProperties?.tickDataExpression !== undefined
           ? <string>objectProperties?.tickDataExpression
           : null,
+      tickFormatType:
+        (objectProperties?.tickFormatType as TickFormatType) ??
+        TickFormatType.None,
       domainMin:
         <number>objectProperties?.domainMin !== undefined
           ? <number>objectProperties?.domainMin
