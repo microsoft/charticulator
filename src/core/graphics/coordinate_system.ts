@@ -130,8 +130,12 @@ export class PolarCoordinates extends CoordinateSystem {
 
   public transformPoint(angle: number, radial: number): Point {
     return {
-      x: this.transformRadial(radial) * Math.sin(Geometry.degreesToRadians(angle)),
-      y: this.transformRadial(radial) * Math.cos(Geometry.degreesToRadians(angle)),
+      x:
+        this.transformRadial(radial) *
+        Math.sin(Geometry.degreesToRadians(angle)),
+      y:
+        this.transformRadial(radial) *
+        Math.cos(Geometry.degreesToRadians(angle)),
     };
   }
 
@@ -264,11 +268,13 @@ export class CoordinateSystemHelper {
     y1: number,
     x2: number,
     y2: number,
-    style: Style = {}
+    style: Style = {},
+    rx: number = 0,
+    ry: number = 0
   ): Element {
     const cs = this.coordinateSystem;
     if (cs instanceof CartesianCoordinates) {
-      return makeRect(x1, y1, x2, y2, style);
+      return makeRect(x1, y1, x2, y2, style, rx, ry);
     } else {
       const path = makePath(style);
       this.lineTo(path, x1, y1, x1, y2, true);
@@ -380,7 +386,8 @@ export class CoordinateSystemHelper {
           );
 
           const len = Geometry.pointDistance(frame, framePrevious) / 3;
-          const angle1 = Geometry.degreesToRadians(framePrevious.angle) + direction;
+          const angle1 =
+            Geometry.degreesToRadians(framePrevious.angle) + direction;
           const angle2 = Geometry.degreesToRadians(frame.angle) + direction;
 
           path.cubicBezierCurveTo(

@@ -6,6 +6,7 @@ import { Color } from "../../common";
 import { AttributeMap } from "../../specification/index";
 import { AttrBuilder } from "../attrs";
 import { StrokeStyle } from "../common";
+import { ShapeType } from "./rect";
 
 export const rectAttributes: AttributeDescriptions = {
   ...AttrBuilder.line(),
@@ -51,10 +52,15 @@ export interface RectElementAttributes extends AttributeMap {
   opacity: number;
   /** visual state of rectangle */
   visible: boolean;
+
+  rx: number;
+  ry: number;
 }
 
 export interface RectElementProperties extends AttributeMap {
-  shape: "rectangle" | "ellipse" | "triangle";
+  shape: ShapeType;
   strokeStyle: StrokeStyle;
   allowFlipping: boolean;
+  rx: number;
+  ry: number;
 }

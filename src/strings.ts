@@ -390,6 +390,8 @@ export const strings = {
     layout: "Layout",
     appearance: "Appearance",
     invalidFormat: "Invalid format",
+    roundX: "Round X",
+    roundY: "Round Y",
     axes: {
       numericalSuffix: ": Numerical",
       categoricalSuffix: ": Categorical",
