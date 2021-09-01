@@ -318,7 +318,12 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
       );
       if (props.xData.tickDataExpression) {
-        axisRenderer.setTicksByData(getTickData(props.xData));
+        const tickFormatType = props.xData?.tickFormatType;
+        axisRenderer.setTicksByData(
+          getTickData(props.xData),
+          props.xData.tickFormat,
+          tickFormatType
+        );
       }
       g.elements.push(
         axisRenderer.renderCartesian(
@@ -338,7 +343,12 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
       );
       if (props.yData.tickDataExpression) {
-        axisRenderer.setTicksByData(getTickData(props.yData));
+        const tickFormatType = props.yData?.tickFormatType;
+        axisRenderer.setTicksByData(
+          getTickData(props.yData),
+          props.yData.tickFormat,
+          tickFormatType
+        );
       }
       g.elements.push(
         axisRenderer.renderCartesian(

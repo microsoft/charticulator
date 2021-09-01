@@ -25,6 +25,12 @@ export enum NumericalMode {
   Temporal = "temporal",
 }
 
+export enum TickFormatType {
+  None = "none",
+  Date = "date",
+  Number = "number",
+}
+
 /** Common parameter and mapping types */
 export interface AxisDataBinding extends AttributeMap {
   type: AxisDataBindingType;
@@ -58,6 +64,7 @@ export interface AxisDataBinding extends AttributeMap {
 
   tickDataExpression?: Expression;
   tickFormat?: string;
+  tickFormatType?: TickFormatType;
 
   style?: AxisRenderingStyle;
   dataKind?: DataKind;
