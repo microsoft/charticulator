@@ -328,7 +328,9 @@ class MenuItemsCreator {
       }
       const subMenuProps = this.useAggregation
         ? {
-            items: Expression.getCompatibleAggregationFunctions(field.type).map(
+            items: Expression.getCompatibleAggregationFunctionsByDataKind(
+              field.metadata.kind
+            ).map(
               (subMenuItem): IContextualMenuItem => {
                 const selectionKey: string =
                   field.columnName + DELIMITER + subMenuItem.name;
@@ -504,8 +506,8 @@ class MenuItemsCreator {
                 (derivedColumn): IContextualMenuItem => {
                   const subMenuProps = this.useAggregation
                     ? {
-                        items: Expression.getCompatibleAggregationFunctions(
-                          derivedColumn.type
+                        items: Expression.getCompatibleAggregationFunctionsByDataKind(
+                          derivedColumn.metadata.kind
                         ).map(
                           (aggregationMenuItem): IContextualMenuItem => {
                             const onClickFn = (
@@ -827,6 +829,9 @@ export class Director {
                 dropdownOptionText: {
                   boxSizing: "unset",
                   lineHeight: defultBindButtonSize.height,
+                },
+                callout: {
+                  minWidth: 180,
                 },
               }}
               selectedKey={defaultKey}
