@@ -380,7 +380,9 @@ export class MenuBar extends ContextedComponent<
               const inputElement = document.createElement("input");
               inputElement.type = "file";
               let file = null;
-              inputElement.accept = ["tmplt"].map((x) => "." + x).join(",");
+              inputElement.accept = ["tmplt", "json"]
+                .map((x) => "." + x)
+                .join(",");
               // eslint-disable-next-line
               inputElement.onchange = () => {
                 if (inputElement.files.length == 1) {
