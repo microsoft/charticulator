@@ -172,13 +172,10 @@ export class PolarPlotSegmentPlugin extends ConstraintPlugin {
 
   public apply(): boolean {
     const {attrs} = this;
-    const {angle1, angle2, radial1, radial2} = attrs;
+    const {angle1, angle2, radial1, radial2, x1, x2, y1, y2} = attrs;
 
-    const isAutoMargin = this.properties.autoMargin;
-
-    const center = PolarPlotSegmentPlugin.getCenterByAngle(false, attrs);
-    attrs.cx = center.cx;
-    attrs.cy = center.cy;
+    attrs.cx =  (x2 + x1) / 2;
+    attrs.cy =  (y2 + y1) / 2;
 
     const {cx, cy} = attrs;
 
