@@ -559,11 +559,14 @@ export class PolarPlotSegment extends PlotSegmentClass<
 
   public getCoordinateSystem(): Graphics.CoordinateSystem {
     const attrs = this.state.attributes;
-    const { x1, y1, x2, y2 } = attrs;
+    const center = PolarPlotSegmentPlugin.getCenterByAngle(
+      this.object.properties.autoMargin,
+      attrs
+    );
     return new Graphics.PolarCoordinates(
       {
-        x: (x1 + x2) / 2,
-        y: (y1 + y2) / 2,
+        x: center.cx,
+        y: center.cy,
       },
       attrs.radial1,
       attrs.radial2,
