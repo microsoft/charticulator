@@ -829,6 +829,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
             {
               type: "checkbox",
               label: strings.objects.plotSegment.autoMarginTitle,
+              headerLabel: strings.alignment.alignment,
             }
           ),
         ]
