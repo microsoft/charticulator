@@ -35,6 +35,7 @@ import { getSortDirection } from "../../..";
 import { ChartStateManager } from "../..";
 import { strings } from "../../../../strings";
 import { AxisDataBinding } from "../../../specification/types";
+import { PolarPlotSegmentPlugin } from "../../../solver/plugins";
 
 export type PolarAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -61,6 +62,8 @@ export interface PolarAttributes extends Region2DAttributes {
   a2r1y: number;
   a2r2x: number;
   a2r2y: number;
+
+  autoMargin: boolean;
 }
 
 export interface PolarState extends Specification.PlotSegmentState {
@@ -73,6 +76,7 @@ export interface PolarProperties extends Region2DProperties {
   innerRatio: number;
   outerRatio: number;
   equalizeArea: boolean;
+  autoMargin: boolean;
 }
 
 export interface PolarObject extends Specification.PlotSegment {
@@ -136,6 +140,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
     endAngle: 360,
     innerRatio: 0.5,
     outerRatio: 0.9,
+    autoMarginTitle: false,
   };
 
   public readonly state: PolarState;
@@ -164,6 +169,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
     "a2r1y",
     "a2r2x",
     "a2r2y",
+    "autoMargin",
   ];
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
@@ -258,6 +264,10 @@ export class PolarPlotSegment extends PlotSegmentClass<
       name: "a2r2y",
       type: Specification.AttributeType.Number,
     },
+    autoMargin: {
+      name: "autoMargin",
+      type: Specification.AttributeType.Boolean,
+    },
   };
 
   public initializeState(): void {
@@ -284,6 +294,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
     attrs.a2r1y = 0;
     attrs.a2r2x = 0;
     attrs.a2r2y = 0;
+    attrs.autoMargin = false;
   }
 
   public createBuilder(
@@ -397,7 +408,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
         attrs,
         this.parent.object.constraints,
         this.object._id,
-        manager
+        manager,
+        this.object.properties
       )
     );
   }
@@ -806,6 +818,13 @@ export class PolarPlotSegment extends PlotSegmentClass<
               type: "checkbox",
               label: strings.objects.plotSegment.heightToArea,
               headerLabel: strings.objects.plotSegment.equalizeArea,
+            }
+          ),
+          manager.inputBoolean(
+            { property: "autoMargin" },
+            {
+              type: "checkbox",
+              label: strings.objects.plotSegment.autoMarginTitle,
             }
           ),
         ]
