@@ -641,7 +641,6 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const center = PolarPlotSegmentPlugin.getCenterByAngle(props.autoMargin, attrs);
     const radius = Math.min(Math.abs(x2 - x1), Math.abs(y2 - y1)) / 2;
     const builder = this.createBuilder();
-    console.log(center.ratio)
     return [
       <Handles.Line>{
         type: "line",
