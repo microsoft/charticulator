@@ -30,7 +30,7 @@ import {
 import { DropdownListView } from "../panels/widgets/controls";
 import { kind2Icon, type2DerivedColumns } from "./common";
 import { TableView } from "./table_view";
-import { TableType } from "../../../core/dataset";
+import { TableType, tableTypeName } from "../../../core/dataset";
 import { DataType, DataKind } from "../../../core/specification";
 import { ChartTemplateBuilder } from "../../template";
 import { ChartTemplate } from "../../../container";
@@ -63,7 +63,7 @@ export class DatasetView extends React.Component<
   }
   public render() {
     const tables = this.props.store.getTables();
-    const mainTables = [TableType.Main, TableType.Links];
+    const mainTables = [TableType.Main, TableType.Links, TableType.Image];
     return (
       <div className="charticulator__dataset-view">
         {tables
@@ -127,9 +127,7 @@ export class ColumnsView extends React.Component<
         <div className="charticulator__dataset-view-columns">
           <h2 className="el-title">
             <span className="el-text">
-              {this.props.table.type === TableType.Links
-                ? strings.dataset.tableTitleLinks
-                : strings.dataset.tableTitleColumns}
+              {tableTypeName[this.props.table.type]}
             </span>
             {this.props.store.editorType === EditorType.Chart ? (
               <DefaultButton

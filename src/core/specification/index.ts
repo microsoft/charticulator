@@ -34,6 +34,8 @@ export enum DataType {
   Boolean = "boolean",
   /** Date data type, stored as unix timestamps (ms) */
   Date = "date",
+  /** Image data as base64 string */
+  Image = "image",
 }
 
 /** Abstract data kind */
