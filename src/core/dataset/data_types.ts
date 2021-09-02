@@ -72,6 +72,10 @@ export const dataTypes: { [name in DataType]: DataTypeDescription } = {
     test: (x: string) => true,
     convert: (x: string) => x.toString(),
   },
+  image: {
+    test: (x: string) => isBase64Image(x),
+    convert: (x: string) => x.toString(),
+  },
 };
 
 /** Infer column type from a set of strings (not null) */
@@ -315,4 +319,13 @@ export function convertColumnType(values: any[], type: DataType): DataValue[] {
       });
     }
   }
+}
+
+export function isBase64Image(string: string) {
+  return (
+    typeof string === "string" &&
+    string.match(
+      /data:image\/(ico|jpg|jpeg|png|webp|svg|gif|svg\+xml);base64,/
+    ) != null
+  );
 }
