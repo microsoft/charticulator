@@ -637,9 +637,11 @@ export class PolarPlotSegment extends PlotSegmentClass<
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const { x1, x2, y1, y2, cx, cy } = attrs;
+    const { x1, x2, y1, y2 } = attrs;
+    const center = PolarPlotSegmentPlugin.getCenterByAngle(props.autoMargin, attrs);
     const radius = Math.min(Math.abs(x2 - x1), Math.abs(y2 - y1)) / 2;
     const builder = this.createBuilder();
+    console.log(center.ratio)
     return [
       <Handles.Line>{
         type: "line",
@@ -727,8 +729,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
       <Handles.Angle>{
         type: "angle",
         actions: [{ type: "property", property: "endAngle" }],
-        cx,
-        cy,
+        cx: center.cx,
+        cy: center.cy,
         radius: radius * Math.max(props.innerRatio, props.outerRatio),
         value: props.endAngle,
         clipAngles: [props.startAngle, null],
@@ -737,8 +739,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
       <Handles.Angle>{
         type: "angle",
         actions: [{ type: "property", property: "startAngle" }],
-        cx,
-        cy,
+        cx: center.cx,
+        cy: center.cy,
         radius: radius * Math.max(props.innerRatio, props.outerRatio),
         value: props.startAngle,
         clipAngles: [null, props.endAngle],
@@ -747,20 +749,20 @@ export class PolarPlotSegment extends PlotSegmentClass<
       <Handles.DistanceRatio>{
         type: "distance-ratio",
         actions: [{ type: "property", property: "outerRatio" }],
-        cx,
-        cy,
+        cx: center.cx,
+        cy: center.cy,
         value: props.outerRatio,
         startDistance: 0,
         endDistance: radius,
         startAngle: props.startAngle,
         endAngle: props.endAngle,
-        clipRange: [props.innerRatio + 0.01, 1],
+        clipRange: [props.innerRatio + 0.01, center.ratio],
       },
       <Handles.DistanceRatio>{
         type: "distance-ratio",
         actions: [{ type: "property", property: "innerRatio" }],
-        cx,
-        cy,
+        cx: center.cx,
+        cy: center.cy,
         value: props.innerRatio,
         startDistance: 0,
         endDistance: radius,

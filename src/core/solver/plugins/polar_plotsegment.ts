@@ -176,7 +176,7 @@ export class PolarPlotSegmentPlugin extends ConstraintPlugin {
 
     const isAutoMargin = this.properties.autoMargin;
 
-    const center = PolarPlotSegmentPlugin.getCenterByAngle(isAutoMargin, attrs);
+    const center = PolarPlotSegmentPlugin.getCenterByAngle(false, attrs);
     attrs.cx = center.cx;
     attrs.cy = center.cy;
 
