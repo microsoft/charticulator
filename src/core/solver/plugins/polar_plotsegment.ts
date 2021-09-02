@@ -2,7 +2,10 @@
 // Licensed under the MIT license.
 
 import { ConstraintPlugin } from "../abstract";
-import { PolarAttributes, PolarProperties, } from "../../prototypes/plot_segments/region_2d/polar";
+import {
+  PolarAttributes,
+  PolarProperties,
+} from "../../prototypes/plot_segments/region_2d/polar";
 import { Geometry } from "../../common";
 import { Constraint } from "../../specification";
 import { ChartStateManager } from "../../prototypes";
@@ -20,8 +23,11 @@ export class PolarPlotSegmentPlugin extends ConstraintPlugin {
   }
 
   // eslint-disable-next-line max-lines-per-function
-  public static getCenterByAngle(isAutoMargin: boolean, attrs: PolarAttributes) {
-    const {angle1, angle2, x1, y1, x2, y2, radial1, radial2} = attrs;
+  public static getCenterByAngle(
+    isAutoMargin: boolean,
+    attrs: PolarAttributes
+  ) {
+    const { angle1, angle2, x1, y1, x2, y2 } = attrs;
     let cx;
     let cy;
     let radialRatio = 1;
@@ -167,17 +173,17 @@ export class PolarPlotSegmentPlugin extends ConstraintPlugin {
       cx = (x2 + x1) / 2;
       cy = (y2 + y1) / 2;
     }
-    return {cx, cy, ratio: radialRatio};
+    return { cx, cy, ratio: radialRatio };
   }
 
   public apply(): boolean {
-    const {attrs} = this;
-    const {angle1, angle2, radial1, radial2, x1, x2, y1, y2} = attrs;
+    const { attrs } = this;
+    const { angle1, angle2, radial1, radial2, x1, x2, y1, y2 } = attrs;
 
-    attrs.cx =  (x2 + x1) / 2;
-    attrs.cy =  (y2 + y1) / 2;
+    attrs.cx = (x2 + x1) / 2;
+    attrs.cy = (y2 + y1) / 2;
 
-    const {cx, cy} = attrs;
+    const { cx, cy } = attrs;
 
     const toPoint = (radius: number, angle: number) => {
       const radians = Geometry.degreesToRadians(angle);
