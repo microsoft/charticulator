@@ -231,8 +231,10 @@ export abstract class LegendClass extends ChartElementClass {
             }
           ),
           this.object.classID === "legend.categorical"
-            ? (manager.label("Ordering"),
-              manager.reorderWidget(
+            ? manager.label(strings.objects.legend.ordering)
+            : null,
+          this.object.classID === "legend.categorical"
+            ? manager.reorderWidget(
                 {
                   property: "order",
                 },
@@ -248,7 +250,7 @@ export abstract class LegendClass extends ChartElementClass {
                     );
                   },
                 }
-              ))
+              )
             : null,
         ]
       ),
