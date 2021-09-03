@@ -84,7 +84,7 @@ export interface PolarObject extends Specification.PlotSegment {
 export const icons: Region2DConfigurationIcons = {
   xMinIcon: "AlignHorizontalLeft",
   xMiddleIcon: "AlignHorizontalCenter",
-  xMaxIcon: "align/right",
+  xMaxIcon: "AlignHorizontalRight",
   yMiddleIcon: "AlignHorizontalRight",
   yMinIcon: "AlignVerticalBottom",
   yMaxIcon: "AlignVerticalTop",

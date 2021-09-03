@@ -464,6 +464,7 @@ export const strings = {
       labels: "Labels",
       layout: "Layout",
       categoricalLegend: "Categorical legend",
+      ordering: "Ordering",
     },
     links: {
       lineType: "Line Type",

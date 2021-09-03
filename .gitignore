@@ -9,3 +9,5 @@ docs/
 cert.pem
 key.pem
 .tmp/
+.env
+.idea/
