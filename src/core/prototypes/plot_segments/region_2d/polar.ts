@@ -62,8 +62,6 @@ export interface PolarAttributes extends Region2DAttributes {
   a2r1y: number;
   a2r2x: number;
   a2r2y: number;
-
-  autoMargin: boolean;
 }
 
 export interface PolarState extends Specification.PlotSegmentState {
@@ -76,7 +74,7 @@ export interface PolarProperties extends Region2DProperties {
   innerRatio: number;
   outerRatio: number;
   equalizeArea: boolean;
-  autoMargin: boolean;
+  autoAlignment: boolean;
 }
 
 export interface PolarObject extends Specification.PlotSegment {
@@ -554,7 +552,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
   public getCoordinateSystem(): Graphics.CoordinateSystem {
     const attrs = this.state.attributes;
     const center = PolarPlotSegmentPlugin.getCenterByAngle(
-      this.object.properties.autoMargin,
+      this.object.properties.autoAlignment,
       attrs
     );
     return new Graphics.PolarCoordinates(
@@ -633,7 +631,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const props = this.object.properties;
     const { x1, x2, y1, y2 } = attrs;
     const center = PolarPlotSegmentPlugin.getCenterByAngle(
-      props.autoMargin,
+      props.autoAlignment,
       attrs
     );
     const radius = Math.min(Math.abs(x2 - x1), Math.abs(y2 - y1)) / 2;
