@@ -415,6 +415,7 @@ export const strings = {
       polarCoordinates: "Polar Coordinates",
       heightToArea: "Height to Area",
       equalizeArea: "Equalize area",
+      autoAlignment: "Plot auto alignment",
       inner: "Inner:",
       outer: "Outer:",
       radius: "Radius",
