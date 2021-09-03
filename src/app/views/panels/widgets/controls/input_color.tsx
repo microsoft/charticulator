@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types */
 
 import * as React from "react";
 import * as globals from "../../../../globals";
@@ -30,7 +29,10 @@ export interface InputColorProps {
   store?: AppStore;
 }
 
-export class InputColor extends React.Component<InputColorProps, {}> {
+export class InputColor extends React.Component<
+  InputColorProps,
+  Record<string, unknown>
+> {
   public render() {
     let hex: string = "";
     if (this.props.defaultValue) {
@@ -102,7 +104,7 @@ export interface InputColorGradientProps {
 
 export class InputColorGradient extends React.Component<
   InputColorGradientProps,
-  {}
+  Record<string, unknown>
 > {
   public render() {
     let colorButton: HTMLSpanElement;
