@@ -812,19 +812,19 @@ export class PolarPlotSegment extends PlotSegmentClass<
             )
           ),
           manager.inputBoolean(
+            { property: "autoAlignment" },
+            {
+              type: "checkbox",
+              label: strings.objects.plotSegment.autoAlignment,
+              headerLabel: strings.objects.plotSegment.origin,
+            }
+          ),
+          manager.inputBoolean(
             { property: "equalizeArea" },
             {
               type: "checkbox",
               label: strings.objects.plotSegment.heightToArea,
               headerLabel: strings.objects.plotSegment.equalizeArea,
-            }
-          ),
-          manager.inputBoolean(
-            { property: "autoAlignment" },
-            {
-              type: "checkbox",
-              label: strings.objects.plotSegment.autoAlignment,
-              headerLabel: strings.alignment.alignment,
             }
           ),
         ]
