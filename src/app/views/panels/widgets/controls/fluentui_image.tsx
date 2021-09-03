@@ -19,6 +19,7 @@ import {
 } from "@fluentui/react";
 import {
   defaultLabelStyle,
+  defultBindButtonSize,
   FluentActionButton,
   FluentButton,
 } from "./fluentui_customized_components";
@@ -134,7 +135,7 @@ export class InputImage extends ContextedComponent<
         onDragOver={this.handleDragOver}
         onDrop={this.handleDrop}
         onClick={this.startChooseImage}
-        style={{ marginBottom: "5px" }}
+        // style={{ marginBottom: "5px" }}
       >
         {this.state.dragOver ? (
           <div style={{ width: "100%" }}>
@@ -154,8 +155,15 @@ export class InputImage extends ContextedComponent<
                 {this.props.label}
               </Label>
             ) : null}
-            <FluentActionButton style={{ width: "100%" }}>
+            <FluentActionButton
+              style={{ width: "100%", height: defultBindButtonSize.height }}
+            >
               <ActionButton
+                styles={{
+                  root: {
+                    height: defultBindButtonSize.height,
+                  },
+                }}
                 text={isNone ? strings.core.none : imageDisplayURL}
                 iconProps={{
                   imageProps: {

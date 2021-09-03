@@ -35,6 +35,7 @@ import { getSortDirection } from "../../..";
 import { ChartStateManager } from "../..";
 import { strings } from "../../../../strings";
 import { AxisDataBinding } from "../../../specification/types";
+import { PolarPlotSegmentPlugin } from "../../../solver/plugins";
 
 export type PolarAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -73,6 +74,7 @@ export interface PolarProperties extends Region2DProperties {
   innerRatio: number;
   outerRatio: number;
   equalizeArea: boolean;
+  autoAlignment: boolean;
 }
 
 export interface PolarObject extends Specification.PlotSegment {
@@ -136,6 +138,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
     endAngle: 360,
     innerRatio: 0.5,
     outerRatio: 0.9,
+    autoAlignment: false,
   };
 
   public readonly state: PolarState;
@@ -397,7 +400,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
         attrs,
         this.parent.object.constraints,
         this.object._id,
-        manager
+        manager,
+        this.object.properties
       )
     );
   }
@@ -547,11 +551,14 @@ export class PolarPlotSegment extends PlotSegmentClass<
 
   public getCoordinateSystem(): Graphics.CoordinateSystem {
     const attrs = this.state.attributes;
-    const { x1, y1, x2, y2 } = attrs;
+    const center = PolarPlotSegmentPlugin.getCenterByAngle(
+      this.object.properties.autoAlignment,
+      attrs
+    );
     return new Graphics.PolarCoordinates(
       {
-        x: (x1 + x2) / 2,
-        y: (y1 + y2) / 2,
+        x: center.cx,
+        y: center.cy,
       },
       attrs.radial1,
       attrs.radial2,
@@ -622,7 +629,11 @@ export class PolarPlotSegment extends PlotSegmentClass<
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const { x1, x2, y1, y2, cx, cy } = attrs;
+    const { x1, x2, y1, y2 } = attrs;
+    const center = PolarPlotSegmentPlugin.getCenterByAngle(
+      props.autoAlignment,
+      attrs
+    );
     const radius = Math.min(Math.abs(x2 - x1), Math.abs(y2 - y1)) / 2;
     const builder = this.createBuilder();
     return [
@@ -712,8 +723,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
       <Handles.Angle>{
         type: "angle",
         actions: [{ type: "property", property: "endAngle" }],
-        cx,
-        cy,
+        cx: center.cx,
+        cy: center.cy,
         radius: radius * Math.max(props.innerRatio, props.outerRatio),
         value: props.endAngle,
         clipAngles: [props.startAngle, null],
@@ -722,8 +733,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
       <Handles.Angle>{
         type: "angle",
         actions: [{ type: "property", property: "startAngle" }],
-        cx,
-        cy,
+        cx: center.cx,
+        cy: center.cy,
         radius: radius * Math.max(props.innerRatio, props.outerRatio),
         value: props.startAngle,
         clipAngles: [null, props.endAngle],
@@ -732,20 +743,20 @@ export class PolarPlotSegment extends PlotSegmentClass<
       <Handles.DistanceRatio>{
         type: "distance-ratio",
         actions: [{ type: "property", property: "outerRatio" }],
-        cx,
-        cy,
+        cx: center.cx,
+        cy: center.cy,
         value: props.outerRatio,
         startDistance: 0,
         endDistance: radius,
         startAngle: props.startAngle,
         endAngle: props.endAngle,
-        clipRange: [props.innerRatio + 0.01, 1],
+        clipRange: [props.innerRatio + 0.01, center.ratio],
       },
       <Handles.DistanceRatio>{
         type: "distance-ratio",
         actions: [{ type: "property", property: "innerRatio" }],
-        cx,
-        cy,
+        cx: center.cx,
+        cy: center.cy,
         value: props.innerRatio,
         startDistance: 0,
         endDistance: radius,
@@ -806,6 +817,14 @@ export class PolarPlotSegment extends PlotSegmentClass<
               type: "checkbox",
               label: strings.objects.plotSegment.heightToArea,
               headerLabel: strings.objects.plotSegment.equalizeArea,
+            }
+          ),
+          manager.inputBoolean(
+            { property: "autoAlignment" },
+            {
+              type: "checkbox",
+              label: strings.objects.plotSegment.autoAlignment,
+              headerLabel: strings.alignment.alignment,
             }
           ),
         ]
