@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
@@ -67,7 +66,6 @@ import {
   Label,
   ComboBox,
   Dropdown,
-  IDropdownOption,
   FontIcon,
   getTheme,
   TooltipHost,
@@ -77,7 +75,6 @@ import { CharticulatorPropertyAccessors } from "./manager";
 import { FluentInputColor } from "./controls/fluentui_input_color";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
-import { Icon } from "@fluentui/react/lib/Icon";
 import {
   defaultLabelStyle,
   defaultStyle,
@@ -86,8 +83,6 @@ import {
   FluentButton,
   FluentCheckbox,
   FluentDatePickerWrapper,
-  FluentDropdown,
-  FluentDropdownWrapper,
   FluentLabelHeader,
   labelRender,
   NestedChartButtonsWrapper,
@@ -101,7 +96,6 @@ import {
 } from "../../../../core/prototypes/controls";
 
 import { mergeStyles } from "@fluentui/merge-styles";
-import { CSSProperties } from "react";
 import { strings } from "../../../../strings";
 import { InputImage, InputImageProperty } from "./controls/fluentui_image";
 import {
@@ -116,6 +110,7 @@ import { OpenNestedEditor } from "../../../actions/actions";
 import { FilterPanel } from "./fluentui_filter";
 import { EventManager, EventType, UIManagerListener } from "./observer";
 import { FluentUIGradientPicker } from "../../../components/fluent_ui_gradient_picker";
+import { dropdownStyles, onRenderOption, onRenderTitle } from "./styles";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -505,46 +500,6 @@ export class FluentUIWidgetManager
   ) {
     const theme = getTheme();
     if (options.type == "dropdown") {
-      const iconStyles: CSSProperties = { marginRight: "8px" };
-
-      const onRenderOption = (option: IDropdownOption): JSX.Element => {
-        return (
-          <>
-            {option.data && option.data.icon && (
-              <FluentDropdown>
-                <Icon
-                  style={iconStyles}
-                  iconName={option.data.icon}
-                  aria-hidden="true"
-                  title={option.data.icon}
-                />
-              </FluentDropdown>
-            )}
-            <span>{option.text}</span>
-          </>
-        );
-      };
-
-      const onRenderTitle = (options: IDropdownOption[]): JSX.Element => {
-        const option = options[0];
-
-        return (
-          <FluentDropdownWrapper>
-            {option.data && option.data.icon && (
-              <FluentDropdown>
-                <Icon
-                  style={iconStyles}
-                  iconName={option.data.icon}
-                  aria-hidden="true"
-                  title={option.data.icon}
-                />
-              </FluentDropdown>
-            )}
-            <span>{option.text}</span>
-          </FluentDropdownWrapper>
-        );
-      };
-
       return (
         <Dropdown
           key={`${this.getKeyFromProperty(property)}-${options.label}-${
@@ -574,16 +529,7 @@ export class FluentUIWidgetManager
           }}
           styles={{
             ...defaultStyle,
-            title: {
-              ...defultComponentsHeight,
-              borderWidth: options.hideBorder ? "0px" : null,
-            },
-            dropdownItemsWrapper: {
-              minWidth: 90,
-            },
-            callout: {
-              marginTop: options.shiftCallout ? options.shiftCallout : null,
-            },
+            ...dropdownStyles(options),
           }}
         />
       );
@@ -1210,7 +1156,6 @@ export class FluentUIWidgetManager
   }
 
   // Layout elements
-  // eslint-disable-next-line max-lines-per-function
   public sectionHeader(
     title: string,
     widget?: JSX.Element,
@@ -1510,11 +1455,7 @@ export class FluentUIWidgetManager
     );
   }
 
-  public table(
-    rows: JSX.Element[][],
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    options: Prototypes.Controls.TableOptions
-  ): JSX.Element {
+  public table(rows: JSX.Element[][]): JSX.Element {
     return (
       <table className="charticulator__widget-table">
         <tbody>
