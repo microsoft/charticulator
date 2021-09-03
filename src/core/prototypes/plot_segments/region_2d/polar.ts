@@ -140,7 +140,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
     endAngle: 360,
     innerRatio: 0.5,
     outerRatio: 0.9,
-    autoMarginTitle: false,
+    autoAlignment: false,
   };
 
   public readonly state: PolarState;
@@ -169,7 +169,6 @@ export class PolarPlotSegment extends PlotSegmentClass<
     "a2r1y",
     "a2r2x",
     "a2r2y",
-    "autoMargin",
   ];
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
@@ -264,10 +263,6 @@ export class PolarPlotSegment extends PlotSegmentClass<
       name: "a2r2y",
       type: Specification.AttributeType.Number,
     },
-    autoMargin: {
-      name: "autoMargin",
-      type: Specification.AttributeType.Boolean,
-    },
   };
 
   public initializeState(): void {
@@ -294,7 +289,6 @@ export class PolarPlotSegment extends PlotSegmentClass<
     attrs.a2r1y = 0;
     attrs.a2r2x = 0;
     attrs.a2r2y = 0;
-    attrs.autoMargin = false;
   }
 
   public createBuilder(
@@ -638,7 +632,10 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const attrs = this.state.attributes;
     const props = this.object.properties;
     const { x1, x2, y1, y2 } = attrs;
-    const center = PolarPlotSegmentPlugin.getCenterByAngle(props.autoMargin, attrs);
+    const center = PolarPlotSegmentPlugin.getCenterByAngle(
+      props.autoMargin,
+      attrs
+    );
     const radius = Math.min(Math.abs(x2 - x1), Math.abs(y2 - y1)) / 2;
     const builder = this.createBuilder();
     return [
@@ -825,10 +822,10 @@ export class PolarPlotSegment extends PlotSegmentClass<
             }
           ),
           manager.inputBoolean(
-            { property: "autoMargin" },
+            { property: "autoAlignment" },
             {
               type: "checkbox",
-              label: strings.objects.plotSegment.autoMarginTitle,
+              label: strings.objects.plotSegment.autoAlignment,
               headerLabel: strings.alignment.alignment,
             }
           ),
