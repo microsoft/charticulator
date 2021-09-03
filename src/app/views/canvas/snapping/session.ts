@@ -3,6 +3,7 @@
 import { Prototypes } from "../../../../core";
 import { HandlesDragEvent } from "../handles/common";
 import { SnappableGuide, SnappingAction } from "./common";
+import { Handles } from "../../../../core/prototypes";
 
 export class SnappingSession<ElementType> {
   public candidates: SnappableGuide<ElementType>[];
@@ -77,21 +78,55 @@ export class SnappingSession<ElementType> {
         {
           let minGuide: SnappableGuide<ElementType> = null;
           let minDistance: number = null;
+          let minXGuide: SnappableGuide<ElementType> = null;
+          let minXDistance: number = null;
+          let minYGuide: SnappableGuide<ElementType> = null;
+          let minYDistance: number = null;
           for (const g of this.candidates.sort(this.giveProrityToPoint)) {
             const guide = g.guide as Prototypes.SnappingGuides.Axis;
-            const d = Math.abs(guide.value - (e.value as number));
-            if (
-              d < this.threshold &&
-              (minDistance == null || d < minDistance - EPSILON)
-            ) {
-              minDistance = d;
-              minGuide = g;
+            if (this.findClosestSnappingGuide) {
+              if (guide.type == "y") {
+                const dY = Math.abs(guide.value - (e.value as number));
+                if (dY < minYDistance || minYDistance == null) {
+                  minYDistance = dY;
+                  minYGuide = g;
+                }
+              } else if (guide.type == "x") {
+                const dX = Math.abs(guide.value - (e.value as number));
+                if (dX < minXDistance || minXDistance == null) {
+                  minXDistance = dX;
+                  minXGuide = g;
+                }
+              } else {
+                const guide = g.guide as Prototypes.SnappingGuides.Axis;
+                const d = Math.abs(guide.value - (e.value as number));
+                if (
+                  d < this.threshold &&
+                  (minDistance == null || d < minDistance - EPSILON)
+                ) {
+                  minDistance = d;
+                  minGuide = g;
+                }
+              }
             }
           }
-          if (minGuide) {
-            this.currentCandidates = [minGuide];
+          if (this.findClosestSnappingGuide) {
+            if ((this.handle as Handles.Line)?.axis === "y") {
+              if (minYGuide) {
+                this.currentCandidates = [minYGuide];
+              }
+            }
+            if ((this.handle as Handles.Line)?.axis === "x") {
+              if (minXGuide) {
+                this.currentCandidates = [minXGuide];
+              }
+            }
           } else {
-            this.currentCandidates = null;
+            if (minGuide) {
+              this.currentCandidates = [minGuide];
+            } else {
+              this.currentCandidates = null;
+            }
           }
         }
         break;

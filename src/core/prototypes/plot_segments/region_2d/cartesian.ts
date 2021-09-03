@@ -240,8 +240,15 @@ export class CartesianPlotSegment extends PlotSegmentClass<
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
+    //aaa
     return [
-      <SnappingGuides.Axis>{ type: "x", value: x1, attribute: "x1" },
+      // <SnappingGuides.Point>{ type: "xy", value: x1, attribute: "x1", visible: true },
+      <SnappingGuides.Axis>{
+        type: "x",
+        value: x1,
+        attribute: "x1",
+        visible: true,
+      },
       <SnappingGuides.Axis>{ type: "x", value: x2, attribute: "x2" },
       <SnappingGuides.Axis>{ type: "y", value: y1, attribute: "y1" },
       <SnappingGuides.Axis>{ type: "y", value: y2, attribute: "y2" },
@@ -623,6 +630,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         value: y1,
         span: [x1, x2],
         actions: [{ type: "attribute", attribute: "y1" }],
+        options: {
+          snapToClosestPoint: true,
+        },
       },
       <Handles.Line>{
         type: "line",
@@ -630,6 +640,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         value: y2,
         span: [x1, x2],
         actions: [{ type: "attribute", attribute: "y2" }],
+        options: {
+          snapToClosestPoint: true,
+        },
       },
       <Handles.Line>{
         type: "line",
@@ -637,6 +650,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         value: x1,
         span: [y1, y2],
         actions: [{ type: "attribute", attribute: "x1" }],
+        options: {
+          snapToClosestPoint: true,
+        },
       },
       <Handles.Line>{
         type: "line",
@@ -644,6 +660,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         value: x2,
         span: [y1, y2],
         actions: [{ type: "attribute", attribute: "x2" }],
+        options: {
+          snapToClosestPoint: true,
+        },
       },
       <Handles.Point>{
         type: "point",
@@ -653,6 +672,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
+        options: {
+          snapToClosestPoint: true,
+        },
       },
       <Handles.Point>{
         type: "point",
@@ -662,6 +684,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
+        options: {
+          snapToClosestPoint: true,
+        },
       },
       <Handles.Point>{
         type: "point",
@@ -671,6 +696,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
+        options: {
+          snapToClosestPoint: true,
+        },
       },
       <Handles.Point>{
         type: "point",
@@ -680,6 +708,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
+        options: {
+          snapToClosestPoint: true,
+        },
       },
     ];
 
