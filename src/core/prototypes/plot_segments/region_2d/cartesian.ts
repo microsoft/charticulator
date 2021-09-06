@@ -454,9 +454,10 @@ export class CartesianPlotSegment extends PlotSegmentClass<
               );
 
               if (props.xData.categories.length === 0) {
-                props.xData.allCategories
-                  .reverse()
-                  .slice(start - 1, start + props.xData.windowSize);
+                props.xData.allCategories.slice(
+                  start - 1,
+                  start + props.xData.windowSize
+                );
               }
             } else if (props.xData.type === AxisDataBindingType.Numerical) {
               const scale = scaleLinear()
@@ -510,15 +511,16 @@ export class CartesianPlotSegment extends PlotSegmentClass<
                   100) *
                   position
               );
-              props.yData.categories = props.yData.allCategories
-                .reverse()
-                .slice(start, start + props.yData.windowSize)
-                .reverse();
+              props.yData.categories = props.yData.allCategories.slice(
+                start,
+                start + props.yData.windowSize
+              );
 
               if (props.yData.categories.length === 0) {
-                props.yData.allCategories
-                  .reverse()
-                  .slice(start - 1, start + props.yData.windowSize);
+                props.yData.allCategories.slice(
+                  start - 1,
+                  start + props.yData.windowSize
+                );
               }
             } else if (props.yData.type === AxisDataBindingType.Numerical) {
               const scale = scaleLinear()

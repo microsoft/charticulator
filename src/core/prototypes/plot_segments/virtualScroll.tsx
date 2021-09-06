@@ -134,7 +134,14 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
 
   const onClick = React.useCallback(
     (sign: number) => {
-      const newPosition = position + sign * 5;
+      let newPosition = position + sign * 5;
+
+      if (newPosition > 100) {
+        newPosition = 100;
+      }
+      if (newPosition < 0) {
+        newPosition = 0;
+      }
       setPosition(newPosition);
       onScroll(newPosition);
     },
