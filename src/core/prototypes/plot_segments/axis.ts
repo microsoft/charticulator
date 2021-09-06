@@ -385,7 +385,6 @@ export class AxisRenderer {
     if (style.gridlineStyle === "none") {
       return;
     }
-    console.log(style);
     const g = makeGroup([]);
     const cos = Math.cos(Geometry.degreesToRadians(angle));
     const sin = Math.sin(Geometry.degreesToRadians(angle));
