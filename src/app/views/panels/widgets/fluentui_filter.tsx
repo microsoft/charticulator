@@ -12,7 +12,7 @@ import {
   FluentButton,
 } from "./controls/fluentui_customized_components";
 import { FluentUIFilterEditor } from "./fluentui_filter_editor";
-import { CharticulatorPropertyAccessors } from "./manager";
+import { CharticulatorPropertyAccessors } from "./types";
 
 export const FilterPanel: React.FC<{
   text: string;

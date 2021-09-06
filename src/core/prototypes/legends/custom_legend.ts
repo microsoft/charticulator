@@ -15,7 +15,7 @@ export type LegendOrientation = "horizontal" | "vertical";
 
 import { CategoricalLegendClass } from "./categorical_legend";
 import { strings } from "../../../strings";
-import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/types";
 
 export interface CustomLegendProperties extends LegendProperties {
   legendType: LegendType;

@@ -71,7 +71,7 @@ import {
   TooltipHost,
 } from "@fluentui/react";
 import { FluentMappingEditor } from "./fluent_mapping_editor";
-import { CharticulatorPropertyAccessors } from "./manager";
+import { CharticulatorPropertyAccessors } from "./types";
 import { FluentInputColor } from "./controls/fluentui_input_color";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 

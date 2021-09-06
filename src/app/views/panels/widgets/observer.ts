@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Prototypes, Specification } from "../../../../core";
-import { CharticulatorPropertyAccessors } from "./manager";
+import { CharticulatorPropertyAccessors } from "./types";
 
 interface EventListener {
   update(
