@@ -119,7 +119,10 @@ export class AxisRenderer {
     this.setStyle(data.style);
     this.oppositeSide = data.side == "opposite";
     this.scrollRequired = data.allowScrolling;
-    this.shiftAxis = data.barOffset == null || data.barOffset === 0;
+    this.shiftAxis =
+      (data.barOffset == null || data.barOffset === 0) &&
+      data.allCategories &&
+      data.windowSize < data.allCategories.length;
     switch (data.type) {
       case "numerical":
         {
