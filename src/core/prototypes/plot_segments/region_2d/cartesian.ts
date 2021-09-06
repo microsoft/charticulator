@@ -241,10 +241,30 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     return [
-      <SnappingGuides.Axis>{ type: "x", value: x1, attribute: "x1" },
-      <SnappingGuides.Axis>{ type: "x", value: x2, attribute: "x2" },
-      <SnappingGuides.Axis>{ type: "y", value: y1, attribute: "y1" },
-      <SnappingGuides.Axis>{ type: "y", value: y2, attribute: "y2" },
+      <SnappingGuides.Axis>{
+        type: "x",
+        value: x1,
+        attribute: "x1",
+        priority: 1,
+      },
+      <SnappingGuides.Axis>{
+        type: "x",
+        value: x2,
+        attribute: "x2",
+        priority: 1,
+      },
+      <SnappingGuides.Axis>{
+        type: "y",
+        value: y1,
+        attribute: "y1",
+        priority: 1,
+      },
+      <SnappingGuides.Axis>{
+        type: "y",
+        value: y2,
+        attribute: "y2",
+        priority: 1,
+      },
     ];
   }
 
