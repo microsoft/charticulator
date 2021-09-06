@@ -113,10 +113,6 @@ export abstract class PlotSegmentClass<
       return [];
     }
 
-    if (data.type === AxisDataBindingType.Categorical) {
-      return [];
-    }
-
     return PlotSegmentClass.getGridLineAttributePanelWidgets(
       manager,
       axisProperty

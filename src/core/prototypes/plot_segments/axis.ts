@@ -83,7 +83,6 @@ export class AxisRenderer {
   public rangeMax: number = 1;
   public valueToPosition: (value: any) => number;
   public oppositeSide: boolean = false;
-  private axisDataBindingType: AxisDataBindingType = null;
 
   public static SCROLL_BAR_SIZE = 10;
 
@@ -115,7 +114,6 @@ export class AxisRenderer {
     if (!data) {
       return this;
     }
-    this.axisDataBindingType = data.type;
     this.setStyle(data.style);
     this.oppositeSide = data.side == "opposite";
     this.scrollRequired = data.allowScrolling;
@@ -387,11 +385,7 @@ export class AxisRenderer {
     if (style.gridlineStyle === "none") {
       return;
     }
-
-    if (this.axisDataBindingType === AxisDataBindingType.Categorical) {
-      return;
-    }
-
+    console.log(style);
     const g = makeGroup([]);
     const cos = Math.cos(Geometry.degreesToRadians(angle));
     const sin = Math.sin(Geometry.degreesToRadians(angle));
