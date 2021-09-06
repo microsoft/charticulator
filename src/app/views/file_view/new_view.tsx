@@ -1,8 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types  */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
 import { strings } from "../../../strings";
@@ -10,12 +7,14 @@ import { Actions } from "../../actions";
 import { AppStore } from "../../stores";
 import { ImportDataView } from "./import_data_view";
 
+interface FileViewNewProps {
+  store: AppStore;
+  onClose: () => void;
+}
+
 export class FileViewNew extends React.Component<
-  {
-    store: AppStore;
-    onClose: () => void;
-  },
-  {}
+  FileViewNewProps,
+  Record<string, unknown>
 > {
   public render() {
     return (

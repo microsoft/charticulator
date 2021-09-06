@@ -1,8 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types  */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
 
@@ -27,11 +24,9 @@ export interface ScaleEditorProps {
   plotSegment: ObjectClass;
 }
 
-export interface ScaleEditorState {}
-
 export class ScaleEditor extends React.Component<
   ScaleEditorProps,
-  ScaleEditorState
+  Record<string, unknown>
 > {
   public token: EventSubscription;
 
@@ -74,9 +69,7 @@ export class ScaleEditor extends React.Component<
     }
     const currentSelection = this.props.store.currentMappingAttributeFocus;
     return (
-      <ScaleEditorWrapper
-        className="scale-editor-view"
-      >
+      <ScaleEditorWrapper className="scale-editor-view">
         <div className="attribute-editor">
           <section className="attribute-editor-element">
             <div className="header">

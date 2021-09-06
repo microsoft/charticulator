@@ -1,8 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types  */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as Hammer from "hammerjs";
 import * as React from "react";
@@ -73,8 +70,6 @@ export class ColorSpacePicker extends React.Component<
       x3,
     };
   }
-
-  public componentWillUpdate() {}
 
   public reset() {
     const props = this.props;
@@ -360,7 +355,10 @@ export interface InputFieldProps {
   onEnter?: (value: string) => boolean;
 }
 
-export class InputField extends React.Component<InputFieldProps, {}> {
+export class InputField extends React.Component<
+  InputFieldProps,
+  Record<string, unknown>
+> {
   public inputElement: HTMLInputElement;
 
   public componentWillUpdate(newProps: InputFieldProps) {
@@ -448,7 +446,10 @@ interface XYCanvasProps {
   onMove: (nx: number, ny: number, isEnd: boolean) => void;
 }
 
-class XYCanvas extends React.PureComponent<XYCanvasProps, {}> {
+class XYCanvas extends React.PureComponent<
+  XYCanvasProps,
+  Record<string, unknown>
+> {
   public refs: {
     canvasElement: HTMLCanvasElement;
   };
@@ -572,7 +573,10 @@ interface ZCanvasProps {
   onMove: (nz: number, isEnd: boolean) => void;
 }
 
-class ZCanvas extends React.PureComponent<ZCanvasProps, {}> {
+class ZCanvas extends React.PureComponent<
+  ZCanvasProps,
+  Record<string, unknown>
+> {
   public refs: {
     canvasElement: HTMLCanvasElement;
   };

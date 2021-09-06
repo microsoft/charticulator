@@ -6,7 +6,7 @@ import {
   defaultFont,
   defaultFontSizeLegend,
 } from "../../../app/stores/defaults";
-import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/types";
 import { Prototypes } from "../../../container";
 import { strings } from "../../../strings";
 import { Color, indexOf, rgbToHex } from "../../common";

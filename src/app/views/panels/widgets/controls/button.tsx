@@ -1,8 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types  */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
 import * as R from "../../../../resources";
@@ -18,7 +15,10 @@ export interface ButtonProps {
   onClick?: () => void;
 }
 
-export class Button extends React.Component<ButtonProps, {}> {
+export class Button extends React.Component<
+  ButtonProps,
+  Record<string, unknown>
+> {
   public render() {
     return (
       <span
@@ -76,7 +76,10 @@ export interface CheckBoxProps {
   onChange?: (newValue: boolean) => void;
 }
 
-export class CheckBox extends React.Component<CheckBoxProps, {}> {
+export class CheckBox extends React.Component<
+  CheckBoxProps,
+  Record<string, unknown>
+> {
   public render() {
     return (
       <span

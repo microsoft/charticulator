@@ -1,8 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types  */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
 import { Color, getColorConverter } from "../../core";
@@ -101,7 +98,7 @@ export class HSVColorPicker extends React.Component<
     defaultValue: Color;
     onChange?: (newValue: Color) => void;
   },
-  {}
+  Record<string, unknown>
 > {
   public static colorSpaces: ColorSpaceDescription[] = [
     {
@@ -154,7 +151,7 @@ export class HCLColorPicker extends React.Component<
     defaultValue: Color;
     onChange?: (newValue: Color) => void;
   },
-  {}
+  Record<string, unknown>
 > {
   public static colorSpaces: ColorSpaceDescription[] = [
     {
@@ -224,7 +221,10 @@ export interface ColorGridProps {
   colors: Color[][];
   onClick?: (color: Color) => void;
 }
-export class ColorGrid extends React.PureComponent<ColorGridProps, {}> {
+export class ColorGrid extends React.PureComponent<
+  ColorGridProps,
+  Record<string, unknown>
+> {
   public render() {
     return (
       <div className="color-grid">
@@ -260,7 +260,10 @@ export interface PaletteListProps {
   onClick?: (palette: ColorPalette) => void;
 }
 
-export class PaletteList extends React.PureComponent<PaletteListProps, {}> {
+export class PaletteList extends React.PureComponent<
+  PaletteListProps,
+  Record<string, unknown>
+> {
   public render() {
     const palettes = this.props.palettes;
 
