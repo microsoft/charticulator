@@ -2,11 +2,6 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-import * as R from "../../../../resources";
-import * as globals from "../../../../globals";
-import { SVGImageIcon } from "../../../../components";
-import { PopupView } from "../../../../controllers";
-import { classNames } from "../../../../utils";
 import {
   IComboBoxOption,
   ComboBox as FluentCombobox,

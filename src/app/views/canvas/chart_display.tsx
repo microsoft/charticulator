@@ -1,8 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types  */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
 import * as ReactDOMServer from "react-dom/server";
@@ -19,7 +16,7 @@ export interface ChartDisplayViewProps {
 
 export class ChartDisplayView extends React.Component<
   ChartDisplayViewProps,
-  {}
+  Record<string, unknown>
 > {
   public render() {
     const chartState = this.props.manager.chartState;
