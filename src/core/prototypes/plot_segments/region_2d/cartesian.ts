@@ -416,8 +416,16 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     const attrs = this.state.attributes;
     const props = this.object.properties;
     const g = [];
-    // TODO optimize axis render;
-    if (props.xData && props.xData.visible && props.xData.allowScrolling) {
+
+    if (
+      props.xData &&
+      props.xData.visible &&
+      props.xData.allowScrolling &&
+      ((props.xData.allCategories &&
+        props.xData.allCategories.length > props.xData.windowSize) ||
+        Math.abs(props.xData.dataDomainMax - props.xData.dataDomainMin) >
+          props.xData.windowSize)
+    ) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.xData,
         0,
@@ -461,7 +469,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
               }
             } else if (props.xData.type === AxisDataBindingType.Numerical) {
               const scale = scaleLinear()
-                .domain([0, 100])
+                .domain([100, 0])
                 .range([props.xData.dataDomainMin, props.xData.dataDomainMax]);
               props.xData.scrollPosition = position;
               const start = scale(position);
@@ -479,8 +487,10 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       props.yData &&
       props.yData.visible &&
       props.yData.allowScrolling &&
-      props.yData.allCategories &&
-      props.yData.allCategories.length > props.yData.windowSize
+      ((props.yData.allCategories &&
+        props.yData.allCategories.length > props.yData.windowSize) ||
+        Math.abs(props.yData.dataDomainMax - props.yData.dataDomainMin) >
+          props.yData.windowSize)
     ) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.yData,
@@ -524,7 +534,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
               }
             } else if (props.yData.type === AxisDataBindingType.Numerical) {
               const scale = scaleLinear()
-                .domain([0, 100])
+                .domain([100, 0])
                 .range([props.yData.dataDomainMin, props.yData.dataDomainMax]);
               props.yData.scrollPosition = position;
               const start = scale(position);

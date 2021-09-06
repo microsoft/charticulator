@@ -121,8 +121,8 @@ export class AxisRenderer {
     this.scrollRequired = data.allowScrolling;
     this.shiftAxis =
       (data.barOffset == null || data.barOffset === 0) &&
-      data.allCategories &&
-      data.windowSize < data.allCategories.length;
+      ((data.allCategories && data.windowSize < data.allCategories.length) ||
+        Math.abs(data.dataDomainMax - data.dataDomainMin) > data.windowSize);
     switch (data.type) {
       case "numerical":
         {
@@ -1424,25 +1424,25 @@ export function buildAxisWidgets(
                     label: strings.objects.axes.tickFormat,
                   }
                 ),
-                // manager.label(strings.objects.dataAxis.scrolling),
-                // manager.inputBoolean(
-                //   {
-                //     property: axisProperty,
-                //     field: "allowScrolling",
-                //   },
-                //   {
-                //     type: "checkbox",
-                //     label: strings.objects.dataAxis.allowScrolling,
-                //     observerConfig: {
-                //       isObserver: true,
-                //       properties: {
-                //         property: axisProperty,
-                //         field: "windowSize",
-                //       },
-                //       value: 10,
-                //     },
-                //   }
-                // ),
+                manager.label(strings.objects.dataAxis.scrolling),
+                manager.inputBoolean(
+                  {
+                    property: axisProperty,
+                    field: "allowScrolling",
+                  },
+                  {
+                    type: "checkbox",
+                    label: strings.objects.dataAxis.allowScrolling,
+                    observerConfig: {
+                      isObserver: true,
+                      properties: {
+                        property: axisProperty,
+                        field: "windowSize",
+                      },
+                      value: 10,
+                    },
+                  }
+                ),
                 data.allowScrolling
                   ? manager.inputNumber(
                       {
