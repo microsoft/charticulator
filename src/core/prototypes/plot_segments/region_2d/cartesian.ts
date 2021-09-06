@@ -449,12 +449,12 @@ export class CartesianPlotSegment extends PlotSegmentClass<
               if (!props.xData.allCategories) {
                 return;
               }
-              props.xData.scrollPosition = position;
+              props.xData.scrollPosition = 100 - position;
 
               const start = Math.floor(
                 ((props.xData.allCategories.length - props.xData.windowSize) /
                   100) *
-                  position
+                  props.xData.scrollPosition
               );
               props.xData.categories = props.xData.allCategories.slice(
                 start,
