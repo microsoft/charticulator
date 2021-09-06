@@ -17,21 +17,20 @@ import { ColorPicker } from "../../../components/fluentui_color_picker";
 import { ContextedComponent } from "../../../context_component";
 import { isKindAcceptable, type2DerivedColumns } from "../../dataset/common";
 import { ScaleEditor } from "../scale_editor";
-import { CharticulatorPropertyAccessors, DropZoneView } from "./manager";
+import { DropZoneView } from "./fluentui_manager";
+import { CharticulatorPropertyAccessors } from "./types";
 import { AppStore } from "../../../stores";
 import { ScaleValueSelector } from "../scale_value_selector";
 import { FunctionCall } from "../../../../core/expression";
 import { FluentValueEditor } from "./fluentui_value_editor";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 import {
-  DefaultButton,
-  TextField,
   ActionButton,
-  Label,
-  IContextualMenuItem,
   Callout,
-  Dropdown,
-  ContextualMenu,
+  DefaultButton,
+  IContextualMenuItem,
+  Label,
+  TextField,
 } from "@fluentui/react";
 import {
   defaultLabelStyle,

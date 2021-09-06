@@ -1,8 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types  */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
 import { getSVGIcon } from "../resources";
@@ -11,7 +8,10 @@ import { ButtonFlat } from "./buttons";
 import * as Hammer from "hammerjs";
 import { classNames } from "../utils";
 
-export class MinimizablePanelView extends React.Component<{}, {}> {
+export class MinimizablePanelView extends React.Component<
+  Record<string, unknown>,
+  Record<string, unknown>
+> {
   public render() {
     return <div className="minimizable-panel-view">{this.props.children}</div>;
   }

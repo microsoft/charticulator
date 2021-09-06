@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types */
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -630,7 +629,10 @@ export interface ObjectButtonProps {
   compact?: boolean;
 }
 
-export class ObjectButton extends ContextedComponent<ObjectButtonProps, {}> {
+export class ObjectButton extends ContextedComponent<
+  ObjectButtonProps,
+  Record<string, unknown>
+> {
   public token: EventSubscription;
 
   public getIsActive() {
@@ -838,7 +840,7 @@ export class ScaffoldButton extends ContextedComponent<
     type: string;
     icon: string;
   },
-  {}
+  Record<string, unknown>
 > {
   public render() {
     return (
@@ -861,7 +863,7 @@ export class LinkButton extends ContextedComponent<
   {
     label: boolean;
   },
-  {}
+  Record<string, unknown>
 > {
   public container: HTMLSpanElement;
 
@@ -889,7 +891,10 @@ export class LinkButton extends ContextedComponent<
   }
 }
 
-export class LegendButton extends ContextedComponent<{}, {}> {
+export class LegendButton extends ContextedComponent<
+  Record<string, unknown>,
+  Record<string, unknown>
+> {
   public container: HTMLSpanElement;
 
   public render() {
@@ -921,7 +926,7 @@ export class CheckboxButton extends React.Component<
     text?: string;
     onChange?: (v: boolean) => void;
   },
-  {}
+  Record<string, unknown>
 > {
   public render() {
     return (
