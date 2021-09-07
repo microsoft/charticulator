@@ -248,10 +248,12 @@ export class AxisRenderer {
         ((ticks[i] - domainMin) / (domainMax - domainMin)) *
           (rangeMax - rangeMin) +
         rangeMin;
-      r.push({
-        position: tx,
-        label: resolvedFormat(ticks[i]),
-      });
+      if (!isNaN(tx)) {
+        r.push({
+          position: tx,
+          label: resolvedFormat(ticks[i]),
+        });
+      }
     }
     this.valueToPosition = (value) =>
       ((value - domainMin) / (domainMax - domainMin)) * (rangeMax - rangeMin) +
@@ -290,10 +292,12 @@ export class AxisRenderer {
           (Math.log(domainMax) - Math.log(domainMin))) *
           (rangeMax - rangeMin) +
         rangeMin;
-      r.push({
-        position: tx,
-        label: resolvedFormat(ticks[i]),
-      });
+      if (!isNaN(tx)) {
+        r.push({
+          position: tx,
+          label: resolvedFormat(ticks[i]),
+        });
+      }
     }
     this.valueToPosition = (value) =>
       ((value - domainMin) / (domainMax - domainMin)) * (rangeMax - rangeMin) +
@@ -327,10 +331,12 @@ export class AxisRenderer {
         ((ticks[i] - domainMin) / (domainMax - domainMin)) *
           (rangeMax - rangeMin) +
         rangeMin;
-      r.push({
-        position: tx,
-        label: tickFormat(ticks[i]),
-      });
+      if (!isNaN(tx)) {
+        r.push({
+          position: tx,
+          label: tickFormat(ticks[i]),
+        });
+      }
     }
     this.valueToPosition = (value) =>
       ((value - domainMin) / (domainMax - domainMin)) * (rangeMax - rangeMin) +
@@ -350,11 +356,14 @@ export class AxisRenderer {
   ) {
     const r: TickDescription[] = [];
     for (let i = 0; i < domain.length; i++) {
-      r.push({
-        position:
-          ((range[i][0] + range[i][1]) / 2) * (rangeMax - rangeMin) + rangeMin,
-        label: tickFormat ? tickFormat(domain[i]) : domain[i],
-      });
+      const position =
+        ((range[i][0] + range[i][1]) / 2) * (rangeMax - rangeMin) + rangeMin;
+      if (!isNaN(position)) {
+        r.push({
+          position,
+          label: tickFormat ? tickFormat(domain[i]) : domain[i],
+        });
+      }
     }
     this.valueToPosition = (value) => {
       const i = domain.indexOf(value);
