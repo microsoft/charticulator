@@ -15,7 +15,7 @@ import {
 } from "../..";
 import { AxisRenderer } from "./axis";
 import { utcFormat } from "d3-time-format";
-import { AxisDataBindingType, NumericalMode } from "../../specification/types";
+import { NumericalMode } from "../../specification/types";
 import { strings } from "../../../strings";
 import { PanelMode } from "../controls";
 import { ReactElement } from "react";
