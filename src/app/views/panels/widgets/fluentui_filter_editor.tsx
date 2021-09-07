@@ -11,7 +11,7 @@ import {
   labelRender,
 } from "./controls/fluentui_customized_components";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
-import { CharticulatorPropertyAccessors } from "./manager";
+import { CharticulatorPropertyAccessors } from "./types";
 
 export interface FilterEditorProps {
   manager: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
@@ -101,8 +101,9 @@ export class FluentUIFilterEditor extends React.Component<
           const keysSorted: string[] = [];
           if (value && value.categories) {
             for (const k in value.categories.values) {
-              // eslint-disable-next-line
-              if (value.categories.values.hasOwnProperty(k)) {
+              if (
+                Object.prototype.hasOwnProperty.call(value.categories.values, k)
+              ) {
                 keysSorted.push(k);
               }
             }
@@ -152,8 +153,12 @@ export class FluentUIFilterEditor extends React.Component<
                         text={strings.filter.selectAll}
                         onClick={() => {
                           for (const key in value.categories.values) {
-                            // eslint-disable-next-line
-                            if (value.categories.values.hasOwnProperty(key)) {
+                            if (
+                              Object.prototype.hasOwnProperty.call(
+                                value.categories.values,
+                                key
+                              )
+                            ) {
                               value.categories.values[key] = true;
                             }
                           }
@@ -169,8 +174,12 @@ export class FluentUIFilterEditor extends React.Component<
                         text={strings.filter.clear}
                         onClick={() => {
                           for (const key in value.categories.values) {
-                            // eslint-disable-next-line
-                            if (value.categories.values.hasOwnProperty(key)) {
+                            if (
+                              Object.prototype.hasOwnProperty.call(
+                                value.categories.values,
+                                key
+                              )
+                            ) {
                               value.categories.values[key] = false;
                             }
                           }

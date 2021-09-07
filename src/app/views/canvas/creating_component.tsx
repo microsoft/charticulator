@@ -486,8 +486,7 @@ export class CreatingComponentFromCreatingInteraction extends React.Component<
     const mappings: { [name: string]: [number, Specification.Mapping] } = {};
     const attributes: { [name: string]: Specification.AttributeValue } = {};
     for (const attr in desc.mapping) {
-      // eslint-disable-next-line
-      if (inMappings.hasOwnProperty(attr)) {
+      if (Object.prototype.hasOwnProperty.call(inMappings, attr)) {
         const name = desc.mapping[attr];
         mappings[name] = inMappings[attr];
       }
