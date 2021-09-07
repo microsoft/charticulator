@@ -44,9 +44,6 @@ export interface DatasetViewProps {
   store: AppStore;
 }
 
-// eslint-disable-next-line
-export interface DatasetViewState {}
-
 /**
  * Component for displaying dataset on the left side of app
  *
@@ -54,7 +51,7 @@ export interface DatasetViewState {}
  */
 export class DatasetView extends React.Component<
   DatasetViewProps,
-  DatasetViewState
+  Record<string, unknown>
 > {
   public componentDidMount() {
     this.props.store.addListener(AppStore.EVENT_DATASET, () =>

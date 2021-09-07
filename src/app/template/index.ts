@@ -78,8 +78,7 @@ export class ChartTemplateBuilder {
   }
 
   public addTable(table: string) {
-    // eslint-disable-next-line
-    if (!this.tableColumns.hasOwnProperty(table)) {
+    if (!Object.prototype.hasOwnProperty.call(this.tableColumns, table)) {
       this.tableColumns[table] = new Set();
     }
   }
@@ -96,15 +95,13 @@ export class ChartTemplateBuilder {
           const notRawColumn = tableObject.columns.find(
             (col) => col.metadata.rawColumnName === column.name
           );
-          // eslint-disable-next-line
-          if (this.tableColumns.hasOwnProperty(table)) {
+          if (Object.prototype.hasOwnProperty.call(this.tableColumns, table)) {
             this.tableColumns[table].add(notRawColumn.name);
           } else {
             this.tableColumns[table] = new Set([notRawColumn.name]);
           }
         }
-        // eslint-disable-next-line
-        if (this.tableColumns.hasOwnProperty(table)) {
+        if (Object.prototype.hasOwnProperty.call(this.tableColumns, table)) {
           this.tableColumns[table].add(columnName);
         } else {
           this.tableColumns[table] = new Set([columnName]);
@@ -588,8 +585,7 @@ export class ChartTemplateBuilder {
     template.tables = this.dataset.tables
       .map((table) => {
         if (
-          // eslint-disable-next-line
-          this.tableColumns.hasOwnProperty(table.name) &&
+          Object.prototype.hasOwnProperty.call(this.tableColumns, table.name) &&
           (this.usedColumns[table.name] || noUsedColumns)
         ) {
           return {

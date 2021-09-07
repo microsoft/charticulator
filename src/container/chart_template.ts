@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable no-prototype-builtins */
 
 import {
   Dataset,
@@ -71,7 +70,9 @@ export class ChartTemplate {
 
   /** Assign an expression to a data mapping slot */
   public assignColumn(tableName: string, columnName: string, column: string) {
-    if (!this.columnAssignment.hasOwnProperty(tableName)) {
+    if (
+      !Object.prototype.hasOwnProperty.call(this.columnAssignment, tableName)
+    ) {
       this.columnAssignment[tableName] = {};
     }
     this.columnAssignment[tableName][columnName] = column;

@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import { prettyNumber } from "../../../core";
-import { ColorSpacePickerState, InputField } from "../color_space_picker";
+import { InputField } from "../color_space_picker";
 
 function clipToRange(num: number, range: [number, number]) {
   if (range[0] < range[1]) {

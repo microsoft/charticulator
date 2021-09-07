@@ -42,8 +42,7 @@ function reuseMapping<T>(
   }
   // Assign remaining keys from the domain
   domain.forEach((v, d) => {
-    // eslint-disable-next-line
-    if (!result.hasOwnProperty(d)) {
+    if (!Object.prototype.hasOwnProperty.call(result, d)) {
       if (available.length > 0) {
         result[d] = available[0];
         available.splice(0, 1);
@@ -146,8 +145,7 @@ export class CategoricalScaleNumber extends ScaleClass<
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
-      // eslint-disable-next-line
-      if (props.mapping.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(props.mapping, key)) {
         keys.push(key);
       }
     }
@@ -158,7 +156,7 @@ export class CategoricalScaleNumber extends ScaleClass<
           manager.horizontal(
             [2, 3],
             manager.text(key, "right"),
-            manager.inputNumber({property: "mapping", field: key})
+            manager.inputNumber({ property: "mapping", field: key })
           )
         )
       ),
@@ -291,8 +289,7 @@ export class CategoricalScaleColor extends ScaleClass<
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
-      // eslint-disable-next-line
-      if (props.mapping.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(props.mapping, key)) {
         keys.push(key);
       }
     }
@@ -316,15 +313,18 @@ export class CategoricalScaleColor extends ScaleClass<
         keys.map((key) =>
           manager.horizontal(
             [1, 0],
-            manager.inputText({property: "mapping"}, {
-              updateProperty: true,
-              value: key,
-              underline: true,
-              styles: {
-                textAlign: "right"
-              },
-              emitMappingAction: true
-            }),
+            manager.inputText(
+              { property: "mapping" },
+              {
+                updateProperty: true,
+                value: key,
+                underline: true,
+                styles: {
+                  textAlign: "right",
+                },
+                emitMappingAction: true,
+              }
+            ),
             manager.inputColor(
               {
                 property: "mapping",
@@ -427,8 +427,7 @@ export class CategoricalScaleEnum extends ScaleClass<
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
-      // eslint-disable-next-line
-      if (props.mapping.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(props.mapping, key)) {
         keys.push(key);
       }
     }
@@ -438,16 +437,19 @@ export class CategoricalScaleEnum extends ScaleClass<
         keys.map((key) =>
           manager.horizontal(
             [2, 3],
-            manager.inputText({property: "mapping"}, {
-              updateProperty: true,
-              value: key,
-              underline: true,
-              styles: {
-                textAlign: "right"
+            manager.inputText(
+              { property: "mapping" },
+              {
+                updateProperty: true,
+                value: key,
+                underline: true,
+                styles: {
+                  textAlign: "right",
+                },
               }
-            }),
+            ),
             manager.inputComboBox(
-              {property: "mapping", field: key},
+              { property: "mapping", field: key },
               {
                 defaultRange: props.defaultRange,
                 valuesOnly: false,
@@ -511,8 +513,7 @@ export class CategoricalScaleBoolean extends ScaleClass<
     const mappingALL: { [name: string]: boolean } = {};
     const mappingNONE: { [name: string]: boolean } = {};
     for (const key in props.mapping) {
-      // eslint-disable-next-line
-      if (props.mapping.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(props.mapping, key)) {
         items.push(
           manager.inputBoolean(
             { property: "mapping", field: key },
@@ -596,8 +597,7 @@ export class CategoricalScaleImage extends ScaleClass<
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
-      // eslint-disable-next-line
-      if (props.mapping.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(props.mapping, key)) {
         keys.push(key);
       }
     }
@@ -607,14 +607,17 @@ export class CategoricalScaleImage extends ScaleClass<
         keys.map((key) =>
           manager.horizontal(
             [2, 5],
-            manager.inputText({property: "mapping"}, {
-              updateProperty: true,
-              value: key,
-              underline: true,
-              styles: {
-                textAlign: "right"
+            manager.inputText(
+              { property: "mapping" },
+              {
+                updateProperty: true,
+                value: key,
+                underline: true,
+                styles: {
+                  textAlign: "right",
+                },
               }
-            }),
+            ),
             manager.inputImageProperty({ property: "mapping", field: key }),
             manager.clearButton({ property: "mapping", field: key }, "", true)
           )

@@ -4,25 +4,13 @@
 import * as React from "react";
 import * as R from "../resources";
 
-import {
-  EventSubscription,
-  Prototypes,
-  MessageType,
-  messageTypes,
-} from "../../core";
+import { EventSubscription, MessageType, messageTypes } from "../../core";
 
 import { AppStore } from "../stores";
 import { ContextedComponent } from "../context_component";
 import { Element } from "../../core/specification";
 import { SVGImageIcon } from ".";
 import { RemoveMessage } from "../actions/actions";
-
-// eslint-disable-next-line
-function getObjectIcon(classID: string) {
-  return R.getSVGIcon(
-    Prototypes.ObjectClasses.GetMetadata(classID).iconPath || "object"
-  );
-}
 
 export class MessagePanel extends ContextedComponent<
   {

@@ -40,8 +40,7 @@ export class CategoricalLegendClass extends LegendClass {
       const items: CategoricalLegendItem[] = [];
       for (const key in mapping) {
         if (
-          // eslint-disable-next-line
-          mapping.hasOwnProperty(key) &&
+          Object.prototype.hasOwnProperty.call(mapping, key) &&
           !key.startsWith(ReservedMappingKeyNamePrefix)
         ) {
           switch (scaleObject.classID) {

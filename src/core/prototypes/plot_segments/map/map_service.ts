@@ -75,8 +75,7 @@ export abstract class StaticMapService {
 function buildQueryParameters(options: { [name: string]: string }) {
   const r: string[] = [];
   for (const p in options) {
-    // eslint-disable-next-line
-    if (options.hasOwnProperty(p)) {
+    if (Object.prototype.hasOwnProperty.call(options, p)) {
       r.push(encodeURIComponent(p) + "=" + encodeURIComponent(options[p]));
     }
   }
