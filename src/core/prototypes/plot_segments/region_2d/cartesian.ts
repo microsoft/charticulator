@@ -436,8 +436,16 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     const attrs = this.state.attributes;
     const props = this.object.properties;
     const g = [];
-    // TODO optimize axis render;
-    if (props.xData && props.xData.visible && props.xData.allowScrolling) {
+
+    if (
+      props.xData &&
+      props.xData.visible &&
+      props.xData.allowScrolling &&
+      ((props.xData.allCategories &&
+        props.xData.allCategories.length > props.xData.windowSize) ||
+        Math.abs(props.xData.dataDomainMax - props.xData.dataDomainMin) >
+          props.xData.windowSize)
+    ) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.xData,
         0,
@@ -461,12 +469,12 @@ export class CartesianPlotSegment extends PlotSegmentClass<
               if (!props.xData.allCategories) {
                 return;
               }
-              props.xData.scrollPosition = position;
+              props.xData.scrollPosition = 100 - position;
 
               const start = Math.floor(
                 ((props.xData.allCategories.length - props.xData.windowSize) /
                   100) *
-                  position
+                  props.xData.scrollPosition
               );
               props.xData.categories = props.xData.allCategories.slice(
                 start,
@@ -474,13 +482,14 @@ export class CartesianPlotSegment extends PlotSegmentClass<
               );
 
               if (props.xData.categories.length === 0) {
-                props.xData.allCategories
-                  .reverse()
-                  .slice(start - 1, start + props.xData.windowSize);
+                props.xData.allCategories.slice(
+                  start - 1,
+                  start + props.xData.windowSize
+                );
               }
             } else if (props.xData.type === AxisDataBindingType.Numerical) {
               const scale = scaleLinear()
-                .domain([0, 100])
+                .domain([100, 0])
                 .range([props.xData.dataDomainMin, props.xData.dataDomainMax]);
               props.xData.scrollPosition = position;
               const start = scale(position);
@@ -498,8 +507,10 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       props.yData &&
       props.yData.visible &&
       props.yData.allowScrolling &&
-      props.yData.allCategories &&
-      props.yData.allCategories.length > props.yData.windowSize
+      ((props.yData.allCategories &&
+        props.yData.allCategories.length > props.yData.windowSize) ||
+        Math.abs(props.yData.dataDomainMax - props.yData.dataDomainMin) >
+          props.yData.windowSize)
     ) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.yData,
@@ -530,19 +541,20 @@ export class CartesianPlotSegment extends PlotSegmentClass<
                   100) *
                   position
               );
-              props.yData.categories = props.yData.allCategories
-                .reverse()
-                .slice(start, start + props.yData.windowSize)
-                .reverse();
+              props.yData.categories = props.yData.allCategories.slice(
+                start,
+                start + props.yData.windowSize
+              );
 
               if (props.yData.categories.length === 0) {
-                props.yData.allCategories
-                  .reverse()
-                  .slice(start - 1, start + props.yData.windowSize);
+                props.yData.allCategories.slice(
+                  start - 1,
+                  start + props.yData.windowSize
+                );
               }
             } else if (props.yData.type === AxisDataBindingType.Numerical) {
               const scale = scaleLinear()
-                .domain([0, 100])
+                .domain([100, 0])
                 .range([props.yData.dataDomainMin, props.yData.dataDomainMax]);
               props.yData.scrollPosition = position;
               const start = scale(position);

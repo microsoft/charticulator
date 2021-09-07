@@ -27,6 +27,7 @@ import { DataAxisExpression } from "../core/prototypes/marks/data_axis.attrs";
 import { MappingType, ScaleMapping, ValueMapping } from "../core/specification";
 import { Region2DSublayoutOptions } from "../core/prototypes/plot_segments/region_2d/base";
 import { GuideAttributeNames } from "../core/prototypes/guides";
+import { scaleLinear } from "d3-scale";
 
 export interface TemplateInstance {
   chart: Specification.Chart;
@@ -477,12 +478,24 @@ export class ChartTemplate {
             const scale = new Scale.LinearScale();
             scale.inferParameters(vector);
             if (inference.autoDomainMin) {
-              axisDataBinding.domainMin = scale.domainMin;
               axisDataBinding.dataDomainMin = scale.domainMin;
             }
             if (inference.autoDomainMax) {
-              axisDataBinding.domainMax = scale.domainMax;
               axisDataBinding.dataDomainMax = scale.domainMax;
+            }
+            if (axisDataBinding.allowScrolling) {
+              const scrollScale = scaleLinear()
+                .domain([0, 100])
+                .range([
+                  axisDataBinding.dataDomainMin,
+                  axisDataBinding.dataDomainMax,
+                ]);
+              const start = scrollScale(axisDataBinding.scrollPosition);
+              axisDataBinding.domainMin = start;
+              axisDataBinding.domainMax = start + axisDataBinding.windowSize;
+            } else {
+              axisDataBinding.domainMin = scale.domainMin;
+              axisDataBinding.domainMax = scale.domainMax;
             }
             if (axis.defineCategories) {
               axisDataBinding.categories = defineCategories(vector);
