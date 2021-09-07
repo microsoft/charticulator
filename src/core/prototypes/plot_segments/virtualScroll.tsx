@@ -48,7 +48,8 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
         handlePosition = 0;
       }
 
-      handlePosition = ((trackSize - handleSize) / 100) * handlePosition; // map % to axis position
+      handlePosition =
+        ((trackSize - handleSize) / 100) * (100 - handlePosition); // map % to axis position
 
       if (vertical) {
         handlePositionY = handlePosition;
@@ -113,10 +114,10 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
       let newPosition = position;
       if (vertical) {
         const trackSize = Math.abs(trackElement.bottom - trackElement.top);
-        newPosition = 100 - (deltaY / trackSize) * 100;
+        newPosition = (deltaY / trackSize) * 100;
       } else {
         const trackSize = Math.abs(trackElement.right - trackElement.left);
-        newPosition = (deltaX / trackSize) * 100;
+        newPosition = 100 - (deltaX / trackSize) * 100;
       }
 
       if (newPosition > 100) {
@@ -134,7 +135,14 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
 
   const onClick = React.useCallback(
     (sign: number) => {
-      const newPosition = position + sign * 5;
+      let newPosition = position + sign * 5;
+
+      if (newPosition > 100) {
+        newPosition = 100;
+      }
+      if (newPosition < 0) {
+        newPosition = 0;
+      }
       setPosition(newPosition);
       onScroll(newPosition);
     },
@@ -195,7 +203,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
                   fill: "#b3b0ad",
                 }}
                 onClick={() => {
-                  onClick(-1);
+                  onClick(1);
                 }}
               />
               <path
@@ -219,7 +227,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
                   fill: "#b3b0ad",
                 }}
                 onClick={() => {
-                  onClick(1);
+                  onClick(-1);
                 }}
               />
               <path
@@ -256,7 +264,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
                   fill: "#b3b0ad",
                 }}
                 onClick={() => {
-                  onClick(-1);
+                  onClick(1);
                 }}
               />
               <path
@@ -278,7 +286,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
                   fill: "#b3b0ad",
                 }}
                 onClick={() => {
-                  onClick(1);
+                  onClick(-1);
                 }}
               />
               <path
