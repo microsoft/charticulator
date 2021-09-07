@@ -321,8 +321,7 @@ export class ChartTemplate {
 
       // Replace data-mapping expressions with assigned columns
       const mappings = item.object.mappings;
-      // eslint-disable-next-line
-      for (const [attr, mapping] of forEachMapping(mappings)) {
+      for (const [, mapping] of forEachMapping(mappings)) {
         if (mapping.type == MappingType.scale) {
           const scaleMapping = mapping as Specification.ScaleMapping;
           scaleMapping.expression = this.transformExpression(

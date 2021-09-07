@@ -550,8 +550,7 @@ export class ChartTemplateBuilder {
         }
 
         const mappings = item.object.mappings;
-        // eslint-disable-next-line
-        for (const [attr, mapping] of forEachMapping(mappings)) {
+        for (const [, mapping] of forEachMapping(mappings)) {
           if (mapping.type == MappingType.scale) {
             const scaleMapping = mapping as Specification.ScaleMapping;
             scaleMapping.expression = this.trackColumnFromExpression(

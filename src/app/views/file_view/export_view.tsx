@@ -279,6 +279,7 @@ export class ExportTemplateView extends React.Component<
     onChange: (value: any) => void
   ) {
     let ref: HTMLInputElement;
+    const currentValue = value ? true : false;
     switch (type) {
       case "string":
         return (
@@ -298,8 +299,6 @@ export class ExportTemplateView extends React.Component<
         );
 
       case "boolean":
-        // eslint-disable-next-line
-        const currentValue = value ? true : false;
         return (
           <div
             className="el-inference-item"

@@ -1185,8 +1185,7 @@ export class SingleMarkView
 
   public renderSnappingGuidesLabels() {
     const allLabels: Prototypes.SnappingGuides.Description[] = [];
-    // eslint-disable-next-line
-    for (const [element, elementState] of zip(
+    for (const [, elementState] of zip(
       this.props.glyph.marks,
       this.props.glyphState.marks
     )) {

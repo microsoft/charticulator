@@ -157,6 +157,7 @@ export class FloatingPanel extends React.Component<
       initialX = window.innerWidth / 2 - width / 2;
       initialY = window.innerHeight / 2 - height / 2;
     } else {
+      //do while?
       // eslint-disable-next-line
       while (true) {
         let found = false;

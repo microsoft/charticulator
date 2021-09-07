@@ -364,9 +364,8 @@ export class ImageUploader extends React.Component<
     }
   };
 
-  // eslint-disable-next-line
   protected showError(error: any) {
-    // FIXME: ignore error for now
+    console.error(error);
   }
 
   protected emitOnUpload(result: ImageUploaderItem[]) {
