@@ -25,7 +25,7 @@ import {
 } from "./utils";
 import { DragData } from "../../app";
 import { Dataset, Expression } from "../../core";
-import { matchSnapshot } from "chai-karma-snapshot";
+import { matchSnapshot } from "./serializer";
 import { loadJSON, waitSolver } from "../unit/utils";
 import { setSVGNumberDigits } from "../../app/utils";
 import { AppStore } from "src/app/stores";
@@ -47,7 +47,7 @@ describe("Charticulator", () => {
     container.id = "container";
     document.querySelector("body").appendChild(container);
     application = new Application();
-    setSVGNumberDigits(0);
+    setSVGNumberDigits(8);
     application
       .initialize(config as any, "container", {
         workerScriptContent: workerScript,
@@ -149,7 +149,7 @@ describe("Charticulator", () => {
   it("open bump_chart chart", async () => {
     const chartFilePath = `base/${pathPrefix}/bump_chart.chart`;
     await testOpenChart(application, await loadJSON(chartFilePath));
-  });
+  }).timeout(longTimeOut);
 
   // test checks that charticulator opens saved chart correctly
   it("open bubble_chart chart", async () => {

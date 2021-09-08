@@ -43,14 +43,42 @@ export function expect_deep_approximately_equals(a: any, b: any, tol: number) {
       }
     }
   } else {
+    try {
+      if (!isNaN(+a) && a != null) {
+        a = +a;
+      }
+      if (!isNaN(+b) && b != null) {
+        b = +b;
+      }
+    } catch {}
     if (typeof a == "number" && typeof b == "number") {
       // If both are numbers, test approximately equals
       expect(a as number).to.approximately(b as number, tol);
     } else {
+      const funcsA = parse(a);
+      const funcsB = parse(b);
+      if (Object.keys(funcsA).length && Object.keys(funcsB).length) {
+        const keysA = Object.keys(funcsA).sort();
+        const keysB = Object.keys(funcsB).sort();
+        expect(keysA).to.deep.equals(keysB);
+        for (const key of keysA) {
+          expect_deep_approximately_equals(a[key], b[key], tol);
+        }
+      }
       // Otherwise, use regular equals
       expect(a).equals(b);
     }
   }
+}
+
+/* tslint:disable */
+export function parse(a: any) {
+  var b: any = {};
+  for (var i in (a = a.match(/(\w+\((\-?\d+\.?\d*e?\-?\d*,?)+\))+/g))) {
+    var c = a[i].match(/[\w\.\-]+/g);
+    b[c.shift()] = c;
+  }
+  return b;
 }
 
 // The directory containing chart cases
