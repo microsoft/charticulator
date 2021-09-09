@@ -432,6 +432,7 @@ export class AppStore extends BaseStore {
     this.disableFileView = true;
     this.emit(AppStore.EVENT_IS_NESTED_EDITOR);
     this.addListener(AppStore.EVENT_NESTED_EDITOR_EDIT, () => {
+      this.updateChartState();
       callback(this.chart);
     });
   }
