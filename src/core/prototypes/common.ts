@@ -278,6 +278,7 @@ export namespace SnappingGuides {
     type: string;
     visible: boolean;
     visualType?: SnappingGuidesVisualTypes;
+    priority?: number;
   }
 
   export interface Axis extends Description {

@@ -35,11 +35,7 @@ import { Controls, strokeStyleToDashArray } from "../common";
 import { AttributeMap, DataType } from "../../specification";
 import { strings } from "../../../strings";
 import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
-import {
-  AxisDataBindingType,
-  NumericalMode,
-  TickFormatType,
-} from "../../specification/types";
+import { NumericalMode, TickFormatType } from "../../specification/types";
 import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
 import React = require("react");
 
@@ -83,7 +79,6 @@ export class AxisRenderer {
   public rangeMax: number = 1;
   public valueToPosition: (value: any) => number;
   public oppositeSide: boolean = false;
-  private axisDataBindingType: AxisDataBindingType = null;
 
   public static SCROLL_BAR_SIZE = 10;
 
@@ -115,11 +110,13 @@ export class AxisRenderer {
     if (!data) {
       return this;
     }
-    this.axisDataBindingType = data.type;
     this.setStyle(data.style);
     this.oppositeSide = data.side == "opposite";
     this.scrollRequired = data.allowScrolling;
-    this.shiftAxis = data.barOffset == null || data.barOffset === 0;
+    this.shiftAxis =
+      (data.barOffset == null || data.barOffset === 0) &&
+      ((data.allCategories && data.windowSize < data.allCategories.length) ||
+        Math.abs(data.dataDomainMax - data.dataDomainMin) > data.windowSize);
     switch (data.type) {
       case "numerical":
         {
@@ -251,10 +248,12 @@ export class AxisRenderer {
         ((ticks[i] - domainMin) / (domainMax - domainMin)) *
           (rangeMax - rangeMin) +
         rangeMin;
-      r.push({
-        position: tx,
-        label: resolvedFormat(ticks[i]),
-      });
+      if (!isNaN(tx)) {
+        r.push({
+          position: tx,
+          label: resolvedFormat(ticks[i]),
+        });
+      }
     }
     this.valueToPosition = (value) =>
       ((value - domainMin) / (domainMax - domainMin)) * (rangeMax - rangeMin) +
@@ -293,10 +292,12 @@ export class AxisRenderer {
           (Math.log(domainMax) - Math.log(domainMin))) *
           (rangeMax - rangeMin) +
         rangeMin;
-      r.push({
-        position: tx,
-        label: resolvedFormat(ticks[i]),
-      });
+      if (!isNaN(tx)) {
+        r.push({
+          position: tx,
+          label: resolvedFormat(ticks[i]),
+        });
+      }
     }
     this.valueToPosition = (value) =>
       ((value - domainMin) / (domainMax - domainMin)) * (rangeMax - rangeMin) +
@@ -330,10 +331,12 @@ export class AxisRenderer {
         ((ticks[i] - domainMin) / (domainMax - domainMin)) *
           (rangeMax - rangeMin) +
         rangeMin;
-      r.push({
-        position: tx,
-        label: tickFormat(ticks[i]),
-      });
+      if (!isNaN(tx)) {
+        r.push({
+          position: tx,
+          label: tickFormat(ticks[i]),
+        });
+      }
     }
     this.valueToPosition = (value) =>
       ((value - domainMin) / (domainMax - domainMin)) * (rangeMax - rangeMin) +
@@ -353,11 +356,14 @@ export class AxisRenderer {
   ) {
     const r: TickDescription[] = [];
     for (let i = 0; i < domain.length; i++) {
-      r.push({
-        position:
-          ((range[i][0] + range[i][1]) / 2) * (rangeMax - rangeMin) + rangeMin,
-        label: tickFormat ? tickFormat(domain[i]) : domain[i],
-      });
+      const position =
+        ((range[i][0] + range[i][1]) / 2) * (rangeMax - rangeMin) + rangeMin;
+      if (!isNaN(position)) {
+        r.push({
+          position,
+          label: tickFormat ? tickFormat(domain[i]) : domain[i],
+        });
+      }
     }
     this.valueToPosition = (value) => {
       const i = domain.indexOf(value);
@@ -387,11 +393,6 @@ export class AxisRenderer {
     if (style.gridlineStyle === "none") {
       return;
     }
-
-    if (this.axisDataBindingType === AxisDataBindingType.Categorical) {
-      return;
-    }
-
     const g = makeGroup([]);
     const cos = Math.cos(Geometry.degreesToRadians(angle));
     const sin = Math.sin(Geometry.degreesToRadians(angle));
@@ -1469,57 +1470,6 @@ export function buildAxisWidgets(
               ]
             )
           );
-          widgets.push(
-            manager.sectionHeader(strings.objects.dataAxis.scrolling)
-          );
-          widgets.push(
-            manager.inputBoolean(
-              {
-                property: axisProperty,
-                field: "allowScrolling",
-              },
-              {
-                type: "checkbox",
-                label: strings.objects.dataAxis.allowScrolling,
-                observerConfig: {
-                  isObserver: true,
-                  properties: {
-                    property: axisProperty,
-                    field: "windowSize",
-                  },
-                  value: 10,
-                },
-              }
-            )
-          );
-          if (data.allowScrolling) {
-            widgets.push(
-              manager.inputNumber(
-                {
-                  property: axisProperty,
-                  field: "windowSize",
-                },
-                {
-                  maximum: 1000,
-                  minimum: 1,
-                  label: strings.objects.dataAxis.windowSize,
-                }
-              )
-            );
-            widgets.push(
-              manager.inputNumber(
-                {
-                  property: axisProperty,
-                  field: "barOffset",
-                },
-                {
-                  maximum: 1000,
-                  minimum: -1000000,
-                  label: strings.objects.dataAxis.barOffset,
-                }
-              )
-            );
-          }
           widgets.push(makeAppearance());
         }
         break;

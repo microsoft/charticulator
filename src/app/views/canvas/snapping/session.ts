@@ -61,12 +61,18 @@ export class SnappingSession<ElementType> {
     a: SnappableGuide<ElementType>,
     b: SnappableGuide<ElementType>
   ) {
-    if (a.guide.type === "point" && b.guide.type !== "point") {
-      return -1;
-    } else if (a.guide.type === "point" && b.guide.type === "point") {
-      return 0;
+    const aPriority = a.guide?.priority ?? 0;
+    const bPriority = b.guide?.priority ?? 0;
+    if (aPriority > 0 || bPriority > 0) {
+      return bPriority - aPriority;
     } else {
-      return 1;
+      if (a.guide.type === "point" && b.guide.type !== "point") {
+        return -1;
+      } else if (a.guide.type === "point" && b.guide.type === "point") {
+        return 0;
+      } else {
+        return 1;
+      }
     }
   }
 

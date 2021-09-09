@@ -1032,7 +1032,7 @@ export class AppStore extends BaseStore {
             properties.axis.side = "opposite";
             break;
           }
-          case "size": {
+          default: {
             targetAttributes = ["x1", "y1", "x1", "y2"];
             properties.axis.side = "default";
             break;
