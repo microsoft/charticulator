@@ -888,18 +888,45 @@ export class AppStore extends BaseStore {
         table = parentMainTable;
       }
 
-      scaleClass.inferParameters(
-        this.chartManager.getGroupedExpressionVector(
+      let rangeImage = null;
+      if (
+        scaleClassID === "scale.categorical<string,image>" &&
+        options.valueType === DataType.Image
+      ) {
+        rangeImage = this.chartManager.getGroupedExpressionVector(
           table.name,
           groupBy,
           options.expression
-        ) as Specification.DataValue[],
-        {
-          ...options.hints,
-          extendScaleMax: true,
-          extendScaleMin: true,
-        }
-      );
+        ) as string[];
+
+        scaleClass.inferParameters(
+          this.chartManager.getGroupedExpressionVector(
+            table.name,
+            groupBy,
+            "first(id)" // get ID column values for key
+          ) as Specification.DataValue[],
+          {
+            ...options.hints,
+            extendScaleMax: true,
+            extendScaleMin: true,
+            rangeImage,
+          }
+        );
+      } else {
+        scaleClass.inferParameters(
+          this.chartManager.getGroupedExpressionVector(
+            table.name,
+            groupBy,
+            options.expression
+          ) as Specification.DataValue[],
+          {
+            ...options.hints,
+            extendScaleMax: true,
+            extendScaleMin: true,
+            rangeImage,
+          }
+        );
+      }
 
       return newScale._id;
     } else {

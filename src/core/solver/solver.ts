@@ -71,16 +71,23 @@ export class ChartConstraintSolver {
     attr: string,
     info: Prototypes.AttributeDescription,
     mapping: Specification.Mapping,
-    rowContext: Expression.Context
+    rowContext: Expression.Context,
+    rowIndex?: number
   ) {
     if (
-      rowContext == null &&
-      (mapping.type == MappingType.scale || mapping.type == MappingType.text)
+      (rowContext == null &&
+        (mapping.type == MappingType.scale ||
+          mapping.type == MappingType.text)) ||
+      ((mapping as Specification.ScaleMapping).table !==
+        (rowContext as Dataset.TableContext)?.table?.name &&
+        rowIndex != null)
     ) {
       const xMapping =
         <Specification.ScaleMapping>mapping ||
         <Specification.TextMapping>mapping;
-      rowContext = this.manager.getChartDataContext(xMapping.table);
+
+      const tableContext = this.manager.dataflow.getTable(xMapping.table);
+      rowContext = tableContext.getGroupedContext([rowIndex]);
     }
     switch (mapping.type) {
       case MappingType.scale:
@@ -165,7 +172,8 @@ export class ChartConstraintSolver {
     objectState: Specification.ObjectState,
     parentState: Specification.ObjectState,
     rowContext: Expression.Context,
-    solve: boolean
+    solve: boolean,
+    rowIndex?: number
   ) {
     const objectClass = this.manager.getClass(objectState);
     for (const attr of objectClass.attributeNames) {
@@ -191,7 +199,8 @@ export class ChartConstraintSolver {
             attr,
             info,
             mapping,
-            rowContext
+            rowContext,
+            rowIndex
           );
         } else {
           if (info.defaultValue !== undefined) {
@@ -291,10 +300,11 @@ export class ChartConstraintSolver {
     layout: Specification.PlotSegment,
     rowContext: Expression.Context,
     glyph: Specification.Glyph,
-    glyphState: Specification.GlyphState
+    glyphState: Specification.GlyphState,
+    rowIndex: number
   ) {
     // Mark attributes
-    this.addObject(glyph, glyphState, null, rowContext, true);
+    this.addObject(glyph, glyphState, null, rowContext, true, rowIndex);
 
     const glyphAnalyzed = this.getGlyphAnalyzeResult(glyph);
 
@@ -425,7 +435,8 @@ export class ChartConstraintSolver {
               layout,
               tableContext.getGroupedContext(dataRowIndex),
               mark,
-              markState
+              markState,
+              dataRowIndex[0]
             );
           }
           (<PlotSegmentClass>elementClass).buildGlyphConstraints(this.solver, {

@@ -182,7 +182,12 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     const inferred =
       (action.hints && action.hints.scaleID) ||
       this.scaleInference(
-        { glyph: action.glyph },
+        {
+          glyph: action.glyph,
+          chart: {
+            table: action.expressionTable,
+          },
+        },
         {
           expression: action.expression,
           valueType: action.valueType,
@@ -195,8 +200,11 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     if (inferred != null) {
       action.mark.mappings[action.attribute] = {
         type: MappingType.scale,
-        table: action.glyph.table,
-        expression: action.expression,
+        table: action.expressionTable ?? action.glyph.table,
+        expression:
+          action.valueType === Specification.DataType.Image
+            ? "first(id)"
+            : action.expression,
         valueType: action.valueType,
         scale: inferred,
         attribute: action.attribute,
@@ -233,7 +241,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         }
         action.mark.mappings[action.attribute] = {
           type: MappingType.text,
-          table: action.glyph.table,
+          table: action.expressionTable ?? action.glyph.table,
           textExpression: new Expression.TextExpression([
             { expression: Expression.parse(action.expression), format },
           ]).toString(),
