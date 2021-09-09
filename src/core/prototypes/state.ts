@@ -825,8 +825,14 @@ export class ChartStateManager {
       for (let i = 0; i < table.rows.length; i++) {
         const rowContext = table.getRowContext(i);
         const value = parsed.getValue(rowContext);
-        if (value >= data.domainMin && value <= data.domainMax) {
-          filteredIndices.push(i);
+        if (data.domainMin < data.domainMax) {
+          if (value >= data.domainMin && value <= data.domainMax) {
+            filteredIndices.push(i);
+          }
+        } else {
+          if (value >= data.domainMax && value <= data.domainMin) {
+            filteredIndices.push(i);
+          }
         }
       }
     }
