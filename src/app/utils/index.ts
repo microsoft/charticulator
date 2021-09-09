@@ -123,9 +123,9 @@ export function readFileAsDataUrl(file: File): Promise<string> {
   });
 }
 
+//check
 export function getExtensionFromFileName(filename: string) {
-  // eslint-disable-next-line
-  const m = filename.match(/\.([^\.]+)$/);
+  const m = filename.match(/\.([^.]+)$/);
   if (m) {
     return m[1].toLowerCase();
   } else {
@@ -134,8 +134,7 @@ export function getExtensionFromFileName(filename: string) {
 }
 
 export function getFileNameWithoutExtension(filename: string) {
-  // eslint-disable-next-line
-  return filename.replace(/\.([^\.]+)$/, "");
+  return filename.replace(/\.([^.]+)$/, "");
 }
 
 export function showOpenFileDialog(accept?: string[]): Promise<File> {

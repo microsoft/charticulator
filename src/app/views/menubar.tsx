@@ -1,8 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types  */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -43,12 +40,14 @@ import { getConfig } from "../config";
 import { EditorType } from "../stores/app_store";
 import { DeleteDialog } from "./panels/delete_dialog";
 
+interface HelpButtonProps {
+  hideReportIssues: boolean;
+  handlers: MenuBarHandlers;
+}
+
 export class HelpButton extends React.Component<
-  {
-    hideReportIssues: boolean;
-    handlers: MenuBarHandlers;
-  },
-  {}
+  HelpButtonProps,
+  Record<string, unknown>
 > {
   public render() {
     const contactUsLinkProps: React.AnchorHTMLAttributes<HTMLAnchorElement> = {

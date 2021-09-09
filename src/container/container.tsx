@@ -163,15 +163,13 @@ export class ChartContainerComponent extends React.Component<
     }
   };
 
-  // eslint-disable-next-line
-  protected handleGlyphMouseEnter: GlyphEventHandler = (data, modifiers) => {
+  protected handleGlyphMouseEnter: GlyphEventHandler = (data) => {
     if (this.props.onMouseEnterGlyph) {
       this.props.onMouseEnterGlyph(data);
     }
   };
 
-  // eslint-disable-next-line
-  protected handleGlyphMouseLeave: GlyphEventHandler = (data, modifiers) => {
+  protected handleGlyphMouseLeave: GlyphEventHandler = (data) => {
     if (this.props.onMouseLeaveGlyph) {
       this.props.onMouseLeaveGlyph(data);
     }

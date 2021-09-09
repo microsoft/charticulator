@@ -1,8 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types  */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
 
@@ -13,7 +10,10 @@ export interface InputTextProps {
   onCancel?: () => void;
 }
 
-export class InputText extends React.Component<InputTextProps, {}> {
+export class InputText extends React.Component<
+  InputTextProps,
+  Record<string, unknown>
+> {
   public inputElement: HTMLInputElement;
 
   public componentWillUpdate(newProps: InputTextProps) {

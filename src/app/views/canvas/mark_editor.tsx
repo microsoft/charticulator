@@ -512,8 +512,7 @@ export class SingleMarkView
           const opt = JSON.parse(data.options);
           this.scheduleAutoFit();
           for (const key in opt) {
-            // eslint-disable-next-line
-            if (opt.hasOwnProperty(key)) {
+            if (Object.prototype.hasOwnProperty.call(opt, key)) {
               attributes[key] = opt[key];
             }
           }
@@ -1186,8 +1185,7 @@ export class SingleMarkView
 
   public renderSnappingGuidesLabels() {
     const allLabels: Prototypes.SnappingGuides.Description[] = [];
-    // eslint-disable-next-line
-    for (const [element, elementState] of zip(
+    for (const [, elementState] of zip(
       this.props.glyph.marks,
       this.props.glyphState.marks
     )) {
@@ -1379,8 +1377,7 @@ export class SingleMarkView
             this.dispatch(new Actions.SetCurrentTool(null));
             const opt = JSON.parse(currentCreationOptions);
             for (const key in opt) {
-              // eslint-disable-next-line
-              if (opt.hasOwnProperty(key)) {
+              if (Object.prototype.hasOwnProperty.call(opt, key)) {
                 attributes[key] = opt[key];
               }
             }

@@ -14,8 +14,7 @@ export class ShadowContext implements Context {
     public shadows: { [name: string]: ValueType } = {}
   ) {}
   public getVariable(name: string): ValueType {
-    // eslint-disable-next-line
-    if (this.shadows.hasOwnProperty(name)) {
+    if (Object.prototype.hasOwnProperty.call(this.shadows, name)) {
       return this.shadows[name];
     }
     return this.upstream.getVariable(name);
@@ -43,8 +42,7 @@ export type PatternReplacer = (expr: Expression) => Expression | void;
 export function variableReplacer(map: { [name: string]: string }) {
   return (expr: Expression) => {
     if (expr instanceof Variable) {
-      // eslint-disable-next-line
-      if (map.hasOwnProperty(expr.name)) {
+      if (Object.prototype.hasOwnProperty.call(map, expr.name)) {
         return new Variable(map[expr.name]);
       }
     }
@@ -244,8 +242,7 @@ export class FunctionCall extends Expression {
     this.args = args;
     let v = <any>functions;
     for (const part of parts) {
-      // eslint-disable-next-line
-      if (v.hasOwnProperty(part)) {
+      if (Object.prototype.hasOwnProperty.call(v, part)) {
         v = v[part];
       } else {
         v = undefined;

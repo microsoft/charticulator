@@ -2,9 +2,7 @@
 // Licensed under the MIT license.
 import * as React from "react";
 import * as Hammer from "hammerjs";
-
-// eslint-disable-next-line
-export interface ScrollViewProps {}
+import { noop } from "../utils/noop";
 
 export interface ScrollViewState {
   height: number;
@@ -12,7 +10,7 @@ export interface ScrollViewState {
 }
 
 export class ScrollView extends React.Component<
-  ScrollViewProps,
+  Record<string, unknown>,
   ScrollViewState
 > {
   public refs: {
@@ -23,8 +21,7 @@ export class ScrollView extends React.Component<
 
   public componentDidMount() {
     this.hammer = new Hammer(this.refs.container);
-    // eslint-disable-next-line
-    this.hammer.on("panstart", () => {});
+    this.hammer.on("panstart", noop);
   }
 
   public componentWillUnmount() {

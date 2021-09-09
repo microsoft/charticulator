@@ -22,12 +22,11 @@ import { classNames } from "../../utils";
 import { FunctionCall, Variable } from "../../../core/expression";
 import { ColumnMetadata } from "../../../core/dataset";
 
-// eslint-disable-next-line
-function getObjectIcon(classID: string) {
-  return R.getSVGIcon(
-    Prototypes.ObjectClasses.GetMetadata(classID).iconPath || "object"
-  );
-}
+// function getObjectIcon(classID: string) {
+//   return R.getSVGIcon(
+//     Prototypes.ObjectClasses.GetMetadata(classID).iconPath || "object"
+//   );
+// }
 
 export class ScalesPanel extends ContextedComponent<
   {

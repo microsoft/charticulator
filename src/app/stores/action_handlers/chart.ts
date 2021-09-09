@@ -95,8 +95,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     );
 
     for (const key in action.mappings) {
-      // eslint-disable-next-line
-      if (action.mappings.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(action.mappings, key)) {
         const [value, mapping] = action.mappings[key];
         if (mapping != null) {
           if (mapping.type == MappingType._element) {
@@ -175,8 +174,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
     const layoutState = this.chartState.elements[idx];
     for (const key in action.updates) {
-      // eslint-disable-next-line
-      if (!action.updates.hasOwnProperty(key)) {
+      if (!Object.prototype.hasOwnProperty.call(action.updates, key)) {
         continue;
       }
       // Remove current mapping and any snapping constraint
@@ -297,8 +295,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.saveHistory();
 
     for (const key in action.updates) {
-      // eslint-disable-next-line
-      if (!action.updates.hasOwnProperty(key)) {
+      if (!Object.prototype.hasOwnProperty.call(action.updates, key)) {
         continue;
       }
       this.chartState.attributes[key] = action.updates[key];

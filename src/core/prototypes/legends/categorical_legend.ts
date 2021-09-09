@@ -7,7 +7,7 @@ import * as Graphics from "../../graphics";
 import { LegendClass, LegendProperties } from "./legend";
 import { Controls } from "..";
 import { strings } from "../../../strings";
-import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/types";
 
 export interface CategoricalLegendItem {
   type: "number" | "color" | "boolean";
@@ -40,8 +40,7 @@ export class CategoricalLegendClass extends LegendClass {
       const items: CategoricalLegendItem[] = [];
       for (const key in mapping) {
         if (
-          // eslint-disable-next-line
-          mapping.hasOwnProperty(key) &&
+          Object.prototype.hasOwnProperty.call(mapping, key) &&
           !key.startsWith(ReservedMappingKeyNamePrefix)
         ) {
           switch (scaleObject.classID) {
