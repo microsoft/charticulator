@@ -130,6 +130,7 @@ export const strings = {
   },
   dialog: {
     resetConfirm: "Are you sure you want to delete the chart?",
+    deleteChart: "Delete chart",
   },
   scaleEditor: {
     add: "Add",
