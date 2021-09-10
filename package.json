@@ -138,6 +138,7 @@
     "prettier": "2.1.2",
     "sass": "^1.37.5",
     "ts-loader": "8.0.18",
+    "ts-node": "^10.2.1",
     "typedoc": "^0.20.29",
     "typedoc-plugin-external-module-name": "^4.0.6",
     "typescript": "3.9.7",
