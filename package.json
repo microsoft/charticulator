@@ -138,6 +138,7 @@
     "preact-compat": "^3.18.3",
     "prettier": "2.1.2",
     "puppeteer": "^10.2.0",
+    "raw-loader": "^4.0.2",
     "sass": "^1.37.5",
     "ts-loader": "8.0.18",
     "ts-node": "^10.2.1",
