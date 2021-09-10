@@ -102,6 +102,7 @@
     "@types/styled-components": "5.1.7",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
+    "babel-loader": "^8.2.2",
     "chai": "^4.2.0",
     "dom-to-json": "^0.0.4",
     "dts-bundle": "^0.7.3",
@@ -148,7 +149,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "pre-push-test"
+      "pre-push": "karma start"
     }
   }
 }
