@@ -29,8 +29,7 @@ import {
 
 import { FileView, MainTabs } from "./file_view";
 import { AppStore } from "../stores";
-import { Button } from "./panels/widgets/controls";
-import { classNames, isInIFrame, readFileAsString } from "../utils";
+import { classNames, readFileAsString } from "../utils";
 import {
   ChartTemplate,
   primaryButtonStyles,
@@ -42,6 +41,7 @@ import { strings } from "../../strings";
 import { PositionsLeftRight, UndoRedoLocation } from "../main_view";
 import { getConfig } from "../config";
 import { EditorType } from "../stores/app_store";
+import { DeleteDialog } from "./panels/delete_dialog";
 
 export class HelpButton extends React.Component<
   {
@@ -561,61 +561,7 @@ export class MenuBar extends ContextedComponent<
   }
 
   public renderDelete() {
-    return (
-      <MenuButton
-        url={R.getSVGIcon("toolbar/trash")}
-        title={strings.menuBar.reset}
-        text={strings.menuBar.reset}
-        onClick={() => {
-          if (isInIFrame()) {
-            globals.popupController.showModal(
-              (context) => {
-                return (
-                  <div
-                    onMouseDown={(e) => {
-                      e.stopPropagation();
-                    }}
-                    className={"charticulator__reset_chart_dialog"}
-                  >
-                    <div className={"charticulator__reset_chart_dialog-inner"}>
-                      <>
-                        <p>{strings.dialog.resetConfirm}</p>
-                        <div
-                          className={
-                            "charticulator__reset_chart_dialog-buttons"
-                          }
-                        >
-                          <Button
-                            text={strings.button.yes}
-                            onClick={() => {
-                              this.context.store.dispatcher.dispatch(
-                                new Actions.Reset()
-                              );
-                              context.close();
-                            }}
-                          />
-                          <Button
-                            text={strings.button.no}
-                            onClick={() => {
-                              context.close();
-                            }}
-                          />
-                        </div>
-                      </>
-                    </div>
-                  </div>
-                );
-              },
-              { anchor: null }
-            );
-          } else {
-            if (confirm(strings.dialog.resetConfirm)) {
-              new Actions.Reset().dispatch(this.context.store.dispatcher);
-            }
-          }
-        }}
-      />
-    );
+    return <DeleteDialog context={this.context} />;
   }
 
   public renderNewOpenSave() {
