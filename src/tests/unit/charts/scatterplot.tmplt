@@ -1,0 +1,926 @@
+{
+  "specification": {
+    "_id": "dhp00hh43ln",
+    "classID": "chart.rectangle",
+    "properties": {
+      "name": "Chart",
+      "backgroundColor": null,
+      "backgroundOpacity": 1,
+      "exposed": true
+    },
+    "mappings": {
+      "marginTop": {
+        "type": "value",
+        "value": 80
+      },
+      "marginRight": {
+        "type": "value",
+        "value": 162.63954832400927
+      }
+    },
+    "glyphs": [
+      {
+        "_id": "x4rwb27gd6l",
+        "classID": "glyph.rectangle",
+        "properties": {
+          "name": "Glyph"
+        },
+        "table": "gapminder",
+        "marks": [
+          {
+            "_id": "yyli6ltfx3e",
+            "classID": "mark.anchor",
+            "properties": {
+              "name": "Anchor"
+            },
+            "mappings": {
+              "x": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              }
+            }
+          },
+          {
+            "_id": "v5qbjlghwja",
+            "classID": "mark.symbol",
+            "properties": {
+              "visible": true,
+              "name": "Symbol1",
+              "exposed": true
+            },
+            "mappings": {
+              "fill": {
+                "type": "scale",
+                "table": "gapminder",
+                "expression": "first(Region)",
+                "valueType": "string",
+                "scale": "9a26sijxoms",
+                "attribute": "fill"
+              },
+              "strokeWidth": {
+                "type": "value",
+                "value": 1
+              },
+              "opacity": {
+                "type": "value",
+                "value": 1
+              },
+              "size": {
+                "type": "scale",
+                "table": "gapminder",
+                "expression": "avg(Population)",
+                "valueType": "number",
+                "scale": "y3bdr0f1j5",
+                "attribute": "size"
+              },
+              "visible": {
+                "type": "value",
+                "value": true
+              },
+              "x": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              },
+              "stroke": {
+                "type": "value",
+                "value": {
+                  "r": 150,
+                  "g": 150,
+                  "b": 150
+                }
+              }
+            }
+          }
+        ],
+        "mappings": {},
+        "constraints": []
+      }
+    ],
+    "elements": [
+      {
+        "_id": "6cpn0tzoml",
+        "classID": "plot-segment.cartesian",
+        "glyph": "x4rwb27gd6l",
+        "table": "gapminder",
+        "filter": null,
+        "mappings": {
+          "x1": {
+            "type": "parent",
+            "parentAttribute": "x1"
+          },
+          "y1": {
+            "type": "parent",
+            "parentAttribute": "y1"
+          },
+          "x2": {
+            "type": "parent",
+            "parentAttribute": "x2"
+          },
+          "y2": {
+            "type": "parent",
+            "parentAttribute": "y2"
+          }
+        },
+        "properties": {
+          "name": "PlotSegment1",
+          "visible": true,
+          "marginX1": 0,
+          "marginY1": 0,
+          "marginX2": 0,
+          "marginY2": 0,
+          "sublayout": {
+            "type": "overlap",
+            "order": null,
+            "ratioX": 0.1,
+            "ratioY": 0.1,
+            "align": {
+              "x": "start",
+              "y": "start"
+            },
+            "grid": {
+              "direction": "x",
+              "xCount": null,
+              "yCount": null
+            },
+            "packing": {
+              "gravityX": 0.1,
+              "gravityY": 0.1
+            }
+          },
+          "xData": {
+            "type": "numerical",
+            "expression": "avg(FertilityRate)",
+            "rawExpression": "first(FertilityRate)",
+            "valueType": "number",
+            "gapRatio": 0.1,
+            "visible": true,
+            "side": "default",
+            "style": {
+              "tickColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0
+              },
+              "lineColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0
+              },
+              "fontFamily": "Arial",
+              "fontSize": 12,
+              "tickSize": 5,
+              "wordWrap": false,
+              "gridlineStyle": "none",
+              "gridlineColor": {
+                "r": 234,
+                "g": 234,
+                "b": 234
+              },
+              "gridlineWidth": 1
+            },
+            "numericalMode": "linear",
+            "dataKind": "numerical",
+            "autoDomainMax": true,
+            "autoDomainMin": true,
+            "domainMin": 0,
+            "domainMax": 8
+          },
+          "yData": {
+            "type": "numerical",
+            "expression": "avg(LifeExpectancy)",
+            "rawExpression": "first(LifeExpectancy)",
+            "valueType": "number",
+            "gapRatio": 0.1,
+            "visible": true,
+            "side": "default",
+            "style": {
+              "tickColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0
+              },
+              "lineColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0
+              },
+              "fontFamily": "Arial",
+              "fontSize": 12,
+              "tickSize": 5,
+              "wordWrap": false,
+              "gridlineStyle": "none",
+              "gridlineColor": {
+                "r": 234,
+                "g": 234,
+                "b": 234
+              },
+              "gridlineWidth": 1
+            },
+            "numericalMode": "linear",
+            "dataKind": "numerical",
+            "autoDomainMax": true,
+            "autoDomainMin": true,
+            "domainMin": 45,
+            "domainMax": 85
+          },
+          "exposed": true
+        }
+      },
+      {
+        "_id": "kpnpq5xg57b",
+        "classID": "mark.text",
+        "properties": {
+          "name": "Title",
+          "visible": true,
+          "alignment": {
+            "x": "middle",
+            "y": "top",
+            "xMargin": 0,
+            "yMargin": 30
+          },
+          "rotation": 0,
+          "exposed": true
+        },
+        "mappings": {
+          "x": {
+            "type": "parent",
+            "parentAttribute": "cx"
+          },
+          "y": {
+            "type": "parent",
+            "parentAttribute": "oy2"
+          },
+          "text": {
+            "type": "value",
+            "value": "Fertility Rate vs. Life Expectancy"
+          },
+          "fontSize": {
+            "type": "value",
+            "value": 24
+          },
+          "color": {
+            "type": "value",
+            "value": {
+              "r": 0,
+              "g": 0,
+              "b": 0
+            }
+          }
+        }
+      },
+      {
+        "_id": "rkcr8us04q",
+        "classID": "legend.categorical",
+        "properties": {
+          "scale": "9a26sijxoms",
+          "visible": true,
+          "alignX": "start",
+          "alignY": "end",
+          "fontFamily": "Arial",
+          "fontSize": 10,
+          "textColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "dataSource": "columnValues",
+          "dataExpressions": [],
+          "markerShape": "circle",
+          "orientation": "vertical",
+          "name": "Legend1",
+          "exposed": true
+        },
+        "mappings": {
+          "x": {
+            "type": "parent",
+            "parentAttribute": "x2"
+          },
+          "y": {
+            "type": "parent",
+            "parentAttribute": "y2"
+          },
+          "mappingOptions": {
+            "type": "scale",
+            "table": "gapminder",
+            "expression": "first(Region)",
+            "valueType": "string",
+            "scale": "9a26sijxoms",
+            "allowSelectValue": false
+          }
+        }
+      }
+    ],
+    "scales": [
+      {
+        "_id": "y3bdr0f1j5",
+        "classID": "scale.linear<number,number>",
+        "properties": {
+          "autoDomainMin": true,
+          "autoDomainMax": true,
+          "name": "Scale1",
+          "domainMin": 0,
+          "domainMax": 1300000000,
+          "exposed": true
+        },
+        "mappings": {
+          "rangeMin": {
+            "type": "value",
+            "value": 0
+          },
+          "rangeMax": {
+            "type": "value",
+            "value": 6500
+          }
+        },
+        "inputType": "number",
+        "outputType": "number"
+      },
+      {
+        "_id": "9a26sijxoms",
+        "classID": "scale.categorical<string,color>",
+        "properties": {
+          "name": "Scale2",
+          "mapping": {
+            "South Asia": {
+              "r": 166,
+              "g": 206,
+              "b": 227
+            },
+            "Europe & Central Asia": {
+              "r": 31,
+              "g": 120,
+              "b": 180
+            },
+            "Middle East & North Africa": {
+              "r": 178,
+              "g": 223,
+              "b": 138
+            },
+            "Sub-Saharan Africa": {
+              "r": 51,
+              "g": 160,
+              "b": 44
+            },
+            "America": {
+              "r": 251,
+              "g": 154,
+              "b": 153
+            },
+            "East Asia & Pacific": {
+              "r": 227,
+              "g": 26,
+              "b": 28
+            }
+          },
+          "autoDomainMax": true,
+          "autoDomainMin": true
+        },
+        "mappings": {},
+        "inputType": "string",
+        "outputType": "color"
+      }
+    ],
+    "scaleMappings": [
+      {
+        "type": "scale",
+        "table": "gapminder",
+        "expression": "avg(Population)",
+        "valueType": "number",
+        "scale": "y3bdr0f1j5",
+        "attribute": "size"
+      },
+      {
+        "type": "scale",
+        "table": "gapminder",
+        "expression": "first(Region)",
+        "valueType": "string",
+        "scale": "9a26sijxoms",
+        "attribute": "fill"
+      }
+    ],
+    "constraints": [],
+    "resources": []
+  },
+  "defaultAttributes": {
+    "yyli6ltfx3e": {
+      "x": 0,
+      "y": 0
+    },
+    "v5qbjlghwja": {
+      "x": 0,
+      "y": 0,
+      "size": 31.410273706806283,
+      "strokeWidth": 0.2,
+      "opacity": 0.2
+    },
+    "kpnpq5xg57b": {
+      "x": -14.079943540501162,
+      "y": 75,
+      "fontSize": 6,
+      "opacity": 0.25
+    }
+  },
+  "tables": [
+    {
+      "name": "gapminder",
+      "columns": [
+        {
+          "displayName": "LifeExpectancy",
+          "name": "LifeExpectancy",
+          "type": "number",
+          "metadata": {
+            "kind": "numerical",
+            "examples": "50, 51, 53"
+          }
+        },
+        {
+          "displayName": "FertilityRate",
+          "name": "FertilityRate",
+          "type": "number",
+          "metadata": {
+            "kind": "numerical",
+            "examples": "1, 2, 6"
+          }
+        },
+        {
+          "displayName": "Population",
+          "name": "Population",
+          "type": "number",
+          "metadata": {
+            "kind": "numerical",
+            "examples": "56174, 77648, 81154"
+          }
+        },
+        {
+          "displayName": "Region",
+          "name": "Region",
+          "type": "string",
+          "metadata": {
+            "kind": "categorical",
+            "orderMode": "alphabetically",
+            "examples": "South Asia, Europe & Central Asia, Middle East & North Africa"
+          }
+        }
+      ]
+    }
+  ],
+  "inference": [
+    {
+      "objectID": "6cpn0tzoml",
+      "dataSource": {
+        "table": "gapminder"
+      },
+      "axis": {
+        "expression": "avg(FertilityRate)",
+        "type": "numerical",
+        "style": {
+          "tickColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "lineColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "fontFamily": "Arial",
+          "fontSize": 12,
+          "tickSize": 5,
+          "wordWrap": false,
+          "gridlineStyle": "none",
+          "gridlineColor": {
+            "r": 234,
+            "g": 234,
+            "b": 234
+          },
+          "gridlineWidth": 1
+        },
+        "property": "xData"
+      },
+      "autoDomainMin": true,
+      "autoDomainMax": true
+    },
+    {
+      "objectID": "6cpn0tzoml",
+      "dataSource": {
+        "table": "gapminder"
+      },
+      "axis": {
+        "expression": "avg(LifeExpectancy)",
+        "type": "numerical",
+        "style": {
+          "tickColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "lineColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "fontFamily": "Arial",
+          "fontSize": 12,
+          "tickSize": 5,
+          "wordWrap": false,
+          "gridlineStyle": "none",
+          "gridlineColor": {
+            "r": 234,
+            "g": 234,
+            "b": 234
+          },
+          "gridlineWidth": 1
+        },
+        "property": "yData"
+      },
+      "autoDomainMin": true,
+      "autoDomainMax": true
+    },
+    {
+      "objectID": "y3bdr0f1j5",
+      "scale": {
+        "classID": "scale.linear<number,number>",
+        "expressions": [
+          "avg(Population)"
+        ],
+        "properties": {
+          "mapping": "mapping"
+        }
+      },
+      "dataSource": {
+        "table": "gapminder"
+      },
+      "autoDomainMax": true,
+      "autoDomainMin": true
+    },
+    {
+      "objectID": "9a26sijxoms",
+      "scale": {
+        "classID": "scale.categorical<string,color>",
+        "expressions": [
+          "first(Region)"
+        ],
+        "properties": {
+          "mapping": "mapping"
+        }
+      },
+      "dataSource": {
+        "table": "gapminder"
+      },
+      "autoDomainMax": true,
+      "autoDomainMin": true
+    }
+  ],
+  "properties": [
+    {
+      "objectID": "6cpn0tzoml",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "tickSize"
+        }
+      },
+      "type": "number",
+      "default": 5,
+      "displayName": "PlotSegment1/xData.style.tickSize"
+    },
+    {
+      "objectID": "6cpn0tzoml",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "fontSize"
+        }
+      },
+      "type": "number",
+      "default": 12,
+      "displayName": "PlotSegment1/xData.style.fontSize"
+    },
+    {
+      "objectID": "6cpn0tzoml",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "fontFamily"
+        }
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "PlotSegment1/xData.style.fontFamily"
+    },
+    {
+      "objectID": "6cpn0tzoml",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "lineColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "PlotSegment1/xData.style.lineColor"
+    },
+    {
+      "objectID": "6cpn0tzoml",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "tickColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "PlotSegment1/xData.style.tickColor"
+    },
+    {
+      "objectID": "6cpn0tzoml",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "tickSize"
+        }
+      },
+      "type": "number",
+      "default": 5,
+      "displayName": "PlotSegment1/yData.style.tickSize"
+    },
+    {
+      "objectID": "6cpn0tzoml",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "fontSize"
+        }
+      },
+      "type": "number",
+      "default": 12,
+      "displayName": "PlotSegment1/yData.style.fontSize"
+    },
+    {
+      "objectID": "6cpn0tzoml",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "fontFamily"
+        }
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "PlotSegment1/yData.style.fontFamily"
+    },
+    {
+      "objectID": "6cpn0tzoml",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "lineColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "PlotSegment1/yData.style.lineColor"
+    },
+    {
+      "objectID": "6cpn0tzoml",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "tickColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "PlotSegment1/yData.style.tickColor"
+    },
+    {
+      "objectID": "6cpn0tzoml",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "categories"
+        }
+      },
+      "type": "enum",
+      "default": "ascending",
+      "displayName": "PlotSegment1/xData.categories"
+    },
+    {
+      "objectID": "6cpn0tzoml",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "categories"
+        }
+      },
+      "type": "enum",
+      "default": "ascending",
+      "displayName": "PlotSegment1/yData.categories"
+    },
+    {
+      "objectID": "v5qbjlghwja",
+      "target": {
+        "attribute": "visible"
+      },
+      "type": "boolean",
+      "default": true,
+      "displayName": "Symbol1/visible"
+    },
+    {
+      "objectID": "v5qbjlghwja",
+      "target": {
+        "attribute": "strokeWidth"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Symbol1/strokeWidth"
+    },
+    {
+      "objectID": "v5qbjlghwja",
+      "target": {
+        "attribute": "stroke"
+      },
+      "type": "color",
+      "default": "#969696",
+      "displayName": "Symbol1/stroke"
+    },
+    {
+      "objectID": "v5qbjlghwja",
+      "target": {
+        "attribute": "opacity"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Symbol1/opacity"
+    },
+    {
+      "objectID": "kpnpq5xg57b",
+      "target": {
+        "attribute": "fontSize"
+      },
+      "type": "number",
+      "default": 24,
+      "displayName": "Title/fontSize"
+    },
+    {
+      "objectID": "kpnpq5xg57b",
+      "target": {
+        "attribute": "color"
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "Title/color"
+    },
+    {
+      "objectID": "kpnpq5xg57b",
+      "target": {
+        "attribute": "text"
+      },
+      "type": "text",
+      "default": "Fertility Rate vs. Life Expectancy",
+      "displayName": "Title/text"
+    },
+    {
+      "objectID": "rkcr8us04q",
+      "target": {
+        "property": "fontFamily"
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "Legend1/fontFamily"
+    },
+    {
+      "objectID": "rkcr8us04q",
+      "target": {
+        "property": "fontSize"
+      },
+      "type": "number",
+      "default": 10,
+      "displayName": "Legend1/fontSize"
+    },
+    {
+      "objectID": "rkcr8us04q",
+      "target": {
+        "property": "textColor"
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "Legend1/textColor"
+    },
+    {
+      "objectID": "rkcr8us04q",
+      "target": {
+        "property": "markerShape"
+      },
+      "type": "enum",
+      "default": "circle",
+      "displayName": "Legend1/markerShape"
+    },
+    {
+      "objectID": "rkcr8us04q",
+      "target": {
+        "property": "alignY"
+      },
+      "type": "enum",
+      "default": "end",
+      "displayName": "Legend1/alignY"
+    },
+    {
+      "objectID": "rkcr8us04q",
+      "target": {
+        "property": "alignX"
+      },
+      "type": "enum",
+      "default": "start",
+      "displayName": "Legend1/alignX"
+    },
+    {
+      "objectID": "y3bdr0f1j5",
+      "target": {
+        "property": "domainMin"
+      },
+      "type": "number",
+      "displayName": "Scale1/domainMin"
+    },
+    {
+      "objectID": "y3bdr0f1j5",
+      "target": {
+        "property": "domainMax"
+      },
+      "type": "number",
+      "displayName": "Scale1/domainMax"
+    },
+    {
+      "objectID": "y3bdr0f1j5",
+      "target": {
+        "attribute": "rangeMin"
+      },
+      "type": "number",
+      "default": null,
+      "displayName": "Scale1/rangeMin"
+    },
+    {
+      "objectID": "y3bdr0f1j5",
+      "target": {
+        "attribute": "rangeMax"
+      },
+      "type": "number",
+      "default": null,
+      "displayName": "Scale1/rangeMax"
+    },
+    {
+      "objectID": "dhp00hh43ln",
+      "target": {
+        "attribute": "marginLeft"
+      },
+      "type": "number",
+      "default": 50,
+      "displayName": "Chart/marginLeft"
+    },
+    {
+      "objectID": "dhp00hh43ln",
+      "target": {
+        "attribute": "marginRight"
+      },
+      "type": "number",
+      "default": 162.63954832400927,
+      "displayName": "Chart/marginRight"
+    },
+    {
+      "objectID": "dhp00hh43ln",
+      "target": {
+        "attribute": "marginTop"
+      },
+      "type": "number",
+      "default": 80,
+      "displayName": "Chart/marginTop"
+    },
+    {
+      "objectID": "dhp00hh43ln",
+      "target": {
+        "attribute": "marginBottom"
+      },
+      "type": "number",
+      "default": 50,
+      "displayName": "Chart/marginBottom"
+    }
+  ]
+}
