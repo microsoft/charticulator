@@ -73,7 +73,7 @@ describe("Charticulator", () => {
     done();
   }).timeout(longTimeOut);
 
-  it("binds data to X axis", (done) => {
+  it("binds data to X axis", async (done) => {
     const store = application.appStore;
 
     const plotSegments = [
@@ -110,10 +110,8 @@ describe("Charticulator", () => {
       ).dispatch(store.dispatcher);
     });
     // wait the solver
-    setTimeout(() => {
-      expect(getChartCanvas()).to.matchSnapshot();
-      done();
-    }, 1000);
+    await waitSolver();
+    expect(getChartCanvas()).to.matchSnapshot();
   }).timeout(longTimeOut);
 
   it("creates column names legend", async () => {
@@ -140,9 +138,8 @@ describe("Charticulator", () => {
     //click to create legend button
     await clickOnButtonByTitle("Create Legend");
 
-    setTimeout(() => {
-      expect(getChartCanvas()).to.matchSnapshot();
-    }, 1000);
+    await waitSolver();
+    expect(getChartCanvas()).to.matchSnapshot();
   }).timeout(longTimeOut);
 
   // test checks that charticulator opens saved chart correctly

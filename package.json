@@ -34,16 +34,13 @@
     "*.{ts,tsx}": [
       "npx eslint --fix ./src --ext .js,.jsx,.ts,.tsx",
       "prettier --write",
-      "karma start",
       "license-check-and-add"
     ],
     "*.{scss,sass}": [
-      "karma start",
       "prettier --write",
       "license-check-and-add"
     ],
     "*.{js,jsx}": [
-      "karma start",
       "license-check-and-add"
     ]
   },
