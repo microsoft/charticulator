@@ -65,6 +65,7 @@ export function matchSnapshot(chai: any, utils: any) {
               actual: ex.actual,
               expected: ex.expected,
               showDiff: true,
+              stack: ex.stack,
             },
             chai.util.flag(this, "ssfi")
           );

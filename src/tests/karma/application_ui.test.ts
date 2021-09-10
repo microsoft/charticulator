@@ -149,6 +149,7 @@ describe("Charticulator", () => {
   it("open nightingale chart", async () => {
     const chartFilePath = `base/${pathPrefix}/nightingale.chart`;
     await testOpenChart(application, await loadJSON(chartFilePath));
+    debugger;
   }).timeout(longTimeOut);
 
   // test checks that charticulator opens saved chart correctly
@@ -167,7 +168,7 @@ describe("Charticulator", () => {
   it("open bubble_chart chart", async () => {
     const chartFilePath = `base/${pathPrefix}/bubble_chart.chart`;
     await testOpenChart(application, await loadJSON(chartFilePath));
-  });
+  }).timeout(longTimeOut);
 
   it("import default template", async () => {
     const chartFilePath = `base/${pathPrefix}/default.chart`;

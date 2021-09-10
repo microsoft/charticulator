@@ -19,16 +19,30 @@ export function makeDefaultAttributes(state: AppStoreState) {
 }
 
 /** Test if a deep equals b with tolerance on numeric values */
-export function expect_deep_approximately_equals(a: any, b: any, tol: number) {
+export function expect_deep_approximately_equals(
+  a: any,
+  b: any,
+  tol: number,
+  context?: any
+) {
+  if (a == null && b == null) {
+    return;
+  }
   if (a == null || b == null) {
     // If either of a, b is null/undefined
-    expect(a).equals(b);
+    expect(a).equals(b, `${JSON.stringify(context, null, "")}`);
   } else if (typeof a == "object" && typeof b == "object") {
     if (a instanceof Array && b instanceof Array) {
       // Both are arrays, recursively test for each item in the arrays
-      expect(a.length).to.equals(b.length);
+      expect(a.length).to.equals(
+        b.length,
+        `${JSON.stringify(context, null, "")}`
+      );
       for (let i = 0; i < a.length; i++) {
-        expect_deep_approximately_equals(a[i], b[i], tol);
+        expect_deep_approximately_equals(a[i], b[i], tol, {
+          a,
+          b,
+        });
       }
     } else if (a instanceof Array || b instanceof Array) {
       // One of them is an array, the other one isn't, error
@@ -37,9 +51,12 @@ export function expect_deep_approximately_equals(a: any, b: any, tol: number) {
       // Both are objects, recursively test for each key in the objects
       const keysA = Object.keys(a).sort();
       const keysB = Object.keys(b).sort();
-      expect(keysA).to.deep.equals(keysB);
+      expect(keysA).to.deep.equals(
+        keysB,
+        `${JSON.stringify(context, null, "")}`
+      );
       for (const key of keysA) {
-        expect_deep_approximately_equals(a[key], b[key], tol);
+        expect_deep_approximately_equals(a[key], b[key], tol, { a, b });
       }
     }
   } else {
@@ -53,20 +70,19 @@ export function expect_deep_approximately_equals(a: any, b: any, tol: number) {
     } catch {}
     if (typeof a == "number" && typeof b == "number") {
       // If both are numbers, test approximately equals
-      expect(a as number).to.approximately(b as number, tol);
+      expect(a as number).to.approximately(
+        b as number,
+        tol,
+        `${JSON.stringify(context, null, "")}`
+      );
     } else {
       const funcsA = parse(a);
       const funcsB = parse(b);
       if (Object.keys(funcsA).length && Object.keys(funcsB).length) {
-        const keysA = Object.keys(funcsA).sort();
-        const keysB = Object.keys(funcsB).sort();
-        expect(keysA).to.deep.equals(keysB);
-        for (const key of keysA) {
-          expect_deep_approximately_equals(a[key], b[key], tol);
-        }
+        expect_deep_approximately_equals(funcsA, funcsB, tol, { a, b });
       }
       // Otherwise, use regular equals
-      expect(a).equals(b);
+      expect(a).equals(b, `${JSON.stringify(context, null, "")}`);
     }
   }
 }
@@ -91,5 +107,5 @@ export async function loadJSON(url: string) {
 }
 
 export async function waitSolver(): Promise<void> {
-  return new Promise<void>((resolve) => setTimeout(resolve, 1000));
+  return new Promise<void>((resolve) => setTimeout(resolve, 5000));
 }
