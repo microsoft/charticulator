@@ -147,6 +147,7 @@ export const strings = {
   },
   mappingEditor: {
     bindData: "Bind data",
+    keyColumnExpression: "Key column expression",
     bindDataValue: "Bind data value",
     remove: "Remove",
   },

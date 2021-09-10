@@ -198,19 +198,37 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         }
       );
     if (inferred != null) {
-      action.mark.mappings[action.attribute] = {
-        type: MappingType.scale,
-        table: action.expressionTable ?? action.glyph.table,
-        expression:
-          action.valueType === Specification.DataType.Image
-            ? "first(id)"
-            : action.expression,
-        valueType: action.valueType,
-        scale: inferred,
-        attribute: action.attribute,
-        valueIndex:
-          action.hints && action.hints.allowSelectValue != undefined ? 0 : null,
-      } as Specification.ScaleMapping;
+      if (
+        action.valueType == Specification.DataType.Image &&
+        action.valueType === Specification.DataType.Image
+      ) {
+        action.mark.mappings[action.attribute] = {
+          type: MappingType.expressionScale,
+          table: action.expressionTable ?? action.glyph.table,
+          expression: "first(id)",
+          valueExpression: action.expression,
+          valueType: action.valueType,
+          scale: inferred,
+          attribute: action.attribute,
+          valueIndex:
+            action.hints && action.hints.allowSelectValue != undefined
+              ? 0
+              : null,
+        } as Specification.ScaleValueExpressionMapping;
+      } else {
+        action.mark.mappings[action.attribute] = {
+          type: MappingType.scale,
+          table: action.expressionTable ?? action.glyph.table,
+          expression: action.expression,
+          valueType: action.valueType,
+          scale: inferred,
+          attribute: action.attribute,
+          valueIndex:
+            action.hints && action.hints.allowSelectValue != undefined
+              ? 0
+              : null,
+        } as Specification.ScaleMapping;
+      }
       if (
         !this.chart.scaleMappings.find(
           (scaleMapping) => scaleMapping.scale === inferred

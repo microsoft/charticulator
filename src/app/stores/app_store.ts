@@ -82,6 +82,7 @@ import {
 } from "../../core/prototypes/plot_segments/region_2d/base";
 import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
 import { DataAxisProperties } from "../../core/prototypes/marks/data_axis.attrs";
+import { isBase64Image } from "../../core/dataset/data_types";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -858,7 +859,9 @@ export class AppStore extends BaseStore {
 
     // Infer a new scale for this item
     const scaleClassID = Prototypes.Scales.inferScaleType(
-      values?.length > 0 && typeof values[0] === "string"
+      values?.length > 0 &&
+        typeof values[0] === "string" &&
+        !isBase64Image(values[0])
         ? DataType.String
         : options.valueType,
       values?.length > 0 && typeof values[0] === "string"
@@ -890,7 +893,7 @@ export class AppStore extends BaseStore {
 
       let rangeImage = null;
       if (
-        scaleClassID === "scale.categorical<string,image>" &&
+        scaleClassID === "scale.categorical<image,image>" &&
         options.valueType === DataType.Image
       ) {
         rangeImage = this.chartManager.getGroupedExpressionVector(

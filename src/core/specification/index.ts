@@ -107,6 +107,7 @@ export enum MappingType {
   _element = "_element",
   parent = "parent",
   scale = "scale",
+  expressionScale = "expressionScale",
   text = "text",
   value = "value",
 }
@@ -136,6 +137,23 @@ export interface ScaleMapping extends Mapping {
   scale?: string;
   /** Index of value in mapping */
   valueIndex?: number;
+}
+
+/** Scale mapping: map id column data to image */
+export interface ScaleValueExpressionMapping {
+  type: MappingType.expressionScale;
+  /** The table to draw data from */
+  table: string;
+  /** The id column */
+  expression: Expression;
+  /** The data column */
+  valueExpression: Expression;
+  /** Attribute of the mark */
+  attribute?: string;
+  /** Value type returned by the expression */
+  valueType: DataType;
+  /** The id of the scale to use. If null, use the expression directly */
+  scale?: string;
 }
 
 /** Text mapping: map data to text */

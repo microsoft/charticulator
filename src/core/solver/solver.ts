@@ -65,6 +65,7 @@ export class ChartConstraintSolver {
     }
   }
 
+  // eslint-disable-next-line max-lines-per-function
   public addMapping(
     attrs: Specification.AttributeMap,
     parentAttrs: Specification.AttributeMap,
@@ -72,22 +73,18 @@ export class ChartConstraintSolver {
     info: Prototypes.AttributeDescription,
     mapping: Specification.Mapping,
     rowContext: Expression.Context,
-    rowIndex?: number
+    rowIndex?: number[]
   ) {
     if (
-      (rowContext == null &&
-        (mapping.type == MappingType.scale ||
-          mapping.type == MappingType.text)) ||
-      ((mapping as Specification.ScaleMapping).table !==
-        (rowContext as Dataset.TableContext)?.table?.name &&
-        rowIndex != null)
+      rowContext == null &&
+      (mapping.type == MappingType.scale || mapping.type == MappingType.text)
     ) {
       const xMapping =
         <Specification.ScaleMapping>mapping ||
         <Specification.TextMapping>mapping;
 
       const tableContext = this.manager.dataflow.getTable(xMapping.table);
-      rowContext = tableContext.getGroupedContext([rowIndex]);
+      rowContext = tableContext.getGroupedContext(rowIndex);
     }
     switch (mapping.type) {
       case MappingType.scale:
@@ -121,6 +118,32 @@ export class ChartConstraintSolver {
             }
             // this.hardBuilder.addLinear(attrs[attr] as number, [[-1, this.hardBuilder.attr(attrs, attr)]])
           }
+        }
+        break;
+      case MappingType.expressionScale:
+        {
+          // get table from scale mapping
+          const scaleMapping = <Specification.ScaleValueExpressionMapping>(
+            mapping
+          );
+          const tableContext = this.manager.dataflow.getTable(
+            scaleMapping.table
+          );
+          rowContext = tableContext.getGroupedContext(rowIndex);
+          const expr = this.expressionCache.parse(scaleMapping.expression);
+          const dataValue = <Dataset.DataValue>expr.getValue(rowContext);
+          const scaleClass = <Prototypes.Scales.ScaleClass>(
+            this.manager.getClassById(scaleMapping.scale)
+          );
+          if (!info.solverExclude) {
+            scaleClass.buildConstraint(
+              dataValue,
+              this.solver.attr(attrs, attr),
+              this.solver
+            );
+          }
+          const value = scaleClass.mapDataToAttribute(dataValue);
+          attrs[attr] = value;
         }
         break;
       case MappingType.text:
@@ -173,7 +196,7 @@ export class ChartConstraintSolver {
     parentState: Specification.ObjectState,
     rowContext: Expression.Context,
     solve: boolean,
-    rowIndex?: number
+    rowIndex?: number[]
   ) {
     const objectClass = this.manager.getClass(objectState);
     for (const attr of objectClass.attributeNames) {
@@ -246,9 +269,17 @@ export class ChartConstraintSolver {
     rowContext: Expression.Context,
     markState: Specification.GlyphState,
     element: Specification.Element,
-    elementState: Specification.MarkState
+    elementState: Specification.MarkState,
+    rowIndex: number[]
   ) {
-    this.addObject(element, elementState, markState, rowContext, true);
+    this.addObject(
+      element,
+      elementState,
+      markState,
+      rowContext,
+      true,
+      rowIndex
+    );
     const elementClass = this.manager.getMarkClass(elementState);
 
     elementClass.buildConstraints(
@@ -301,7 +332,7 @@ export class ChartConstraintSolver {
     rowContext: Expression.Context,
     glyph: Specification.Glyph,
     glyphState: Specification.GlyphState,
-    rowIndex: number
+    rowIndex: number[]
   ) {
     // Mark attributes
     this.addObject(glyph, glyphState, null, rowContext, true, rowIndex);
@@ -350,7 +381,8 @@ export class ChartConstraintSolver {
         rowContext,
         glyphState,
         element,
-        elementState
+        elementState,
+        rowIndex
       );
     }
     // Mark-level constraints
@@ -436,7 +468,7 @@ export class ChartConstraintSolver {
               tableContext.getGroupedContext(dataRowIndex),
               mark,
               markState,
-              dataRowIndex[0]
+              dataRowIndex
             );
           }
           (<PlotSegmentClass>elementClass).buildGlyphConstraints(this.solver, {
