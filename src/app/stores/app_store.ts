@@ -338,7 +338,10 @@ export class AppStore extends BaseStore {
       scaleId: string
     ) {
       for (const map in mappings) {
-        if (mappings[map].type === MappingType.scale) {
+        if (
+          mappings[map].type === MappingType.scale ||
+          mappings[map].type === MappingType.expressionScale
+        ) {
           if ((mappings[map] as any).scale === scaleId) {
             return true;
           }
