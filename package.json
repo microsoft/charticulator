@@ -42,6 +42,11 @@
     ],
     "*.{js,jsx}": "license-check-and-add"
   },
+  "pre-push-test": {
+    "*": [
+      "karma start"
+    ]
+  },
   "dependencies": {
     "@fluentui/react": "^8.8.0",
     "@uifabric/icons": "7.5.22",
@@ -142,7 +147,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "pre-push-test"
     }
   }
 }
