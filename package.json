@@ -137,6 +137,7 @@
     "puppeteer": "^10.2.0",
     "raw-loader": "^4.0.2",
     "sass": "^1.37.5",
+    "svgson": "^5.2.1",
     "ts-loader": "8.0.18",
     "ts-node": "^10.2.1",
     "typedoc": "^0.20.29",

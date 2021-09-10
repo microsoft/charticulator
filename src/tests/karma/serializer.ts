@@ -6,10 +6,14 @@
 
 import { expect_deep_approximately_equals } from "../unit/utils";
 
-var DOMtoJSON = require("dom-to-json");
+const { parseSync } = require("svgson");
 
 function serialize(data: HTMLDocument) {
-  return JSON.stringify(DOMtoJSON.toJSON(data), null, "");
+  return JSON.stringify(
+    parseSync(new XMLSerializer().serializeToString(data)),
+    null,
+    ""
+  );
 }
 
 function snapshotPath(node: any) {

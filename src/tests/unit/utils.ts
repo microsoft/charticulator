@@ -56,7 +56,7 @@ export function expect_deep_approximately_equals(
         `${JSON.stringify(context, null, "")}`
       );
       for (const key of keysA) {
-        expect_deep_approximately_equals(a[key], b[key], tol, { a, b });
+        expect_deep_approximately_equals(a[key], b[key], tol, { a, b, key });
       }
     }
   } else {
@@ -81,6 +81,19 @@ export function expect_deep_approximately_equals(
       if (Object.keys(funcsA).length && Object.keys(funcsB).length) {
         expect_deep_approximately_equals(funcsA, funcsB, tol, { a, b });
       }
+      if (context.key) {
+        if (context.key === "d") {
+          // path
+          const aT = f(a);
+          const bT = f(b);
+          expect_deep_approximately_equals(aT, bT, tol, {
+            a,
+            b,
+            key: context.key,
+          });
+        }
+      }
+
       // Otherwise, use regular equals
       expect(a).equals(b, `${JSON.stringify(context, null, "")}`);
     }
@@ -108,4 +121,24 @@ export async function loadJSON(url: string) {
 
 export async function waitSolver(): Promise<void> {
   return new Promise<void>((resolve) => setTimeout(resolve, 5000));
+}
+
+function f(d: string) {
+  d = d.replace(/\s{2,}/g, " "); // Remove multiple spaces
+  d = d.replace(/\\n/g, "");
+  d = d.replace(/([a-zA-Z])\s[0-9]/g, "$1,"); // Add letters to coords group
+  const d1 = d.split(" "); // Split on space
+
+  var coords = [];
+
+  for (var i = 0; i < d1.length; i++) {
+    var coordString = d1[i];
+    const m = coordString.match(/\d+\.*\d*/);
+    if (m && m.length) {
+      coords.push(+m[0]);
+    } else {
+      coords.push(coordString);
+    }
+  }
+  return coords;
 }

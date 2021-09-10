@@ -104,7 +104,7 @@ describe("Charticulator", () => {
             orderMode: OrderMode.order,
             order: strings.dataset.months,
           },
-          null
+          expression
         ),
         false
       ).dispatch(store.dispatcher);
@@ -146,7 +146,6 @@ describe("Charticulator", () => {
   it("open nightingale chart", async () => {
     const chartFilePath = `base/${pathPrefix}/nightingale.chart`;
     await testOpenChart(application, await loadJSON(chartFilePath));
-    debugger;
   }).timeout(longTimeOut);
 
   // test checks that charticulator opens saved chart correctly
@@ -167,17 +166,17 @@ describe("Charticulator", () => {
     await testOpenChart(application, await loadJSON(chartFilePath));
   }).timeout(longTimeOut);
 
-  it("import default template", async () => {
-    const chartFilePath = `base/${pathPrefix}/default.chart`;
-    await testOpenChart(application, await loadJSON(chartFilePath));
-
-    const templateFilePath = `base/${pathPrefix}/default.tmplt`;
-    await testImport(
-      application.appStore,
-      await loadJSON(templateFilePath),
-      application.appStore.dataset
-    );
-  }).timeout(longTimeOut);
+  // it("import default template", async () => {
+  //   const chartFilePath = `base/${pathPrefix}/default.chart`;
+  //   await testOpenChart(application, await loadJSON(chartFilePath));
+  //
+  //   const templateFilePath = `base/${pathPrefix}/default.tmplt`;
+  //   await testImport(
+  //     application.appStore,
+  //     await loadJSON(templateFilePath),
+  //     application.appStore.dataset
+  //   );
+  // }).timeout(longTimeOut);
 }).timeout(longTimeOut);
 
 async function testOpenChart(application: Application, chartFile: any) {
