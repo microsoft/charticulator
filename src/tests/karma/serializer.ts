@@ -5,6 +5,8 @@
 "use strict";
 
 import { expect_deep_approximately_equals } from "../unit/utils";
+import ChaiUtils = Chai.ChaiUtils;
+import ChaiStatic = Chai.ChaiStatic;
 
 const { parseSync } = require("svgson");
 
@@ -25,22 +27,22 @@ function snapshotPath(node: any) {
   return path.reverse();
 }
 
-export function matchSnapshot(chai: any, utils: any) {
-  var context = (<any>window).__mocha_context__;
-  var snapshotState = (<any>window).__snapshot__;
+export function matchSnapshot(chai: ChaiStatic, utils: ChaiUtils) {
+  let context = (<any>window).__mocha_context__;
+  let snapshotState = (<any>window).__snapshot__;
 
   utils.addMethod(chai.Assertion.prototype, "matchSnapshot", aMethodForExpect);
   chai.assert.matchSnapshot = aMethodForAssert;
 
-  function aMethodForAssert(lang: any, update: boolean, msg: any) {
+  function aMethodForAssert(lang: any, msg: any) {
     // This basically wraps the 'expect' version of the assertion to allow using 'assert' syntax.
-    return new chai.Assertion(lang, update, msg).to.matchSnapshot();
+    return new chai.Assertion(lang, msg).to.matchSnapshot();
   }
 
   function aMethodForExpect(lang: any, update: boolean) {
-    var obj = serialize(chai.util.flag(this, "object"));
-    var index = context.index++;
-    var path;
+    let obj = serialize(chai.util.flag(this, "object"));
+    let index = context.index++;
+    let path;
 
     // For a hook, use the currentTest for path
     if (context.runnable.type === "hook") {
