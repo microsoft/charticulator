@@ -7,6 +7,7 @@ import {
   zipArray,
   Specification,
   Expression,
+  ImageKeyColumn,
 } from "../../../core";
 import { DataKind } from "../../../core/dataset";
 import { MappingType } from "../../../core/specification";
@@ -205,7 +206,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         action.mark.mappings[action.attribute] = {
           type: MappingType.expressionScale,
           table: action.expressionTable ?? action.glyph.table,
-          expression: "first(id)",
+          expression: `first(${ImageKeyColumn})`,
           valueExpression: action.expression,
           valueType: action.valueType,
           scale: inferred,

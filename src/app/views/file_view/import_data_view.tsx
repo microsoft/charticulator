@@ -10,6 +10,7 @@ import {
   LinkSourceKeyColumn,
   LinkTargetKeyColumn,
   KeyColumn,
+  ImageKeyColumn,
 } from "../../../core";
 import {
   classNames,
@@ -230,7 +231,7 @@ export class ImportDataView extends React.Component<
           // if table contains images split to separate table
           const keyAndImageColumns = table.columns.filter(
             (column) =>
-              column.name === KeyColumn ||
+              column.name === ImageKeyColumn ||
               column.type === Dataset.DataType.Image
           );
           if (keyAndImageColumns.length === 2) {
@@ -249,7 +250,9 @@ export class ImportDataView extends React.Component<
             };
 
             table.columns = table.columns.filter(
-              (column) => column.type !== Dataset.DataType.Image
+              (column) =>
+                column.type !== Dataset.DataType.Image &&
+                column.displayName !== ImageKeyColumn
             );
 
             return [table, imageTable];

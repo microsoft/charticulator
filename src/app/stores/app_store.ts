@@ -9,6 +9,7 @@ import {
   Expression,
   getById,
   getByName,
+  ImageKeyColumn,
   MessageType,
   Prototypes,
   Scale,
@@ -910,7 +911,7 @@ export class AppStore extends BaseStore {
           this.chartManager.getGroupedExpressionVector(
             table.name,
             groupBy,
-            "first(id)" // get ID column values for key
+            `first(${ImageKeyColumn})` // get ID column values for key
           ) as Specification.DataValue[],
           {
             ...options.hints,
