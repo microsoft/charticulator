@@ -84,6 +84,7 @@ export function inferColumnType(
   localeNumberFormat: LocaleNumberFormat
 ): DataType {
   const candidates: DataType[] = <any>[
+    DataType.Image,
     DataType.Boolean,
     DataType.Number,
     DataType.Date,
@@ -160,6 +161,20 @@ export function inferAndConvertColumn(
   }
 
   switch (inferredType) {
+    case DataType.Image: {
+      const metadata: ColumnMetadata = {
+        kind: DataKind.Categorical,
+        unit: hints.unit,
+      };
+      metadata.orderMode = OrderMode.order;
+      metadata.kind = DataKind.Categorical;
+      return {
+        type: DataType.Image,
+        values: convertedValues,
+        metadata,
+      };
+      break;
+    }
     case DataType.Number: {
       const validValues = convertedValues.filter((x) => x != null);
       const minValue = Math.min(...(<number[]>validValues));

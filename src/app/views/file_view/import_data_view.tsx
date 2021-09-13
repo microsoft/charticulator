@@ -177,6 +177,7 @@ export interface ImportDataViewProps {
 export interface ImportDataViewState {
   dataTable: Dataset.Table;
   dataTableOrigin: Dataset.Table;
+  imagesTable: Dataset.Table;
   linkTable: Dataset.Table;
   linkTableOrigin: Dataset.Table;
 }
@@ -187,6 +188,7 @@ export class ImportDataView extends React.Component<
 > {
   public state = {
     dataTable: null as Dataset.Table,
+    imagesTable: null as Dataset.Table,
     linkTable: null as Dataset.Table,
     dataTableOrigin: null as Dataset.Table,
     linkTableOrigin: null as Dataset.Table,
@@ -210,7 +212,9 @@ export class ImportDataView extends React.Component<
     this.isComponentMounted = false;
   }
 
-  private loadFileAsTable(file: File): Promise<Dataset.Table> {
+  private loadFileAsTable(
+    file: File
+  ): Promise<[Dataset.Table, Dataset.Table | null]> {
     return readFileAsString(file).then((contents) => {
       const localeFileFormat = this.props.store.getLocaleFileFormat();
       const ext = getExtensionFromFileName(file.name);
@@ -218,19 +222,46 @@ export class ImportDataView extends React.Component<
       const loader = new Dataset.DatasetLoader();
       switch (ext) {
         case "csv": {
-          return loader.loadDSVFromContents(
+          const table = loader.loadDSVFromContents(
             filename,
             contents,
             localeFileFormat
           );
+          // if table contains images split to separate table
+          const keyAndImageColumns = table.columns.filter(
+            (column) =>
+              column.name === KeyColumn ||
+              column.type === Dataset.DataType.Image
+          );
+          if (keyAndImageColumns.length === 2) {
+            const imageTable: Dataset.Table = {
+              ...table,
+              columns: keyAndImageColumns,
+              rows: table.rows.map((row) => {
+                const imageRow: Dataset.Row = {
+                  _id: row["_id"],
+                };
+                keyAndImageColumns.forEach((column) => {
+                  imageRow[column.name] = row[column.name];
+                });
+                return imageRow;
+              }),
+            };
+
+            return [table, imageTable];
+          }
+          return [table, null];
         }
         case "tsv": {
-          return loader.loadDSVFromContents(filename, contents, {
-            delimiter: "\t",
-            numberFormat: localeFileFormat.numberFormat,
-            currency: null,
-            group: null,
-          });
+          return [
+            loader.loadDSVFromContents(filename, contents, {
+              delimiter: "\t",
+              numberFormat: localeFileFormat.numberFormat,
+              currency: null,
+              group: null,
+            }),
+            null,
+          ];
         }
       }
     });
@@ -363,14 +394,16 @@ export class ImportDataView extends React.Component<
           <FileUploader
             extensions={["csv", "tsv"]}
             onChange={(file) => {
-              this.loadFileAsTable(file).then((table) => {
+              this.loadFileAsTable(file).then(([table, imageTable]) => {
                 table.type = TableType.Main;
+                imageTable.type = TableType.Image;
 
                 this.checkKeyColumn(table, this.state.linkTable);
 
                 this.setState({
                   dataTable: table,
                   dataTableOrigin: deepClone(table),
+                  imagesTable: imageTable,
                 });
               });
             }}
@@ -427,7 +460,7 @@ export class ImportDataView extends React.Component<
           <FileUploader
             extensions={["csv", "tsv"]}
             onChange={(file) => {
-              this.loadFileAsTable(file).then((table) => {
+              this.loadFileAsTable(file).then(([table]) => {
                 table.type = TableType.Links;
                 this.checkSourceAndTargetColumns(table);
                 this.checkKeyColumn(this.state.dataTable, table);
@@ -459,7 +492,9 @@ export class ImportDataView extends React.Component<
               ) {
                 const dataset: Dataset.Dataset = {
                   name: this.state.dataTable.name,
-                  tables: [this.state.dataTable],
+                  tables: [this.state.dataTable, this.state.imagesTable].filter(
+                    (table) => table != null
+                  ),
                 };
                 if (this.state.linkTable != null) {
                   dataset.tables.push(this.state.linkTable);
