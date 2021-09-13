@@ -78,22 +78,20 @@ export function expect_deep_approximately_equals(
     } else {
       const funcsA = parse(a);
       const funcsB = parse(b);
-      if (Object.keys(funcsA).length && Object.keys(funcsB).length) {
-        expect_deep_approximately_equals(funcsA, funcsB, tol, { a, b });
-      }
       if (context.key) {
-        if (context.key === "d") {
+        if (context.key.localeCompare("d") === 0) {
           // path
           const aT = f(a);
           const bT = f(b);
-          console.log(aT);
-          console.log(bT);
           expect_deep_approximately_equals(aT, bT, tol, {
             a,
             b,
             key: context.key,
           });
         }
+      }
+      if (Object.keys(funcsA).length && Object.keys(funcsB).length) {
+        expect_deep_approximately_equals(funcsA, funcsB, tol, { a, b });
       }
 
       // Otherwise, use regular equals
