@@ -248,6 +248,10 @@ export class ImportDataView extends React.Component<
               }),
             };
 
+            table.columns = table.columns.filter(
+              (column) => column.type !== Dataset.DataType.Image
+            );
+
             return [table, imageTable];
           }
           return [table, null];
@@ -350,46 +354,79 @@ export class ImportDataView extends React.Component<
           {this.state.dataTable ? ": " + this.state.dataTable.name : null}
         </h2>
         {this.state.dataTable ? (
-          <div className="charticulator__import-data-view-table">
-            {this.renderTable(
-              this.state.dataTable,
-              (column: string, type: Dataset.DataType) => {
-                const dataColumn = this.state.dataTable.columns.find(
-                  (col) => col.name === column
-                );
-                const dataTableError = convertColumns(
-                  this.state.dataTable,
-                  dataColumn,
-                  this.state.dataTableOrigin,
-                  type as Dataset.DataType
-                );
-                if (dataTableError) {
-                  this.props.store.dispatcher.dispatch(
-                    new AddMessage("parsingDataError", {
-                      text: dataTableError as string,
-                    })
+          <>
+            <div className="charticulator__import-data-view-table">
+              {this.renderTable(
+                this.state.dataTable,
+                (column: string, type: Dataset.DataType) => {
+                  const dataColumn = this.state.dataTable.columns.find(
+                    (col) => col.name === column
                   );
-                } else {
-                  this.setState({
-                    dataTable: this.state.dataTable,
-                  });
-                  dataColumn.type = type;
-                  dataColumn.metadata.kind = getPreferredDataKind(type);
+                  const dataTableError = convertColumns(
+                    this.state.dataTable,
+                    dataColumn,
+                    this.state.dataTableOrigin,
+                    type as Dataset.DataType
+                  );
+                  if (dataTableError) {
+                    this.props.store.dispatcher.dispatch(
+                      new AddMessage("parsingDataError", {
+                        text: dataTableError as string,
+                      })
+                    );
+                  } else {
+                    this.setState({
+                      dataTable: this.state.dataTable,
+                    });
+                    dataColumn.type = type;
+                    dataColumn.metadata.kind = getPreferredDataKind(type);
+                  }
                 }
-              }
-            )}
-            <ButtonRaised
-              text={strings.fileImport.removeButtonText}
-              url={R.getSVGIcon("ChromeClose")}
-              title={strings.fileImport.removeButtonTitle}
-              onClick={() => {
-                this.setState({
-                  dataTable: null,
-                  dataTableOrigin: null,
-                });
-              }}
-            />
-          </div>
+              )}
+              <ButtonRaised
+                text={strings.fileImport.removeButtonText}
+                url={R.getSVGIcon("ChromeClose")}
+                title={strings.fileImport.removeButtonTitle}
+                onClick={() => {
+                  this.setState({
+                    dataTable: null,
+                    dataTableOrigin: null,
+                  });
+                }}
+              />
+            </div>
+            {this.state.imagesTable ? (
+              <div className="charticulator__import-data-view-table">
+                {this.renderTable(
+                  this.state.imagesTable,
+                  (column: string, type: Dataset.DataType) => {
+                    const dataColumn = this.state.imagesTable.columns.find(
+                      (col) => col.name === column
+                    );
+                    const dataTableError = convertColumns(
+                      this.state.imagesTable,
+                      dataColumn,
+                      this.state.dataTableOrigin,
+                      type as Dataset.DataType
+                    );
+                    if (dataTableError) {
+                      this.props.store.dispatcher.dispatch(
+                        new AddMessage("parsingDataError", {
+                          text: dataTableError as string,
+                        })
+                      );
+                    } else {
+                      this.setState({
+                        imagesTable: this.state.imagesTable,
+                      });
+                      dataColumn.type = type;
+                      dataColumn.metadata.kind = getPreferredDataKind(type);
+                    }
+                  }
+                )}
+              </div>
+            ) : null}
+          </>
         ) : (
           <FileUploader
             extensions={["csv", "tsv"]}
