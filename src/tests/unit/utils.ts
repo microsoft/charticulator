@@ -76,13 +76,10 @@ export function expect_deep_approximately_equals(
         `${JSON.stringify(context, null, "")}`
       );
     } else {
-      const funcsA = parse(a);
-      const funcsB = parse(b);
       if (context.key) {
         if (context.key.localeCompare("d") === 0) {
-          // path
-          const aT = f(a);
-          const bT = f(b);
+          const aT = parseSVGPath(a);
+          const bT = parseSVGPath(b);
           expect_deep_approximately_equals(aT, bT, tol, {
             a,
             b,
@@ -90,8 +87,16 @@ export function expect_deep_approximately_equals(
           });
         }
       }
-      if (Object.keys(funcsA).length && Object.keys(funcsB).length) {
-        expect_deep_approximately_equals(funcsA, funcsB, tol, { a, b });
+      const svgTransformA = parseSVGTransform(a);
+      const svgTransformB = parseSVGTransform(b);
+      if (
+        Object.keys(svgTransformA).length &&
+        Object.keys(svgTransformB).length
+      ) {
+        expect_deep_approximately_equals(svgTransformA, svgTransformB, tol, {
+          a,
+          b,
+        });
       }
 
       // Otherwise, use regular equals
@@ -101,7 +106,7 @@ export function expect_deep_approximately_equals(
 }
 
 /* tslint:disable */
-export function parse(a: any) {
+export function parseSVGTransform(a: any) {
   var b: any = {};
   for (var i in (a = a.match(/(\w+\((\-?\d+\.?\d*e?\-?\d*,?)+\))+/g))) {
     var c = a[i].match(/[\w\.\-]+/g);
@@ -123,7 +128,7 @@ export async function waitSolver(): Promise<void> {
   return new Promise<void>((resolve) => setTimeout(resolve, 5000));
 }
 
-function f(d: string) {
+function parseSVGPath(d: string) {
   d = d.replace(/\s{2,}/g, " "); // Remove multiple spaces
   d = d.replace(/\\n/g, "");
   d = d.replace(/([a-zA-Z])\s[0-9]/g, "$1,"); // Add letters to coords group
