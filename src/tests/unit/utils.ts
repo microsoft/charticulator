@@ -135,7 +135,7 @@ function f(d: string) {
     var coordString = d1[i];
     const m = coordString.match(/\d+\.*\d*/);
     if (m && m.length) {
-      coords.push(+m[0]);
+      coords.push(Math.round(+m[0]));
     } else {
       coords.push(coordString);
     }

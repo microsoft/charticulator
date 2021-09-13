@@ -60,7 +60,7 @@ export function matchSnapshot(chai: any, utils: any) {
           expect_deep_approximately_equals(
             JSON.parse(obj),
             JSON.parse(snapshot.code),
-            5
+            2
           );
         } catch (ex) {
           throw new chai.AssertionError(
