@@ -86,6 +86,8 @@ export function expect_deep_approximately_equals(
           // path
           const aT = f(a);
           const bT = f(b);
+          console.log(aT);
+          console.log(bT);
           expect_deep_approximately_equals(aT, bT, tol, {
             a,
             b,
