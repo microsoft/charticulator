@@ -296,7 +296,7 @@ export function getConvertableTypes(
       ];
       break;
     case DataType.Image:
-      types = [DataType.String];
+      types = [DataType.Image, DataType.String];
       break;
   }
 
