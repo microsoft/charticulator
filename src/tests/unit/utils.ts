@@ -25,6 +25,7 @@ export function expect_deep_approximately_equals(
   tol: number,
   context?: any
 ) {
+  debugger;
   if (a == null && b == null) {
     return;
   }
@@ -131,6 +132,7 @@ export async function waitSolver(): Promise<void> {
 function parseSVGPath(d: string) {
   d = d.replace(/\s{2,}/g, " "); // Remove multiple spaces
   d = d.replace(/\\n/g, "");
+  d = d.replace(/,/g, " ");
   d = d.replace(/([a-zA-Z])\s[0-9]/g, "$1,"); // Add letters to coords group
   const d1 = d.split(" "); // Split on space
 
