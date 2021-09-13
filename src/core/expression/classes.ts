@@ -32,7 +32,6 @@ export class SimpleContext implements Context {
 }
 
 import { constants, functions, operators, precedences } from "./intrinsics";
-import { parse } from "./parser";
 import {
   DataflowTable,
   DataflowTableGroupedContext,
