@@ -115,19 +115,23 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           header: strings.objects.general,
         },
         [
-          manager.mappingEditor("Width", "width", {
+          manager.mappingEditor(strings.objects.width, "width", {
             hints: { autoRange: true, startWithZero: "always" },
             acceptKinds: [Specification.DataKind.Numerical],
             defaultAuto: true,
           }),
-          manager.mappingEditor("Height", "height", {
+          manager.mappingEditor(strings.objects.height, "height", {
             hints: { autoRange: true, startWithZero: "always" },
             acceptKinds: [Specification.DataKind.Numerical],
             defaultAuto: true,
           }),
-          manager.mappingEditor("Visibility", "visible", {
-            defaultValue: true,
-          }),
+          manager.mappingEditor(
+            strings.objects.visibleOn.visibility,
+            "visible",
+            {
+              defaultValue: true,
+            }
+          ),
         ]
       ),
       manager.verticalGroup(
@@ -135,11 +139,11 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           header: strings.toolbar.text,
         },
         [
-          manager.mappingEditor("Text", "text", {}),
-          manager.mappingEditor("Font", "fontFamily", {
+          manager.mappingEditor(strings.toolbar.text, "text", {}),
+          manager.mappingEditor(strings.objects.font, "fontFamily", {
             defaultValue: defaultFont,
           }),
-          manager.mappingEditor("Size", "fontSize", {
+          manager.mappingEditor(strings.objects.size, "fontSize", {
             hints: { rangeNumber: [0, 36] },
             defaultValue: defaultFontSize,
             numberOptions: {
@@ -166,22 +170,22 @@ export class TextboxElementClass extends EmphasizableMarkClass<
                 "AlignHorizontalCenter",
                 "AlignHorizontalRight",
               ],
-              labels: ["Left", "Middle", "Right"],
+              labels: [
+                strings.alignment.left,
+                strings.alignment.middle,
+                strings.alignment.right,
+              ],
               label: strings.objects.alignX,
             }
           ),
           props.alignX != "middle"
-            ? manager.horizontal(
-                [0, 1],
-                manager.label("Margin:"),
-                manager.inputNumber(
-                  { property: "paddingX" },
-                  {
-                    updownTick: 1,
-                    showUpdown: true,
-                    label: strings.objects.text.margin,
-                  }
-                )
+            ? manager.inputNumber(
+                { property: "paddingX" },
+                {
+                  updownTick: 1,
+                  showUpdown: true,
+                  label: strings.objects.text.margin,
+                }
               )
             : null,
           manager.inputSelect(
@@ -194,63 +198,59 @@ export class TextboxElementClass extends EmphasizableMarkClass<
                 "AlignVerticalCenter",
                 "AlignVerticalTop",
               ],
-              labels: ["Bottom", "Middle", "Top"],
+              labels: [
+                strings.alignment.bottom,
+                strings.alignment.middle,
+                strings.alignment.top,
+              ],
               label: strings.objects.alignX,
             }
           ),
           props.alignY != "middle"
-            ? manager.horizontal(
-                [0, 1],
-                manager.label("Margin:"),
-                manager.inputNumber(
-                  { property: "paddingY" },
-                  {
-                    updownTick: 1,
-                    showUpdown: true,
-                    label: strings.objects.text.margin,
-                  }
-                )
+            ? manager.inputNumber(
+                { property: "paddingY" },
+                {
+                  updownTick: 1,
+                  showUpdown: true,
+                  label: strings.objects.text.margin,
+                }
               )
             : null,
-          manager.row(
-            "Wrap text",
-            manager.inputBoolean(
-              { property: "wordWrap" },
-              {
-                type: "checkbox",
-              }
-            )
+          manager.inputBoolean(
+            { property: "wordWrap" },
+            {
+              type: "checkbox",
+              headerLabel: strings.objects.text.textDisplaying,
+              label: strings.objects.text.wrapText,
+            }
           ),
           props.wordWrap
-            ? manager.row(
-                "Alignment",
-                manager.horizontal(
-                  [0, 1],
-                  manager.inputSelect(
-                    { property: "alignText" },
-                    {
-                      type: "radio",
-                      options: ["end", "middle", "start"],
-                      icons: [
-                        "AlignVerticalBottom",
-                        "AlignVerticalCenter",
-                        "AlignVerticalTop",
-                      ],
-                      labels: ["Bottom", "Middle", "Top"],
-                    }
-                  )
-                )
+            ? manager.inputBoolean(
+                { property: "overFlow" },
+                {
+                  type: "checkbox",
+                  label: strings.objects.text.overflow,
+                }
               )
             : null,
           props.wordWrap
-            ? manager.row(
-                "Overflow",
-                manager.inputBoolean(
-                  { property: "overFlow" },
-                  {
-                    type: "checkbox",
-                  }
-                )
+            ? manager.inputSelect(
+                { property: "alignText" },
+                {
+                  type: "radio",
+                  options: ["end", "middle", "start"],
+                  icons: [
+                    "AlignVerticalBottom",
+                    "AlignVerticalCenter",
+                    "AlignVerticalTop",
+                  ],
+                  labels: [
+                    strings.alignment.bottom,
+                    strings.alignment.middle,
+                    strings.alignment.top,
+                  ],
+                  label: strings.alignment.alignment,
+                }
               )
             : null,
         ]
@@ -260,9 +260,9 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           header: strings.objects.style,
         },
         [
-          manager.mappingEditor("Color", "color", {}),
-          manager.mappingEditor("Outline", "outline", {}),
-          manager.mappingEditor("Opacity", "opacity", {
+          manager.mappingEditor(strings.objects.color, "color", {}),
+          manager.mappingEditor(strings.objects.outline, "outline", {}),
+          manager.mappingEditor(strings.objects.opacity, "opacity", {
             hints: { rangeNumber: [0, 1] },
             defaultValue: 1,
             numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
