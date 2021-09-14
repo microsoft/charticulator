@@ -27,7 +27,6 @@ import {
   SymbolElementProperties,
   symbolTypes,
 } from "./symbol.attrs";
-import { Geometry } from "../../common/math";
 
 export const symbolTypesList = symbolTypes;
 
