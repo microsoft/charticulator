@@ -38,4 +38,7 @@ export interface SymbolElementAttributes extends AttributeMap {
   symbol: string;
 }
 
-export type SymbolElementProperties = AttributeMap;
+export interface SymbolElementProperties extends AttributeMap {
+  visible: boolean;
+  rotation: number;
+}
