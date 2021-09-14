@@ -143,12 +143,6 @@ describe("Charticulator", () => {
   }).timeout(longTimeOut);
 
   // test checks that charticulator opens saved chart correctly
-  it("open nightingale chart", async () => {
-    const chartFilePath = `base/${pathPrefix}/nightingale.chart`;
-    await testOpenChart(application, await loadJSON(chartFilePath));
-  }).timeout(longTimeOut);
-
-  // test checks that charticulator opens saved chart correctly
   it("open mushrooms chart", async () => {
     const chartFilePath = `base/${pathPrefix}/mushrooms.chart`;
     await testOpenChart(application, await loadJSON(chartFilePath));
@@ -163,6 +157,12 @@ describe("Charticulator", () => {
   // test checks that charticulator opens saved chart correctly
   it("open bubble_chart chart", async () => {
     const chartFilePath = `base/${pathPrefix}/bubble_chart.chart`;
+    await testOpenChart(application, await loadJSON(chartFilePath));
+  }).timeout(longTimeOut);
+
+  // test checks that charticulator opens saved chart correctly
+  it("open nightingale chart", async () => {
+    const chartFilePath = `base/${pathPrefix}/nightingale.chart`;
     await testOpenChart(application, await loadJSON(chartFilePath));
   }).timeout(longTimeOut);
 
