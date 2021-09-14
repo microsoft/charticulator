@@ -83,7 +83,6 @@ export class NumericalNumberLegendClass extends ChartElementClass<
       style: deepClone(defaultAxisStyle),
       tickFormat: "",
     },
-    table: null,
   };
 
   public attributeNames: NumericalNumberLegendAttributeNames[] = [
