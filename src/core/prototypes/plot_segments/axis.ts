@@ -1170,7 +1170,7 @@ export function buildAxisAppearanceWidgets(
         { property: axisProperty, field: ["style", "verticalText"] },
         {
           type: "checkbox",
-          label: "Vertical text",
+          label: strings.objects.axes.verticalText,
         }
       );
     }
@@ -1203,16 +1203,20 @@ export function buildAxisAppearanceWidgets(
           [
             manager.inputBoolean(
               { property: axisProperty, field: "visible" },
-              { type: "checkbox", label: "Visible", headerLabel: "Appearance" }
+              {
+                type: "checkbox",
+                label: "Visible",
+                headerLabel: strings.objects.appearance,
+              }
             ),
             manager.inputSelect(
               { property: axisProperty, field: "side" },
               {
                 type: "dropdown",
                 showLabel: true,
-                label: "Position:",
+                label: strings.objects.position,
                 options: ["default", "opposite"],
-                labels: ["Default", "Opposite"],
+                labels: [strings.objects.default, strings.objects.opposite],
               }
             ),
           ]
@@ -1248,7 +1252,7 @@ export function buildAxisAppearanceWidgets(
                 field: ["style", "tickSize"],
               },
               {
-                label: "Tick Size",
+                label: strings.objects.axes.ticksize,
               }
             ),
             manager.inputFontFamily(
@@ -1257,7 +1261,7 @@ export function buildAxisAppearanceWidgets(
                 field: ["style", "fontFamily"],
               },
               {
-                label: "Font Family",
+                label: strings.objects.font,
               }
             ),
             manager.inputNumber(
@@ -1266,15 +1270,15 @@ export function buildAxisAppearanceWidgets(
                 showUpdown: true,
                 updownStyle: "font",
                 updownTick: 2,
-                label: "Font Size",
+                label: strings.objects.fontSize,
               }
             ),
             manager.inputBoolean(
               { property: axisProperty, field: ["style", "wordWrap"] },
               {
                 type: "checkbox",
-                headerLabel: "Text displaying",
-                label: "Wrap text",
+                headerLabel: strings.objects.text.textDisplaying,
+                label: strings.objects.text.wrapText,
               }
             ),
             vertical,
@@ -1290,7 +1294,11 @@ export function buildAxisAppearanceWidgets(
       [
         manager.inputBoolean(
           { property: axisProperty, field: "visible" },
-          { type: "checkbox", label: "Visible", headerLabel: "Appearance" }
+          {
+            type: "checkbox",
+            label: strings.objects.visibleOn.visible,
+            headerLabel: strings.objects.appearance,
+          }
         ),
       ]
     );
@@ -1309,7 +1317,7 @@ export function buildAxisWidgets(
     dropzone: {
       type: "axis-data-binding",
       property: axisProperty,
-      prompt: axisName + ": drop here to assign data",
+      prompt: axisName + ": " + strings.objects.dropData,
     },
   };
   const makeAppearance = () => {
@@ -1339,7 +1347,7 @@ export function buildAxisWidgets(
                     field: "expression",
                   },
                   {
-                    label: "Data",
+                    label: strings.objects.axes.data,
                   }
                 ),
                 data.valueType === "date"
@@ -1398,22 +1406,16 @@ export function buildAxisWidgets(
                       { property: axisProperty, field: "numericalMode" },
                       {
                         options: ["linear", "logarithmic"],
-                        labels: ["Linear", "Logarithmic"],
+                        labels: [
+                          strings.scale.linear,
+                          strings.scale.logarithmic,
+                        ],
                         showLabel: true,
                         type: "dropdown",
                         label: "Mode",
                       }
                     )
                   : null,
-                manager.inputExpression(
-                  {
-                    property: axisProperty,
-                    field: "tickDataExpression",
-                  },
-                  {
-                    label: strings.objects.axes.tickData,
-                  }
-                ),
                 manager.inputSelect(
                   { property: axisProperty, field: "tickFormatType" },
                   {
@@ -1422,12 +1424,27 @@ export function buildAxisWidgets(
                       TickFormatType.Date,
                       TickFormatType.Number,
                     ],
-                    labels: ["None", "Date", "Number"],
+                    labels: [
+                      strings.objects.axes.tickDataFormatTypeNone,
+                      strings.objects.axes.tickDataFormatTypeDate,
+                      strings.objects.axes.tickDataFormatTypeNumber,
+                    ],
                     showLabel: true,
                     type: "dropdown",
                     label: strings.objects.axes.tickDataFormatType,
                   }
                 ),
+                data.tickFormatType !== TickFormatType.None
+                  ? manager.inputExpression(
+                      {
+                        property: axisProperty,
+                        field: "tickDataExpression",
+                      },
+                      {
+                        label: strings.objects.axes.tickData,
+                      }
+                    )
+                  : null,
                 manager.inputFormat(
                   {
                     property: axisProperty,
