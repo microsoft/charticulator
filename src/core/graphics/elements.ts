@@ -121,6 +121,7 @@ export interface Rect extends Element {
   y2: number;
   rx?: number;
   ry?: number;
+  rotation?: number;
 }
 
 export interface Line extends Element {
@@ -139,6 +140,7 @@ export interface Polygon extends Element {
 export interface Path extends Element {
   type: "path";
   cmds: { cmd: string; args: number[] }[];
+  transform: string;
 }
 
 export interface Circle extends Element {
@@ -259,7 +261,7 @@ export function makeText(
 }
 
 export class PathMaker {
-  public path: Path = { type: "path", cmds: [] };
+  public path: Path = { type: "path", cmds: [], transform: "" };
 
   public currentX: number;
   public currentY: number;
@@ -270,6 +272,10 @@ export class PathMaker {
   public lineTo(x: number, y: number) {
     this.path.cmds.push({ cmd: "L", args: [x, y] });
   }
+  public transformRotation(angle: number, x: number = 0, y: number = 0) {
+    this.path.transform = `rotate(${angle} ${x} ${y})`;
+  }
+  
   public cubicBezierCurveTo(
     c1x: number,
     c1y: number,

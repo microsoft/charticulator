@@ -2,21 +2,22 @@
 // Licensed under the MIT license.
 
 import { strings } from "../../../strings";
-import { Point, Color, rgbToHex } from "../../common";
+import { Color, Point, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
+import { makeGroup } from "../../graphics";
 import * as Specification from "../../specification";
 import { MappingType } from "../../specification";
 import {
+  AttributeDescriptions,
   BoundingBox,
   Controls,
   DropZones,
   Handles,
   LinkAnchor,
+  ObjectClass,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters,
-  AttributeDescriptions,
-  ObjectClass,
 } from "../common";
 import { ChartStateManager } from "../state";
 import { EmphasizableMarkClass } from "./emphasis";
@@ -50,6 +51,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
   public static defaultProperties: Partial<SymbolElementProperties> = {
     ...ObjectClass.defaultProperties,
     visible: true,
+    rotation: 0,
   };
 
   public static defaultMappingValues: Partial<SymbolElementAttributes> = {
@@ -115,6 +117,8 @@ export class SymbolElementClass extends EmphasizableMarkClass<
       return null;
     }
     const pc = cs.transformPoint(attrs.x + offset.x, attrs.y + offset.y);
+    const rotation = this.object.properties.rotation;
+
     const style = {
       strokeColor: attrs.stroke,
       strokeWidth: attrs.strokeWidth,
@@ -126,32 +130,42 @@ export class SymbolElementClass extends EmphasizableMarkClass<
     switch (attrs.symbol) {
       case "square": {
         const w = Math.sqrt(attrs.size);
-        return <Graphics.Rect>{
+        const elem = <Graphics.Rect>{
           type: "rect",
           style,
-          x1: pc.x - w / 2,
-          y1: pc.y - w / 2,
-          x2: pc.x + w / 2,
-          y2: pc.y + w / 2,
+          x1: -w / 2,
+          y1: -w / 2,
+          x2: w / 2,
+          y2: w / 2,
+          rotation: rotation,
         };
+        const gr = makeGroup([elem]);
+        gr.transform.x = pc.x;
+        gr.transform.y = pc.y;
+        return gr;
       }
       case "cross": {
         const r = Math.sqrt(attrs.size / 5) / 2;
         const path = Graphics.makePath(style);
-        path.moveTo(pc.x - 3 * r, pc.y - r);
-        path.lineTo(pc.x - r, pc.y - r);
-        path.lineTo(pc.x - r, pc.y - 3 * r);
-        path.lineTo(pc.x + r, pc.y - 3 * r);
-        path.lineTo(pc.x + r, pc.y - r);
-        path.lineTo(pc.x + 3 * r, pc.y - r);
-        path.lineTo(pc.x + 3 * r, pc.y + r);
-        path.lineTo(pc.x + r, pc.y + r);
-        path.lineTo(pc.x + r, pc.y + 3 * r);
-        path.lineTo(pc.x - r, pc.y + 3 * r);
-        path.lineTo(pc.x - r, pc.y + r);
-        path.lineTo(pc.x - 3 * r, pc.y + r);
+        path.moveTo(-3 * r, -r);
+        path.lineTo(-r, -r);
+        path.lineTo(-r, -3 * r);
+        path.lineTo(-r, -3 * r);
+        path.lineTo(+r, -3 * r);
+        path.lineTo(+r, -r);
+        path.lineTo(+3 * r, -r);
+        path.lineTo(+3 * r, +r);
+        path.lineTo(+r, +r);
+        path.lineTo(+r, +3 * r);
+        path.lineTo(-r, +3 * r);
+        path.lineTo(-r, +r);
+        path.lineTo(-3 * r, +r);
+        path.transformRotation(rotation);
         path.closePath();
-        return path.path;
+        const gr = makeGroup([path.path]);
+        gr.transform.x = pc.x;
+        gr.transform.y = pc.y;
+        return gr;
       }
       case "diamond": {
         const tan30 = 0.5773502691896257; // Math.sqrt(1 / 3);
@@ -159,12 +173,17 @@ export class SymbolElementClass extends EmphasizableMarkClass<
         const y = Math.sqrt(attrs.size / tan30_2),
           x = y * tan30;
         const path = Graphics.makePath(style);
-        path.moveTo(pc.x, pc.y - y);
-        path.lineTo(pc.x + x, pc.y);
-        path.lineTo(pc.x, pc.y + y);
-        path.lineTo(pc.x - x, pc.y);
+
+        path.moveTo(0, -y);
+        path.lineTo(x, 0);
+        path.lineTo(0, y);
+        path.lineTo(-x, 0);
+        path.transformRotation(rotation);
         path.closePath();
-        return path.path;
+        const gr = makeGroup([path.path]);
+        gr.transform.x = pc.x;
+        gr.transform.y = pc.y;
+        return gr;
       }
       case "star": {
         const ka = 0.8908130915292852281;
@@ -175,27 +194,35 @@ export class SymbolElementClass extends EmphasizableMarkClass<
           x = kx * r,
           y = ky * r;
         const path = Graphics.makePath(style);
-        path.moveTo(pc.x, pc.y - r);
-        path.lineTo(pc.x + x, pc.y + y);
+        path.moveTo(0, -r);
+        path.lineTo(x, y);
         for (let i = 1; i < 5; ++i) {
           const a = (Math.PI * 2 * i) / 5,
             c = Math.cos(a),
             s = Math.sin(a);
-          path.lineTo(pc.x + s * r, pc.y - c * r);
-          path.lineTo(pc.x + c * x - s * y, pc.y + s * x + c * y);
+          path.lineTo(s * r, -c * r);
+          path.lineTo(c * x - s * y, s * x + c * y);
         }
+        path.transformRotation(rotation);
         path.closePath();
-        return path.path;
+        const gr = makeGroup([path.path]);
+        gr.transform.x = pc.x;
+        gr.transform.y = pc.y;
+        return gr;
       }
       case "triangle": {
         const sqrt3 = Math.sqrt(3);
         const y = -Math.sqrt(attrs.size / (sqrt3 * 3));
         const path = Graphics.makePath(style);
-        path.moveTo(pc.x, pc.y + y * 2);
-        path.lineTo(pc.x - sqrt3 * y, pc.y - y);
-        path.lineTo(pc.x + sqrt3 * y, pc.y - y);
+        path.moveTo(0, y * 2);
+        path.lineTo(-sqrt3 * y, -y);
+        path.lineTo(sqrt3 * y, -y);
+        path.transformRotation(rotation);
         path.closePath();
-        return path.path;
+        const gr = makeGroup([path.path]);
+        gr.transform.x = pc.x;
+        gr.transform.y = pc.y;
+        return gr;
       }
       case "wye": {
         const c = -0.5,
@@ -210,17 +237,21 @@ export class SymbolElementClass extends EmphasizableMarkClass<
           x2 = -x1,
           y2 = y1;
         const path = Graphics.makePath(style);
-        path.moveTo(pc.x + x0, pc.y + y0);
-        path.lineTo(pc.x + x1, pc.y + y1);
-        path.lineTo(pc.x + x2, pc.y + y2);
-        path.lineTo(pc.x + c * x0 - s * y0, pc.y + s * x0 + c * y0);
-        path.lineTo(pc.x + c * x1 - s * y1, pc.y + s * x1 + c * y1);
-        path.lineTo(pc.x + c * x2 - s * y2, pc.y + s * x2 + c * y2);
-        path.lineTo(pc.x + c * x0 + s * y0, pc.y + c * y0 - s * x0);
-        path.lineTo(pc.x + c * x1 + s * y1, pc.y + c * y1 - s * x1);
-        path.lineTo(pc.x + c * x2 + s * y2, pc.y + c * y2 - s * x2);
+        path.moveTo(x0, y0);
+        path.lineTo(x1, y1);
+        path.lineTo(x2, y2);
+        path.lineTo(c * x0 - s * y0, s * x0 + c * y0);
+        path.lineTo(c * x1 - s * y1, s * x1 + c * y1);
+        path.lineTo(c * x2 - s * y2, s * x2 + c * y2);
+        path.lineTo(c * x0 + s * y0, c * y0 - s * x0);
+        path.lineTo(c * x1 + s * y1, c * y1 - s * x1);
+        path.lineTo(c * x2 + s * y2, c * y2 - s * x2);
+        path.transformRotation(rotation);
         path.closePath();
-        return path.path;
+        const gr = makeGroup([path.path]);
+        gr.transform.x = pc.x;
+        gr.transform.y = pc.y;
+        return gr;
       }
       default: {
         return <Graphics.Circle>{
@@ -324,6 +355,14 @@ export class SymbolElementClass extends EmphasizableMarkClass<
             "visible",
             {
               defaultValue: true,
+            }
+          ),
+          manager.inputNumber(
+            { property: "rotation" },
+            {
+              label: strings.objects.rotation,
+              showUpdown: true,
+              updownTick: 5,
             }
           ),
         ]
