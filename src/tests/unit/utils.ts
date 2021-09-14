@@ -77,17 +77,6 @@ export function expect_deep_approximately_equals(
           `${JSON.stringify(context, null, "")}`
         );
       } else {
-        if (context.key) {
-          if (context.key.localeCompare("d") === 0) {
-            const aT = parseSVGPath(a);
-            const bT = parseSVGPath(b);
-            expect_deep_approximately_equals(aT, bT, tol, {
-              a,
-              b,
-              key: context.key,
-            });
-          }
-        }
         const svgTransformA = parseSVGTransform(a);
         const svgTransformB = parseSVGTransform(b);
         if (
@@ -99,9 +88,20 @@ export function expect_deep_approximately_equals(
             b,
           });
         }
-
-        // Otherwise, use regular equals
-        expect(a).equals(b, `${JSON.stringify(context, null, "")}`);
+        if (context.key) {
+          if (context.key.localeCompare("d") === 0) {
+            const aT = parseSVGPath(a);
+            const bT = parseSVGPath(b);
+            expect_deep_approximately_equals(aT, bT, tol, {
+              a,
+              b,
+              key: context.key,
+            });
+          }
+        } else {
+          // Otherwise, use regular equals
+          expect(a).equals(b, `${JSON.stringify(context, null, "")}`);
+        }
       }
     }
   } catch (er) {
