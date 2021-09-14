@@ -1179,6 +1179,25 @@ export function buildAxisAppearanceWidgets(
       manager.vertical(
         manager.verticalGroup(
           {
+            header: strings.objects.general,
+          },
+          [
+            manager.inputFormat(
+              {
+                property: axisProperty,
+                field: "tickFormat",
+              },
+              {
+                blank: strings.core.auto,
+                isDateField: false,
+                label: strings.objects.axes.tickFormat,
+              }
+            ),
+          ]
+        ),
+
+        manager.verticalGroup(
+          {
             header: strings.objects.appearance,
           },
           [
