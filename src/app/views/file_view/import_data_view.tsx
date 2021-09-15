@@ -7,18 +7,18 @@ import { getConfig } from "../../config";
 import {
   Dataset,
   deepClone,
+  ImageKeyColumn,
+  KeyColumn,
   LinkSourceKeyColumn,
   LinkTargetKeyColumn,
-  KeyColumn,
-  ImageKeyColumn,
 } from "../../../core";
 import {
   classNames,
-  getExtensionFromFileName,
-  readFileAsString,
-  getFileNameWithoutExtension,
   convertColumns,
+  getExtensionFromFileName,
+  getFileNameWithoutExtension,
   getPreferredDataKind,
+  readFileAsString,
 } from "../../utils";
 import { ButtonRaised } from "../../components/index";
 import { SVGImageIcon } from "../../components/icons";
@@ -235,10 +235,18 @@ export class ImportDataView extends React.Component<
               column.type === Dataset.DataType.Image
           );
           if (keyAndImageColumns.length === 2) {
+            const imagesIds = table.rows.map((row) => row?.[ImageKeyColumn]);
+            const uniqueIds = [...new Set(imagesIds)];
+
+            const rows = uniqueIds.map((imageId) => {
+              return table.rows.find((row) => row[ImageKeyColumn] === imageId);
+            });
             const imageTable: Dataset.Table = {
               ...table,
+              name: table.name + "Images",
+              displayName: table.displayName + "Images",
               columns: keyAndImageColumns,
-              rows: table.rows.map((row) => {
+              rows: rows.map((row) => {
                 const imageRow: Dataset.Row = {
                   _id: row["_id"],
                 };

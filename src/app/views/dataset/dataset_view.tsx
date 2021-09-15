@@ -296,7 +296,7 @@ export class ColumnsView extends React.Component<
                 iconName: "More",
               }}
               styles={buttonStyles}
-              id="charticulator__dataset-view-detail"
+              id={`charticulator__dataset-view-detail-${this.props.table.displayName}`}
               title={strings.dataset.showDataValues}
               // ={false}
               onClick={() => {
@@ -307,7 +307,7 @@ export class ColumnsView extends React.Component<
             />
             {this.state.tableViewIsOpened ? (
               <Callout
-                target="#charticulator__dataset-view-detail"
+                target={`#charticulator__dataset-view-detail-${this.props.table.displayName}`}
                 onDismiss={() => {
                   this.setState({
                     tableViewIsOpened: false,

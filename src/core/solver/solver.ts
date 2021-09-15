@@ -6,7 +6,7 @@ import * as Expression from "../expression";
 import * as Prototypes from "../prototypes";
 import * as Specification from "../specification";
 
-import { getById, KeyNameMap, uniqueID, zip } from "../common";
+import { getById, ImageKeyColumn, KeyNameMap, uniqueID, zip } from "../common";
 import { ConstraintSolver, ConstraintStrength, Variable } from "./abstract";
 import { Matrix, WASMSolver } from "./wasm_solver";
 import { PlotSegmentClass } from "../prototypes/plot_segments";
@@ -122,6 +122,18 @@ export class ChartConstraintSolver {
         break;
       case MappingType.expressionScale:
         {
+          const dataTable = this.manager.dataset.tables.filter(
+            (tb) => tb.type === "Main"
+          );
+          const dataImageIndex =
+            dataTable?.[0]?.rows[rowIndex[0]][ImageKeyColumn];
+          const imageTable = this.manager.dataset.tables.filter(
+            (tb) => tb.type === "Image"
+          );
+          const imageDataTableIndex = imageTable?.[0]?.rows.find(
+            (row) => row[ImageKeyColumn] == dataImageIndex
+          );
+
           // get table from scale mapping
           const scaleMapping = <Specification.ScaleValueExpressionMapping>(
             mapping
@@ -131,7 +143,8 @@ export class ChartConstraintSolver {
           );
           rowContext = tableContext.getGroupedContext(rowIndex);
           const expr = this.expressionCache.parse(scaleMapping.expression);
-          const dataValue = <Dataset.DataValue>expr.getValue(rowContext);
+          // const dataValue = <Dataset.DataValue>expr.getValue(rowContext);
+          const dataValue = <Dataset.DataValue>"";
           const scaleClass = <Prototypes.Scales.ScaleClass>(
             this.manager.getClassById(scaleMapping.scale)
           );
@@ -142,7 +155,9 @@ export class ChartConstraintSolver {
               this.solver
             );
           }
-          const value = scaleClass.mapDataToAttribute(dataValue);
+          const value = scaleClass.mapDataToAttribute(
+            imageDataTableIndex[ImageKeyColumn]
+          );
           attrs[attr] = value;
         }
         break;
