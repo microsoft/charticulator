@@ -57,6 +57,7 @@ export interface NumericalNumberLegendProperties
     visible: boolean;
     side: AxisSide;
     style: Specification.Types.AxisRenderingStyle;
+    tickFormat: string;
   };
   polarAngularMode?: boolean;
 }
@@ -80,6 +81,7 @@ export class NumericalNumberLegendClass extends ChartElementClass<
       side: "default",
       visible: true,
       style: deepClone(defaultAxisStyle),
+      tickFormat: "",
     },
   };
 
@@ -304,6 +306,7 @@ export class NumericalNumberLegendClass extends ChartElementClass<
 
     const { startAngle, endAngle } = this.state.attributes;
     const length = endAngle - startAngle;
+    const props = this.object.properties;
 
     const scaling = (rangeMax - rangeMin) / (domainMax - domainMin);
     renderer.setLinearScale(
@@ -311,7 +314,7 @@ export class NumericalNumberLegendClass extends ChartElementClass<
       domainMin + (length - rangeMin / 360) / scaling,
       startAngle,
       endAngle,
-      null
+      props.axis.tickFormat
     );
     renderer.setStyle(this.object.properties.axis.style);
 
@@ -337,7 +340,7 @@ export class NumericalNumberLegendClass extends ChartElementClass<
 
     const renderer = new AxisRenderer();
     renderer.oppositeSide = this.object.properties.axis.side === "opposite";
-
+    const props = this.object.properties;
     // Extend/shrink range, and update the domain accordingly. Keep the scaling factor.
     const scaling = (rangeMax - rangeMin) / (domainMax - domainMin);
     renderer.setLinearScale(
@@ -345,7 +348,7 @@ export class NumericalNumberLegendClass extends ChartElementClass<
       domainMin + (length - rangeMin) / scaling,
       rangeMin,
       length,
-      null
+      props.axis.tickFormat
     );
     renderer.setStyle(this.object.properties.axis.style);
 
@@ -402,6 +405,7 @@ export class NumericalNumberLegendClass extends ChartElementClass<
 
         const length = isYEquals ? dx : dy;
         const renderer = new AxisRenderer();
+        const props = this.object.properties;
 
         const scaling = (rangeMax - rangeMin) / (domainMax - domainMin);
         renderer.setLinearScale(
@@ -409,7 +413,7 @@ export class NumericalNumberLegendClass extends ChartElementClass<
           domainMin + (length - rangeMin) / scaling,
           rangeMin,
           length,
-          null
+          props.axis.tickFormat
         );
         renderer.setStyle({
           ...defaultAxisStyle,
@@ -472,10 +476,7 @@ export class NumericalNumberLegendClass extends ChartElementClass<
         isVisible: props.axis.visible,
         wordWrap: props.axis.style.wordWrap,
       }),
-      ...PlotSegmentClass.getGridLineAttributePanelWidgets(
-        manager,
-        "axis"
-      ),
+      ...PlotSegmentClass.getGridLineAttributePanelWidgets(manager, "axis"),
     ];
   }
 }
