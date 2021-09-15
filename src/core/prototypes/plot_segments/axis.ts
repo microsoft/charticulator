@@ -1179,25 +1179,6 @@ export function buildAxisAppearanceWidgets(
       manager.vertical(
         manager.verticalGroup(
           {
-            header: strings.objects.general,
-          },
-          [
-            manager.inputFormat(
-              {
-                property: axisProperty,
-                field: "tickFormat",
-              },
-              {
-                blank: strings.core.auto,
-                isDateField: false,
-                label: strings.objects.axes.tickFormat,
-              }
-            ),
-          ]
-        ),
-
-        manager.verticalGroup(
-          {
             header: strings.objects.appearance,
           },
           [
@@ -1244,6 +1225,17 @@ export function buildAxisAppearanceWidgets(
               {
                 label: strings.objects.axes.tickColor,
                 labelKey: strings.objects.axes.tickColor,
+              }
+            ),
+            manager.inputFormat(
+              {
+                property: axisProperty,
+                field: "tickFormat",
+              },
+              {
+                blank: strings.core.auto,
+                isDateField: false,
+                label: strings.objects.axes.tickFormat,
               }
             ),
             manager.inputNumber(
@@ -1333,22 +1325,29 @@ export function buildAxisWidgets(
           widgets.push(
             manager.verticalGroup(
               {
-                header: axisName + strings.objects.axes.numericalSuffix,
+                header: strings.objects.general,
               },
               [
-                manager.sectionHeader(
-                  axisName + strings.objects.axes.numericalSuffix,
-                  manager.clearButton({ property: axisProperty }, null, true),
-                  dropzoneOptions
-                ),
-                manager.inputExpression(
-                  {
-                    property: axisProperty,
-                    field: "expression",
-                  },
-                  {
-                    label: strings.objects.axes.data,
-                  }
+                // manager.sectionHeader(
+                //   axisName + strings.objects.axes.numericalSuffix,
+                //   manager.clearButton({ property: axisProperty }, null, true),
+                //   dropzoneOptions
+                // ),
+                manager.label(strings.objects.axes.data),
+                manager.horizontal(
+                  [1, 0],
+                  manager.sectionHeader(
+                    null,
+                    manager.inputExpression(
+                      {
+                        property: axisProperty,
+                        field: "expression",
+                      },
+                      {}
+                    ),
+                    dropzoneOptions
+                  ),
+                  manager.clearButton({ property: axisProperty }, null, true)
                 ),
                 data.valueType === "date"
                   ? manager.label(strings.objects.dataAxis.range)
@@ -1514,127 +1513,34 @@ export function buildAxisWidgets(
           widgets.push(
             manager.verticalGroup(
               {
-                header: axisName + strings.objects.axes.categoricalSuffix,
+                header: strings.objects.general,
               },
               [
-                manager.sectionHeader(
-                  "Data",
-                  manager.clearButton({ property: axisProperty }, null, true),
-                  dropzoneOptions
-                ),
-                manager.vertical(
-                  manager.label("Data"),
-                  manager.horizontal(
-                    [1, 0],
-                    manager.inputExpression({
-                      property: axisProperty,
-                      field: "expression",
-                    }),
-                    manager.reorderWidget(
-                      { property: axisProperty, field: "categories" },
-                      { allowReset: true }
-                    )
-                  ),
-                  manager.inputNumber(
-                    { property: axisProperty, field: "gapRatio" },
-                    {
-                      minimum: 0,
-                      maximum: 1,
-                      percentage: true,
-                      showSlider: true,
-                      label: "Gap",
-                    }
-                  ),
-                  data.valueType === "date"
-                    ? (manager.inputExpression(
-                        {
-                          property: axisProperty,
-                          field: "tickDataExpression",
-                        },
-                        {
-                          label: strings.objects.axes.tickData,
-                        }
-                      ),
-                      manager.row(
-                        strings.objects.axes.tickFormat,
-                        manager.inputFormat(
-                          {
-                            property: axisProperty,
-                            field: "tickFormat",
-                          },
-                          {
-                            blank: strings.core.auto,
-                            isDateField:
-                              data.numericalMode === NumericalMode.Temporal ||
-                              data.valueType === DataType.Date,
-                          }
-                        )
-                      ))
-                    : null,
-                  manager.label(strings.objects.dataAxis.scrolling),
-                  manager.inputBoolean(
-                    {
-                      property: axisProperty,
-                      field: "allowScrolling",
-                    },
-                    {
-                      type: "checkbox",
-                      label: strings.objects.dataAxis.allowScrolling,
-                      observerConfig: {
-                        isObserver: true,
-                        properties: {
-                          property: axisProperty,
-                          field: "windowSize",
-                        },
-                        value: 10,
+                // manager.sectionHeader(
+                //   strings.objects.axes.data,
+                //   manager.clearButton({ property: axisProperty }, null, true),
+                //   dropzoneOptions
+                // ),
+                // manager.vertical(
+                manager.label(strings.objects.axes.data),
+                manager.horizontal(
+                  [1, 0],
+                  manager.sectionHeader(
+                    null,
+                    manager.inputExpression(
+                      {
+                        property: axisProperty,
+                        field: "expression",
                       },
-                    }
+                      {}
+                    ),
+                    dropzoneOptions
                   ),
-                  data.allowScrolling
-                    ? manager.inputNumber(
-                        {
-                          property: axisProperty,
-                          field: "windowSize",
-                        },
-                        {
-                          maximum: 1000000,
-                          minimum: 1,
-                          label: strings.objects.dataAxis.windowSize,
-                        }
-                      )
-                    : null,
-                  data.allowScrolling
-                    ? manager.inputNumber(
-                        {
-                          property: axisProperty,
-                          field: "barOffset",
-                        },
-                        {
-                          maximum: 1000000,
-                          minimum: -1000000,
-                          label: strings.objects.dataAxis.barOffset,
-                        }
-                      )
-                    : null
-                ),
-              ]
-            )
-          );
-          widgets.push(makeAppearance());
-        }
-        break;
-      case "default":
-        {
-          widgets.push(
-            manager.verticalGroup(
-              {
-                header: axisName + strings.objects.axes.stackingSuffix,
-              },
-              [
-                manager.sectionHeader(
-                  axisName + strings.objects.axes.stackingSuffix,
                   manager.clearButton({ property: axisProperty }, null, true),
-                  dropzoneOptions
+                  manager.reorderWidget(
+                    { property: axisProperty, field: "categories" },
+                    { allowReset: true }
+                  )
                 ),
                 manager.inputNumber(
                   { property: axisProperty, field: "gapRatio" },
@@ -1646,7 +1552,101 @@ export function buildAxisWidgets(
                     label: "Gap",
                   }
                 ),
+                data.valueType === "date"
+                  ? (manager.inputExpression(
+                      {
+                        property: axisProperty,
+                        field: "tickDataExpression",
+                      },
+                      {
+                        label: strings.objects.axes.tickData,
+                      }
+                    ),
+                    manager.row(
+                      strings.objects.axes.tickFormat,
+                      manager.inputFormat(
+                        {
+                          property: axisProperty,
+                          field: "tickFormat",
+                        },
+                        {
+                          blank: strings.core.auto,
+                          isDateField:
+                            data.numericalMode === NumericalMode.Temporal ||
+                            data.valueType === DataType.Date,
+                        }
+                      )
+                    ))
+                  : null,
+                manager.label(strings.objects.dataAxis.scrolling),
+                manager.inputBoolean(
+                  {
+                    property: axisProperty,
+                    field: "allowScrolling",
+                  },
+                  {
+                    type: "checkbox",
+                    label: strings.objects.dataAxis.allowScrolling,
+                    observerConfig: {
+                      isObserver: true,
+                      properties: {
+                        property: axisProperty,
+                        field: "windowSize",
+                      },
+                      value: 10,
+                    },
+                  }
+                ),
+                data.allowScrolling
+                  ? manager.inputNumber(
+                      {
+                        property: axisProperty,
+                        field: "windowSize",
+                      },
+                      {
+                        maximum: 1000000,
+                        minimum: 1,
+                        label: strings.objects.dataAxis.windowSize,
+                      }
+                    )
+                  : null,
+                data.allowScrolling
+                  ? manager.inputNumber(
+                      {
+                        property: axisProperty,
+                        field: "barOffset",
+                      },
+                      {
+                        maximum: 1000000,
+                        minimum: -1000000,
+                        label: strings.objects.dataAxis.barOffset,
+                      }
+                    )
+                  : null,
+                // )
               ]
+            )
+          );
+          widgets.push(makeAppearance());
+        }
+        break;
+      case "default":
+        {
+          widgets.push(
+            manager.sectionHeader(
+              axisName + strings.objects.axes.stackingSuffix,
+              manager.clearButton({ property: axisProperty }, null, true),
+              dropzoneOptions
+            ),
+            manager.inputNumber(
+              { property: axisProperty, field: "gapRatio" },
+              {
+                minimum: 0,
+                maximum: 1,
+                percentage: true,
+                showSlider: true,
+                label: "Gap",
+              }
             )
           );
         }
@@ -1683,10 +1683,34 @@ export function buildAxisWidgets(
     );
   } else {
     widgets.push(
-      manager.sectionHeader(
-        axisName + ": " + strings.core.none,
-        null,
-        dropzoneOptions
+      // manager.sectionHeader(
+      //   axisName + ": " + strings.core.none,
+      //   null,
+      //   dropzoneOptions
+      // )
+      manager.verticalGroup(
+        {
+          header: strings.objects.general,
+        },
+        [
+          manager.label(strings.objects.axes.data),
+          manager.horizontal(
+            [1, 0, 0, 0],
+            manager.sectionHeader(
+              null,
+              manager.inputText(
+                {
+                  property: null,
+                },
+                {
+                  disabled: true,
+                  value: strings.core.none,
+                }
+              ),
+              dropzoneOptions
+            )
+          ),
+        ]
       )
     );
   }

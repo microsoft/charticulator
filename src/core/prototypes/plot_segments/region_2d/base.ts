@@ -2725,7 +2725,7 @@ export class Region2DConstraintBuilder {
   }
 
   public buildAxisWidgets(
-    m: Controls.WidgetManager,
+    manager: Controls.WidgetManager,
     axisName: string,
     axis: "x" | "y"
   ): Controls.Widget[] {
@@ -2736,8 +2736,16 @@ export class Region2DConstraintBuilder {
         ? PlotSegmentAxisPropertyNames.xData
         : PlotSegmentAxisPropertyNames.yData;
     return [
-      ...buildAxisWidgets(data, axisProperty, m, axisName),
-      ...this.plotSegment.buildGridLineWidgets(data, m, axisProperty),
+      manager.verticalGroup(
+        {
+          header: axisName + strings.objects.axes.numericalSuffix,
+          alignVertically: true,
+        },
+        [
+          ...buildAxisWidgets(data, axisProperty, manager, axisName),
+          ...this.plotSegment.buildGridLineWidgets(data, manager, axisProperty),
+        ]
+      ),
     ];
   }
 
