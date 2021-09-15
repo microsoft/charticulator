@@ -33,7 +33,7 @@ declare const viewport: any;
 const config = require("../../../config.test.yml");
 const workerBundle = require("raw-loader?esModule=false!../../../dist/scripts/worker.bundle.js");
 
-describe("Charticulator", () => {
+xdescribe("Charticulator", () => {
   use(matchSnapshot);
   let application: Application = null;
   // The directory containing test cases
@@ -177,7 +177,8 @@ describe("Charticulator", () => {
   //     application.appStore.dataset
   //   );
   // }).timeout(longTimeOut);
-}).timeout(longTimeOut);
+});
+// .timeout(longTimeOut);
 
 async function testOpenChart(application: Application, chartFile: any) {
   application.appStore.dispatcher.dispatch(new Actions.Load(chartFile.state));

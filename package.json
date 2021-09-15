@@ -28,7 +28,11 @@
     "create_cert": "openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes",
     "typedoc": "typedoc --options ./typedoc.json",
     "karma": "karma start",
-    "karma_dev": "karma start --single-run=false"
+    "karma_dev": "karma start --single-run=false",
+    "docker_build": "docker build -t charticulator/test .",
+    "docker_remove": "docker container rm charticulator",
+    "docker_create": "docker create -ti --name charticulator charticulator/test bash",
+    "docker_copy": "docker cp charticulator:/home/node/charticulator/src/tests/karma/ChromeHeadless ./src/tests/unit/"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
