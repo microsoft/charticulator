@@ -334,6 +334,7 @@ export function renderGraphicalElementSVG(
           height={Math.abs(rect.y1 - rect.y2)}
           rx={rect.rx}
           ry={rect.ry}
+          transform={`rotate(${rect.rotation ?? 0})`}
         />
       );
     }
@@ -405,6 +406,7 @@ export function renderGraphicalElementSVG(
           className={options.className || null}
           style={style}
           d={d}
+          transform={path.transform}
         />
       );
     }
