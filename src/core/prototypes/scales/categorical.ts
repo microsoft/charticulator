@@ -608,6 +608,20 @@ export class CategoricalScaleImage extends ScaleClass<
       }
     }
     return [
+      manager.inputBoolean(
+        [
+          {
+            property: "autoDomainMin",
+          },
+          {
+            property: "autoDomainMax",
+          },
+        ],
+        {
+          type: "checkbox",
+          label: strings.objects.dataAxis.autoUpdateValues,
+        }
+      ),
       manager.sectionHeader("Image Mapping"),
       manager.scrollList(
         keys.map((key) =>
@@ -692,6 +706,20 @@ export class CategoricalScaleBase64Image extends ScaleClass<
       }
     }
     return [
+      manager.inputBoolean(
+        [
+          {
+            property: "autoDomainMin",
+          },
+          {
+            property: "autoDomainMax",
+          },
+        ],
+        {
+          type: "checkbox",
+          label: strings.objects.dataAxis.autoUpdateValues,
+        }
+      ),
       manager.sectionHeader("Image Mapping"),
       manager.scrollList(
         keys.map((key) =>
