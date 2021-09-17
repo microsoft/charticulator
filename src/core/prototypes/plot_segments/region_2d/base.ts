@@ -9,6 +9,7 @@ import {
   Variable,
 } from "../../../solver";
 import * as Specification from "../../../specification";
+import { AxisDataBindingType } from "../../../specification/types";
 import { BuildConstraintsContext, Controls } from "../../common";
 import { LabelPosition } from "../../controls";
 import { DataflowTable } from "../../dataflow";
@@ -2725,7 +2726,7 @@ export class Region2DConstraintBuilder {
   }
 
   public buildAxisWidgets(
-    m: Controls.WidgetManager,
+    manager: Controls.WidgetManager,
     axisName: string,
     axis: "x" | "y"
   ): Controls.Widget[] {
@@ -2735,9 +2736,30 @@ export class Region2DConstraintBuilder {
       axis == "x"
         ? PlotSegmentAxisPropertyNames.xData
         : PlotSegmentAxisPropertyNames.yData;
+
+    let axisType = "";
+    if (data) {
+      switch (data.type) {
+        case AxisDataBindingType.Categorical:
+          axisType = strings.objects.axes.categoricalSuffix;
+          break;
+        case AxisDataBindingType.Numerical:
+          axisType = strings.objects.axes.numericalSuffix;
+          break;
+      }
+    }
+
     return [
-      ...buildAxisWidgets(data, axisProperty, m, axisName),
-      ...this.plotSegment.buildGridLineWidgets(data, m, axisProperty),
+      manager.verticalGroup(
+        {
+          header: axisName + axisType,
+          alignVertically: true,
+        },
+        [
+          ...buildAxisWidgets(data, axisProperty, manager, axisName),
+          ...this.plotSegment.buildGridLineWidgets(data, manager, axisProperty),
+        ]
+      ),
     ];
   }
 

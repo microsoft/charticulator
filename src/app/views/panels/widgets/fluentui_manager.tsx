@@ -85,6 +85,7 @@ import {
   defultComponentsHeight,
   FluentButton,
   FluentCheckbox,
+  FluentColumnLayout,
   FluentDatePickerWrapper,
   FluentDropdown,
   FluentDropdownWrapper,
@@ -422,6 +423,13 @@ export class FluentUIWidgetManager
     let prevKey: string = options.value ?? "";
     return (
       <TextField
+        styles={{
+          ...(defaultStyle as any),
+          field: {
+            ...defaultStyle.field,
+            height: null,
+          },
+        }}
         key={this.getKeyFromProperty(property)}
         value={
           options.value
@@ -430,6 +438,7 @@ export class FluentUIWidgetManager
         }
         placeholder={options.placeholder}
         label={options.label}
+        disabled={options.disabled}
         onRenderLabel={labelRender}
         onChange={(event, value) => {
           options.updateProperty
@@ -724,7 +733,8 @@ export class FluentUIWidgetManager
     options: Prototypes.Controls.InputExpressionOptions = {}
   ) {
     const value = this.getPropertyValue(property) as string;
-    return (
+
+    const inputExpression = (
       <FluentInputExpression
         key={this.getKeyFromProperty(property)}
         label={options.label}
@@ -754,6 +764,32 @@ export class FluentUIWidgetManager
         }}
       />
     );
+
+    if (options.dropzone) {
+      return (
+        <DropZoneView
+          key={options.label}
+          filter={(data) => data instanceof DragData.DataExpression}
+          onDrop={(data: DragData.DataExpression) => {
+            new Actions.BindDataToAxis(
+              this.objectClass.object as Specification.PlotSegment,
+              options.dropzone.property,
+              null,
+              data,
+              true
+            ).dispatch(this.store.dispatcher);
+          }}
+          className="charticulator__widget-section-header charticulator__widget-section-header-dropzone"
+          draggingHint={() => (
+            <span className="el-dropzone-hint">{options.dropzone?.prompt}</span>
+          )}
+        >
+          {inputExpression}
+        </DropZoneView>
+      );
+    } else {
+      return inputExpression;
+    }
   }
 
   public inputColor(
@@ -995,79 +1031,79 @@ export class FluentUIWidgetManager
   ): JSX.Element {
     let container: HTMLSpanElement;
     return (
-      <span
+      <FluentButton
         ref={(e) => (container = e)}
         key={this.getKeyFromProperty(property)}
+        marginTop={"0px"}
+        paddingRight={"0px"}
       >
-        <FluentButton marginTop={"0px"} paddingRight={"0px"}>
-          <DefaultButton
-            styles={{
-              root: {
-                minWidth: "unset",
-                ...defultComponentsHeight,
+        <DefaultButton
+          styles={{
+            root: {
+              minWidth: "unset",
+              ...defultComponentsHeight,
+            },
+          }}
+          iconProps={{
+            iconName: "SortLines",
+          }}
+          onClick={() => {
+            globals.popupController.popupAt(
+              (context) => {
+                const items = options.items
+                  ? options.items
+                  : (this.getPropertyValue(property) as string[]);
+                return (
+                  <PopupView context={context}>
+                    <ReorderStringsValue
+                      items={items}
+                      onConfirm={(items) => {
+                        this.emitSetProperty(property, items);
+                        context.close();
+                      }}
+                      onReset={() => {
+                        const axisDataBinding = {
+                          ...(this.objectClass.object.properties[
+                            property.property
+                          ] as any),
+                        };
+
+                        axisDataBinding.table = this.store.chartManager.getTable(
+                          (this.objectClass.object as any).table
+                        );
+                        axisDataBinding.metadata = {
+                          kind: axisDataBinding.dataKind,
+                          orderMode: "order",
+                        };
+
+                        const groupBy: Specification.Types.GroupBy = this.store.getGroupingExpression(
+                          this.objectClass.object
+                        );
+                        const values = this.store.chartManager.getGroupedExpressionVector(
+                          (this.objectClass.object as any).table,
+                          groupBy,
+                          axisDataBinding.expression
+                        );
+
+                        const {
+                          categories,
+                        } = this.store.getCategoriesForDataBinding(
+                          axisDataBinding.metadata,
+                          axisDataBinding.type,
+                          values
+                        );
+                        return categories;
+                      }}
+                      {...options}
+                    />
+                  </PopupView>
+                );
               },
-            }}
-            iconProps={{
-              iconName: "SortLines",
-            }}
-            onClick={() => {
-              globals.popupController.popupAt(
-                (context) => {
-                  const items = options.items
-                    ? options.items
-                    : (this.getPropertyValue(property) as string[]);
-                  return (
-                    <PopupView context={context}>
-                      <ReorderStringsValue
-                        items={items}
-                        onConfirm={(items) => {
-                          this.emitSetProperty(property, items);
-                          context.close();
-                        }}
-                        onReset={() => {
-                          const axisDataBinding = {
-                            ...(this.objectClass.object.properties[
-                              property.property
-                            ] as any),
-                          };
-
-                          axisDataBinding.table = this.store.chartManager.getTable(
-                            (this.objectClass.object as any).table
-                          );
-                          axisDataBinding.metadata = {
-                            kind: axisDataBinding.dataKind,
-                            orderMode: "order",
-                          };
-
-                          const groupBy: Specification.Types.GroupBy = this.store.getGroupingExpression(
-                            this.objectClass.object
-                          );
-                          const values = this.store.chartManager.getGroupedExpressionVector(
-                            (this.objectClass.object as any).table,
-                            groupBy,
-                            axisDataBinding.expression
-                          );
-
-                          const {
-                            categories,
-                          } = this.store.getCategoriesForDataBinding(
-                            axisDataBinding.metadata,
-                            axisDataBinding.type,
-                            values
-                          );
-                          return categories;
-                        }}
-                        {...options}
-                      />
-                    </PopupView>
-                  );
-                },
-                { anchor: container }
-              );
-            }}
-          />
-        </FluentButton>
-      </span>
+              { anchor: container }
+            );
+          }}
+        />
+      </FluentButton>
     );
   }
 
@@ -1272,11 +1308,13 @@ export class FluentUIWidgetManager
             <span className="el-dropzone-hint">{options.dropzone.prompt}</span>
           )}
         >
-          <FluentLabelHeader>
-            <Label>{title}</Label>
-          </FluentLabelHeader>
+          {title ? (
+            <FluentLabelHeader>
+              <Label>{title}</Label>
+            </FluentLabelHeader>
+          ) : null}
           {widget}
-          <FluentButton marginTop={"0px"}>
+          <FluentButton marginTop={"0px"} marginLeft={"6px"}>
             <DefaultButton
               key={title}
               iconProps={{
@@ -1506,6 +1544,7 @@ export class FluentUIWidgetManager
         header={options.header}
         widgets={widgets}
         isCollapsed={options.isCollapsed}
+        alignVertically={options.alignVertically}
       />
     );
   }

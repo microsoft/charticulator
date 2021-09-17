@@ -19,12 +19,13 @@ export const CollapsiblePanel: React.FunctionComponent<{
   header: string | IRenderFunction<IGroupHeaderProps>;
   widgets: JSX.Element[];
   isCollapsed?: boolean;
-}> = ({ header, widgets, isCollapsed }) => {
+  alignVertically?: boolean;
+}> = ({ header, widgets, isCollapsed, alignVertically }) => {
   const [groupState, setIsCollapsed] = React.useState<boolean>(
     isCollapsed === undefined ? false : isCollapsed
   );
   return (
-    <FluentGroupedList>
+    <FluentGroupedList marginLeft={alignVertically ? 0 : null}>
       <GroupedList
         groupProps={{
           onRenderHeader: (props?: IGroupHeaderProps): JSX.Element => {
