@@ -68,6 +68,7 @@ function makeTwoDigitRange(start: number, end: number): string[] {
 export const type2DerivedColumns: {
   [name in Dataset.DataType]: DerivedColumnDescription[];
 } = {
+  image: null,
   string: null,
   number: null,
   boolean: null,

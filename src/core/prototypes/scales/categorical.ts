@@ -158,7 +158,7 @@ export class CategoricalScaleNumber extends ScaleClass<
           manager.horizontal(
             [2, 3],
             manager.text(key, "right"),
-            manager.inputNumber({property: "mapping", field: key})
+            manager.inputNumber({ property: "mapping", field: key })
           )
         )
       ),
@@ -316,15 +316,18 @@ export class CategoricalScaleColor extends ScaleClass<
         keys.map((key) =>
           manager.horizontal(
             [1, 0],
-            manager.inputText({property: "mapping"}, {
-              updateProperty: true,
-              value: key,
-              underline: true,
-              styles: {
-                textAlign: "right"
-              },
-              emitMappingAction: true
-            }),
+            manager.inputText(
+              { property: "mapping" },
+              {
+                updateProperty: true,
+                value: key,
+                underline: true,
+                styles: {
+                  textAlign: "right",
+                },
+                emitMappingAction: true,
+              }
+            ),
             manager.inputColor(
               {
                 property: "mapping",
@@ -438,16 +441,19 @@ export class CategoricalScaleEnum extends ScaleClass<
         keys.map((key) =>
           manager.horizontal(
             [2, 3],
-            manager.inputText({property: "mapping"}, {
-              updateProperty: true,
-              value: key,
-              underline: true,
-              styles: {
-                textAlign: "right"
+            manager.inputText(
+              { property: "mapping" },
+              {
+                updateProperty: true,
+                value: key,
+                underline: true,
+                styles: {
+                  textAlign: "right",
+                },
               }
-            }),
+            ),
             manager.inputComboBox(
-              {property: "mapping", field: key},
+              { property: "mapping", field: key },
               {
                 defaultRange: props.defaultRange,
                 valuesOnly: false,
@@ -602,19 +608,134 @@ export class CategoricalScaleImage extends ScaleClass<
       }
     }
     return [
+      manager.inputBoolean(
+        [
+          {
+            property: "autoDomainMin",
+          },
+          {
+            property: "autoDomainMax",
+          },
+        ],
+        {
+          type: "checkbox",
+          label: strings.objects.dataAxis.autoUpdateValues,
+        }
+      ),
       manager.sectionHeader("Image Mapping"),
       manager.scrollList(
         keys.map((key) =>
           manager.horizontal(
             [2, 5],
-            manager.inputText({property: "mapping"}, {
-              updateProperty: true,
-              value: key,
-              underline: true,
-              styles: {
-                textAlign: "right"
+            manager.inputText(
+              { property: "mapping" },
+              {
+                updateProperty: true,
+                value: key,
+                underline: true,
+                styles: {
+                  textAlign: "right",
+                },
               }
-            }),
+            ),
+            manager.inputImageProperty({ property: "mapping", field: key }),
+            manager.clearButton({ property: "mapping", field: key }, "", true)
+          )
+        )
+      ),
+    ];
+  }
+}
+
+export class CategoricalScaleBase64Image extends ScaleClass<
+  CategoricalScaleProperties<string>,
+  any
+> {
+  public static classID = "scale.categorical<image,image>";
+  public static type = "scale";
+
+  public attributeNames: string[] = [];
+  public attributes: { [name: string]: AttributeDescription } = {};
+
+  public mapDataToAttribute(data: DataValue): AttributeValue {
+    const props = this.object.properties;
+    return props.mapping[data?.toString()];
+  }
+
+  // eslint-disable-next-line
+  public initializeState(): void {}
+
+  public inferParameters(
+    idColumn: string[],
+    options: InferParametersOptions
+  ): void {
+    const props = this.object.properties;
+    const s = new Scale.CategoricalScale();
+    const idValues = idColumn.filter((x) => x != null).map((x) => x.toString());
+    s.inferParameters(idValues, OrderMode.order);
+
+    // If we shouldn't reuse the range, then reset the mapping
+    if (!options.reuseRange) {
+      props.mapping = null;
+
+      // Otherwise, if we already have a mapping, try to reuse it
+    } else if (props.mapping != null) {
+      props.mapping = reuseMapping(s.domain, props.mapping);
+    }
+    if (props.mapping == null) {
+      props.mapping = {};
+      s.domain.forEach((v, d) => {
+        if (options.rangeImage) {
+          props.mapping[d] = options.rangeImage[v % options.rangeImage.length];
+        } else {
+          props.mapping[d] = null;
+        }
+      });
+    }
+  }
+
+  public getAttributePanelWidgets(
+    manager: Controls.WidgetManager
+  ): Controls.Widget[] {
+    const props = this.object.properties;
+    const keys: string[] = [];
+    for (const key in props.mapping) {
+      // eslint-disable-next-line
+      if (props.mapping.hasOwnProperty(key)) {
+        keys.push(key);
+      }
+    }
+    return [
+      manager.inputBoolean(
+        [
+          {
+            property: "autoDomainMin",
+          },
+          {
+            property: "autoDomainMax",
+          },
+        ],
+        {
+          type: "checkbox",
+          label: strings.objects.dataAxis.autoUpdateValues,
+        }
+      ),
+      manager.sectionHeader("Image Mapping"),
+      manager.scrollList(
+        keys.map((key) =>
+          manager.horizontal(
+            [2, 5],
+            manager.inputText(
+              { property: "mapping" },
+              {
+                updateProperty: true,
+                value: key,
+                underline: true,
+                styles: {
+                  textAlign: "right",
+                },
+              }
+            ),
             manager.inputImageProperty({ property: "mapping", field: key }),
             manager.clearButton({ property: "mapping", field: key }, "", true)
           )

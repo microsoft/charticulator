@@ -16,6 +16,7 @@ import {
   ObjectProperties,
   Element,
   Scale,
+  MappingType,
 } from "../../../core/specification";
 import { Actions, DragData } from "../..";
 import { classNames } from "../../utils";
@@ -88,7 +89,8 @@ export class ScalesPanel extends ContextedComponent<
         Object.keys(element.mappings).find((key) => {
           const mapping = element.mappings[key];
           return (
-            mapping.type === "scale" &&
+            (mapping.type === MappingType.scale ||
+              mapping.type === MappingType.expressionScale) &&
             (mapping as ScaleMapping).scale === scaleID
           );
         }) != undefined
@@ -99,7 +101,8 @@ export class ScalesPanel extends ContextedComponent<
       return Object.keys(element.mappings).filter((key) => {
         const mapping = element.mappings[key];
         return (
-          mapping.type === "scale" &&
+          (mapping.type === MappingType.scale ||
+            mapping.type === MappingType.expressionScale) &&
           (mapping as ScaleMapping).scale === scaleID
         );
       });
@@ -301,9 +304,6 @@ export class ScalesPanel extends ContextedComponent<
           restrict={true}
           enabled={true}
           onReorder={(IndexA, IndexB) => {
-            console.log(propertyList[IndexA]);
-            console.log(propertyList[IndexB]);
-
             // Drag properties item only
             if (!propertyList[IndexA].property || IndexA === IndexB) {
               return;

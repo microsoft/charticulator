@@ -120,6 +120,7 @@ export const strings = {
     showDerivedFields: "Show derived fields",
     tableTitleColumns: "Fields",
     tableTitleLinks: "Links",
+    tableTitleImages: "Images",
     weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
   },
   defaultDataset: {
@@ -147,6 +148,7 @@ export const strings = {
   },
   mappingEditor: {
     bindData: "Bind data",
+    keyColumnExpression: "Key column expression",
     bindDataValue: "Bind data value",
     remove: "Remove",
   },

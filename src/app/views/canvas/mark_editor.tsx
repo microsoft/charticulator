@@ -1155,7 +1155,8 @@ export class SingleMarkView
                         data.expression,
                         data.valueType,
                         data.metadata,
-                        zone.dropAction.scaleInference.hints
+                        zone.dropAction.scaleInference.hints,
+                        data.table.name
                       )
                     );
                     return true;
