@@ -72,6 +72,10 @@ export const dataTypes: { [name in DataType]: DataTypeDescription } = {
     test: (x: string) => true,
     convert: (x: string) => x.toString(),
   },
+  image: {
+    test: (x: string) => isBase64Image(x),
+    convert: (x: string) => x.toString(),
+  },
 };
 
 /** Infer column type from a set of strings (not null) */
@@ -80,6 +84,7 @@ export function inferColumnType(
   localeNumberFormat: LocaleNumberFormat
 ): DataType {
   const candidates: DataType[] = <any>[
+    DataType.Image,
     DataType.Boolean,
     DataType.Number,
     DataType.Date,
@@ -156,6 +161,20 @@ export function inferAndConvertColumn(
   }
 
   switch (inferredType) {
+    case DataType.Image: {
+      const metadata: ColumnMetadata = {
+        kind: DataKind.Categorical,
+        unit: hints.unit,
+      };
+      metadata.orderMode = OrderMode.order;
+      metadata.kind = DataKind.Categorical;
+      return {
+        type: DataType.Image,
+        values: convertedValues,
+        metadata,
+      };
+      break;
+    }
     case DataType.Number: {
       const validValues = convertedValues.filter((x) => x != null);
       const minValue = Math.min(...(<number[]>validValues));
@@ -315,4 +334,13 @@ export function convertColumnType(values: any[], type: DataType): DataValue[] {
       });
     }
   }
+}
+
+export function isBase64Image(string: string) {
+  return (
+    typeof string === "string" &&
+    string.match(
+      /data:image\/(ico|jpg|jpeg|png|webp|svg|gif|svg\+xml);base64,/
+    ) != null
+  );
 }

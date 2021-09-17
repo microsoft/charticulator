@@ -232,6 +232,9 @@ export function getConvertableDataKind(type: DataType): DataKind[] {
     case DataType.String:
       kinds = [DataKind.Categorical, DataKind.Ordinal];
       break;
+    case DataType.Image:
+      kinds = [DataKind.Categorical];
+      break;
     case DataType.Number:
       kinds = [DataKind.Categorical, DataKind.Numerical];
       break;
@@ -250,6 +253,9 @@ export function getPreferredDataKind(type: DataType): DataKind {
       kind = DataKind.Temporal;
       break;
     case DataType.String:
+      kind = DataKind.Categorical;
+      break;
+    case DataType.Image:
       kind = DataKind.Categorical;
       break;
     case DataType.Number:
@@ -278,6 +284,7 @@ export function getConvertableTypes(
         DataType.String,
         DataType.Boolean,
         DataType.Date,
+        DataType.Image,
       ];
       break;
     case DataType.Number:
@@ -287,6 +294,9 @@ export function getConvertableTypes(
         DataType.Boolean,
         DataType.Date,
       ];
+      break;
+    case DataType.Image:
+      types = [DataType.Image, DataType.String];
       break;
   }
 
