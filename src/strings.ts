@@ -569,4 +569,9 @@ export const strings = {
       menuSuffix: " Derived columns ",
     },
   },
+  reOrder: {
+    reverse: "Reverse",
+    sort: "Sort",
+    reset: "Reset",
+  },
 };
