@@ -88,7 +88,6 @@ export class ReorderStringsValue extends React.Component<
           <ButtonRaised
             text="OK"
             onClick={() => {
-              console.log(this.state.items);
               this.props.onConfirm(this.state.items, this.state.customOrder);
             }}
           />
