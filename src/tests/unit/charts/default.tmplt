@@ -1,0 +1,173 @@
+{
+  "specification": {
+    "_id": "gbc1n178t1a",
+    "classID": "chart.rectangle",
+    "properties": {
+      "name": "Chart",
+      "backgroundColor": null,
+      "backgroundOpacity": 1,
+      "enableContextMenu": true,
+      "exposed": true
+    },
+    "mappings": {
+      "marginLeft": {
+        "type": "value",
+        "value": 5
+      },
+      "marginRight": {
+        "type": "value",
+        "value": 5
+      },
+      "marginTop": {
+        "type": "value",
+        "value": 5
+      },
+      "marginBottom": {
+        "type": "value",
+        "value": 5
+      }
+    },
+    "glyphs": [
+      {
+        "_id": "fee6vbiiztn",
+        "classID": "glyph.rectangle",
+        "properties": {
+          "name": "Glyph"
+        },
+        "table": "Temperature",
+        "marks": [
+          {
+            "_id": "juo4rf6c13",
+            "classID": "mark.anchor",
+            "properties": {
+              "name": "Anchor"
+            },
+            "mappings": {
+              "x": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              }
+            }
+          }
+        ],
+        "mappings": {},
+        "constraints": []
+      }
+    ],
+    "elements": [
+      {
+        "_id": "76u4pgj7u3d",
+        "classID": "plot-segment.cartesian",
+        "glyph": "fee6vbiiztn",
+        "table": "Temperature",
+        "filter": null,
+        "mappings": {
+          "x1": {
+            "type": "parent",
+            "parentAttribute": "x1"
+          },
+          "y1": {
+            "type": "parent",
+            "parentAttribute": "y1"
+          },
+          "x2": {
+            "type": "parent",
+            "parentAttribute": "x2"
+          },
+          "y2": {
+            "type": "parent",
+            "parentAttribute": "y2"
+          }
+        },
+        "properties": {
+          "name": "PlotSegment1",
+          "visible": true,
+          "marginX1": 0,
+          "marginY1": 0,
+          "marginX2": 0,
+          "marginY2": 0,
+          "sublayout": {
+            "type": "dodge-x",
+            "order": null,
+            "ratioX": 0.1,
+            "ratioY": 0.1,
+            "align": {
+              "x": "start",
+              "y": "start"
+            },
+            "grid": {
+              "direction": "x",
+              "xCount": null,
+              "yCount": null,
+              "gridStartPosition": "LT"
+            },
+            "packing": {
+              "gravityX": 0.1,
+              "gravityY": 0.1
+            }
+          }
+        }
+      }
+    ],
+    "scales": [],
+    "scaleMappings": [],
+    "constraints": [],
+    "resources": [],
+    "exposed": true
+  },
+  "defaultAttributes": {
+    "juo4rf6c13": {
+      "x": 0,
+      "y": 0
+    }
+  },
+  "tables": [
+    {
+      "name": "Temperature",
+      "columns": []
+    }
+  ],
+  "inference": [],
+  "properties": [
+    {
+      "objectID": "gbc1n178t1a",
+      "target": {
+        "attribute": "marginLeft"
+      },
+      "type": "number",
+      "default": 5,
+      "displayName": "Chart/marginLeft"
+    },
+    {
+      "objectID": "gbc1n178t1a",
+      "target": {
+        "attribute": "marginRight"
+      },
+      "type": "number",
+      "default": 5,
+      "displayName": "Chart/marginRight"
+    },
+    {
+      "objectID": "gbc1n178t1a",
+      "target": {
+        "attribute": "marginTop"
+      },
+      "type": "number",
+      "default": 5,
+      "displayName": "Chart/marginTop"
+    },
+    {
+      "objectID": "gbc1n178t1a",
+      "target": {
+        "attribute": "marginBottom"
+      },
+      "type": "number",
+      "default": 5,
+      "displayName": "Chart/marginBottom"
+    }
+  ]
+}

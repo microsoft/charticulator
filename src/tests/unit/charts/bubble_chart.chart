@@ -1,0 +1,2864 @@
+{
+  "state": {
+    "version": "2.0.2",
+    "dataset": {
+      "name": "nightingale",
+      "tables": [
+        {
+          "name": "nightingale",
+          "displayName": "oecd_population_2018",
+          "columns": [
+            {
+              "name": "Country",
+              "displayName": "Country",
+              "type": "string",
+              "metadata": {
+                "kind": "categorical",
+                "orderMode": "alphabetically"
+              }
+            },
+            {
+              "name": "Population",
+              "displayName": "Population",
+              "type": "number",
+              "metadata": {
+                "kind": "numerical"
+              }
+            },
+            {
+              "name": "Geographic Location",
+              "displayName": "Geographic Location",
+              "type": "string",
+              "metadata": {
+                "kind": "categorical",
+                "orderMode": "alphabetically"
+              }
+            }
+          ],
+          "rows": [
+            {
+              "_id": "0",
+              "Country": "Iceland",
+              "Population": 0.352722,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "1",
+              "Country": "Luxembourg",
+              "Population": 0.60795,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "2",
+              "Country": "Estonia",
+              "Population": 1.321977,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "3",
+              "Country": "Slovenia",
+              "Population": 2.07005,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "4",
+              "Country": "Ireland",
+              "Population": 4.857015,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "5",
+              "Country": "New Zealand",
+              "Population": 4.8855,
+              "Geographic Location": "Oceania"
+            },
+            {
+              "_id": "6",
+              "Country": "Norway",
+              "Population": 5.311916,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "7",
+              "Country": "Slovak Republic",
+              "Population": 5.446771,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "8",
+              "Country": "Finland",
+              "Population": 5.515525,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "9",
+              "Country": "Denmark",
+              "Population": 5.789957,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "10",
+              "Country": "Switzerland",
+              "Population": 8.513227,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "11",
+              "Country": "Austria",
+              "Population": 8.837707,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "12",
+              "Country": "Israel",
+              "Population": 8.872943,
+              "Geographic Location": "Asia"
+            },
+            {
+              "_id": "13",
+              "Country": "Hungary",
+              "Population": 9.7676,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "14",
+              "Country": "Sweden",
+              "Population": 10.175214,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "15",
+              "Country": "Portugal",
+              "Population": 10.283822,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "16",
+              "Country": "Czech Republic",
+              "Population": 10.62643,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "17",
+              "Country": "Greece",
+              "Population": 10.725886,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "18",
+              "Country": "Belgium",
+              "Population": 11.40374,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "19",
+              "Country": "Netherlands",
+              "Population": 17.231622,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "20",
+              "Country": "Chile",
+              "Population": 18.751405,
+              "Geographic Location": "South America"
+            },
+            {
+              "_id": "21",
+              "Country": "Australia",
+              "Population": 24.99286,
+              "Geographic Location": "Oceania"
+            },
+            {
+              "_id": "22",
+              "Country": "Canada",
+              "Population": 37.058856,
+              "Geographic Location": "North America"
+            },
+            {
+              "_id": "23",
+              "Country": "Poland",
+              "Population": 38.413139,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "24",
+              "Country": "Spain",
+              "Population": 46.733038,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "25",
+              "Country": "Korea",
+              "Population": 51.635256,
+              "Geographic Location": "Asia"
+            },
+            {
+              "_id": "26",
+              "Country": "Italy",
+              "Population": 60.421797,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "27",
+              "Country": "United Kingdom",
+              "Population": 66.43555,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "28",
+              "Country": "France",
+              "Population": 66.941698,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "29",
+              "Country": "Turkey",
+              "Population": 81.407211,
+              "Geographic Location": "Asia"
+            },
+            {
+              "_id": "30",
+              "Country": "Germany",
+              "Population": 82.914191,
+              "Geographic Location": "Europe"
+            },
+            {
+              "_id": "31",
+              "Country": "Mexico",
+              "Population": 125.327797,
+              "Geographic Location": "North America"
+            },
+            {
+              "_id": "32",
+              "Country": "Japan",
+              "Population": 126.44318,
+              "Geographic Location": "Asia"
+            },
+            {
+              "_id": "33",
+              "Country": "United States",
+              "Population": 327.167434,
+              "Geographic Location": "North America"
+            }
+          ],
+          "type": "Main",
+          "localeNumberFormat": {
+            "decimal": ".",
+            "remove": ","
+          }
+        }
+      ]
+    },
+    "chart": {
+      "_id": "vnneqlj4qr",
+      "classID": "chart.rectangle",
+      "properties": {
+        "name": "Chart",
+        "backgroundColor": null,
+        "backgroundOpacity": 1,
+        "exposed": true
+      },
+      "mappings": {
+        "marginTop": {
+          "type": "value",
+          "value": 80
+        },
+        "width": {
+          "type": "value",
+          "value": 600
+        }
+      },
+      "glyphs": [
+        {
+          "_id": "7b3qvtgsqpv",
+          "classID": "glyph.rectangle",
+          "properties": {
+            "name": "Glyph"
+          },
+          "table": "nightingale",
+          "marks": [
+            {
+              "_id": "pfs5qjcsbma",
+              "classID": "mark.anchor",
+              "properties": {
+                "name": "Anchor"
+              },
+              "mappings": {
+                "x": {
+                  "type": "parent",
+                  "parentAttribute": "icx"
+                },
+                "y": {
+                  "type": "parent",
+                  "parentAttribute": "icy"
+                }
+              }
+            },
+            {
+              "_id": "93alzvecgnq",
+              "classID": "mark.symbol",
+              "properties": {
+                "visible": true,
+                "name": "Symbol1",
+                "exposed": true
+              },
+              "mappings": {
+                "fill": {
+                  "type": "scale",
+                  "table": "nightingale",
+                  "expression": "first(`Geographic Location`)",
+                  "valueType": "string",
+                  "scale": "aqx25hxd9oc",
+                  "attribute": "fill"
+                },
+                "strokeWidth": {
+                  "type": "value",
+                  "value": 1
+                },
+                "opacity": {
+                  "type": "value",
+                  "value": 1
+                },
+                "size": {
+                  "type": "scale",
+                  "table": "nightingale",
+                  "expression": "avg(Population)",
+                  "valueType": "number",
+                  "scale": "wdt76ny31o",
+                  "attribute": "size"
+                },
+                "visible": {
+                  "type": "value",
+                  "value": true
+                },
+                "x": {
+                  "type": "parent",
+                  "parentAttribute": "icx"
+                },
+                "y": {
+                  "type": "parent",
+                  "parentAttribute": "icy"
+                }
+              }
+            },
+            {
+              "_id": "yq3vl96ybsm",
+              "classID": "mark.text",
+              "properties": {
+                "alignment": {
+                  "x": "middle",
+                  "y": "middle",
+                  "xMargin": 5,
+                  "yMargin": 5
+                },
+                "rotation": 0,
+                "visible": true,
+                "name": "Text1",
+                "exposed": true
+              },
+              "mappings": {
+                "text": {
+                  "type": "text",
+                  "table": "nightingale",
+                  "textExpression": "${first(Country)}"
+                },
+                "fontFamily": {
+                  "type": "value",
+                  "value": "Arial"
+                },
+                "fontSize": {
+                  "type": "scale",
+                  "table": "nightingale",
+                  "expression": "avg(Population)",
+                  "valueType": "number",
+                  "scale": "1kd5xhem0j8",
+                  "attribute": "fontSize"
+                },
+                "color": {
+                  "type": "value",
+                  "value": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                },
+                "opacity": {
+                  "type": "value",
+                  "value": 1
+                },
+                "visible": {
+                  "type": "value",
+                  "value": true
+                },
+                "x": {
+                  "type": "parent",
+                  "parentAttribute": "icx"
+                },
+                "y": {
+                  "type": "parent",
+                  "parentAttribute": "icy"
+                }
+              }
+            }
+          ],
+          "mappings": {},
+          "constraints": []
+        }
+      ],
+      "elements": [
+        {
+          "_id": "fk2gwx9eu4g",
+          "classID": "plot-segment.cartesian",
+          "glyph": "7b3qvtgsqpv",
+          "table": "nightingale",
+          "filter": null,
+          "mappings": {
+            "x1": {
+              "type": "parent",
+              "parentAttribute": "x1"
+            },
+            "y1": {
+              "type": "parent",
+              "parentAttribute": "y1"
+            },
+            "x2": {
+              "type": "parent",
+              "parentAttribute": "x2"
+            },
+            "y2": {
+              "type": "parent",
+              "parentAttribute": "y2"
+            }
+          },
+          "properties": {
+            "name": "PlotSegment1",
+            "visible": true,
+            "marginX1": 0,
+            "marginY1": 0,
+            "marginX2": 0,
+            "marginY2": 0,
+            "sublayout": {
+              "type": "packing",
+              "order": null,
+              "ratioX": 0.1,
+              "ratioY": 0.1,
+              "align": {
+                "x": "start",
+                "y": "start"
+              },
+              "grid": {
+                "direction": "x",
+                "xCount": null,
+                "yCount": null
+              },
+              "packing": {
+                "gravityX": 0.1,
+                "gravityY": 0.1
+              }
+            }
+          }
+        },
+        {
+          "_id": "s93hz4d5xgh",
+          "classID": "mark.text",
+          "properties": {
+            "name": "Title",
+            "visible": true,
+            "alignment": {
+              "x": "middle",
+              "y": "top",
+              "xMargin": 0,
+              "yMargin": 30
+            },
+            "rotation": 0,
+            "exposed": true
+          },
+          "mappings": {
+            "x": {
+              "type": "parent",
+              "parentAttribute": "cx"
+            },
+            "y": {
+              "type": "parent",
+              "parentAttribute": "oy2"
+            },
+            "text": {
+              "type": "value",
+              "value": "Population of OECD Countries in 2018"
+            },
+            "fontSize": {
+              "type": "value",
+              "value": 24
+            },
+            "color": {
+              "type": "value",
+              "value": {
+                "r": 0,
+                "g": 0,
+                "b": 0
+              }
+            }
+          }
+        }
+      ],
+      "scales": [
+        {
+          "_id": "wdt76ny31o",
+          "classID": "scale.linear<number,number>",
+          "properties": {
+            "autoDomainMin": true,
+            "autoDomainMax": true,
+            "name": "Scale1",
+            "domainMin": 0,
+            "domainMax": 350,
+            "exposed": true
+          },
+          "mappings": {
+            "rangeMin": {
+              "type": "value",
+              "value": 0
+            },
+            "rangeMax": {
+              "type": "value",
+              "value": 30000
+            }
+          },
+          "inputType": "number",
+          "outputType": "number"
+        },
+        {
+          "_id": "aqx25hxd9oc",
+          "classID": "scale.categorical<string,color>",
+          "properties": {
+            "name": "Scale2",
+            "mapping": {
+              "Europe": {
+                "r": 166,
+                "g": 206,
+                "b": 227
+              },
+              "Oceania": {
+                "r": 31,
+                "g": 120,
+                "b": 180
+              },
+              "Asia": {
+                "r": 178,
+                "g": 223,
+                "b": 138
+              },
+              "South America": {
+                "r": 51,
+                "g": 160,
+                "b": 44
+              },
+              "North America": {
+                "r": 251,
+                "g": 154,
+                "b": 153
+              }
+            },
+            "autoDomainMax": true,
+            "autoDomainMin": true
+          },
+          "mappings": {},
+          "inputType": "string",
+          "outputType": "color"
+        },
+        {
+          "_id": "1kd5xhem0j8",
+          "classID": "scale.linear<number,number>",
+          "properties": {
+            "autoDomainMin": true,
+            "autoDomainMax": true,
+            "name": "Scale3",
+            "domainMin": 0,
+            "domainMax": 350,
+            "exposed": true
+          },
+          "mappings": {
+            "rangeMin": {
+              "type": "value",
+              "value": 6
+            },
+            "rangeMax": {
+              "type": "value",
+              "value": 26
+            }
+          },
+          "inputType": "number",
+          "outputType": "number"
+        }
+      ],
+      "scaleMappings": [
+        {
+          "type": "scale",
+          "table": "oecd_population_2018",
+          "expression": "avg(Population)",
+          "valueType": "number",
+          "scale": "wdt76ny31o",
+          "attribute": "size"
+        },
+        {
+          "type": "scale",
+          "table": "oecd_population_2018",
+          "expression": "first(`Geographic Location`)",
+          "valueType": "string",
+          "scale": "aqx25hxd9oc",
+          "attribute": "fill"
+        },
+        {
+          "type": "scale",
+          "table": "oecd_population_2018",
+          "expression": "avg(Population)",
+          "valueType": "number",
+          "scale": "1kd5xhem0j8",
+          "attribute": "fontSize"
+        }
+      ],
+      "constraints": [],
+      "resources": []
+    },
+    "chartState": {
+      "elements": [
+        {
+          "attributes": {
+            "x1": -250,
+            "x2": 250,
+            "y1": -250,
+            "y2": 220,
+            "gapX": 4,
+            "gapY": 4,
+            "x": -100,
+            "y": 100
+          },
+          "dataRowIndices": [
+            [
+              0
+            ],
+            [
+              1
+            ],
+            [
+              2
+            ],
+            [
+              3
+            ],
+            [
+              4
+            ],
+            [
+              5
+            ],
+            [
+              6
+            ],
+            [
+              7
+            ],
+            [
+              8
+            ],
+            [
+              9
+            ],
+            [
+              10
+            ],
+            [
+              11
+            ],
+            [
+              12
+            ],
+            [
+              13
+            ],
+            [
+              14
+            ],
+            [
+              15
+            ],
+            [
+              16
+            ],
+            [
+              17
+            ],
+            [
+              18
+            ],
+            [
+              19
+            ],
+            [
+              20
+            ],
+            [
+              21
+            ],
+            [
+              22
+            ],
+            [
+              23
+            ],
+            [
+              24
+            ],
+            [
+              25
+            ],
+            [
+              26
+            ],
+            [
+              27
+            ],
+            [
+              28
+            ],
+            [
+              29
+            ],
+            [
+              30
+            ],
+            [
+              31
+            ],
+            [
+              32
+            ],
+            [
+              33
+            ]
+          ],
+          "glyphs": [
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 30.233314285714286,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Iceland",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.020155542857143,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 43.73507589307453,
+                "y": 36.07377426295249,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 52.11,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Luxembourg",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.03474,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 62.61770253325097,
+                "y": -23.103095779961215,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 113.31231428571428,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Estonia",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.075541542857143,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 37.801980671222196,
+                "y": -1.1153930583365135,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 177.43285714285716,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Slovenia",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.118288571428572,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 48.93191811115397,
+                "y": -110.61539799272836,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 416.3155714285714,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Ireland",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.277543714285715,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -4.871686625963954,
+                "y": 72.03332324507326,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 418.75714285714287,
+                    "fill": {
+                      "r": 31,
+                      "g": 120,
+                      "b": 180
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "New Zealand",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.279171428571429,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -33.07905331133604,
+                "y": 107.32522017382713,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 455.30708571428573,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Norway",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.303538057142857,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 128.15052113159499,
+                "y": 18.017261526359015,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 466.8660857142857,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Slovak Republic",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.311244057142857,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 18.828585278958787,
+                "y": 72.33976778327357,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 472.7592857142857,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Finland",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.315172857142857,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -13.121843531309953,
+                "y": 94.33502475959904,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 496.28202857142855,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Denmark",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.330854685714286,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -14.851554285083587,
+                "y": -17.29867626394467,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 729.7051714285715,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Switzerland",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.486470114285714,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 43.66574086910545,
+                "y": 60.68177393705648,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 757.5177428571428,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Austria",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.505011828571429,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 8.702876544117409,
+                "y": -32.612775855979024,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 760.5379714285714,
+                    "fill": {
+                      "r": 178,
+                      "g": 223,
+                      "b": 138
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Israel",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.507025314285714,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 116.59370541727263,
+                "y": 135.0081360595472,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 837.2228571428572,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Hungary",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.558148571428571,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -37.622450713371876,
+                "y": 134.82240336399695,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 872.1612,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Sweden",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.5814408,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 70.56474652053063,
+                "y": -42.40793388957451,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 881.4704571428572,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Portugal",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.587646971428572,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -45.24803137883555,
+                "y": 13.417375120489783,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 910.8368571428571,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Czech Republic",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.607224571428572,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 108.74536885862472,
+                "y": -30.223614764013156,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 919.3616571428571,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Greece",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.612907771428572,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 74.53732199750803,
+                "y": 70.33959129265655,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 977.4634285714286,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Belgium",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.651642285714286,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 40.99168389473803,
+                "y": -25.030097716259405,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 1476.9961714285714,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Netherlands",
+                    "fontFamily": "Arial",
+                    "fontSize": 6.984664114285715,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -83.98418862589136,
+                "y": 27.157711082481164,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 1607.2632857142855,
+                    "fill": {
+                      "r": 51,
+                      "g": 160,
+                      "b": 44
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Chile",
+                    "fontFamily": "Arial",
+                    "fontSize": 7.071508857142857,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 15.694913557895694,
+                "y": -127.3431174688052,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 2142.245142857143,
+                    "fill": {
+                      "r": 31,
+                      "g": 120,
+                      "b": 180
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Australia",
+                    "fontFamily": "Arial",
+                    "fontSize": 7.428163428571429,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 52.26932564597008,
+                "y": -159.54730669769518,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 3176.473371428571,
+                    "fill": {
+                      "r": 251,
+                      "g": 154,
+                      "b": 153
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Canada",
+                    "fontFamily": "Arial",
+                    "fontSize": 8.117648914285715,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -47.83526321862532,
+                "y": 66.57128165510684,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 3292.5547714285713,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Poland",
+                    "fontFamily": "Arial",
+                    "fontSize": 8.195036514285714,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 31.584401185909403,
+                "y": -74.69630977040305,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 4005.688971428571,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Spain",
+                    "fontFamily": "Arial",
+                    "fontSize": 8.670459314285715,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 6.219238237482318,
+                "y": 26.13468637009145,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 4425.879085714286,
+                    "fill": {
+                      "r": 178,
+                      "g": 223,
+                      "b": 138
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Korea",
+                    "fontFamily": "Arial",
+                    "fontSize": 8.950586057142857,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 78.65364130595387,
+                "y": 15.289213940226968,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 5179.011171428571,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Italy",
+                    "fontFamily": "Arial",
+                    "fontSize": 9.452674114285713,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 165.6854855775645,
+                "y": -18.88977463334196,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 5694.475714285714,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "United Kingdom",
+                    "fontFamily": "Arial",
+                    "fontSize": 9.796317142857143,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -146.1510980661197,
+                "y": 43.415001434765735,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 5737.859828571429,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "France",
+                    "fontFamily": "Arial",
+                    "fontSize": 9.825239885714286,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -7.2415375169672265,
+                "y": -194.17020748622383,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 6977.760942857143,
+                    "fill": {
+                      "r": 178,
+                      "g": 223,
+                      "b": 138
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Turkey",
+                    "fontFamily": "Arial",
+                    "fontSize": 10.651840628571428,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 138.49800813415942,
+                "y": 76.27202804580651,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 7106.930657142857,
+                    "fill": {
+                      "r": 166,
+                      "g": 206,
+                      "b": 227
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Germany",
+                    "fontFamily": "Arial",
+                    "fontSize": 10.737953771428572,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -102.66132044025795,
+                "y": 123.94886193189055,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 10742.3826,
+                    "fill": {
+                      "r": 251,
+                      "g": 154,
+                      "b": 153
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Mexico",
+                    "fontFamily": "Arial",
+                    "fontSize": 13.161588400000001,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 117.13866594848314,
+                "y": -105.25882614374002,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 10837.986857142858,
+                    "fill": {
+                      "r": 178,
+                      "g": 223,
+                      "b": 138
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "Japan",
+                    "fontFamily": "Arial",
+                    "fontSize": 13.225324571428573,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 42.419087928941686,
+                "y": 139.2260011679287,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "size": 28042.922914285715,
+                    "fill": {
+                      "r": 251,
+                      "g": 154,
+                      "b": 153
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true,
+                    "symbol": "circle",
+                    "stroke": null
+                  }
+                },
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0,
+                    "text": "United States",
+                    "fontFamily": "Arial",
+                    "fontSize": 24.695281942857143,
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "visible": true,
+                    "outline": null,
+                    "opacity": 1
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -94.77842805134145,
+                "y": -88.5032967625907,
+                "width": 60,
+                "height": 100,
+                "x1": -30,
+                "y1": -50,
+                "x2": 30,
+                "y2": 50,
+                "ix1": -30,
+                "iy1": -50,
+                "ix2": 30,
+                "iy2": 50,
+                "icx": 0,
+                "icy": 0
+              }
+            }
+          ]
+        },
+        {
+          "attributes": {
+            "x": 0,
+            "y": 300,
+            "text": "Population of OECD Countries in 2018",
+            "fontFamily": "Arial",
+            "fontSize": 24,
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0
+            },
+            "visible": true,
+            "outline": null,
+            "opacity": 1
+          }
+        }
+      ],
+      "scales": [
+        {
+          "attributes": {
+            "rangeMin": 0,
+            "rangeMax": 30000
+          }
+        },
+        {
+          "attributes": {}
+        },
+        {
+          "attributes": {
+            "rangeMin": 6,
+            "rangeMax": 26
+          }
+        }
+      ],
+      "scaleMappings": [
+        {
+          "type": "scale",
+          "table": "oecd_population_2018",
+          "expression": "avg(Population)",
+          "valueType": "number",
+          "scale": "wdt76ny31o",
+          "attribute": "size"
+        },
+        {
+          "type": "scale",
+          "table": "oecd_population_2018",
+          "expression": "first(`Geographic Location`)",
+          "valueType": "string",
+          "scale": "aqx25hxd9oc",
+          "attribute": "fill"
+        },
+        {
+          "type": "scale",
+          "table": "oecd_population_2018",
+          "expression": "avg(Population)",
+          "valueType": "number",
+          "scale": "1kd5xhem0j8",
+          "attribute": "fontSize"
+        }
+      ],
+      "attributes": {
+        "width": 600,
+        "height": 600,
+        "marginLeft": 50,
+        "marginRight": 50,
+        "marginTop": 80,
+        "marginBottom": 50,
+        "cx": 0,
+        "cy": -15,
+        "x1": -250,
+        "y1": -250,
+        "x2": 250,
+        "y2": 220,
+        "ox1": -300,
+        "oy1": -300,
+        "ox2": 300,
+        "oy2": 300
+      }
+    }
+  },
+  "name": "nightingale"
+}

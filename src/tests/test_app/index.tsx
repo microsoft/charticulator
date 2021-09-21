@@ -7,10 +7,10 @@ import { CharticulatorCoreConfig, initialize } from "../../core";
 import { popupController } from "../../app/globals";
 import { PopupContainer } from "../../app/controllers";
 
-const registeredTests: {
+const registeredTests: Array<{
   name: string;
   component: React.ComponentClass;
-}[] = [];
+}> = [];
 function registerTest(name: string, component: React.ComponentClass) {
   registeredTests.push({ name, component });
 }

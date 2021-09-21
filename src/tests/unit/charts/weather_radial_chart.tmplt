@@ -1,0 +1,1010 @@
+{
+ "specification": {
+  "_id": "gbc1n178t1a",
+  "classID": "chart.rectangle",
+  "properties": {
+   "name": "Chart",
+   "backgroundColor": null,
+   "backgroundOpacity": 1
+  },
+  "mappings": {
+   "marginTop": {
+    "type": "value",
+    "value": 10
+   },
+   "width": {
+    "type": "value",
+    "value": 600
+   },
+   "height": {
+    "type": "value",
+    "value": 600
+   },
+   "marginLeft": {
+    "type": "value",
+    "value": 10
+   },
+   "marginRight": {
+    "type": "value",
+    "value": 10
+   },
+   "marginBottom": {
+    "type": "value",
+    "value": 10
+   }
+  },
+  "glyphs": [
+   {
+    "_id": "fee6vbiiztn",
+    "classID": "glyph.rectangle",
+    "properties": {
+     "name": "Glyph"
+    },
+    "table": "main",
+    "marks": [
+     {
+      "_id": "juo4rf6c13",
+      "classID": "mark.anchor",
+      "properties": {
+       "name": "Anchor"
+      },
+      "mappings": {
+       "x": {
+        "type": "parent",
+        "parentAttribute": "icx"
+       },
+       "y": {
+        "type": "parent",
+        "parentAttribute": "icy"
+       }
+      }
+     },
+     {
+      "_id": "o6u8fzhi1fm",
+      "classID": "mark.data-axis",
+      "properties": {
+       "dataExpressions": [
+        {
+         "name": "wkszr5hkixd",
+         "expression": "avg(`Avg Temperature`)"
+        },
+        {
+         "name": "89bda75j4im",
+         "expression": "avg(`Min Temperature`)"
+        },
+        {
+         "name": "m5zkw50hwu",
+         "expression": "avg(`Max Temperature`)"
+        }
+       ],
+       "axis": {
+        "type": "numerical",
+        "expression": "avg(`Avg Temperature`)",
+        "rawExpression": "first(`Avg Temperature`)",
+        "valueType": "number",
+        "gapRatio": 0.1,
+        "visible": true,
+        "side": "default",
+        "style": {
+         "tickColor": {
+          "r": 189,
+          "g": 189,
+          "b": 189
+         },
+         "lineColor": {
+          "r": 189,
+          "g": 189,
+          "b": 189
+         },
+         "fontFamily": "Arial",
+         "fontSize": 12,
+         "tickSize": 5,
+         "wordWrap": false,
+         "gridlineStyle": "none",
+         "gridlineColor": {
+          "r": 234,
+          "g": 234,
+          "b": 234
+         },
+         "gridlineWidth": 1
+        },
+        "numericalMode": "linear",
+        "dataKind": "numerical",
+        "autoDomainMax": true,
+        "autoDomainMin": true,
+        "domainMin": -25,
+        "domainMax": 35
+       },
+       "visible": true,
+       "visibleOn": "first",
+       "name": "DataAxis1"
+      },
+      "mappings": {
+       "x1": {
+        "type": "parent",
+        "parentAttribute": "ix1"
+       },
+       "y1": {
+        "type": "parent",
+        "parentAttribute": "iy1"
+       },
+       "x2": {
+        "type": "parent",
+        "parentAttribute": "ix1"
+       },
+       "y2": {
+        "type": "parent",
+        "parentAttribute": "iy2"
+       }
+      }
+     },
+     {
+      "_id": "jxr570ld69i",
+      "classID": "mark.line",
+      "properties": {
+       "strokeStyle": "solid",
+       "visible": true,
+       "name": "Line1"
+      },
+      "mappings": {
+       "stroke": {
+        "type": "scale",
+        "table": "main",
+        "expression": "avg(`Avg Temperature`)",
+        "valueType": "number",
+        "scale": "f1jxasng58l",
+        "attribute": "stroke"
+       },
+       "strokeWidth": {
+        "type": "value",
+        "value": 1
+       },
+       "opacity": {
+        "type": "value",
+        "value": 1
+       },
+       "visible": {
+        "type": "value",
+        "value": true
+       },
+       "x1": {
+        "type": "parent",
+        "parentAttribute": "ix1"
+       },
+       "x2": {
+        "type": "parent",
+        "parentAttribute": "ix1"
+       }
+      }
+     },
+     {
+      "_id": "jhh5uqzicyg",
+      "classID": "mark.symbol",
+      "properties": {
+       "visible": true,
+       "name": "Symbol1"
+      },
+      "mappings": {
+       "fill": {
+        "type": "value",
+        "value": {
+         "r": 198,
+         "g": 219,
+         "b": 239
+        }
+       },
+       "strokeWidth": {
+        "type": "value",
+        "value": 1
+       },
+       "opacity": {
+        "type": "value",
+        "value": 0.36
+       },
+       "size": {
+        "type": "scale",
+        "table": "main",
+        "expression": "avg(Precipitation)",
+        "valueType": "number",
+        "scale": "cj2i33fugbk",
+        "attribute": "size"
+       },
+       "visible": {
+        "type": "value",
+        "value": true
+       },
+       "x": {
+        "type": "parent",
+        "parentAttribute": "ix1"
+       }
+      }
+     }
+    ],
+    "mappings": {},
+    "constraints": [
+     {
+      "type": "snap",
+      "attributes": {
+       "element": "jxr570ld69i",
+       "attribute": "y1",
+       "targetElement": "o6u8fzhi1fm",
+       "targetAttribute": "anchorYm5zkw50hwu",
+       "gap": 0
+      }
+     },
+     {
+      "type": "snap",
+      "attributes": {
+       "element": "jxr570ld69i",
+       "attribute": "y2",
+       "targetElement": "o6u8fzhi1fm",
+       "targetAttribute": "anchorY89bda75j4im",
+       "gap": 0
+      }
+     },
+     {
+      "type": "snap",
+      "attributes": {
+       "element": "jhh5uqzicyg",
+       "attribute": "y",
+       "targetElement": "o6u8fzhi1fm",
+       "targetAttribute": "anchorYwkszr5hkixd",
+       "gap": 0
+      }
+     }
+    ]
+   }
+  ],
+  "elements": [
+   {
+    "_id": "76u4pgj7u3d",
+    "classID": "plot-segment.polar",
+    "glyph": "fee6vbiiztn",
+    "table": "main",
+    "filter": null,
+    "mappings": {
+     "x1": {
+      "type": "parent",
+      "parentAttribute": "x1"
+     },
+     "x2": {
+      "type": "parent",
+      "parentAttribute": "x2"
+     },
+     "y1": {
+      "type": "parent",
+      "parentAttribute": "y1"
+     },
+     "y2": {
+      "type": "parent",
+      "parentAttribute": "y2"
+     }
+    },
+    "properties": {
+     "name": "PlotSegment1",
+     "visible": true,
+     "sublayout": {
+      "type": "dodge-x",
+      "order": null,
+      "ratioX": 0.1,
+      "ratioY": 0.1,
+      "align": {
+       "x": "start",
+       "y": "start"
+      },
+      "grid": {
+       "direction": "x",
+       "xCount": null,
+       "yCount": null
+      },
+      "packing": {
+       "gravityX": 0.1,
+       "gravityY": 0.1
+      }
+     },
+     "marginX1": 0,
+     "marginY1": 0,
+     "marginX2": 0,
+     "marginY2": 0,
+     "startAngle": 0,
+     "endAngle": 360,
+     "innerRatio": 0.24767446436642415,
+     "outerRatio": 1,
+     "curve": [
+      [
+       {
+        "x": -1,
+        "y": 0
+       },
+       {
+        "x": -0.25,
+        "y": -0.5
+       },
+       {
+        "x": 0.25,
+        "y": 0.5
+       },
+       {
+        "x": 1,
+        "y": 0
+       }
+      ]
+     ],
+     "normalStart": -0.2,
+     "normalEnd": 0.2
+    }
+   },
+   {
+    "_id": "w16noif01pk",
+    "classID": "mark.text",
+    "properties": {
+     "alignment": {
+      "x": "middle",
+      "y": "top",
+      "xMargin": 5,
+      "yMargin": 5
+     },
+     "rotation": 0,
+     "visible": true,
+     "name": "Text1"
+    },
+    "mappings": {
+     "text": {
+      "type": "text",
+      "table": "main",
+      "textExpression": "${first(City)}"
+     },
+     "fontFamily": {
+      "type": "value",
+      "value": "Impact"
+     },
+     "fontSize": {
+      "type": "value",
+      "value": 28
+     },
+     "color": {
+      "type": "value",
+      "value": {
+       "r": 115,
+       "g": 115,
+       "b": 115
+      }
+     },
+     "opacity": {
+      "type": "value",
+      "value": 1
+     },
+     "visible": {
+      "type": "value",
+      "value": true
+     },
+     "x": {
+      "type": "parent",
+      "parentAttribute": "cx"
+     },
+     "y": {
+      "type": "parent",
+      "parentAttribute": "cy"
+     }
+    }
+   }
+  ],
+  "scales": [
+   {
+    "_id": "f1jxasng58l",
+    "classID": "scale.linear<number,color>",
+    "properties": {
+     "enableTooltips": true,
+     "enableContextMenu": true,
+     "enableSelection": true,
+     "name": "Scale1",
+     "domainMin": -15,
+     "domainMax": 30,
+     "range": {
+      "colors": [
+       {
+        "r": 94,
+        "g": 79,
+        "b": 162
+       },
+       {
+        "r": 50,
+        "g": 136,
+        "b": 189
+       },
+       {
+        "r": 102,
+        "g": 194,
+        "b": 165
+       },
+       {
+        "r": 171,
+        "g": 221,
+        "b": 164
+       },
+       {
+        "r": 230,
+        "g": 245,
+        "b": 152
+       },
+       {
+        "r": 255,
+        "g": 255,
+        "b": 191
+       },
+       {
+        "r": 254,
+        "g": 224,
+        "b": 139
+       },
+       {
+        "r": 253,
+        "g": 174,
+        "b": 97
+       },
+       {
+        "r": 244,
+        "g": 109,
+        "b": 67
+       },
+       {
+        "r": 213,
+        "g": 62,
+        "b": 79
+       },
+       {
+        "r": 158,
+        "g": 1,
+        "b": 66
+       }
+      ],
+      "colorspace": "lab"
+     }
+    },
+    "mappings": {
+     "range": {
+      "type": "value",
+      "value": {
+       "colorspace": "lab",
+       "colors": [
+        {
+         "r": 255,
+         "g": 255,
+         "b": 255
+        },
+        {
+         "r": 0,
+         "g": 0,
+         "b": 0
+        }
+       ]
+      }
+     }
+    },
+    "inputType": "number",
+    "outputType": "color"
+   },
+   {
+    "_id": "cj2i33fugbk",
+    "classID": "scale.linear<number,number>",
+    "properties": {
+     "autoDomainMin": true,
+     "autoDomainMax": true,
+     "name": "Scale2",
+     "domainMin": 0,
+     "domainMax": 50
+    },
+    "mappings": {
+     "rangeMin": {
+      "type": "value",
+      "value": 0
+     },
+     "rangeMax": {
+      "type": "value",
+      "value": 4500
+     }
+    },
+    "inputType": "number",
+    "outputType": "number"
+   }
+  ],
+  "scaleMappings": [
+   {
+    "type": "scale",
+    "table": "main",
+    "expression": "avg(`Avg Temperature`)",
+    "valueType": "number",
+    "scale": "f1jxasng58l",
+    "attribute": "stroke"
+   },
+   {
+    "type": "scale",
+    "table": "main",
+    "expression": "avg(Precipitation)",
+    "valueType": "number",
+    "scale": "cj2i33fugbk",
+    "attribute": "size"
+   }
+  ],
+  "constraints": [],
+  "resources": [],
+  "exposed": true
+ },
+ "defaultAttributes": {
+  "juo4rf6c13": {
+   "x": 0,
+   "y": 0
+  },
+  "o6u8fzhi1fm": {
+   "x1": -0.04438356164385091,
+   "y1": -10.908472281059964,
+   "x2": -0.04438356164385091,
+   "y2": 10.908472281059964,
+   "anchorXwkszr5hkixd": -0.04438356164385091,
+   "anchorYwkszr5hkixd": 2.1271022844309884,
+   "anchorX89bda75j4im": -0.04438356164385091,
+   "anchorY89bda75j4im": -0.317202434612997,
+   "anchorXm5zkw50hwu": -0.04438356164385091,
+   "anchorYm5zkw50hwu": 3.8941154007604313
+  },
+  "jxr570ld69i": {
+   "x1": -0.04438356164385091,
+   "y1": 3.8941154007604313,
+   "x2": -0.04438356164385091,
+   "y2": -0.317202434612997,
+   "cx": -0.04438356164385091,
+   "cy": 1.7884564830737164,
+   "dx": 0,
+   "dy": -4.211317835373431,
+   "strokeWidth": 0.1,
+   "opacity": 0.1
+  },
+  "jhh5uqzicyg": {
+   "x": -0.08876712328770182,
+   "y": 4.254204568861977,
+   "size": 48.43972602739723,
+   "strokeWidth": 0.2,
+   "opacity": 0.07199999999999997
+  },
+  "w16noif01pk": {
+   "x": 0,
+   "y": 0,
+   "fontSize": 7,
+   "opacity": 0.25
+  }
+ },
+ "tables": [
+  {
+   "name": "main",
+   "columns": [
+    {
+     "displayName": "City",
+     "name": "City",
+     "type": "string",
+     "metadata": {
+      "kind": "categorical",
+      "orderMode": "alphabetically"
+     }
+    },
+    {
+     "displayName": "Avg Temperature",
+     "name": "Avg Temperature",
+     "type": "number",
+     "metadata": {
+      "kind": "numerical"
+     }
+    },
+    {
+     "displayName": "Min Temperature",
+     "name": "Min Temperature",
+     "type": "number",
+     "metadata": {
+      "kind": "numerical"
+     }
+    },
+    {
+     "displayName": "Max Temperature",
+     "name": "Max Temperature",
+     "type": "number",
+     "metadata": {
+      "kind": "numerical"
+     }
+    },
+    {
+     "displayName": "Precipitation",
+     "name": "Precipitation",
+     "type": "number",
+     "metadata": {
+      "kind": "numerical"
+     }
+    }
+   ]
+  }
+ ],
+ "inference": [
+  {
+   "objectID": "o6u8fzhi1fm",
+   "dataSource": {
+    "table": "main",
+    "groupBy": null
+   },
+   "axis": {
+    "expression": "avg(`Avg Temperature`)",
+    "additionalExpressions": [
+     "avg(`Avg Temperature`)",
+     "avg(`Min Temperature`)",
+     "avg(`Max Temperature`)"
+    ],
+    "type": "numerical",
+    "property": "axis"
+   },
+   "autoDomainMin": true,
+   "autoDomainMax": true
+  },
+  {
+   "objectID": "o6u8fzhi1fm",
+   "dataSource": {
+    "table": "main",
+    "groupBy": null
+   },
+   "expression": {
+    "expression": "avg(`Avg Temperature`)",
+    "property": {
+     "property": "dataExpressions",
+     "field": [
+      0,
+      "expression"
+     ]
+    }
+   }
+  },
+  {
+   "objectID": "o6u8fzhi1fm",
+   "dataSource": {
+    "table": "main",
+    "groupBy": null
+   },
+   "expression": {
+    "expression": "avg(`Min Temperature`)",
+    "property": {
+     "property": "dataExpressions",
+     "field": [
+      1,
+      "expression"
+     ]
+    }
+   }
+  },
+  {
+   "objectID": "o6u8fzhi1fm",
+   "dataSource": {
+    "table": "main",
+    "groupBy": null
+   },
+   "expression": {
+    "expression": "avg(`Max Temperature`)",
+    "property": {
+     "property": "dataExpressions",
+     "field": [
+      2,
+      "expression"
+     ]
+    }
+   }
+  },
+  {
+   "objectID": "f1jxasng58l",
+   "scale": {
+    "classID": "scale.linear<number,color>",
+    "expressions": [
+     "avg(`Avg Temperature`)"
+    ],
+    "properties": {
+     "mapping": "mapping"
+    }
+   },
+   "dataSource": {
+    "table": "main"
+   }
+  },
+  {
+   "objectID": "cj2i33fugbk",
+   "autoDomainMax": true,
+   "autoDomainMin": true,
+   "scale": {
+    "classID": "scale.linear<number,number>",
+    "expressions": [
+     "avg(Precipitation)"
+    ],
+    "properties": {
+     "mapping": "mapping"
+    }
+   },
+   "dataSource": {
+    "table": "main"
+   }
+  }
+ ],
+ "properties": [
+  {
+   "objectID": "o6u8fzhi1fm",
+   "target": {
+    "property": {
+     "property": "axis",
+     "field": "style",
+     "subfield": "tickSize"
+    }
+   },
+   "type": "number",
+   "default": 5,
+   "displayName": "DataAxis1/axis.style.tickSize"
+  },
+  {
+   "objectID": "o6u8fzhi1fm",
+   "target": {
+    "property": {
+     "property": "axis",
+     "field": "style",
+     "subfield": "fontSize"
+    }
+   },
+   "type": "number",
+   "default": 12,
+   "displayName": "DataAxis1/axis.style.fontSize"
+  },
+  {
+   "objectID": "o6u8fzhi1fm",
+   "target": {
+    "property": {
+     "property": "axis",
+     "field": "style",
+     "subfield": "fontFamily"
+    }
+   },
+   "type": "font-family",
+   "default": "Arial",
+   "displayName": "DataAxis1/axis.style.fontFamily"
+  },
+  {
+   "objectID": "o6u8fzhi1fm",
+   "target": {
+    "property": {
+     "property": "axis",
+     "field": "style",
+     "subfield": "lineColor"
+    }
+   },
+   "type": "color",
+   "default": "#bdbdbd",
+   "displayName": "DataAxis1/axis.style.lineColor"
+  },
+  {
+   "objectID": "o6u8fzhi1fm",
+   "target": {
+    "property": {
+     "property": "axis",
+     "field": "style",
+     "subfield": "tickColor"
+    }
+   },
+   "type": "color",
+   "default": "#bdbdbd",
+   "displayName": "DataAxis1/axis.style.tickColor"
+  },
+  {
+   "objectID": "o6u8fzhi1fm",
+   "target": {
+    "property": {
+     "property": "axis",
+     "field": "categories"
+    }
+   },
+   "type": "enum",
+   "default": "ascending",
+   "displayName": "DataAxis1/axis.categories"
+  },
+  {
+   "objectID": "jxr570ld69i",
+   "target": {
+    "attribute": "visible"
+   },
+   "type": "boolean",
+   "default": true,
+   "displayName": "Line1/visible"
+  },
+  {
+   "objectID": "jxr570ld69i",
+   "target": {
+    "attribute": "strokeWidth"
+   },
+   "type": "number",
+   "default": 1,
+   "displayName": "Line1/strokeWidth"
+  },
+  {
+   "objectID": "jxr570ld69i",
+   "target": {
+    "property": "strokeStyle"
+   },
+   "type": "enum",
+   "default": "solid",
+   "displayName": "Line1/strokeStyle"
+  },
+  {
+   "objectID": "jxr570ld69i",
+   "target": {
+    "attribute": "opacity"
+   },
+   "type": "number",
+   "default": 1,
+   "displayName": "Line1/opacity"
+  },
+  {
+   "objectID": "jhh5uqzicyg",
+   "target": {
+    "attribute": "visible"
+   },
+   "type": "boolean",
+   "default": true,
+   "displayName": "Symbol1/visible"
+  },
+  {
+   "objectID": "jhh5uqzicyg",
+   "target": {
+    "attribute": "fill"
+   },
+   "type": "color",
+   "default": "#c6dbef",
+   "displayName": "Symbol1/fill"
+  },
+  {
+   "objectID": "jhh5uqzicyg",
+   "target": {
+    "attribute": "strokeWidth"
+   },
+   "type": "number",
+   "default": 1,
+   "displayName": "Symbol1/strokeWidth"
+  },
+  {
+   "objectID": "jhh5uqzicyg",
+   "target": {
+    "attribute": "opacity"
+   },
+   "type": "number",
+   "default": 0.36,
+   "displayName": "Symbol1/opacity"
+  },
+  {
+   "objectID": "w16noif01pk",
+   "target": {
+    "attribute": "fontFamily"
+   },
+   "type": "font-family",
+   "default": "Impact",
+   "displayName": "Text1/fontFamily"
+  },
+  {
+   "objectID": "w16noif01pk",
+   "target": {
+    "attribute": "fontSize"
+   },
+   "type": "number",
+   "default": 28,
+   "displayName": "Text1/fontSize"
+  },
+  {
+   "objectID": "w16noif01pk",
+   "target": {
+    "attribute": "color"
+   },
+   "type": "color",
+   "default": "#737373",
+   "displayName": "Text1/color"
+  },
+  {
+   "objectID": "w16noif01pk",
+   "target": {
+    "attribute": "visible"
+   },
+   "type": "boolean",
+   "default": true,
+   "displayName": "Text1/visible"
+  },
+  {
+   "objectID": "w16noif01pk",
+   "target": {
+    "attribute": "opacity"
+   },
+   "type": "number",
+   "default": 1,
+   "displayName": "Text1/opacity"
+  },
+  {
+   "objectID": "f1jxasng58l",
+   "target": {
+    "property": "domainMin"
+   },
+   "type": "number",
+   "displayName": "Scale1/domainMin"
+  },
+  {
+   "objectID": "f1jxasng58l",
+   "target": {
+    "property": "domainMax"
+   },
+   "type": "number",
+   "displayName": "Scale1/domainMax"
+  },
+  {
+   "objectID": "cj2i33fugbk",
+   "target": {
+    "property": "domainMin"
+   },
+   "type": "number",
+   "displayName": "Scale2/domainMin"
+  },
+  {
+   "objectID": "cj2i33fugbk",
+   "target": {
+    "property": "domainMax"
+   },
+   "type": "number",
+   "displayName": "Scale2/domainMax"
+  },
+  {
+   "objectID": "cj2i33fugbk",
+   "target": {
+    "attribute": "rangeMin"
+   },
+   "type": "number",
+   "default": null,
+   "displayName": "Scale2/rangeMin"
+  },
+  {
+   "objectID": "cj2i33fugbk",
+   "target": {
+    "attribute": "rangeMax"
+   },
+   "type": "number",
+   "default": null,
+   "displayName": "Scale2/rangeMax"
+  },
+  {
+   "objectID": "gbc1n178t1a",
+   "target": {
+    "attribute": "marginLeft"
+   },
+   "type": "number",
+   "default": 10,
+   "displayName": "Chart/marginLeft"
+  },
+  {
+   "objectID": "gbc1n178t1a",
+   "target": {
+    "attribute": "marginRight"
+   },
+   "type": "number",
+   "default": 10,
+   "displayName": "Chart/marginRight"
+  },
+  {
+   "objectID": "gbc1n178t1a",
+   "target": {
+    "attribute": "marginTop"
+   },
+   "type": "number",
+   "default": 10,
+   "displayName": "Chart/marginTop"
+  },
+  {
+   "objectID": "gbc1n178t1a",
+   "target": {
+    "attribute": "marginBottom"
+   },
+   "type": "number",
+   "default": 10,
+   "displayName": "Chart/marginBottom"
+  }
+ ]
+}

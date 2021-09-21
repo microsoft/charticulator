@@ -2,22 +2,24 @@
   "compileOnSave": true,
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "allowJs": false,
     "declaration": true,
-    "rootDir": "./src",
-    "outDir": "./dist/scripts",
+    "outDir": "./.tmp/tests",
     "module": "commonjs",
     "moduleResolution": "node",
     "target": "es6",
     "jsx": "react",
     "noImplicitAny": true,
     "sourceMap": true,
-    "lib": [ "es2017", "dom", "esnext.array"],
+    "lib": ["es2017", "dom", "esnext.array"],
     "baseUrl": "./src",
+    "rootDir": "./src",
     "paths": {
       "resources/*": ["resources/*"],
-      "src/*": ["./*"]
-    }
-  },
-  "exclude": ["karma.conf.ts", "node_modules", "dist"],
-  "typeRoots": ["./core/expression", "../node_modules/@types"]
+      "src/*": ["./*"],
+      "tests/*": ["./tests/karma"]
+    },
+    "exclude": ["karma.conf.ts", "node_modules", "dist"],
+    "typeRoots": ["./core/expression"]
+  }
 }

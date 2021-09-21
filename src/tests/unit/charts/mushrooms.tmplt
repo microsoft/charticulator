@@ -1,0 +1,777 @@
+{
+  "specification": {
+    "_id": "sr3jgzsk0s8",
+    "classID": "chart.rectangle",
+    "properties": {
+      "name": "Chart",
+      "backgroundColor": null,
+      "backgroundOpacity": 1,
+      "exposed": true
+    },
+    "mappings": {
+      "marginTop": {
+        "type": "value",
+        "value": 80
+      },
+      "marginRight": {
+        "type": "value",
+        "value": 119.4962962962963
+      },
+      "marginLeft": {
+        "type": "value",
+        "value": 82.49382716049382
+      }
+    },
+    "glyphs": [
+      {
+        "_id": "qydce4h21a",
+        "classID": "glyph.rectangle",
+        "properties": {
+          "name": "Glyph"
+        },
+        "table": "mushrooms",
+        "marks": [
+          {
+            "_id": "98nolswnsc",
+            "classID": "mark.anchor",
+            "properties": {
+              "name": "Anchor",
+              "enableTooltips": true,
+              "enableSelection": true,
+              "enableContextMenu": true
+            },
+            "mappings": {
+              "x": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              }
+            }
+          },
+          {
+            "_id": "2f8mm35gybs",
+            "classID": "mark.symbol",
+            "properties": {
+              "visible": true,
+              "name": "Symbol1",
+              "enableTooltips": true,
+              "enableSelection": true,
+              "enableContextMenu": true,
+              "exposed": true
+            },
+            "mappings": {
+              "fill": {
+                "type": "scale",
+                "table": "mushrooms",
+                "expression": "first(Surface)",
+                "valueType": "string",
+                "scale": "gshifqt47kv",
+                "attribute": "fill"
+              },
+              "strokeWidth": {
+                "type": "value",
+                "value": 1
+              },
+              "opacity": {
+                "type": "value",
+                "value": 1
+              },
+              "size": {
+                "type": "value",
+                "value": 60
+              },
+              "visible": {
+                "type": "value",
+                "value": true
+              },
+              "x": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              }
+            }
+          }
+        ],
+        "mappings": {},
+        "constraints": []
+      }
+    ],
+    "elements": [
+      {
+        "_id": "7szm2ptzskf",
+        "classID": "plot-segment.cartesian",
+        "glyph": "qydce4h21a",
+        "table": "mushrooms",
+        "filter": null,
+        "mappings": {
+          "x1": {
+            "type": "parent",
+            "parentAttribute": "x1"
+          },
+          "y1": {
+            "type": "parent",
+            "parentAttribute": "y1"
+          },
+          "x2": {
+            "type": "parent",
+            "parentAttribute": "x2"
+          },
+          "y2": {
+            "type": "parent",
+            "parentAttribute": "y2"
+          }
+        },
+        "properties": {
+          "name": "PlotSegment1",
+          "visible": true,
+          "marginX1": 0,
+          "marginY1": 0,
+          "marginX2": 0,
+          "marginY2": 0,
+          "sublayout": {
+            "type": "packing",
+            "order": null,
+            "ratioX": 0.1,
+            "ratioY": 0.1,
+            "align": {
+              "x": "start",
+              "y": "start"
+            },
+            "grid": {
+              "direction": "x",
+              "xCount": null,
+              "yCount": null
+            },
+            "packing": {
+              "gravityX": 0.1,
+              "gravityY": 0.1
+            }
+          },
+          "yData": {
+            "type": "categorical",
+            "expression": "first(IsEdible)",
+            "valueType": "string",
+            "gapRatio": 0.1,
+            "visible": true,
+            "side": "default",
+            "style": {
+              "tickColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0
+              },
+              "lineColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0
+              },
+              "fontFamily": "Arial",
+              "fontSize": 12,
+              "tickSize": 5
+            },
+            "categories": [
+              "Edible",
+              "Poisonous"
+            ]
+          },
+          "xData": {
+            "type": "categorical",
+            "expression": "first(Odor)",
+            "rawExpression": "first(Odor)",
+            "valueType": "string",
+            "gapRatio": 0.1,
+            "visible": true,
+            "side": "default",
+            "style": {
+              "tickColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0
+              },
+              "lineColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0
+              },
+              "fontFamily": "Arial",
+              "fontSize": 12,
+              "tickSize": 5
+            },
+            "dataKind": "categorical",
+            "categories": [
+              "Almond",
+              "Anise",
+              "Creosote",
+              "Fishy",
+              "Foul",
+              "None",
+              "Pungent",
+              "Spicy"
+            ]
+          },
+          "enableTooltips": true,
+          "enableSelection": true,
+          "enableContextMenu": true,
+          "xDataDisableAutoMax": false,
+          "xDataDisableAutoMin": false,
+          "yDataDisableAutoMax": false,
+          "yDataDisableAutoMin": false,
+          "exposed": true
+        }
+      },
+      {
+        "_id": "bb7krjnd5n",
+        "classID": "mark.text",
+        "properties": {
+          "name": "Title",
+          "visible": true,
+          "alignment": {
+            "x": "middle",
+            "y": "top",
+            "xMargin": 0,
+            "yMargin": 30
+          },
+          "rotation": 0,
+          "enableTooltips": true,
+          "enableSelection": true,
+          "enableContextMenu": true,
+          "exposed": true
+        },
+        "mappings": {
+          "x": {
+            "type": "parent",
+            "parentAttribute": "cx"
+          },
+          "y": {
+            "type": "parent",
+            "parentAttribute": "oy2"
+          },
+          "text": {
+            "type": "value",
+            "value": "mushrooms"
+          },
+          "fontSize": {
+            "type": "value",
+            "value": 24
+          },
+          "color": {
+            "type": "value",
+            "value": {
+              "r": 0,
+              "g": 0,
+              "b": 0
+            }
+          }
+        }
+      },
+      {
+        "_id": "2q389snpcfd",
+        "classID": "legend.categorical",
+        "properties": {
+          "visible": true,
+          "alignX": "start",
+          "alignY": "end",
+          "fontFamily": "Arial",
+          "fontSize": 14,
+          "textColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "name": "Legend1",
+          "scale": "gshifqt47kv",
+          "enableTooltips": true,
+          "enableSelection": true,
+          "enableContextMenu": true,
+          "orientation": "vertical",
+          "exposed": true
+        },
+        "mappings": {
+          "x": {
+            "type": "parent",
+            "parentAttribute": "x2"
+          },
+          "y": {
+            "type": "parent",
+            "parentAttribute": "y2"
+          }
+        }
+      }
+    ],
+    "scales": [
+      {
+        "_id": "gshifqt47kv",
+        "classID": "scale.categorical<string,color>",
+        "properties": {
+          "name": "Scale1",
+          "mapping": {
+            "Fibrous": {
+              "r": 127,
+              "g": 201,
+              "b": 127
+            },
+            "Smooth": {
+              "r": 190,
+              "g": 174,
+              "b": 212
+            },
+            "Scaly": {
+              "r": 253,
+              "g": 192,
+              "b": 134
+            }
+          },
+          "disableAutoMax": false,
+          "disableAutoMin": false
+        },
+        "mappings": {},
+        "inputType": "string",
+        "outputType": "color"
+      }
+    ],
+    "scaleMappings": [
+      {
+        "type": "scale",
+        "table": "mushrooms",
+        "expression": "first(Surface)",
+        "valueType": "string",
+        "scale": "gshifqt47kv",
+        "attribute": "fill"
+      }
+    ],
+    "constraints": [],
+    "resources": []
+  },
+  "defaultAttributes": {
+    "98nolswnsc": {
+      "x": 0,
+      "y": 0
+    },
+    "2f8mm35gybs": {
+      "x": 0,
+      "y": 0,
+      "size": 12,
+      "strokeWidth": 0.2,
+      "opacity": 0.2
+    },
+    "bb7krjnd5n": {
+      "x": -4.625308641975309,
+      "y": 75,
+      "fontSize": 6,
+      "opacity": 0.25
+    }
+  },
+  "tables": [
+    {
+      "name": "mushrooms",
+      "columns": [
+        {
+          "displayName": "IsEdible",
+          "name": "IsEdible",
+          "type": "string",
+          "metadata": {
+            "kind": "categorical",
+            "orderMode": "alphabetically"
+          }
+        },
+        {
+          "displayName": "Odor",
+          "name": "Odor",
+          "type": "string",
+          "metadata": {
+            "kind": "categorical",
+            "orderMode": "alphabetically"
+          }
+        },
+        {
+          "displayName": "Surface",
+          "name": "Surface",
+          "type": "string",
+          "metadata": {
+            "kind": "categorical",
+            "orderMode": "alphabetically"
+          }
+        }
+      ]
+    }
+  ],
+  "inference": [
+    {
+      "objectID": "7szm2ptzskf",
+      "dataSource": {
+        "table": "mushrooms"
+      },
+      "axis": {
+        "expression": "first(Odor)",
+        "type": "categorical",
+        "style": {
+          "tickColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "lineColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "fontFamily": "Arial",
+          "fontSize": 12,
+          "tickSize": 5
+        },
+        "property": "xData"
+      },
+      "disableAutoMax": false,
+      "disableAutoMin": false
+    },
+    {
+      "objectID": "7szm2ptzskf",
+      "dataSource": {
+        "table": "mushrooms"
+      },
+      "axis": {
+        "expression": "first(IsEdible)",
+        "type": "categorical",
+        "style": {
+          "tickColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "lineColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "fontFamily": "Arial",
+          "fontSize": 12,
+          "tickSize": 5
+        },
+        "property": "yData"
+      },
+      "disableAutoMax": false,
+      "disableAutoMin": false
+    },
+    {
+      "objectID": "gshifqt47kv",
+      "scale": {
+        "classID": "scale.categorical<string,color>",
+        "expressions": [
+          "first(Surface)"
+        ],
+        "properties": {
+          "mapping": "mapping"
+        }
+      },
+      "dataSource": {
+        "table": "mushrooms"
+      }
+    }
+  ],
+  "properties": [
+    {
+      "objectID": "7szm2ptzskf",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "tickSize"
+        }
+      },
+      "type": "number",
+      "default": 5,
+      "displayName": "PlotSegment1/xData.style.tickSize"
+    },
+    {
+      "objectID": "7szm2ptzskf",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "fontSize"
+        }
+      },
+      "type": "number",
+      "default": 12,
+      "displayName": "PlotSegment1/xData.style.fontSize"
+    },
+    {
+      "objectID": "7szm2ptzskf",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "fontFamily"
+        }
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "PlotSegment1/xData.style.fontFamily"
+    },
+    {
+      "objectID": "7szm2ptzskf",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "lineColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "PlotSegment1/xData.style.lineColor"
+    },
+    {
+      "objectID": "7szm2ptzskf",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "tickColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "PlotSegment1/xData.style.tickColor"
+    },
+    {
+      "objectID": "7szm2ptzskf",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "tickSize"
+        }
+      },
+      "type": "number",
+      "default": 5,
+      "displayName": "PlotSegment1/yData.style.tickSize"
+    },
+    {
+      "objectID": "7szm2ptzskf",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "fontSize"
+        }
+      },
+      "type": "number",
+      "default": 12,
+      "displayName": "PlotSegment1/yData.style.fontSize"
+    },
+    {
+      "objectID": "7szm2ptzskf",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "fontFamily"
+        }
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "PlotSegment1/yData.style.fontFamily"
+    },
+    {
+      "objectID": "7szm2ptzskf",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "lineColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "PlotSegment1/yData.style.lineColor"
+    },
+    {
+      "objectID": "7szm2ptzskf",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "tickColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "PlotSegment1/yData.style.tickColor"
+    },
+    {
+      "objectID": "7szm2ptzskf",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "categories"
+        }
+      },
+      "type": "enum",
+      "default": "ascending",
+      "displayName": "PlotSegment1/xData.categories"
+    },
+    {
+      "objectID": "7szm2ptzskf",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "categories"
+        }
+      },
+      "type": "enum",
+      "default": "ascending",
+      "displayName": "PlotSegment1/yData.categories"
+    },
+    {
+      "objectID": "2f8mm35gybs",
+      "target": {
+        "attribute": "visible"
+      },
+      "type": "boolean",
+      "default": true,
+      "displayName": "Symbol1/visible"
+    },
+    {
+      "objectID": "2f8mm35gybs",
+      "target": {
+        "attribute": "strokeWidth"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Symbol1/strokeWidth"
+    },
+    {
+      "objectID": "2f8mm35gybs",
+      "target": {
+        "attribute": "size"
+      },
+      "type": "number",
+      "default": 60,
+      "displayName": "Symbol1/size"
+    },
+    {
+      "objectID": "2f8mm35gybs",
+      "target": {
+        "attribute": "opacity"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Symbol1/opacity"
+    },
+    {
+      "objectID": "bb7krjnd5n",
+      "target": {
+        "attribute": "fontSize"
+      },
+      "type": "number",
+      "default": 24,
+      "displayName": "Title/fontSize"
+    },
+    {
+      "objectID": "bb7krjnd5n",
+      "target": {
+        "attribute": "color"
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "Title/color"
+    },
+    {
+      "objectID": "bb7krjnd5n",
+      "target": {
+        "attribute": "text"
+      },
+      "type": "text",
+      "default": "mushrooms",
+      "displayName": "Title/text"
+    },
+    {
+      "objectID": "2q389snpcfd",
+      "target": {
+        "property": "fontFamily"
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "Legend1/fontFamily"
+    },
+    {
+      "objectID": "2q389snpcfd",
+      "target": {
+        "property": "fontSize"
+      },
+      "type": "number",
+      "default": 14,
+      "displayName": "Legend1/fontSize"
+    },
+    {
+      "objectID": "2q389snpcfd",
+      "target": {
+        "property": "textColor"
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "Legend1/textColor"
+    },
+    {
+      "objectID": "2q389snpcfd",
+      "target": {
+        "property": "alignY"
+      },
+      "type": "enum",
+      "default": "end",
+      "displayName": "Legend1/alignY"
+    },
+    {
+      "objectID": "2q389snpcfd",
+      "target": {
+        "property": "alignX"
+      },
+      "type": "enum",
+      "default": "start",
+      "displayName": "Legend1/alignX"
+    },
+    {
+      "objectID": "sr3jgzsk0s8",
+      "target": {
+        "attribute": "marginLeft"
+      },
+      "type": "number",
+      "default": 82.49382716049382,
+      "displayName": "Chart/marginLeft"
+    },
+    {
+      "objectID": "sr3jgzsk0s8",
+      "target": {
+        "attribute": "marginRight"
+      },
+      "type": "number",
+      "default": 119.4962962962963,
+      "displayName": "Chart/marginRight"
+    },
+    {
+      "objectID": "sr3jgzsk0s8",
+      "target": {
+        "attribute": "marginTop"
+      },
+      "type": "number",
+      "default": 80,
+      "displayName": "Chart/marginTop"
+    },
+    {
+      "objectID": "sr3jgzsk0s8",
+      "target": {
+        "attribute": "marginBottom"
+      },
+      "type": "number",
+      "default": 50,
+      "displayName": "Chart/marginBottom"
+    }
+  ]
+}

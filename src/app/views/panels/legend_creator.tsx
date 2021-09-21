@@ -100,6 +100,7 @@ export class LegendCreationPanel extends ContextedComponent<
         <div className="el-row">
           <PrimaryButton
             text={strings.legendCreator.createLegend}
+            title={strings.legendCreator.createLegend}
             // eslint-disable-next-line
             onClick={() => {
               const columns = this.groupBySelector

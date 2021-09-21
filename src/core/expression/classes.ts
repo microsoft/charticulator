@@ -3,6 +3,7 @@
 
 // eslint-disable-next-line
 export type ValueType = number | boolean | string | Date | Object;
+const pegjs = require("./parser.pegjs");
 
 export interface Context {
   getVariable(name: string): ValueType;
@@ -31,7 +32,6 @@ export class SimpleContext implements Context {
 }
 
 import { constants, functions, operators, precedences } from "./intrinsics";
-import { parse } from "./parser";
 import {
   DataflowTable,
   DataflowTableGroupedContext,
@@ -76,7 +76,7 @@ export abstract class Expression {
   }
 
   public static Parse(expr: string): Expression {
-    return <Expression>parse(expr);
+    return pegjs.parse(expr) as Expression;
   }
 
   public replace(replacer: PatternReplacer): Expression {
@@ -153,7 +153,7 @@ export class TextExpression {
   }
 
   public static Parse(expr: string): TextExpression {
-    return <TextExpression>parse(expr, { startRule: "start_text" });
+    return pegjs.parse(expr, { startRule: "start_text" }) as TextExpression;
   }
 
   public replace(r: PatternReplacer): TextExpression {

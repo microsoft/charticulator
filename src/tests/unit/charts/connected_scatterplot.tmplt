@@ -1,0 +1,866 @@
+{
+  "specification": {
+    "_id": "ij698uc1sek",
+    "classID": "chart.rectangle",
+    "properties": {
+      "name": "Chart",
+      "backgroundColor": null,
+      "backgroundOpacity": 1,
+      "exposed": true
+    },
+    "mappings": {
+      "marginTop": {
+        "type": "value",
+        "value": 80
+      }
+    },
+    "glyphs": [
+      {
+        "_id": "4tcltwoo964",
+        "classID": "glyph.rectangle",
+        "properties": {
+          "name": "Glyph"
+        },
+        "table": "driving_trends",
+        "marks": [
+          {
+            "_id": "pljk1p34kti",
+            "classID": "mark.anchor",
+            "properties": {
+              "name": "Anchor"
+            },
+            "mappings": {
+              "x": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              }
+            }
+          },
+          {
+            "_id": "6dbte88nael",
+            "classID": "mark.symbol",
+            "properties": {
+              "visible": true,
+              "name": "Symbol1",
+              "exposed": true
+            },
+            "mappings": {
+              "fill": {
+                "type": "value",
+                "value": {
+                  "r": 255,
+                  "g": 255,
+                  "b": 255
+                }
+              },
+              "strokeWidth": {
+                "type": "value",
+                "value": 1
+              },
+              "opacity": {
+                "type": "value",
+                "value": 1
+              },
+              "size": {
+                "type": "value",
+                "value": 60
+              },
+              "visible": {
+                "type": "value",
+                "value": true
+              },
+              "x": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              },
+              "stroke": {
+                "type": "value",
+                "value": {
+                  "r": 82,
+                  "g": 82,
+                  "b": 82
+                }
+              }
+            }
+          },
+          {
+            "_id": "trb2tpf6u6d",
+            "classID": "mark.text",
+            "properties": {
+              "alignment": {
+                "x": "left",
+                "y": "bottom",
+                "xMargin": 1.155282095841704,
+                "yMargin": 3.3692066372527716
+              },
+              "rotation": 0,
+              "visible": true,
+              "name": "Text1",
+              "exposed": true
+            },
+            "mappings": {
+              "text": {
+                "type": "text",
+                "table": "driving_trends",
+                "textExpression": "${first(year)}"
+              },
+              "fontFamily": {
+                "type": "value",
+                "value": "Arial"
+              },
+              "fontSize": {
+                "type": "value",
+                "value": 8
+              },
+              "color": {
+                "type": "value",
+                "value": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0
+                }
+              },
+              "opacity": {
+                "type": "value",
+                "value": 1
+              },
+              "visible": {
+                "type": "value",
+                "value": true
+              },
+              "x": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              }
+            }
+          }
+        ],
+        "mappings": {},
+        "constraints": []
+      }
+    ],
+    "elements": [
+      {
+        "_id": "71qwym7wabd",
+        "classID": "links.through",
+        "mappings": {
+          "color": {
+            "type": "value",
+            "value": {
+              "r": 82,
+              "g": 82,
+              "b": 82
+            }
+          },
+          "opacity": {
+            "type": "value",
+            "value": 1
+          }
+        },
+        "properties": {
+          "name": "Link1",
+          "linkMarkType": "",
+          "visible": true,
+          "linkType": "line",
+          "interpolationType": "line",
+          "anchor1": [
+            {
+              "x": {
+                "element": "6dbte88nael",
+                "attribute": "x"
+              },
+              "y": {
+                "element": "6dbte88nael",
+                "attribute": "y"
+              },
+              "direction": {
+                "x": 1,
+                "y": 0
+              }
+            }
+          ],
+          "anchor2": [
+            {
+              "x": {
+                "element": "6dbte88nael",
+                "attribute": "x"
+              },
+              "y": {
+                "element": "6dbte88nael",
+                "attribute": "y"
+              },
+              "direction": {
+                "x": -1,
+                "y": 0
+              }
+            }
+          ],
+          "linkThrough": {
+            "plotSegment": "phnjnt623o",
+            "facetExpressions": []
+          },
+          "curveness": 30,
+          "exposed": true
+        }
+      },
+      {
+        "_id": "phnjnt623o",
+        "classID": "plot-segment.cartesian",
+        "glyph": "4tcltwoo964",
+        "table": "driving_trends",
+        "filter": null,
+        "mappings": {
+          "x1": {
+            "type": "parent",
+            "parentAttribute": "x1"
+          },
+          "y1": {
+            "type": "parent",
+            "parentAttribute": "y1"
+          },
+          "x2": {
+            "type": "parent",
+            "parentAttribute": "x2"
+          },
+          "y2": {
+            "type": "parent",
+            "parentAttribute": "y2"
+          }
+        },
+        "properties": {
+          "name": "PlotSegment1",
+          "visible": true,
+          "marginX1": 0,
+          "marginY1": 0,
+          "marginX2": 0,
+          "marginY2": 0,
+          "sublayout": {
+            "type": "overlap",
+            "order": null,
+            "ratioX": 0.1,
+            "ratioY": 0.1,
+            "align": {
+              "x": "start",
+              "y": "start"
+            },
+            "grid": {
+              "direction": "x",
+              "xCount": null,
+              "yCount": null
+            },
+            "packing": {
+              "gravityX": 0.1,
+              "gravityY": 0.1
+            }
+          },
+          "xData": {
+            "type": "numerical",
+            "expression": "avg(miles)",
+            "rawExpression": "first(miles)",
+            "valueType": "number",
+            "gapRatio": 0.1,
+            "visible": true,
+            "side": "default",
+            "style": {
+              "tickColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0
+              },
+              "lineColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0
+              },
+              "fontFamily": "Arial",
+              "fontSize": 12,
+              "tickSize": 5,
+              "wordWrap": false,
+              "gridlineStyle": "none",
+              "gridlineColor": {
+                "r": 234,
+                "g": 234,
+                "b": 234
+              },
+              "gridlineWidth": 1
+            },
+            "numericalMode": "linear",
+            "dataKind": "numerical",
+            "autoDomainMax": true,
+            "autoDomainMin": true,
+            "domainMin": 3500,
+            "domainMax": 10500
+          },
+          "yData": {
+            "type": "numerical",
+            "expression": "avg(`gas price`)",
+            "rawExpression": "first(`gas price`)",
+            "valueType": "number",
+            "gapRatio": 0.1,
+            "visible": true,
+            "side": "default",
+            "style": {
+              "tickColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0
+              },
+              "lineColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0
+              },
+              "fontFamily": "Arial",
+              "fontSize": 12,
+              "tickSize": 5,
+              "wordWrap": false,
+              "gridlineStyle": "none",
+              "gridlineColor": {
+                "r": 234,
+                "g": 234,
+                "b": 234
+              },
+              "gridlineWidth": 1
+            },
+            "numericalMode": "linear",
+            "dataKind": "numerical",
+            "autoDomainMax": true,
+            "autoDomainMin": true,
+            "domainMin": 1.2,
+            "domainMax": 3.4
+          },
+          "exposed": true
+        }
+      },
+      {
+        "_id": "hprxwx5qrti",
+        "classID": "mark.text",
+        "properties": {
+          "name": "Title",
+          "visible": true,
+          "alignment": {
+            "x": "middle",
+            "y": "top",
+            "xMargin": 0,
+            "yMargin": 30
+          },
+          "rotation": 0,
+          "exposed": true
+        },
+        "mappings": {
+          "x": {
+            "type": "parent",
+            "parentAttribute": "cx"
+          },
+          "y": {
+            "type": "parent",
+            "parentAttribute": "oy2"
+          },
+          "text": {
+            "type": "value",
+            "value": "Miles Driven vs. Gas Prices"
+          },
+          "fontSize": {
+            "type": "value",
+            "value": 24
+          },
+          "color": {
+            "type": "value",
+            "value": {
+              "r": 0,
+              "g": 0,
+              "b": 0
+            }
+          }
+        }
+      }
+    ],
+    "scales": [],
+    "scaleMappings": [],
+    "constraints": [],
+    "resources": []
+  },
+  "defaultAttributes": {
+    "pljk1p34kti": {
+      "x": 0,
+      "y": 0
+    },
+    "6dbte88nael": {
+      "x": 0,
+      "y": 0,
+      "size": 12,
+      "strokeWidth": 0.2,
+      "opacity": 0.2
+    },
+    "trb2tpf6u6d": {
+      "x": 0,
+      "y": 0,
+      "fontSize": 2,
+      "opacity": 0.25
+    },
+    "hprxwx5qrti": {
+      "x": 0,
+      "y": 75,
+      "fontSize": 6,
+      "opacity": 0.25
+    }
+  },
+  "tables": [
+    {
+      "name": "driving_trends",
+      "columns": [
+        {
+          "displayName": "year",
+          "name": "year",
+          "type": "string",
+          "metadata": {
+            "unit": "__year",
+            "kind": "ordinal",
+            "orderMode": "alphabetically",
+            "examples": "1956, 1957, 1958"
+          }
+        },
+        {
+          "displayName": "miles",
+          "name": "miles",
+          "type": "number",
+          "metadata": {
+            "kind": "numerical",
+            "examples": "3683.6965, 3722.7648, 3776.8595"
+          }
+        },
+        {
+          "displayName": "gas price",
+          "name": "gas price",
+          "type": "number",
+          "metadata": {
+            "kind": "numerical",
+            "examples": "2.3829, 2.4026, 2.2539"
+          }
+        }
+      ]
+    }
+  ],
+  "inference": [
+    {
+      "objectID": "phnjnt623o",
+      "dataSource": {
+        "table": "driving_trends"
+      },
+      "axis": {
+        "expression": "avg(miles)",
+        "type": "numerical",
+        "style": {
+          "tickColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "lineColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "fontFamily": "Arial",
+          "fontSize": 12,
+          "tickSize": 5,
+          "wordWrap": false,
+          "gridlineStyle": "none",
+          "gridlineColor": {
+            "r": 234,
+            "g": 234,
+            "b": 234
+          },
+          "gridlineWidth": 1
+        },
+        "property": "xData"
+      },
+      "autoDomainMin": true,
+      "autoDomainMax": true
+    },
+    {
+      "objectID": "phnjnt623o",
+      "dataSource": {
+        "table": "driving_trends"
+      },
+      "axis": {
+        "expression": "avg(`gas price`)",
+        "type": "numerical",
+        "style": {
+          "tickColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "lineColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "fontFamily": "Arial",
+          "fontSize": 12,
+          "tickSize": 5,
+          "wordWrap": false,
+          "gridlineStyle": "none",
+          "gridlineColor": {
+            "r": 234,
+            "g": 234,
+            "b": 234
+          },
+          "gridlineWidth": 1
+        },
+        "property": "yData"
+      },
+      "autoDomainMin": true,
+      "autoDomainMax": true
+    }
+  ],
+  "properties": [
+    {
+      "objectID": "71qwym7wabd",
+      "target": {
+        "attribute": "color"
+      },
+      "type": "color",
+      "default": "#525252",
+      "displayName": "Link1/color"
+    },
+    {
+      "objectID": "71qwym7wabd",
+      "target": {
+        "attribute": "opacity"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Link1/opacity"
+    },
+    {
+      "objectID": "phnjnt623o",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "tickSize"
+        }
+      },
+      "type": "number",
+      "default": 5,
+      "displayName": "PlotSegment1/xData.style.tickSize"
+    },
+    {
+      "objectID": "phnjnt623o",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "fontSize"
+        }
+      },
+      "type": "number",
+      "default": 12,
+      "displayName": "PlotSegment1/xData.style.fontSize"
+    },
+    {
+      "objectID": "phnjnt623o",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "fontFamily"
+        }
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "PlotSegment1/xData.style.fontFamily"
+    },
+    {
+      "objectID": "phnjnt623o",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "lineColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "PlotSegment1/xData.style.lineColor"
+    },
+    {
+      "objectID": "phnjnt623o",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "tickColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "PlotSegment1/xData.style.tickColor"
+    },
+    {
+      "objectID": "phnjnt623o",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "tickSize"
+        }
+      },
+      "type": "number",
+      "default": 5,
+      "displayName": "PlotSegment1/yData.style.tickSize"
+    },
+    {
+      "objectID": "phnjnt623o",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "fontSize"
+        }
+      },
+      "type": "number",
+      "default": 12,
+      "displayName": "PlotSegment1/yData.style.fontSize"
+    },
+    {
+      "objectID": "phnjnt623o",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "fontFamily"
+        }
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "PlotSegment1/yData.style.fontFamily"
+    },
+    {
+      "objectID": "phnjnt623o",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "lineColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "PlotSegment1/yData.style.lineColor"
+    },
+    {
+      "objectID": "phnjnt623o",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "tickColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "PlotSegment1/yData.style.tickColor"
+    },
+    {
+      "objectID": "phnjnt623o",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "categories"
+        }
+      },
+      "type": "enum",
+      "default": "ascending",
+      "displayName": "PlotSegment1/xData.categories"
+    },
+    {
+      "objectID": "phnjnt623o",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "categories"
+        }
+      },
+      "type": "enum",
+      "default": "ascending",
+      "displayName": "PlotSegment1/yData.categories"
+    },
+    {
+      "objectID": "6dbte88nael",
+      "target": {
+        "attribute": "visible"
+      },
+      "type": "boolean",
+      "default": true,
+      "displayName": "Symbol1/visible"
+    },
+    {
+      "objectID": "6dbte88nael",
+      "target": {
+        "attribute": "fill"
+      },
+      "type": "color",
+      "default": "#ffffff",
+      "displayName": "Symbol1/fill"
+    },
+    {
+      "objectID": "6dbte88nael",
+      "target": {
+        "attribute": "strokeWidth"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Symbol1/strokeWidth"
+    },
+    {
+      "objectID": "6dbte88nael",
+      "target": {
+        "attribute": "stroke"
+      },
+      "type": "color",
+      "default": "#525252",
+      "displayName": "Symbol1/stroke"
+    },
+    {
+      "objectID": "6dbte88nael",
+      "target": {
+        "attribute": "size"
+      },
+      "type": "number",
+      "default": 60,
+      "displayName": "Symbol1/size"
+    },
+    {
+      "objectID": "6dbte88nael",
+      "target": {
+        "attribute": "opacity"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Symbol1/opacity"
+    },
+    {
+      "objectID": "trb2tpf6u6d",
+      "target": {
+        "attribute": "fontFamily"
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "Text1/fontFamily"
+    },
+    {
+      "objectID": "trb2tpf6u6d",
+      "target": {
+        "attribute": "fontSize"
+      },
+      "type": "number",
+      "default": 8,
+      "displayName": "Text1/fontSize"
+    },
+    {
+      "objectID": "trb2tpf6u6d",
+      "target": {
+        "attribute": "color"
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "Text1/color"
+    },
+    {
+      "objectID": "trb2tpf6u6d",
+      "target": {
+        "attribute": "visible"
+      },
+      "type": "boolean",
+      "default": true,
+      "displayName": "Text1/visible"
+    },
+    {
+      "objectID": "trb2tpf6u6d",
+      "target": {
+        "attribute": "opacity"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Text1/opacity"
+    },
+    {
+      "objectID": "hprxwx5qrti",
+      "target": {
+        "attribute": "fontSize"
+      },
+      "type": "number",
+      "default": 24,
+      "displayName": "Title/fontSize"
+    },
+    {
+      "objectID": "hprxwx5qrti",
+      "target": {
+        "attribute": "color"
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "Title/color"
+    },
+    {
+      "objectID": "hprxwx5qrti",
+      "target": {
+        "attribute": "text"
+      },
+      "type": "text",
+      "default": "Miles Driven vs. Gas Prices",
+      "displayName": "Title/text"
+    },
+    {
+      "objectID": "ij698uc1sek",
+      "target": {
+        "attribute": "marginLeft"
+      },
+      "type": "number",
+      "default": 50,
+      "displayName": "Chart/marginLeft"
+    },
+    {
+      "objectID": "ij698uc1sek",
+      "target": {
+        "attribute": "marginRight"
+      },
+      "type": "number",
+      "default": 50,
+      "displayName": "Chart/marginRight"
+    },
+    {
+      "objectID": "ij698uc1sek",
+      "target": {
+        "attribute": "marginTop"
+      },
+      "type": "number",
+      "default": 80,
+      "displayName": "Chart/marginTop"
+    },
+    {
+      "objectID": "ij698uc1sek",
+      "target": {
+        "attribute": "marginBottom"
+      },
+      "type": "number",
+      "default": 50,
+      "displayName": "Chart/marginBottom"
+    }
+  ]
+}
