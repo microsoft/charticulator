@@ -117,6 +117,8 @@ import { OpenNestedEditor } from "../../../actions/actions";
 import { FilterPanel } from "./fluentui_filter";
 import { EventManager, EventType, UIManagerListener } from "./observer";
 import { FluentUIGradientPicker } from "../../../components/fluent_ui_gradient_picker";
+import { OrderMode } from "../../../../core/specification/types";
+import { ReorderStringsValue } from "./controls/reorder_string_value";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -1057,8 +1059,32 @@ export class FluentUIWidgetManager
                   <PopupView context={context}>
                     <ReorderStringsValue
                       items={items}
-                      onConfirm={(items) => {
+                      onConfirm={(items, customOrder) => {
                         this.emitSetProperty(property, items);
+                        if (customOrder) {
+                          this.emitSetProperty(
+                            {
+                              property: property.property,
+                              field: "orderMode",
+                            },
+                            OrderMode.order
+                          );
+                          this.emitSetProperty(
+                            {
+                              property: property.property,
+                              field: "order",
+                            },
+                            items
+                          );
+                        } else {
+                          this.emitSetProperty(
+                            {
+                              property: property.property,
+                              field: "orderMode",
+                            },
+                            OrderMode.alphabetically
+                          );
+                        }
                         context.close();
                       }}
                       onReset={() => {
@@ -1694,82 +1720,6 @@ export class DropZoneView
           : this.state.isInSession
           ? this.props.draggingHint()
           : this.props.children}
-      </div>
-    );
-  }
-}
-
-export class ReorderStringsValue extends React.Component<
-  {
-    items: string[];
-    onConfirm: (items: string[]) => void;
-    allowReset?: boolean;
-    onReset?: () => string[];
-  },
-  { items: string[] }
-> {
-  public state: { items: string[] } = {
-    items: this.props.items.slice(),
-  };
-
-  public render() {
-    const items = this.state.items.slice();
-    return (
-      <div className="charticulator__widget-popup-reorder-widget">
-        <div className="el-row el-list-view">
-          <ReorderListView
-            enabled={true}
-            onReorder={(a, b) => {
-              ReorderListView.ReorderArray(items, a, b);
-              this.setState({ items });
-            }}
-          >
-            {items.map((x) => (
-              <div key={x} className="el-item">
-                {x}
-              </div>
-            ))}
-          </ReorderListView>
-        </div>
-        <div className="el-row">
-          <Button
-            icon={"Sort"}
-            text="Reverse"
-            onClick={() => {
-              this.setState({ items: this.state.items.reverse() });
-            }}
-          />{" "}
-          <Button
-            icon={"general/sort"}
-            text="Sort"
-            onClick={() => {
-              this.setState({ items: this.state.items.sort() });
-            }}
-          />
-          {this.props.allowReset && (
-            <>
-              {" "}
-              <Button
-                icon={"general/clear"}
-                text="Reset"
-                onClick={() => {
-                  if (this.props.onReset) {
-                    const items = this.props.onReset();
-                    this.setState({ items });
-                  }
-                }}
-              />
-            </>
-          )}
-        </div>
-        <div className="el-row">
-          <ButtonRaised
-            text="OK"
-            onClick={() => {
-              this.props.onConfirm(this.state.items);
-            }}
-          />
-        </div>
       </div>
     );
   }
