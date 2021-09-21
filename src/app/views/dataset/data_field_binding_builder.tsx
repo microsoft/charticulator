@@ -5,13 +5,20 @@ import {
   DataFieldSelectorValue,
   DataFieldSelectorValueCandidate,
 } from "./fluent_ui_data_field_selector";
-import { Dataset, Expression, getById, Specification } from "../../../core";
+import {
+  Dataset,
+  deepClone,
+  Expression,
+  getById,
+  Specification,
+} from "../../../core";
 import { AppStore } from "../../stores";
 import {
   Callout,
   ContextualMenu,
   DirectionalHint,
   Dropdown,
+  getTheme,
   IContextualMenuItem,
   IContextualMenuListProps,
   IRenderFunction,
@@ -28,8 +35,7 @@ import {
   parentOfType,
 } from "../panels/widgets/fluent_mapping_editor";
 import { strings } from "../../../strings";
-import { MappingType } from "../../../core/specification";
-import React = require("react");
+import { DataType, MappingType } from "../../../core/specification";
 import { AggregationFunctionDescription } from "../../../core/expression";
 import {
   defaultLabelStyle,
@@ -39,8 +45,7 @@ import {
   FluentDataBindingMenuLabel,
 } from "../panels/widgets/controls/fluentui_customized_components";
 import { CollapsiblePanel } from "../panels/widgets/controls/collapsiblePanel";
-
-import { getTheme } from "@fluentui/react";
+import React = require("react");
 
 export interface IDefaultValue {
   table: string;
@@ -162,7 +167,20 @@ class MenuItemsCreator {
     const storeTable = store
       .getTables()
       .filter((storeTable) => storeTable.name == table || table == null)[0];
-    const columns = storeTable.columns;
+    const imagesTable = store
+      .getTables()
+      .filter((storeTable) => storeTable.name.endsWith("Images"))[0];
+
+    const columns = deepClone<Dataset.Column[]>(storeTable.columns);
+
+    //append image column
+    if (imagesTable) {
+      const imageColumn = imagesTable.columns.filter(
+        (column) => column.type === DataType.Image
+      )[0];
+      columns.push(imageColumn);
+    }
+
     const columnFilters: ((x: DataFieldSelectorValue) => boolean)[] = [];
     columnFilters.push((x) => !x.metadata.isRaw);
     if (table) {
@@ -749,6 +767,7 @@ export class Director {
     kinds?: Dataset.DataKind[],
     types?: Dataset.DataType[]
   ): IContextualMenuItem[] {
+    // console.log(datasetStore, table, kinds, types)
     this.builder.produceFields(datasetStore, table, kinds, types);
     this.builder.produceOnChange(onClick);
     this.builder.produceUsingAggregation(true);

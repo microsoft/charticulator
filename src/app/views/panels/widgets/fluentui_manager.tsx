@@ -37,11 +37,7 @@ import {
 } from "../../../utils/index";
 import { DataFieldSelectorValue } from "../../dataset/data_field_selector";
 import { ReorderListView } from "../object_list_editor";
-import {
-  Button,
-  InputColorGradient,
-  FluentComboBoxFontFamily,
-} from "./controls";
+import { InputColorGradient, FluentComboBoxFontFamily } from "./controls";
 import { GroupByEditor } from "./groupby_editor";
 import {
   ChartTemplate,
@@ -85,7 +81,6 @@ import {
   defultComponentsHeight,
   FluentButton,
   FluentCheckbox,
-  FluentColumnLayout,
   FluentDatePickerWrapper,
   FluentDropdown,
   FluentDropdownWrapper,
