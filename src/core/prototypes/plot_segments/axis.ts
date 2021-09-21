@@ -1170,7 +1170,7 @@ export function buildAxisAppearanceWidgets(
         { property: axisProperty, field: ["style", "verticalText"] },
         {
           type: "checkbox",
-          label: "Vertical text",
+          label: strings.objects.axes.verticalText,
         }
       );
     }
@@ -1184,16 +1184,20 @@ export function buildAxisAppearanceWidgets(
           [
             manager.inputBoolean(
               { property: axisProperty, field: "visible" },
-              { type: "checkbox", label: "Visible", headerLabel: "Appearance" }
+              {
+                type: "checkbox",
+                label: "Visible",
+                headerLabel: strings.objects.appearance,
+              }
             ),
             manager.inputSelect(
               { property: axisProperty, field: "side" },
               {
                 type: "dropdown",
                 showLabel: true,
-                label: "Position:",
+                label: strings.objects.position,
                 options: ["default", "opposite"],
-                labels: ["Default", "Opposite"],
+                labels: [strings.objects.default, strings.objects.opposite],
               }
             ),
           ]
@@ -1223,13 +1227,24 @@ export function buildAxisAppearanceWidgets(
                 labelKey: strings.objects.axes.tickColor,
               }
             ),
+            manager.inputFormat(
+              {
+                property: axisProperty,
+                field: "tickFormat",
+              },
+              {
+                blank: strings.core.auto,
+                isDateField: false,
+                label: strings.objects.axes.tickFormat,
+              }
+            ),
             manager.inputNumber(
               {
                 property: axisProperty,
                 field: ["style", "tickSize"],
               },
               {
-                label: "Tick Size",
+                label: strings.objects.axes.ticksize,
               }
             ),
             manager.inputFontFamily(
@@ -1238,7 +1253,7 @@ export function buildAxisAppearanceWidgets(
                 field: ["style", "fontFamily"],
               },
               {
-                label: "Font Family",
+                label: strings.objects.font,
               }
             ),
             manager.inputNumber(
@@ -1247,15 +1262,15 @@ export function buildAxisAppearanceWidgets(
                 showUpdown: true,
                 updownStyle: "font",
                 updownTick: 2,
-                label: "Font Size",
+                label: strings.objects.fontSize,
               }
             ),
             manager.inputBoolean(
               { property: axisProperty, field: ["style", "wordWrap"] },
               {
                 type: "checkbox",
-                headerLabel: "Text displaying",
-                label: "Wrap text",
+                headerLabel: strings.objects.text.textDisplaying,
+                label: strings.objects.text.wrapText,
               }
             ),
             vertical,
@@ -1271,7 +1286,11 @@ export function buildAxisAppearanceWidgets(
       [
         manager.inputBoolean(
           { property: axisProperty, field: "visible" },
-          { type: "checkbox", label: "Visible", headerLabel: "Appearance" }
+          {
+            type: "checkbox",
+            label: strings.objects.visibleOn.visible,
+            headerLabel: strings.objects.appearance,
+          }
         ),
       ]
     );
@@ -1290,7 +1309,7 @@ export function buildAxisWidgets(
     dropzone: {
       type: "axis-data-binding",
       property: axisProperty,
-      prompt: axisName + ": drop here to assign data",
+      prompt: axisName + ": " + strings.objects.dropData,
     },
   };
   const makeAppearance = () => {
@@ -1306,22 +1325,29 @@ export function buildAxisWidgets(
           widgets.push(
             manager.verticalGroup(
               {
-                header: axisName + strings.objects.axes.numericalSuffix,
+                header: strings.objects.general,
               },
               [
-                manager.sectionHeader(
-                  axisName + strings.objects.axes.numericalSuffix,
-                  manager.clearButton({ property: axisProperty }, null, true),
-                  dropzoneOptions
-                ),
-                manager.inputExpression(
-                  {
-                    property: axisProperty,
-                    field: "expression",
-                  },
-                  {
-                    label: "Data",
-                  }
+                // manager.sectionHeader(
+                //   axisName + strings.objects.axes.numericalSuffix,
+                //   manager.clearButton({ property: axisProperty }, null, true),
+                //   dropzoneOptions
+                // ),
+                manager.label(strings.objects.axes.data),
+                manager.horizontal(
+                  [1, 0],
+                  manager.sectionHeader(
+                    null,
+                    manager.inputExpression(
+                      {
+                        property: axisProperty,
+                        field: "expression",
+                      },
+                      {}
+                    ),
+                    dropzoneOptions
+                  ),
+                  manager.clearButton({ property: axisProperty }, null, true)
                 ),
                 data.valueType === "date"
                   ? manager.label(strings.objects.dataAxis.range)
@@ -1379,22 +1405,16 @@ export function buildAxisWidgets(
                       { property: axisProperty, field: "numericalMode" },
                       {
                         options: ["linear", "logarithmic"],
-                        labels: ["Linear", "Logarithmic"],
+                        labels: [
+                          strings.scale.linear,
+                          strings.scale.logarithmic,
+                        ],
                         showLabel: true,
                         type: "dropdown",
                         label: "Mode",
                       }
                     )
                   : null,
-                manager.inputExpression(
-                  {
-                    property: axisProperty,
-                    field: "tickDataExpression",
-                  },
-                  {
-                    label: strings.objects.axes.tickData,
-                  }
-                ),
                 manager.inputSelect(
                   { property: axisProperty, field: "tickFormatType" },
                   {
@@ -1403,12 +1423,27 @@ export function buildAxisWidgets(
                       TickFormatType.Date,
                       TickFormatType.Number,
                     ],
-                    labels: ["None", "Date", "Number"],
+                    labels: [
+                      strings.objects.axes.tickDataFormatTypeNone,
+                      strings.objects.axes.tickDataFormatTypeDate,
+                      strings.objects.axes.tickDataFormatTypeNumber,
+                    ],
                     showLabel: true,
                     type: "dropdown",
                     label: strings.objects.axes.tickDataFormatType,
                   }
                 ),
+                data.tickFormatType !== TickFormatType.None
+                  ? manager.inputExpression(
+                      {
+                        property: axisProperty,
+                        field: "tickDataExpression",
+                      },
+                      {
+                        label: strings.objects.axes.tickData,
+                      }
+                    )
+                  : null,
                 manager.inputFormat(
                   {
                     property: axisProperty,
@@ -1478,127 +1513,34 @@ export function buildAxisWidgets(
           widgets.push(
             manager.verticalGroup(
               {
-                header: axisName + strings.objects.axes.categoricalSuffix,
+                header: strings.objects.general,
               },
               [
-                manager.sectionHeader(
-                  "Data",
-                  manager.clearButton({ property: axisProperty }, null, true),
-                  dropzoneOptions
-                ),
-                manager.vertical(
-                  manager.label("Data"),
-                  manager.horizontal(
-                    [1, 0],
-                    manager.inputExpression({
-                      property: axisProperty,
-                      field: "expression",
-                    }),
-                    manager.reorderWidget(
-                      { property: axisProperty, field: "categories" },
-                      { allowReset: true }
-                    )
-                  ),
-                  manager.inputNumber(
-                    { property: axisProperty, field: "gapRatio" },
-                    {
-                      minimum: 0,
-                      maximum: 1,
-                      percentage: true,
-                      showSlider: true,
-                      label: "Gap",
-                    }
-                  ),
-                  data.valueType === "date"
-                    ? (manager.inputExpression(
-                        {
-                          property: axisProperty,
-                          field: "tickDataExpression",
-                        },
-                        {
-                          label: strings.objects.axes.tickData,
-                        }
-                      ),
-                      manager.row(
-                        strings.objects.axes.tickFormat,
-                        manager.inputFormat(
-                          {
-                            property: axisProperty,
-                            field: "tickFormat",
-                          },
-                          {
-                            blank: strings.core.auto,
-                            isDateField:
-                              data.numericalMode === NumericalMode.Temporal ||
-                              data.valueType === DataType.Date,
-                          }
-                        )
-                      ))
-                    : null,
-                  manager.label(strings.objects.dataAxis.scrolling),
-                  manager.inputBoolean(
-                    {
-                      property: axisProperty,
-                      field: "allowScrolling",
-                    },
-                    {
-                      type: "checkbox",
-                      label: strings.objects.dataAxis.allowScrolling,
-                      observerConfig: {
-                        isObserver: true,
-                        properties: {
-                          property: axisProperty,
-                          field: "windowSize",
-                        },
-                        value: 10,
+                // manager.sectionHeader(
+                //   strings.objects.axes.data,
+                //   manager.clearButton({ property: axisProperty }, null, true),
+                //   dropzoneOptions
+                // ),
+                // manager.vertical(
+                manager.label(strings.objects.axes.data),
+                manager.horizontal(
+                  [1, 0],
+                  manager.sectionHeader(
+                    null,
+                    manager.inputExpression(
+                      {
+                        property: axisProperty,
+                        field: "expression",
                       },
-                    }
+                      {}
+                    ),
+                    dropzoneOptions
                   ),
-                  data.allowScrolling
-                    ? manager.inputNumber(
-                        {
-                          property: axisProperty,
-                          field: "windowSize",
-                        },
-                        {
-                          maximum: 1000000,
-                          minimum: 1,
-                          label: strings.objects.dataAxis.windowSize,
-                        }
-                      )
-                    : null,
-                  data.allowScrolling
-                    ? manager.inputNumber(
-                        {
-                          property: axisProperty,
-                          field: "barOffset",
-                        },
-                        {
-                          maximum: 1000000,
-                          minimum: -1000000,
-                          label: strings.objects.dataAxis.barOffset,
-                        }
-                      )
-                    : null
-                ),
-              ]
-            )
-          );
-          widgets.push(makeAppearance());
-        }
-        break;
-      case "default":
-        {
-          widgets.push(
-            manager.verticalGroup(
-              {
-                header: axisName + strings.objects.axes.stackingSuffix,
-              },
-              [
-                manager.sectionHeader(
-                  axisName + strings.objects.axes.stackingSuffix,
                   manager.clearButton({ property: axisProperty }, null, true),
-                  dropzoneOptions
+                  manager.reorderWidget(
+                    { property: axisProperty, field: "categories" },
+                    { allowReset: true }
+                  )
                 ),
                 manager.inputNumber(
                   { property: axisProperty, field: "gapRatio" },
@@ -1610,7 +1552,101 @@ export function buildAxisWidgets(
                     label: "Gap",
                   }
                 ),
+                data.valueType === "date"
+                  ? (manager.inputExpression(
+                      {
+                        property: axisProperty,
+                        field: "tickDataExpression",
+                      },
+                      {
+                        label: strings.objects.axes.tickData,
+                      }
+                    ),
+                    manager.row(
+                      strings.objects.axes.tickFormat,
+                      manager.inputFormat(
+                        {
+                          property: axisProperty,
+                          field: "tickFormat",
+                        },
+                        {
+                          blank: strings.core.auto,
+                          isDateField:
+                            data.numericalMode === NumericalMode.Temporal ||
+                            data.valueType === DataType.Date,
+                        }
+                      )
+                    ))
+                  : null,
+                manager.label(strings.objects.dataAxis.scrolling),
+                manager.inputBoolean(
+                  {
+                    property: axisProperty,
+                    field: "allowScrolling",
+                  },
+                  {
+                    type: "checkbox",
+                    label: strings.objects.dataAxis.allowScrolling,
+                    observerConfig: {
+                      isObserver: true,
+                      properties: {
+                        property: axisProperty,
+                        field: "windowSize",
+                      },
+                      value: 10,
+                    },
+                  }
+                ),
+                data.allowScrolling
+                  ? manager.inputNumber(
+                      {
+                        property: axisProperty,
+                        field: "windowSize",
+                      },
+                      {
+                        maximum: 1000000,
+                        minimum: 1,
+                        label: strings.objects.dataAxis.windowSize,
+                      }
+                    )
+                  : null,
+                data.allowScrolling
+                  ? manager.inputNumber(
+                      {
+                        property: axisProperty,
+                        field: "barOffset",
+                      },
+                      {
+                        maximum: 1000000,
+                        minimum: -1000000,
+                        label: strings.objects.dataAxis.barOffset,
+                      }
+                    )
+                  : null,
+                // )
               ]
+            )
+          );
+          widgets.push(makeAppearance());
+        }
+        break;
+      case "default":
+        {
+          widgets.push(
+            manager.sectionHeader(
+              axisName + strings.objects.axes.stackingSuffix,
+              manager.clearButton({ property: axisProperty }, null, true),
+              dropzoneOptions
+            ),
+            manager.inputNumber(
+              { property: axisProperty, field: "gapRatio" },
+              {
+                minimum: 0,
+                maximum: 1,
+                percentage: true,
+                showSlider: true,
+                label: "Gap",
+              }
             )
           );
         }
@@ -1647,10 +1683,34 @@ export function buildAxisWidgets(
     );
   } else {
     widgets.push(
-      manager.sectionHeader(
-        axisName + ": " + strings.core.none,
-        null,
-        dropzoneOptions
+      // manager.sectionHeader(
+      //   axisName + ": " + strings.core.none,
+      //   null,
+      //   dropzoneOptions
+      // )
+      manager.verticalGroup(
+        {
+          header: strings.objects.general,
+        },
+        [
+          manager.label(strings.objects.axes.data),
+          manager.horizontal(
+            [1, 0, 0, 0],
+            manager.sectionHeader(
+              null,
+              manager.inputText(
+                {
+                  property: null,
+                },
+                {
+                  disabled: true,
+                  value: strings.core.none,
+                }
+              ),
+              dropzoneOptions
+            )
+          ),
+        ]
       )
     );
   }

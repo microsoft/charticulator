@@ -594,6 +594,7 @@ export class ChartTemplateBuilder {
         ) {
           return {
             name: table.name,
+            type: table.type,
             columns: table.columns
               .filter((x) => {
                 return (

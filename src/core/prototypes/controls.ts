@@ -56,6 +56,7 @@ export interface InputTextOptions {
   borderless?: boolean;
   styles?: CSSProperties;
   emitMappingAction?: boolean;
+  disabled?: boolean;
 }
 
 export interface InputBooleanOptions {
@@ -163,6 +164,7 @@ export interface TableOptions {}
 export interface VerticalGroupOptions {
   isCollapsed?: boolean;
   header: string;
+  alignVertically?: boolean;
 }
 
 export const enum PanelMode {
@@ -214,6 +216,12 @@ export interface ScrollListOptions {
 export interface InputExpressionOptions {
   table?: string;
   label?: string;
+  dropzone?: {
+    type: "axis-data-binding";
+    prompt?: string;
+    property?: string;
+    defineCategories?: boolean;
+  };
 }
 
 export interface InputFormatOptions {

@@ -3,6 +3,7 @@
 
 import { FieldType } from "../common";
 import * as Dataset from "../dataset";
+import { TableType } from "../dataset";
 import { DefaultAttributes } from "../prototypes";
 import { Chart, DataType, AttributeType } from "./index";
 import * as Types from "./types";
@@ -42,6 +43,7 @@ export interface Column {
 export interface Table {
   name: string;
   columns: Column[];
+  type?: TableType;
 }
 
 export interface Property {

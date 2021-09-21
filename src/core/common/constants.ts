@@ -19,11 +19,13 @@ export const isReservedColumnName = (name: string) => {
   return (
     name === LinkSourceKeyColumn ||
     name === LinkTargetKeyColumn ||
-    name === KeyColumn
+    name === KeyColumn ||
+    name === ImageKeyColumn
   );
 };
 
 export const KeyColumn = "id";
+export const ImageKeyColumn = "imageId";
 
 export const defaultDelimiter = ",";
 export const defaultNumberFormat = Object.freeze({

@@ -120,6 +120,7 @@ export const strings = {
     showDerivedFields: "Show derived fields",
     tableTitleColumns: "Fields",
     tableTitleLinks: "Links",
+    tableTitleImages: "Images",
     weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
   },
   defaultDataset: {
@@ -147,6 +148,7 @@ export const strings = {
   },
   mappingEditor: {
     bindData: "Bind data",
+    keyColumnExpression: "Key column expression",
     bindDataValue: "Bind data value",
     remove: "Remove",
   },
@@ -362,7 +364,14 @@ export const strings = {
     top: "Top",
     bottom: "Bottom",
   },
+  scale: {
+    linear: "Linear",
+    logarithmic: "Logarithmic",
+  },
   objects: {
+    default: "Default",
+    opposite: "Opposite",
+    position: "Position:",
     general: "General",
     contextMenu: "Context menu",
     interactivity: "Interactivity",
@@ -376,6 +385,7 @@ export const strings = {
     background: "Background",
     opacity: "Opacity",
     font: "Font",
+    fontSize: "Font Size",
     size: "Size",
     axis: "Axis",
     style: "Style",
@@ -393,13 +403,19 @@ export const strings = {
     invalidFormat: "Invalid format",
     roundX: "Round X",
     roundY: "Round Y",
+    dropData: "drop here to assign data",
     axes: {
+      data: "Data",
       numericalSuffix: ": Numerical",
       categoricalSuffix: ": Categorical",
       stackingSuffix: ": Stacking",
       tickFormat: "Tick Format",
       tickData: "Tick Data",
-      tickDataFormatType: "Tick format type",
+      ticksize: "Tick Size",
+      tickDataFormatType: "Tick Data Type",
+      tickDataFormatTypeNone: "None",
+      tickDataFormatTypeDate: "Date",
+      tickDataFormatTypeNumber: "Number",
       from: "from",
       to: "to",
       gap: "Gap",
@@ -408,6 +424,7 @@ export const strings = {
       dataExpressions: "Data Expressions",
       lineColor: "Line Color",
       tickColor: "Tick Color",
+      verticalText: "Vertical text",
     },
     plotSegment: {
       subLayout: "Sub-layout",
@@ -444,6 +461,7 @@ export const strings = {
       all: "All",
       first: "First",
       last: "Last",
+      visible: "Visible",
     },
     guides: {
       guideCoordinator: "Guide Coordinator",
@@ -524,6 +542,9 @@ export const strings = {
     },
     text: {
       margin: "Margin",
+      wrapText: "Wrap text",
+      overflow: "Overflow",
+      textDisplaying: "Text displaying",
     },
     rect: {
       shape: "Shape",
@@ -547,5 +568,10 @@ export const strings = {
       second: "Second",
       menuSuffix: " Derived columns ",
     },
+  },
+  reOrder: {
+    reverse: "Reverse",
+    sort: "Sort",
+    reset: "Reset",
   },
 };

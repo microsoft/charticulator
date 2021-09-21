@@ -293,7 +293,8 @@ export class MapDataToMarkAttribute extends Action {
     public expression: string,
     public valueType: Specification.DataType,
     public valueMetadata: Dataset.ColumnMetadata,
-    public hints: Prototypes.DataMappingHints
+    public hints: Prototypes.DataMappingHints,
+    public expressionTable: string
   ) {
     super();
   }
