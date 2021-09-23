@@ -554,6 +554,7 @@ export class MenuBar extends ContextedComponent<
           this.context.store.dispatcher.dispatch(
             new Actions.UpdatePlotSegments()
           );
+          this.context.store.dispatcher.dispatch(new Actions.UpdateDataAxis());
           this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
         }}
       />
