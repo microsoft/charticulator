@@ -142,7 +142,7 @@ export class ChartConstraintSolver {
             scaleMapping.table
           );
           rowContext = tableContext.getGroupedContext(rowIndex);
-          const expr = this.expressionCache.parse(scaleMapping.expression);
+          // const expr = this.expressionCache.parse(scaleMapping.expression);
           // const dataValue = <Dataset.DataValue>expr.getValue(rowContext);
           const dataValue = <Dataset.DataValue>"";
           const scaleClass = <Prototypes.Scales.ScaleClass>(
