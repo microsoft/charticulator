@@ -444,7 +444,9 @@ export class ImportDataView extends React.Component<
             onChange={(file) => {
               this.loadFileAsTable(file).then(([table, imageTable]) => {
                 table.type = TableType.Main;
-                imageTable.type = TableType.Image;
+                if (imageTable) {
+                  imageTable.type = TableType.Image;
+                }
 
                 this.checkKeyColumn(table, this.state.linkTable);
 
