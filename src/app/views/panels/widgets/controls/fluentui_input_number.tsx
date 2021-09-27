@@ -166,7 +166,14 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
           onValidate={(value) => {
             const num = parseNumber(value);
             if (reportValue(num)) {
-              setValue(num);
+              let val = num;
+              if (props.minimum != null) {
+                val = Math.max(props.minimum, num);
+              }
+              if (props.maximum != null) {
+                val = Math.min(props.maximum, num);
+              }
+              setValue(val);
               return formatNumber(parseNumber(value));
             }
           }}
