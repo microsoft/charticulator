@@ -48,6 +48,7 @@ export class PolarPlotSegmentPlugin extends ConstraintPlugin {
           //endAngle - 4 quadrant => move left
           cx = x1;
           cy = (y2 + y1) / 2;
+          radialRatio = 2;
         } else if (angleDelta + startAngle > 180) {
           //endAngle - 3 and 4 quadrants
           cx = (x2 + x1) / 2;
@@ -64,6 +65,7 @@ export class PolarPlotSegmentPlugin extends ConstraintPlugin {
           //endAngle - 3 quadrant => move top
           cx = (x2 + x1) / 2;
           cy = y2;
+          radialRatio = 2;
         } else if (angleDelta + startAngle > 270) {
           //endAngle - 2 and 1 quadrants
           cx = (x2 + x1) / 2;
@@ -80,6 +82,7 @@ export class PolarPlotSegmentPlugin extends ConstraintPlugin {
           //endAngle - 1 quadrant => move right
           cx = x2;
           cy = (y2 + y1) / 2;
+          radialRatio = 2;
         } else if (angleDelta + startAngle > 360) {
           //endAngle - 2 and 1 quadrants
           cx = (x2 + x1) / 2;
@@ -96,6 +99,7 @@ export class PolarPlotSegmentPlugin extends ConstraintPlugin {
           //endAngle - 1 quadrant => move bottom
           cx = (x2 + x1) / 2;
           cy = y1;
+          radialRatio = 2;
         } else if (angleDelta + startAngle > 450) {
           //endAngle - 2 and 1 quadrants
           cx = (x2 + x1) / 2;
@@ -115,6 +119,7 @@ export class PolarPlotSegmentPlugin extends ConstraintPlugin {
           //endAngle - 1 quadrant => move bottom
           cx = (x1 + x2) / 2;
           cy = y1;
+          radialRatio = 2;
         } else if (angleDelta - startAngle >= 180) {
           //endAngle - 2 and 3 quadrants
           cx = (x2 + x1) / 2;
@@ -131,6 +136,7 @@ export class PolarPlotSegmentPlugin extends ConstraintPlugin {
           //endAngle - 2 quadrant => move top
           cx = x2;
           cy = (y2 + y1) / 2;
+          radialRatio = 2;
         } else if (angleDelta - startAngle >= -270) {
           //endAngle - 1 and 4 quadrants
           cx = (x2 + x1) / 2;
@@ -147,6 +153,7 @@ export class PolarPlotSegmentPlugin extends ConstraintPlugin {
           //endAngle - 3 quadrant => move top
           cx = (x2 + x1) / 2;
           cy = y2;
+          radialRatio = 2;
         } else if (angleDelta - startAngle >= -360) {
           //endAngle - 2 and 1 quadrants
           cx = (x2 + x1) / 2;
@@ -163,6 +170,7 @@ export class PolarPlotSegmentPlugin extends ConstraintPlugin {
           //endAngle - 4 quadrant => move right
           cx = x1;
           cy = (y2 + y1) / 2;
+          radialRatio = 2;
         } else if (angleDelta - startAngle >= -450) {
           //endAngle - 2 and 3 quadrants
           cx = (x2 + x1) / 2;
