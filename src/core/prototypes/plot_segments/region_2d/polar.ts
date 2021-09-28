@@ -35,7 +35,12 @@ import { getSortDirection } from "../../..";
 import { ChartStateManager } from "../..";
 import { strings } from "../../../../strings";
 import { AxisDataBinding } from "../../../specification/types";
-import { PolarPlotSegmentPlugin } from "../../../solver/plugins";
+import {
+  getCenterByAngle,
+  getHandlesRadius,
+  getRadialAxisDropZoneLineCenter,
+  setRadiiByCenter,
+} from "./utils";
 
 export type PolarAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -340,9 +345,12 @@ export class PolarPlotSegment extends PlotSegmentClass<
     solver.makeConstant(attrs, "angle1");
     solver.makeConstant(attrs, "angle2");
 
+    const center = getCenterByAngle(props, attrs);
+
+    //update radii
+    setRadiiByCenter(props, attrs, center);
+
     if (attrs.x2 - attrs.x1 < attrs.y2 - attrs.y1) {
-      attrs.radial1 = (props.innerRatio * (attrs.x2 - attrs.x1)) / 2;
-      attrs.radial2 = (props.outerRatio * (attrs.x2 - attrs.x1)) / 2;
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
@@ -362,8 +370,6 @@ export class PolarPlotSegment extends PlotSegmentClass<
         [[2, outerRadius]]
       );
     } else {
-      attrs.radial1 = (props.innerRatio * (attrs.y2 - attrs.y1)) / 2;
-      attrs.radial2 = (props.outerRatio * (attrs.y2 - attrs.y1)) / 2;
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
@@ -445,14 +451,13 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const g = Graphics.makeGroup([]);
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const { cx } = attrs;
-    const { cy } = attrs;
     const radialData = props.yData;
     const angularData = props.xData;
     const angleStart = props.startAngle;
     const angleEnd = props.endAngle;
     const innerRadius = attrs.radial1;
     const outerRadius = attrs.radial2;
+    const center = getCenterByAngle(props, attrs);
     if (radialData && radialData.visible) {
       const axisRenderer = new AxisRenderer();
       axisRenderer.setAxisDataBinding(
@@ -465,8 +470,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
       );
       g.elements.push(
         axisRenderer.renderLine(
-          cx,
-          cy,
+          center.cx,
+          center.cy,
           90 - (radialData.side == "opposite" ? angleEnd : angleStart),
           -1
         )
@@ -483,8 +488,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
       );
       g.elements.push(
         axisRenderer.renderPolar(
-          cx,
-          cy,
+          center.cx,
+          center.cy,
           angularData.side == "opposite" ? innerRadius : outerRadius,
           angularData.side == "opposite" ? -1 : 1
         )
@@ -501,14 +506,13 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const builder = this.createBuilder();
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const { cx } = attrs;
-    const { cy } = attrs;
     const radialData = props.yData;
     const angularData = props.xData;
     const angleStart = props.startAngle;
     const angleEnd = props.endAngle;
     const innerRadius = attrs.radial1;
     const outerRadius = attrs.radial2;
+    const center = getCenterByAngle(props, attrs);
 
     if (radialData && radialData.visible) {
       const axisRenderer = new AxisRenderer();
@@ -522,8 +526,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
       );
       g.elements.push(
         axisRenderer.renderPolarArcGridLine(
-          cx,
-          cy,
+          center.cx,
+          center.cy,
           innerRadius,
           outerRadius,
           angleStart,
@@ -542,7 +546,12 @@ export class PolarPlotSegment extends PlotSegmentClass<
         this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
       );
       g.elements.push(
-        axisRenderer.renderPolarRadialGridLine(cx, cy, innerRadius, outerRadius)
+        axisRenderer.renderPolarRadialGridLine(
+          center.cx,
+          center.cy,
+          innerRadius,
+          outerRadius
+        )
       );
     }
 
@@ -551,10 +560,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
 
   public getCoordinateSystem(): Graphics.CoordinateSystem {
     const attrs = this.state.attributes;
-    const center = PolarPlotSegmentPlugin.getCenterByAngle(
-      this.object.properties.autoAlignment,
-      attrs
-    );
+    const center = getCenterByAngle(this.object.properties, attrs);
     return new Graphics.PolarCoordinates(
       {
         x: center.cx,
@@ -568,7 +574,9 @@ export class PolarPlotSegment extends PlotSegmentClass<
 
   public getDropZones(): DropZones.Description[] {
     const attrs = <PolarAttributes>this.state.attributes;
-    const { x1, y1, x2, y2, radial1, radial2, cx, cy } = attrs;
+    const props = this.object.properties;
+    const { x1, y1, x2, y2, radial1, radial2 } = attrs;
+    const center = getCenterByAngle(props, attrs);
     const zones: DropZones.Description[] = [];
     zones.push(<DropZones.Region>{
       type: "region",
@@ -594,10 +602,13 @@ export class PolarPlotSegment extends PlotSegmentClass<
       p2: { x: x2, y: y2 },
       title: "Convert to Cartesian Coordinates",
     });
+    //update drop zone for right side
+    const points = getRadialAxisDropZoneLineCenter(center, radial1, radial2);
+
     zones.push(<DropZones.Line>{
       type: "line",
-      p1: { x: cx + radial1, y: cy },
-      p2: { x: cx + radial2, y: cy },
+      p1: points.p1,
+      p2: points.p2,
       title: "Radial Axis",
       dropAction: {
         axisInference: { property: PlotSegmentAxisPropertyNames.yData },
@@ -605,7 +616,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
     });
     zones.push(<DropZones.Arc>{
       type: "arc",
-      center: { x: cx, y: cy },
+      center: { x: center.cx, y: center.cy },
       radius: radial2,
       angleStart: attrs.angle1,
       angleEnd: attrs.angle2,
@@ -630,11 +641,10 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const attrs = this.state.attributes;
     const props = this.object.properties;
     const { x1, x2, y1, y2 } = attrs;
-    const center = PolarPlotSegmentPlugin.getCenterByAngle(
-      props.autoAlignment,
-      attrs
-    );
-    const radius = Math.min(Math.abs(x2 - x1), Math.abs(y2 - y1)) / 2;
+    const center = getCenterByAngle(props, attrs);
+
+    const radius = getHandlesRadius(props, attrs, center);
+
     const builder = this.createBuilder();
     return [
       <Handles.Line>{
