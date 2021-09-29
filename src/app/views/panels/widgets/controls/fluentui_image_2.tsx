@@ -13,9 +13,11 @@ import { classNames } from "../../../../utils";
 import { strings } from "../../../../../strings";
 import {
   ActionButton,
-  Label,
-  Image as FluentUIImage,
   DefaultButton,
+  Image as FluentUIImage,
+  Label,
+  TextField,
+  TooltipHost,
 } from "@fluentui/react";
 import {
   defaultLabelStyle,
@@ -23,7 +25,11 @@ import {
   FluentActionButton,
   FluentButton,
 } from "./fluentui_customized_components";
-import { ImageMappingDragStateWrapper } from "./styles";
+import {
+  ImageMappingDragStateWrapper,
+  ImageMappingTextFieldStyles,
+  ToolTipHostStyles,
+} from "./styles";
 
 export interface ImageDescription {
   src: string;
@@ -81,39 +87,6 @@ export class InputImage extends ContextedComponent<
     );
   };
 
-  protected handleDragEnter = () => {
-    this.setState({ dragOver: true });
-  };
-  protected handleDragLeave = () => {
-    this.setState({ dragOver: false });
-  };
-
-  protected handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-  };
-
-  protected handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    this.setState({ dragOver: false });
-    if (e.dataTransfer.types.indexOf("text/uri-list") >= 0) {
-      const uriList = e.dataTransfer.getData("text/uri-list") as string;
-      const uris = uriList
-        .replace(/\r/g, "")
-        .split("\n")
-        .map((x) => x.trim())
-        .filter((x) => !x.startsWith("#"));
-      ImageUploader.ParseURIs(uris)
-        .then((r) => {
-          this.emitOnChange(r);
-        })
-        .catch(() => {});
-    }
-    if (e.dataTransfer.files.length > 0) {
-      ImageUploader.ParseFiles(e.dataTransfer.files).then((r) => {
-        this.emitOnChange(r);
-      });
-    }
-  };
   public render() {
     const isNone = this.props.value == null;
     const image = isNone ? null : this.resolveImage(this.props.value);
@@ -182,6 +155,41 @@ export class InputImage extends ContextedComponent<
       </span>
     );
   }
+
+  protected handleDragEnter = () => {
+    this.setState({ dragOver: true });
+  };
+
+  protected handleDragLeave = () => {
+    this.setState({ dragOver: false });
+  };
+
+  protected handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+
+  protected handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    this.setState({ dragOver: false });
+    if (e.dataTransfer.types.indexOf("text/uri-list") >= 0) {
+      const uriList = e.dataTransfer.getData("text/uri-list") as string;
+      const uris = uriList
+        .replace(/\r/g, "")
+        .split("\n")
+        .map((x) => x.trim())
+        .filter((x) => !x.startsWith("#"));
+      ImageUploader.ParseURIs(uris)
+        .then((r) => {
+          this.emitOnChange(r);
+        })
+        .catch(() => {});
+    }
+    if (e.dataTransfer.files.length > 0) {
+      ImageUploader.ParseFiles(e.dataTransfer.files).then((r) => {
+        this.emitOnChange(r);
+      });
+    }
+  };
 }
 
 export interface ImageChooserProps {
@@ -236,13 +244,6 @@ export class ImageUploader extends React.Component<
   protected refContainer: HTMLDivElement;
   protected refInput: HTMLInputElement;
 
-  public componentDidMount() {
-    if (this.props.focusOnMount) {
-      this.refInput.focus();
-    }
-  }
-  public componentWillUnmount() {}
-
   public static ReadFileAsImage(
     name: string,
     file: File | Blob
@@ -296,9 +297,70 @@ export class ImageUploader extends React.Component<
     );
   }
 
+  public render() {
+    return (
+      <div
+        className="charticulator__image-uploader"
+        ref={(e) => (this.refContainer = e)}
+        onDragEnter={this.handleDragEnter}
+        onDragLeave={this.handleDragLeave}
+        onDragOver={this.handleDragOver}
+        onDrop={this.handleDrop}
+        style={{
+          marginRight: 5,
+        }}
+      >
+        {this.state.dragOver ? (
+          <ImageMappingDragStateWrapper>
+            {strings.objects.image.dropImage}
+          </ImageMappingDragStateWrapper>
+        ) : (
+          <span
+            style={{
+              width: "100%",
+              display: "flex",
+            }}
+          >
+            <TooltipHost
+              content={
+                this.props.placeholder ||
+                strings.objects.image.defaultPlaceholder
+              }
+              styles={ToolTipHostStyles}
+            >
+              <TextField
+                value={
+                  this.props.placeholder ||
+                  strings.objects.image.defaultPlaceholder
+                }
+                disabled
+                styles={ImageMappingTextFieldStyles}
+              />
+            </TooltipHost>
+            <FluentButton marginTop="0px">
+              <DefaultButton
+                styles={{
+                  root: {
+                    minWidth: "unset",
+                    ...defultBindButtonSize,
+                  },
+                }}
+                iconProps={{
+                  iconName: "OpenFolderHorizontal",
+                }}
+                onClick={this.handleOpenFile}
+              />
+            </FluentButton>
+          </span>
+        )}
+      </div>
+    );
+  }
+
   protected handleDragEnter = () => {
     this.setState({ dragOver: true });
   };
+
   protected handleDragLeave = () => {
     this.setState({ dragOver: false });
   };
@@ -374,52 +436,6 @@ export class ImageUploader extends React.Component<
       this.props.onUpload(result);
     }
   }
-
-  public render() {
-    return (
-      <div
-        className="charticulator__image-uploader"
-        ref={(e) => (this.refContainer = e)}
-        onDragEnter={this.handleDragEnter}
-        onDragLeave={this.handleDragLeave}
-        onDragOver={this.handleDragOver}
-        onDrop={this.handleDrop}
-      >
-        {this.state.dragOver ? (
-          <span className="el-dropzone">{strings.objects.image.dropImage}</span>
-        ) : (
-          <span className="el-input-wrapper">
-            <input
-              ref={(e) => (this.refInput = e)}
-              className="el-input"
-              onPaste={this.handlePaste}
-              value=""
-              onChange={() => {}}
-              type="text"
-              placeholder={
-                this.props.placeholder ||
-                strings.objects.image.defaultPlaceholder
-              }
-              disabled={true}
-            />
-            <FluentButton marginTop="0px">
-              <DefaultButton
-                styles={{
-                  root: {
-                    minWidht: "unset",
-                  },
-                }}
-                iconProps={{
-                  iconName: "OpenFolderHorizontal",
-                }}
-                onClick={this.handleOpenFile}
-              />
-            </FluentButton>
-          </span>
-        )}
-      </div>
-    );
-  }
 }
 
 export class InputImageProperty extends InputImage {
@@ -444,6 +460,10 @@ export class InputImageProperty extends InputImage {
         onDragLeave={this.handleDragLeave}
         onDragOver={this.handleDragOver}
         onDrop={this.handleDrop}
+        style={{
+          marginRight: 5,
+          marginLeft: 5,
+        }}
       >
         {this.state.dragOver ? (
           <span className="el-drag-over">
@@ -454,8 +474,8 @@ export class InputImageProperty extends InputImage {
             <FluentUIImage
               key="image"
               src={isNone ? R.getSVGIcon("FileImage") : image.src}
-              width={30}
-              height={30}
+              width={24}
+              height={24}
             />,
             <ImageUploader
               key={0}

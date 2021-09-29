@@ -99,7 +99,8 @@ import {
 import { mergeStyles } from "@fluentui/merge-styles";
 import { CSSProperties } from "react";
 import { strings } from "../../../../strings";
-import { InputImage, InputImageProperty } from "./controls/fluentui_image";
+import { InputImage } from "./controls/fluentui_image";
+import { InputImageProperty } from "./controls/fluentui_image_2";
 import {
   Director,
   IDefaultValue,
@@ -1605,7 +1606,18 @@ export class FluentUIWidgetManager
         }}
       >
         {widgets.map((widget, i) => (
-          <div className="charticulator__widget-scroll-list-item" key={i}>
+          <div
+            className="charticulator__widget-scroll-list-item"
+            key={i}
+            style={{
+              paddingBottom: options.paddingBottom
+                ? options.paddingBottom + "px"
+                : undefined,
+              paddingTop: options.paddingTop
+                ? options.paddingTop + "px"
+                : undefined,
+            }}
+          >
             {widget}
           </div>
         ))}
