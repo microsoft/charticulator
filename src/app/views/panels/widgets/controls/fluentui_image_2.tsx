@@ -466,9 +466,9 @@ export class InputImageProperty extends InputImage {
         }}
       >
         {this.state.dragOver ? (
-          <span className="el-drag-over">
+          <ImageMappingDragStateWrapper>
             {strings.objects.image.dropImage}
-          </span>
+          </ImageMappingDragStateWrapper>
         ) : (
           [
             <FluentUIImage
