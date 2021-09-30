@@ -48,7 +48,6 @@ export function getCenterByAngle(
         //endAngle - 4 quadrant => move left
         cx = x1;
         cy = (y2 + y1) / 2;
-        // radialRatio = 2;
         isHalf = true;
         side = SIDE.VERTICAL;
       } else if (angleDelta + startAngle > 180) {
@@ -242,20 +241,15 @@ function updateAttrsRadius(
 ) {
   const width = Math.abs(attrs.x2 - attrs.x1);
   const height = Math.abs(attrs.y2 - attrs.y1);
-  if (props.autoAlignment) {
-    if (center.isHalf) {
-      let minOfWandH;
-      if (center.side === SIDE.VERTICAL) {
-        minOfWandH = Math.min(height / 2, width);
-      } else {
-        minOfWandH = Math.min(height, width / 2);
-      }
-      attrs.radial1 = props.innerRatio * minOfWandH;
-      attrs.radial2 = props.outerRatio * minOfWandH;
+  if (props.autoAlignment && center.isHalf) {
+    let minOfWandH;
+    if (center.side === SIDE.VERTICAL) {
+      minOfWandH = Math.min(height / 2, width);
     } else {
-      attrs.radial1 = (props.innerRatio * (endPoint - startPoint)) / 2;
-      attrs.radial2 = (props.outerRatio * (endPoint - startPoint)) / 2;
+      minOfWandH = Math.min(height, width / 2);
     }
+    attrs.radial1 = props.innerRatio * minOfWandH;
+    attrs.radial2 = props.outerRatio * minOfWandH;
   } else {
     attrs.radial1 = (props.innerRatio * (endPoint - startPoint)) / 2;
     attrs.radial2 = (props.outerRatio * (endPoint - startPoint)) / 2;
