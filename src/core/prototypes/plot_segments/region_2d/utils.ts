@@ -14,8 +14,8 @@ interface CenterType {
   cy: number;
   side: SIDE;
   isHalf: boolean;
-  ratio: number;
   isRightHalf: boolean;
+  isCorner: boolean;
 }
 
 // eslint-disable-next-line max-lines-per-function
@@ -27,10 +27,10 @@ export function getCenterByAngle(
   const { angle1, angle2, x1, y1, x2, y2 } = attrs;
   let cx;
   let cy;
-  let radialRatio = 1;
   let isHalf = false;
   let side = SIDE.NONE;
   let isRightHalf = false;
+  let isCorner = false;
   if (isAutoMargin) {
     //pos case
 
@@ -43,7 +43,7 @@ export function getCenterByAngle(
         //endAngle - 1 quadrant => move left bottom corner
         cx = x1;
         cy = y1;
-        radialRatio = 2;
+        isCorner = true;
       } else if (angleDelta <= 180 - startAngle) {
         //endAngle - 4 quadrant => move left
         cx = x1;
@@ -61,7 +61,7 @@ export function getCenterByAngle(
         //endAngle - 4 quadrant => move left top corner
         cx = x1;
         cy = y2;
-        radialRatio = 2;
+        isCorner = true;
       } else if (angleDelta <= 270 - startAngle) {
         //endAngle - 3 quadrant => move top
         cx = (x2 + x1) / 2;
@@ -80,7 +80,7 @@ export function getCenterByAngle(
         //endAngle - 3 quadrant => move right top corner
         cx = x2;
         cy = y2;
-        radialRatio = 2;
+        isCorner = true;
       } else if (angleDelta <= 360 - startAngle) {
         //endAngle - 1 quadrant => move right
         cx = x2;
@@ -99,7 +99,7 @@ export function getCenterByAngle(
         //endAngle - 2 quadrant => move right bottom corner
         cx = x2;
         cy = y1;
-        radialRatio = 2;
+        isCorner = true;
       } else if (angleDelta <= 450 - startAngle) {
         //endAngle - 1 quadrant => move bottom
         cx = (x2 + x1) / 2;
@@ -120,7 +120,7 @@ export function getCenterByAngle(
         //endAngle - 3 quadrant => move right bottom corner
         cx = x2;
         cy = y1;
-        radialRatio = 2;
+        isCorner = true;
       } else if (angleDelta <= 180 - (90 + startAngle)) {
         //endAngle - 1 quadrant => move bottom
         cx = (x1 + x2) / 2;
@@ -138,7 +138,7 @@ export function getCenterByAngle(
         //endAngle - 3 quadrant => move right
         cx = x2;
         cy = y2;
-        radialRatio = 2;
+        isCorner = true;
       } else if (angleDelta <= 180 - (180 + startAngle)) {
         //endAngle - 2 quadrant => move right
         cx = x2;
@@ -157,7 +157,7 @@ export function getCenterByAngle(
         //endAngle - 4 quadrant => move left top corner
         cx = x1;
         cy = y2;
-        radialRatio = 2;
+        isCorner = true;
       } else if (angleDelta <= 180 - (270 + startAngle)) {
         //endAngle - 3 quadrant => move top
         cx = (x2 + x1) / 2;
@@ -175,7 +175,7 @@ export function getCenterByAngle(
         //endAngle - 1 quadrant => move left bottom corner
         cx = x1;
         cy = y1;
-        radialRatio = 2;
+        isCorner = true;
       } else if (angleDelta <= 180 - (360 + startAngle)) {
         //endAngle - 4 quadrant => move left
         cx = x1;
@@ -192,7 +192,7 @@ export function getCenterByAngle(
     cx = (x2 + x1) / 2;
     cy = (y2 + y1) / 2;
   }
-  return { cx, cy, ratio: radialRatio, isHalf, side, isRightHalf };
+  return { cx, cy, isHalf, side, isRightHalf, isCorner };
 }
 
 export function getHandlesRadius(
@@ -211,6 +211,8 @@ export function getHandlesRadius(
       } else {
         radius = Math.min(height, width / 2);
       }
+    } else if (center.isCorner) {
+      radius = Math.min(height, width);
     } else {
       radius = Math.min(Math.abs(x2 - x1), Math.abs(y2 - y1)) / 2;
     }
@@ -241,15 +243,24 @@ function updateAttrsRadius(
 ) {
   const width = Math.abs(attrs.x2 - attrs.x1);
   const height = Math.abs(attrs.y2 - attrs.y1);
-  if (props.autoAlignment && center.isHalf) {
-    let minOfWandH;
-    if (center.side === SIDE.VERTICAL) {
-      minOfWandH = Math.min(height / 2, width);
+  if (props.autoAlignment) {
+    if (center.isHalf) {
+      let minOfWandH;
+      if (center.side === SIDE.VERTICAL) {
+        minOfWandH = Math.min(height / 2, width);
+      } else {
+        minOfWandH = Math.min(height, width / 2);
+      }
+      attrs.radial1 = props.innerRatio * minOfWandH;
+      attrs.radial2 = props.outerRatio * minOfWandH;
+    } else if (center.isCorner) {
+      const minOfWandH = Math.min(height, width);
+      attrs.radial1 = props.innerRatio * minOfWandH;
+      attrs.radial2 = props.outerRatio * minOfWandH;
     } else {
-      minOfWandH = Math.min(height, width / 2);
+      attrs.radial1 = (props.innerRatio * (endPoint - startPoint)) / 2;
+      attrs.radial2 = (props.outerRatio * (endPoint - startPoint)) / 2;
     }
-    attrs.radial1 = props.innerRatio * minOfWandH;
-    attrs.radial2 = props.outerRatio * minOfWandH;
   } else {
     attrs.radial1 = (props.innerRatio * (endPoint - startPoint)) / 2;
     attrs.radial2 = (props.outerRatio * (endPoint - startPoint)) / 2;

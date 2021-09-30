@@ -760,7 +760,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
         endDistance: radius,
         startAngle: props.startAngle,
         endAngle: props.endAngle,
-        clipRange: [props.innerRatio + 0.01, center.ratio],
+        clipRange: [props.innerRatio + 0.01, 1],
       },
       <Handles.DistanceRatio>{
         type: "distance-ratio",
@@ -818,7 +818,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
               manager.label(strings.objects.plotSegment.inner),
               manager.inputNumber({ property: "innerRatio" }),
               manager.label(strings.objects.plotSegment.outer),
-              manager.inputNumber({ property: "outerRatio" })
+              manager.inputNumber({ property: "outerRatio" }, { maximum: 1 })
             )
           ),
           manager.inputBoolean(
