@@ -4,6 +4,7 @@
 import * as React from "react";
 import { CSSProperties, useState } from "react";
 import { DefaultButton, Label } from "@fluentui/react";
+import { PanelHeaderStyles } from "./fluentui_customized_components";
 
 interface CollapsiblePanelProps {
   widgets: JSX.Element[];
@@ -56,19 +57,7 @@ export const PanelHeader = ({
             },
           },
         }}
-        styles={{
-          root: {
-            border: "unset",
-            height: 24,
-            width: 24,
-            display: "inline",
-            padding: 0,
-            minWidth: 24,
-          },
-          textContainer: {
-            flexGrow: "unset",
-          },
-        }}
+        styles={PanelHeaderStyles}
         onClick={() => {
           setCollapsed(!collapsed);
         }}
