@@ -6,7 +6,6 @@
 
 import * as React from "react";
 import { getSVGIcon } from "../resources";
-import { SVGImageIcon } from "./icons";
 import { ButtonFlat } from "./buttons";
 import * as Hammer from "hammerjs";
 import { classNames } from "../utils";
