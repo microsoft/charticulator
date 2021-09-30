@@ -261,6 +261,11 @@ export interface InputFormatOptions {
   isDateField?: boolean;
 }
 
+export interface CustomCollapsiblePanelOptions {
+  header?: string;
+  styles?: CSSProperties;
+}
+
 export interface WidgetManager {
   // A row for value/data mapping.
   mappingEditor(
@@ -342,6 +347,11 @@ export interface WidgetManager {
   nestedChartEditor(
     property: Property,
     options: NestedChartEditorOptions
+  ): Widget;
+
+  customCollapsiblePanel(
+    widgets: Widget[],
+    options: CustomCollapsiblePanelOptions
   ): Widget;
 }
 
