@@ -643,8 +643,10 @@ export class CategoricalScaleImage extends ScaleClass<
           )
         ),
         {
-          paddingBottom: 5,
-          paddingTop: 5,
+          styles: {
+            paddingBottom: 5,
+            paddingTop: 5,
+          },
         }
       ),
     ];
@@ -745,8 +747,10 @@ export class CategoricalScaleBase64Image extends ScaleClass<
           )
         ),
         {
-          paddingTop: 5,
-          paddingBottom: 5,
+          styles: {
+            paddingTop: 5,
+            paddingBottom: 5,
+          },
         }
       ),
     ];

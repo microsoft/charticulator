@@ -23,7 +23,6 @@ import {
   FluentActionButton,
   FluentButton,
 } from "./fluentui_customized_components";
-import { ImageMappingDragStateWrapper } from "./styles";
 
 export interface ImageDescription {
   src: string;

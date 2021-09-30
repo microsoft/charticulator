@@ -1609,14 +1609,7 @@ export class FluentUIWidgetManager
           <div
             className="charticulator__widget-scroll-list-item"
             key={i}
-            style={{
-              paddingBottom: options.paddingBottom
-                ? options.paddingBottom + "px"
-                : undefined,
-              paddingTop: options.paddingTop
-                ? options.paddingTop + "px"
-                : undefined,
-            }}
+            style={options.styles}
           >
             {widget}
           </div>
