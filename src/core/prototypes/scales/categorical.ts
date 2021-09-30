@@ -626,7 +626,7 @@ export class CategoricalScaleImage extends ScaleClass<
       manager.scrollList(
         keys.map((key) =>
           manager.horizontal(
-            [2, 5],
+            [2, 5, 0],
             manager.inputText(
               { property: "mapping" },
               {
@@ -641,7 +641,13 @@ export class CategoricalScaleImage extends ScaleClass<
             manager.inputImageProperty({ property: "mapping", field: key }),
             manager.clearButton({ property: "mapping", field: key }, "", true)
           )
-        )
+        ),
+        {
+          styles: {
+            paddingBottom: 5,
+            paddingTop: 5,
+          },
+        }
       ),
     ];
   }
@@ -739,7 +745,13 @@ export class CategoricalScaleBase64Image extends ScaleClass<
             manager.inputImageProperty({ property: "mapping", field: key }),
             manager.clearButton({ property: "mapping", field: key }, "", true)
           )
-        )
+        ),
+        {
+          styles: {
+            paddingTop: 5,
+            paddingBottom: 5,
+          },
+        }
       ),
     ];
   }

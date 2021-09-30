@@ -211,6 +211,7 @@ export interface ArrayWidgetOptions {
 export interface ScrollListOptions {
   height?: number;
   maxHeight?: number;
+  styles?: CSSProperties;
 }
 
 export interface InputExpressionOptions {
