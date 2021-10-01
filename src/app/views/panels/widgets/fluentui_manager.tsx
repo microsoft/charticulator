@@ -115,6 +115,7 @@ import { EventManager, EventType, UIManagerListener } from "./observer";
 import { FluentUIGradientPicker } from "../../../components/fluent_ui_gradient_picker";
 import { OrderMode } from "../../../../core/specification/types";
 import { ReorderStringsValue } from "./controls/reorder_string_value";
+import { CustomCollapsiblePanel } from "./controls/custom_collapsible_panel";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -1623,6 +1624,19 @@ export class FluentUIWidgetManager
     tooltipContent: JSX.Element
   ): JSX.Element {
     return <TooltipHost content={tooltipContent}>{widget}</TooltipHost>;
+  }
+
+  public customCollapsiblePanel(
+    widgets: JSX.Element[],
+    options: Prototypes.Controls.CustomCollapsiblePanelOptions = {}
+  ): JSX.Element {
+    return (
+      <CustomCollapsiblePanel
+        widgets={widgets}
+        styles={options.styles}
+        header={options.header}
+      />
+    );
   }
 }
 

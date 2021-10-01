@@ -1225,6 +1225,10 @@ export class WidgetManager
       </div>
     );
   }
+
+  customCollapsiblePanel(): JSX.Element {
+    throw new Error("Method not implemented.");
+  }
 }
 
 export interface DropZoneViewProps {

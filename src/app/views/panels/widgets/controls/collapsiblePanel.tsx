@@ -15,12 +15,19 @@ import {
   groupStyles,
 } from "./fluentui_customized_components";
 
-export const CollapsiblePanel: React.FunctionComponent<{
+interface CollapsiblePanelProps {
   header: string | IRenderFunction<IGroupHeaderProps>;
   widgets: JSX.Element[];
   isCollapsed?: boolean;
   alignVertically?: boolean;
-}> = ({ header, widgets, isCollapsed, alignVertically }) => {
+}
+
+export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = ({
+  header,
+  widgets,
+  isCollapsed,
+  alignVertically,
+}) => {
   const [groupState, setIsCollapsed] = React.useState<boolean>(
     isCollapsed === undefined ? false : isCollapsed
   );
@@ -85,6 +92,9 @@ export const CollapsiblePanel: React.FunctionComponent<{
         styles={{
           ...groupStyles,
           groupIsDropping: {},
+        }}
+        focusZoneProps={{
+          handleTabKey: 1,
         }}
       />
     </FluentGroupedList>

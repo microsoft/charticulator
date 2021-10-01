@@ -2750,15 +2750,17 @@ export class Region2DConstraintBuilder {
     }
 
     return [
-      manager.verticalGroup(
-        {
-          header: axisName + axisType,
-          alignVertically: true,
-        },
+      manager.customCollapsiblePanel(
         [
           ...buildAxisWidgets(data, axisProperty, manager, axisName),
           ...this.plotSegment.buildGridLineWidgets(data, manager, axisProperty),
-        ]
+        ],
+        {
+          header: axisName + axisType,
+          styles: {
+            marginLeft: 5,
+          },
+        }
       ),
     ];
   }

@@ -3,6 +3,7 @@
 
 import * as React from "react";
 import {
+  IButtonStyles,
   IDropdownProps,
   IGroupedListStyleProps,
   IGroupedListStyles,
@@ -158,6 +159,7 @@ export const groupHeaderStyles: IStyleFunctionOrObject<
   },
   expand: {
     ...defultBindButtonSize,
+    fontSize: "unset",
   },
   dropIcon: {
     display: "none",
@@ -265,5 +267,19 @@ export const defaultStyle: any = {
   },
   label: {
     lineHeight: "unset",
+  },
+};
+
+export const PanelHeaderStyles: Partial<IButtonStyles> = {
+  root: {
+    border: "unset",
+    height: 24,
+    width: 24,
+    display: "inline",
+    padding: 0,
+    minWidth: 24,
+  },
+  textContainer: {
+    flexGrow: "unset",
   },
 };
