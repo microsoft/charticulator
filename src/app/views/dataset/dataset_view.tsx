@@ -376,6 +376,7 @@ export class ColumnView extends React.Component<
   ColumnViewProps,
   ColumnViewState
 > {
+  private columnRef: HTMLElement;
   constructor(props: ColumnViewProps) {
     super(props);
     this.state = {
@@ -446,42 +447,52 @@ export class ColumnView extends React.Component<
     displayLabel?: string
   ) {
     let anchor: HTMLDivElement;
+    const onClickHandler = () => {
+      if (!onColumnKindChanged) {
+        return;
+      }
+      globals.popupController.popupAt(
+        (context) => (
+          <PopupView key={label} context={context}>
+            <div>
+              <DropdownListView
+                selected={type}
+                list={getConvertableDataKind(type).map((type) => {
+                  return {
+                    name: type.toString(),
+                    text: type.toString(),
+                    url: R.getSVGIcon(kind2Icon[type]),
+                  };
+                })}
+                context={context}
+                onClick={(value: string) => {
+                  onColumnKindChanged(label, value);
+                }}
+                onClose={() => {
+                  anchor?.focus();
+                }}
+              />
+            </div>
+          </PopupView>
+        ),
+        {
+          anchor,
+          alignX: PopupAlignment.Outer,
+          alignY: PopupAlignment.StartInner,
+        }
+      );
+    };
     return (
       <div
+        tabIndex={0}
         key={label}
         className="click-handler"
         ref={(e) => (anchor = e)}
-        onClick={() => {
-          if (!onColumnKindChanged) {
-            return;
+        onClick={onClickHandler}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            onClickHandler();
           }
-          globals.popupController.popupAt(
-            (context) => (
-              <PopupView key={label} context={context}>
-                <div>
-                  <DropdownListView
-                    selected={type}
-                    list={getConvertableDataKind(type).map((type) => {
-                      return {
-                        name: type.toString(),
-                        text: type.toString(),
-                        url: R.getSVGIcon(kind2Icon[type]),
-                      };
-                    })}
-                    context={context}
-                    onClick={(value: string) => {
-                      onColumnKindChanged(label, value);
-                    }}
-                  />
-                </div>
-              </PopupView>
-            ),
-            {
-              anchor,
-              alignX: PopupAlignment.Outer,
-              alignY: PopupAlignment.StartInner,
-            }
-          );
         }}
       >
         <DraggableElement

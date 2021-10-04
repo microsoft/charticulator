@@ -207,9 +207,15 @@ export class AppButton extends BaseButton<AppButtonProps> {
   public render() {
     return (
       <span
+        tabIndex={0}
         className="charticulator__button-menu-app charticulator-title__button"
         title={this.props.title}
         onClick={this._doClick}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            this._doClick();
+          }
+        }}
       >
         <SVGImageIcon url={R.getSVGIcon("app-icon")} />
         <span className="el-text">{this.props.name || strings.app.name}</span>
@@ -230,12 +236,18 @@ export class MenuButton extends BaseButton<IconButtonProps> {
     if (props.text) {
       return (
         <span
+          tabIndex={0}
           className={classNames("charticulator__button-menu-text", [
             "is-disabled",
             this.props.disabled,
           ])}
           title={props.title}
           onClick={this._doClick}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              this._doClick();
+            }
+          }}
         >
           <SVGImageIcon url={props.url} />
           <span className="el-text">{props.text}</span>
@@ -244,9 +256,15 @@ export class MenuButton extends BaseButton<IconButtonProps> {
     } else {
       return (
         <span
+          tabIndex={0}
           className="charticulator__button-menu"
           title={props.title}
           onClick={this._doClick}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              this._doClick();
+            }
+          }}
         >
           <SVGImageIcon url={props.url} />
         </span>
@@ -261,35 +279,35 @@ export class ButtonFlat extends BaseButton<IconButtonProps> {
     if (props.url) {
       if (props.text) {
         return (
-          <span
+          <button
             className="charticulator__button-flat"
             title={props.title}
             onClick={this._doClick}
           >
             <SVGImageIcon url={props.url} />
             <span className="el-text">{props.text}</span>
-          </span>
+          </button>
         );
       } else {
         return (
-          <span
+          <button
             className="charticulator__button-flat"
             title={props.title}
             onClick={this._doClick}
           >
             <SVGImageIcon url={props.url} />
-          </span>
+          </button>
         );
       }
     } else {
       return (
-        <span
+        <button
           className="charticulator__button-flat"
           title={props.title}
           onClick={this._doClick}
         >
           <span className="el-text">{props.text}</span>
-        </span>
+        </button>
       );
     }
   }

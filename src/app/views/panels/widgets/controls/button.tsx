@@ -21,7 +21,7 @@ export interface ButtonProps {
 export class Button extends React.Component<ButtonProps, {}> {
   public render() {
     return (
-      <span
+      <button
         className={classNames(
           "charticulator__widget-control-button",
           ["is-active", this.props.active],
@@ -46,7 +46,7 @@ export class Button extends React.Component<ButtonProps, {}> {
         {this.props.text ? (
           <span className="el-text">{this.props.text}</span>
         ) : null}
-      </span>
+      </button>
     );
   }
 }
