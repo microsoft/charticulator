@@ -494,8 +494,12 @@ export class ChartTemplate {
               axisDataBinding.domainMin = start;
               axisDataBinding.domainMax = start + axisDataBinding.windowSize;
             } else {
-              axisDataBinding.domainMin = scale.domainMin;
-              axisDataBinding.domainMax = scale.domainMax;
+              if (inference.autoDomainMin) {
+                axisDataBinding.dataDomainMin = scale.domainMin;
+              }
+              if (inference.autoDomainMax) {
+                axisDataBinding.dataDomainMax = scale.domainMax;
+              }
             }
             if (axis.defineCategories) {
               axisDataBinding.categories = defineCategories(vector);
