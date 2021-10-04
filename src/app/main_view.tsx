@@ -80,8 +80,6 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
 
   private viewConfiguration: MainViewConfig;
 
-  private focusableComponents: NodeListOf<HTMLElement> = [];
-
   constructor(props: MainViewProps) {
     super(props);
 
@@ -112,32 +110,36 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
 
   private shortcutKeyHandler(e: KeyboardEvent) {
     if (e.ctrlKey && e.key === "F6") {
+      const focusableComponents = this.getFocusableComponents();
       let newIndex = this.state.currentFocusComponentIndex;
-      this.focusableComponents[newIndex].setAttribute("tabIndex", null);
+      focusableComponents[newIndex].setAttribute("tabIndex", null);
       if (e.shiftKey) {
         newIndex = this.state.currentFocusComponentIndex - 1;
       } else {
         newIndex = this.state.currentFocusComponentIndex + 1;
       }
-      if (newIndex >= this.focusableComponents.length) {
+      if (newIndex >= focusableComponents.length) {
         newIndex = 0;
       }
       if (newIndex < 0) {
-        newIndex = this.focusableComponents.length - 1;
+        newIndex = focusableComponents.length - 1;
       }
       this.setState({
         currentFocusComponentIndex: newIndex,
       });
-      this.focusableComponents[newIndex].setAttribute("tabIndex", "0");
-      this.focusableComponents[newIndex].focus();
+      focusableComponents[newIndex].setAttribute("tabIndex", "0");
+      focusableComponents[newIndex].focus();
       console.log("current index", newIndex);
     }
   }
 
   componentDidMount() {
     document.addEventListener("keydown", this.shortcutKeyHandler.bind(this));
-    this.focusableComponents = document.querySelectorAll<HTMLElement>(
-      ".charticulator__menu-bar,.charticulator__toolbar-horizontal,.minimizable-pane"
+  }
+
+  getFocusableComponents() {
+    return document.querySelectorAll<HTMLElement>(
+      ".charticulator__menu-bar,.charticulator__toolbar-horizontal,.minimizable-pane,.charticulator__floating-panel"
     );
   }
 
