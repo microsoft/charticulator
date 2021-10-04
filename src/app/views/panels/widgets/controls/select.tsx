@@ -14,6 +14,7 @@ import { classNames } from "../../../../utils";
 export function DropdownListView(props: {
   list: { name: string; url?: string; text?: string; font?: string }[];
   onClick?: (name: string) => void;
+  onClose?: () => void;
   selected?: string;
   context: PopupContext;
 }) {
@@ -21,6 +22,7 @@ export function DropdownListView(props: {
     <ul className="dropdown-list">
       {props.list.map((item) => (
         <li
+          tabIndex={0}
           key={item.name}
           className={props.selected == item.name ? "is-active" : null}
           onClick={() => {
@@ -28,6 +30,16 @@ export function DropdownListView(props: {
               props.onClick(item.name);
             }
             props.context.close();
+            props.onClose?.();
+          }}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              if (props.onClick) {
+                props.onClick(item.name);
+              }
+              props.context.close();
+              props.onClose?.();
+            }
           }}
         >
           {item.url != null ? <SVGImageIcon url={item.url} /> : null}

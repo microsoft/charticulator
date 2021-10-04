@@ -189,6 +189,7 @@ export class MarkEditorView extends ContextedComponent<
             <span className="glyph-tabs">
               {this.store.chart.glyphs.map((glyph) => (
                 <span
+                  tabIndex={0}
                   className={classNames("el-item", [
                     "is-active",
                     glyph == currentGlyph,
@@ -196,6 +197,11 @@ export class MarkEditorView extends ContextedComponent<
                   key={glyph._id}
                   onClick={() => {
                     this.dispatch(new Actions.SelectGlyph(null, glyph));
+                  }}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      this.dispatch(new Actions.SelectGlyph(null, glyph));
+                    }
                   }}
                 >
                   {glyph.properties.name}
