@@ -72,12 +72,15 @@ export interface MainViewState {
   layersViewMaximized: boolean;
   attributeViewMaximized: boolean;
   scaleViewMaximized: boolean;
+  currentFocusComponentIndex: number;
 }
 
 export class MainView extends React.Component<MainViewProps, MainViewState> {
   public refMenuBar: MenuBar;
 
   private viewConfiguration: MainViewConfig;
+
+  private focusableComponents: NodeListOf<HTMLElement> = [];
 
   constructor(props: MainViewProps) {
     super(props);
@@ -101,9 +104,45 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
       layersViewMaximized: false,
       attributeViewMaximized: false,
       scaleViewMaximized: false,
+      currentFocusComponentIndex: 0,
     };
 
     props.store.addListener(AppStore.EVENT_GRAPHICS, () => this.forceUpdate());
+  }
+
+  private shortcutKeyHandler(e: KeyboardEvent) {
+    if (e.ctrlKey && e.key === "F6") {
+      let newIndex = this.state.currentFocusComponentIndex;
+      this.focusableComponents[newIndex].setAttribute("tabIndex", null);
+      if (e.shiftKey) {
+        newIndex = this.state.currentFocusComponentIndex - 1;
+      } else {
+        newIndex = this.state.currentFocusComponentIndex + 1;
+      }
+      if (newIndex >= this.focusableComponents.length) {
+        newIndex = 0;
+      }
+      if (newIndex < 0) {
+        newIndex = this.focusableComponents.length - 1;
+      }
+      this.setState({
+        currentFocusComponentIndex: newIndex,
+      });
+      this.focusableComponents[newIndex].setAttribute("tabIndex", "0");
+      this.focusableComponents[newIndex].focus();
+      console.log("current index", newIndex);
+    }
+  }
+
+  componentDidMount() {
+    document.addEventListener("keydown", this.shortcutKeyHandler.bind(this));
+    this.focusableComponents = document.querySelectorAll<HTMLElement>(
+      ".charticulator__menu-bar,.charticulator__toolbar-horizontal,.minimizable-pane"
+    );
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.shortcutKeyHandler);
   }
 
   public static childContextTypes = {
