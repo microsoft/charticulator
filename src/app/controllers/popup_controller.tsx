@@ -185,6 +185,7 @@ export interface PopupViewProps {
 
 export class PopupContainer extends React.Component<PopupViewProps, {}> {
   public token: EventSubscription;
+  private popupContainer: HTMLDivElement;
   constructor(props: PopupViewProps) {
     super(props);
     this.onKeyDown = this.onKeyDown.bind(this);
@@ -213,6 +214,11 @@ export class PopupContainer extends React.Component<PopupViewProps, {}> {
       this.forceUpdate();
     });
     window.addEventListener("keydown", this.onKeyDown);
+    setTimeout(() => {
+      if (this.popupContainer) {
+        this.popupContainer.focus();
+      }
+    }, 100);
   }
   public componentWillUnmount() {
     this.token.remove();
@@ -223,6 +229,7 @@ export class PopupContainer extends React.Component<PopupViewProps, {}> {
       const modal = this.props.controller.currentModal;
       return (
         <div
+          tabIndex={0}
           className="popup-container popup-container-modal"
           style={{
             position: "fixed",
@@ -235,6 +242,7 @@ export class PopupContainer extends React.Component<PopupViewProps, {}> {
           onMouseDown={() => {
             this.props.controller.reset();
           }}
+          ref={(r) => (this.popupContainer = r)}
         >
           {modal.element}
           {this.renderPopups()}
@@ -257,6 +265,7 @@ export class PopupContainer extends React.Component<PopupViewProps, {}> {
     } else {
       return (
         <div
+          tabIndex={0}
           className="popup-container"
           style={{
             position: "fixed",
@@ -266,6 +275,7 @@ export class PopupContainer extends React.Component<PopupViewProps, {}> {
             bottom: 0,
             pointerEvents: "all",
           }}
+          ref={(r) => (this.popupContainer = r)}
           onMouseDown={() => {
             this.props.controller.resetPopups();
           }}
@@ -298,6 +308,16 @@ export class PopupView extends React.Component<
   },
   {}
 > {
+  private popupContainer: HTMLDivElement;
+
+  public componentDidMount() {
+    setTimeout(() => {
+      if (this.popupContainer) {
+        this.popupContainer.focus();
+      }
+    }, 100);
+  }
+
   // eslint-disable-next-line
   public render() {
     const popup = this.props.context;
@@ -404,6 +424,8 @@ export class PopupView extends React.Component<
     }
     return (
       <div
+        tabIndex={0}
+        ref={(r) => (this.popupContainer = r)}
         className={
           this.props.className
             ? this.props.className + " popup-view-container"
