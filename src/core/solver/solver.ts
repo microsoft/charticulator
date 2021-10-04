@@ -6,7 +6,7 @@ import * as Expression from "../expression";
 import * as Prototypes from "../prototypes";
 import * as Specification from "../specification";
 
-import { getById, KeyNameMap, uniqueID, zip } from "../common";
+import { getById, ImageKeyColumn, KeyNameMap, uniqueID, zip } from "../common";
 import { ConstraintSolver, ConstraintStrength, Variable } from "./abstract";
 import { Matrix, WASMSolver } from "./wasm_solver";
 import { PlotSegmentClass } from "../prototypes/plot_segments";
@@ -65,13 +65,15 @@ export class ChartConstraintSolver {
     }
   }
 
+  // eslint-disable-next-line max-lines-per-function
   public addMapping(
     attrs: Specification.AttributeMap,
     parentAttrs: Specification.AttributeMap,
     attr: string,
     info: Prototypes.AttributeDescription,
     mapping: Specification.Mapping,
-    rowContext: Expression.Context
+    rowContext: Expression.Context,
+    rowIndex?: number[]
   ) {
     if (
       rowContext == null &&
@@ -80,7 +82,9 @@ export class ChartConstraintSolver {
       const xMapping =
         <Specification.ScaleMapping>mapping ||
         <Specification.TextMapping>mapping;
-      rowContext = this.manager.getChartDataContext(xMapping.table);
+
+      const tableContext = this.manager.dataflow.getTable(xMapping.table);
+      rowContext = tableContext.getGroupedContext(rowIndex);
     }
     switch (mapping.type) {
       case MappingType.scale:
@@ -114,6 +118,47 @@ export class ChartConstraintSolver {
             }
             // this.hardBuilder.addLinear(attrs[attr] as number, [[-1, this.hardBuilder.attr(attrs, attr)]])
           }
+        }
+        break;
+      case MappingType.expressionScale:
+        {
+          const dataTable = this.manager.dataset.tables.filter(
+            (tb) => tb.type === "Main"
+          );
+          const dataImageIndex =
+            dataTable?.[0]?.rows[rowIndex[0]][ImageKeyColumn];
+          const imageTable = this.manager.dataset.tables.filter(
+            (tb) => tb.type === "Image"
+          );
+          const imageDataTableIndex = imageTable?.[0]?.rows.find(
+            (row) => row[ImageKeyColumn] == dataImageIndex
+          );
+
+          // get table from scale mapping
+          const scaleMapping = <Specification.ScaleValueExpressionMapping>(
+            mapping
+          );
+          const tableContext = this.manager.dataflow.getTable(
+            scaleMapping.table
+          );
+          rowContext = tableContext.getGroupedContext(rowIndex);
+          // const expr = this.expressionCache.parse(scaleMapping.expression);
+          // const dataValue = <Dataset.DataValue>expr.getValue(rowContext);
+          const dataValue = <Dataset.DataValue>"";
+          const scaleClass = <Prototypes.Scales.ScaleClass>(
+            this.manager.getClassById(scaleMapping.scale)
+          );
+          if (!info.solverExclude) {
+            scaleClass.buildConstraint(
+              dataValue,
+              this.solver.attr(attrs, attr),
+              this.solver
+            );
+          }
+          const value = scaleClass.mapDataToAttribute(
+            imageDataTableIndex[ImageKeyColumn]
+          );
+          attrs[attr] = value;
         }
         break;
       case MappingType.text:
@@ -165,7 +210,8 @@ export class ChartConstraintSolver {
     objectState: Specification.ObjectState,
     parentState: Specification.ObjectState,
     rowContext: Expression.Context,
-    solve: boolean
+    solve: boolean,
+    rowIndex?: number[]
   ) {
     const objectClass = this.manager.getClass(objectState);
     for (const attr of objectClass.attributeNames) {
@@ -191,7 +237,8 @@ export class ChartConstraintSolver {
             attr,
             info,
             mapping,
-            rowContext
+            rowContext,
+            rowIndex
           );
         } else {
           if (info.defaultValue !== undefined) {
@@ -205,7 +252,9 @@ export class ChartConstraintSolver {
   public addScales(allowScaleParameterChange: boolean = true) {
     const { chart, chartState } = this;
     for (const [scale, scaleState] of zip(chart.scales, chartState.scales)) {
-      this.addObject(scale, scaleState, null, null, allowScaleParameterChange);
+      this.addObject(scale, scaleState, null, null, allowScaleParameterChange, [
+        0,
+      ]);
     }
   }
 
@@ -237,9 +286,17 @@ export class ChartConstraintSolver {
     rowContext: Expression.Context,
     markState: Specification.GlyphState,
     element: Specification.Element,
-    elementState: Specification.MarkState
+    elementState: Specification.MarkState,
+    rowIndex: number[]
   ) {
-    this.addObject(element, elementState, markState, rowContext, true);
+    this.addObject(
+      element,
+      elementState,
+      markState,
+      rowContext,
+      true,
+      rowIndex
+    );
     const elementClass = this.manager.getMarkClass(elementState);
 
     elementClass.buildConstraints(
@@ -291,10 +348,11 @@ export class ChartConstraintSolver {
     layout: Specification.PlotSegment,
     rowContext: Expression.Context,
     glyph: Specification.Glyph,
-    glyphState: Specification.GlyphState
+    glyphState: Specification.GlyphState,
+    rowIndex: number[]
   ) {
     // Mark attributes
-    this.addObject(glyph, glyphState, null, rowContext, true);
+    this.addObject(glyph, glyphState, null, rowContext, true, rowIndex);
 
     const glyphAnalyzed = this.getGlyphAnalyzeResult(glyph);
 
@@ -340,7 +398,8 @@ export class ChartConstraintSolver {
         rowContext,
         glyphState,
         element,
-        elementState
+        elementState,
+        rowIndex
       );
     }
     // Mark-level constraints
@@ -369,7 +428,7 @@ export class ChartConstraintSolver {
 
   public addChart() {
     const { chart, chartState } = this;
-    this.addObject(chart, chartState, null, null, this.stage == "chart");
+    this.addObject(chart, chartState, null, null, this.stage == "chart", [0]);
     const boundsClass = this.manager.getChartClass(chartState);
     boundsClass.buildIntrinsicConstraints(this.solver);
 
@@ -382,7 +441,8 @@ export class ChartConstraintSolver {
         elementState,
         chartState,
         null,
-        this.stage == "chart"
+        this.stage == "chart",
+        [0]
       );
       const elementClass = this.manager.getChartElementClass(elementState);
 
@@ -425,7 +485,8 @@ export class ChartConstraintSolver {
               layout,
               tableContext.getGroupedContext(dataRowIndex),
               mark,
-              markState
+              markState,
+              dataRowIndex
             );
           }
           (<PlotSegmentClass>elementClass).buildGlyphConstraints(this.solver, {

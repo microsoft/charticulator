@@ -103,7 +103,11 @@ export class IconElementClass extends EmphasizableMarkClass<
 
   public getLayoutProps() {
     const attrs = this.state.attributes;
-    const image = attrs.image || imagePlaceholder;
+    let image = attrs.image || imagePlaceholder;
+    if (typeof image == "string") {
+      // Be compatible with old version
+      image = { src: image, width: 100, height: 100 };
+    }
     if (attrs.size <= 0) {
       return { width: 0, height: 0, dx: 0, dy: 0 };
     }
@@ -162,7 +166,11 @@ export class IconElementClass extends EmphasizableMarkClass<
     if (attrs.size <= 0) {
       return null;
     }
-    const image = attrs.image || imagePlaceholder;
+    let image = attrs.image || imagePlaceholder;
+    if (typeof image == "string") {
+      // Be compatible with old version
+      image = { src: image, width: 100, height: 100 };
+    }
     // Compute w, h to resize the image to the desired size
     const layout = this.getLayoutProps();
     const gImage = Graphics.makeGroup([

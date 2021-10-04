@@ -307,6 +307,7 @@ export class RectElementClass extends EmphasizableMarkClass<
                   label: strings.objects.roundX,
                   showUpdown: true,
                   updownTick: 1,
+                  minimum: 0,
                 }
               )
             : null,
@@ -319,6 +320,7 @@ export class RectElementClass extends EmphasizableMarkClass<
                   label: strings.objects.roundY,
                   showUpdown: true,
                   updownTick: 1,
+                  minimum: 0,
                 }
               )
             : null,

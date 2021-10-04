@@ -184,6 +184,16 @@ export class UpdatePlotSegments extends Action {
   }
 }
 
+export class UpdateDataAxis extends Action {
+  constructor() {
+    super();
+  }
+
+  public digest() {
+    return { name: "UpdateDataAxis" };
+  }
+}
+
 export class ConvertColumnDataType extends Action {
   constructor(
     public tableName: string,
@@ -293,7 +303,8 @@ export class MapDataToMarkAttribute extends Action {
     public expression: string,
     public valueType: Specification.DataType,
     public valueMetadata: Dataset.ColumnMetadata,
-    public hints: Prototypes.DataMappingHints
+    public hints: Prototypes.DataMappingHints,
+    public expressionTable: string
   ) {
     super();
   }

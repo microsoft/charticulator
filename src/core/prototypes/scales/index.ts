@@ -9,6 +9,7 @@ import {
   CategoricalScaleBoolean,
   CategoricalScaleEnum,
   CategoricalScaleImage,
+  CategoricalScaleBase64Image,
 } from "./categorical";
 import { LinearScale, LinearColorScale, LinearBooleanScale } from "./linear";
 
@@ -74,6 +75,15 @@ const inferScaleTypeRules: InferScaleTypeRule[] = [
     },
     output: AttributeType.Image,
     scale: "scale.categorical<string,image>",
+    priority: 1,
+  },
+  {
+    input: {
+      type: [DataType.Image, DataType.Image],
+      kind: [DataKind.Categorical, DataKind.Categorical],
+    },
+    output: AttributeType.Image,
+    scale: "scale.categorical<image,image>",
     priority: 1,
   },
   {
@@ -146,6 +156,7 @@ export function registerClasses() {
   ObjectClasses.Register(CategoricalScaleBoolean);
   ObjectClasses.Register(CategoricalScaleEnum);
   ObjectClasses.Register(CategoricalScaleImage);
+  ObjectClasses.Register(CategoricalScaleBase64Image);
   ObjectClasses.Register(LinearScale);
   ObjectClasses.Register(LinearColorScale);
   ObjectClasses.Register(LinearBooleanScale);

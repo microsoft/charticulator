@@ -15,16 +15,24 @@ import {
   groupStyles,
 } from "./fluentui_customized_components";
 
-export const CollapsiblePanel: React.FunctionComponent<{
+interface CollapsiblePanelProps {
   header: string | IRenderFunction<IGroupHeaderProps>;
   widgets: JSX.Element[];
   isCollapsed?: boolean;
-}> = ({ header, widgets, isCollapsed }) => {
+  alignVertically?: boolean;
+}
+
+export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = ({
+  header,
+  widgets,
+  isCollapsed,
+  alignVertically,
+}) => {
   const [groupState, setIsCollapsed] = React.useState<boolean>(
     isCollapsed === undefined ? false : isCollapsed
   );
   return (
-    <FluentGroupedList>
+    <FluentGroupedList marginLeft={alignVertically ? 0 : null}>
       <GroupedList
         groupProps={{
           onRenderHeader: (props?: IGroupHeaderProps): JSX.Element => {
@@ -84,6 +92,9 @@ export const CollapsiblePanel: React.FunctionComponent<{
         styles={{
           ...groupStyles,
           groupIsDropping: {},
+        }}
+        focusZoneProps={{
+          handleTabKey: 1,
         }}
       />
     </FluentGroupedList>

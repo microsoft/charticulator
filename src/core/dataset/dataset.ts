@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { strings } from "../../strings";
 import { DataValue, DataType, DataKind } from "../specification";
 import { OrderMode } from "../specification/types";
 import { LocaleNumberFormat } from "./data_types";
@@ -71,6 +72,18 @@ export enum TableType {
   ParentMain = "ParentMain",
   /** TelLs to nested chart that table is parent links table of the chart with all data */
   ParentLinks = "ParentLinks",
+  /** The main table with data for images */
+  Image = "Image",
 }
+
+export const tableTypeName: {
+  [key in TableType]: string;
+} = {
+  [TableType.Main]: strings.dataset.tableTitleColumns,
+  [TableType.Links]: strings.dataset.tableTitleLinks,
+  [TableType.Image]: strings.dataset.tableTitleImages,
+  [TableType.ParentLinks]: "",
+  [TableType.ParentMain]: "",
+};
 
 export const rawColumnPostFix = "_raw";

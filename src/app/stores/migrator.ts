@@ -152,6 +152,14 @@ export class Migrator {
       state = this.setMissedProperties(state);
     }
 
+    if (
+      compareVersion(state.version, "2.1.0") < 0 &&
+      compareVersion(targetVersion, "2.1.0") >= 0
+    ) {
+      //Rounded corners in rect
+      state = this.setMissedGlyphRectProperties(state);
+    }
+
     // After migration, set version to targetVersion
     state.version = targetVersion;
 
@@ -533,6 +541,18 @@ export class Migrator {
         // legend with column names
         if (Prototypes.isType(item.mark.classID, "mark.rect")) {
           (item.mark.properties as RectElementProperties).allowFlipping = true;
+        }
+      }
+    }
+    return state;
+  }
+
+  public setMissedGlyphRectProperties(state: AppStoreState) {
+    for (const item of forEachObject(state.chart)) {
+      if (item.kind == "mark") {
+        if (Prototypes.isType(item.mark.classID, "mark.rect")) {
+          (item.mark.properties as RectElementProperties).rx = 0;
+          (item.mark.properties as RectElementProperties).ry = 0;
         }
       }
     }

@@ -3,6 +3,7 @@
 
 import * as React from "react";
 import {
+  IButtonStyles,
   IDropdownProps,
   IGroupedListStyleProps,
   IGroupedListStyles,
@@ -16,13 +17,22 @@ import {
 } from "@fluentui/react";
 import styled from "styled-components";
 
+export const defultBindButtonSize = {
+  height: "24px",
+  width: "24px",
+};
+
 export const FluentButton = styled.div<{
   marginTop?: string;
+  marginLeft?: string;
   paddingRight?: string;
 }>`
   margin-top: ${({ marginTop }) => marginTop || "24px"};
+  margin-left: ${({ marginLeft }) => marginLeft || "unset"};
   display: inline-block;
   padding: 0px ${({ paddingRight }) => paddingRight || "4px"} 0px 0px;
+  height: ${defultBindButtonSize.height};
+  line-height: ${defultBindButtonSize.height};
   button {
     padding: 4px;
   }
@@ -113,9 +123,10 @@ export const NestedChartButtonsWrapper = styled.div`
   margin-top: 5px;
 `;
 
-export const FluentGroupedList = styled.div`
+export const FluentGroupedList = styled.div<{ marginLeft?: number }>`
   .charticulator__widget-collapsible-panel-item {
-    margin-left: 25px;
+    margin-left: ${({ marginLeft }) =>
+      marginLeft != null ? marginLeft : "25px"};
     margin-right: 15px;
     min-width: 270px;
   }
@@ -128,12 +139,6 @@ export const FluentGroupedList = styled.div`
     min-height: 24px;
   }
 `;
-
-export const defultBindButtonSize = {
-  height: "24px",
-  width: "24px",
-};
-
 export const defultComponentsHeight = {
   height: "24px",
   lineHeight: "unset",
@@ -154,6 +159,7 @@ export const groupHeaderStyles: IStyleFunctionOrObject<
   },
   expand: {
     ...defultBindButtonSize,
+    fontSize: "unset",
   },
   dropIcon: {
     display: "none",
@@ -261,5 +267,19 @@ export const defaultStyle: any = {
   },
   label: {
     lineHeight: "unset",
+  },
+};
+
+export const PanelHeaderStyles: Partial<IButtonStyles> = {
+  root: {
+    border: "unset",
+    height: 24,
+    width: 24,
+    display: "inline",
+    padding: 0,
+    minWidth: 24,
+  },
+  textContainer: {
+    flexGrow: "unset",
   },
 };

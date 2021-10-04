@@ -7,6 +7,7 @@ import {
   zipArray,
   Specification,
   Expression,
+  ImageKeyColumn,
 } from "../../../core";
 import { DataKind } from "../../../core/dataset";
 import { MappingType } from "../../../core/specification";
@@ -182,7 +183,12 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     const inferred =
       (action.hints && action.hints.scaleID) ||
       this.scaleInference(
-        { glyph: action.glyph },
+        {
+          glyph: action.glyph,
+          chart: {
+            table: action.expressionTable,
+          },
+        },
         {
           expression: action.expression,
           valueType: action.valueType,
@@ -193,16 +199,37 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         }
       );
     if (inferred != null) {
-      action.mark.mappings[action.attribute] = {
-        type: MappingType.scale,
-        table: action.glyph.table,
-        expression: action.expression,
-        valueType: action.valueType,
-        scale: inferred,
-        attribute: action.attribute,
-        valueIndex:
-          action.hints && action.hints.allowSelectValue != undefined ? 0 : null,
-      } as Specification.ScaleMapping;
+      if (
+        action.valueType == Specification.DataType.Image &&
+        action.valueType === Specification.DataType.Image
+      ) {
+        action.mark.mappings[action.attribute] = {
+          type: MappingType.expressionScale,
+          table: action.expressionTable ?? action.glyph.table,
+          expression: `first(${ImageKeyColumn})`,
+          valueExpression: action.expression,
+          valueType: action.valueType,
+          scale: inferred,
+          attribute: action.attribute,
+          valueIndex:
+            action.hints && action.hints.allowSelectValue != undefined
+              ? 0
+              : null,
+        } as Specification.ScaleValueExpressionMapping;
+      } else {
+        action.mark.mappings[action.attribute] = {
+          type: MappingType.scale,
+          table: action.expressionTable ?? action.glyph.table,
+          expression: action.expression,
+          valueType: action.valueType,
+          scale: inferred,
+          attribute: action.attribute,
+          valueIndex:
+            action.hints && action.hints.allowSelectValue != undefined
+              ? 0
+              : null,
+        } as Specification.ScaleMapping;
+      }
       if (
         !this.chart.scaleMappings.find(
           (scaleMapping) => scaleMapping.scale === inferred
@@ -233,7 +260,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         }
         action.mark.mappings[action.attribute] = {
           type: MappingType.text,
-          table: action.glyph.table,
+          table: action.expressionTable ?? action.glyph.table,
           textExpression: new Expression.TextExpression([
             { expression: Expression.parse(action.expression), format },
           ]).toString(),

@@ -270,6 +270,13 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.emit(AppStore.EVENT_SELECTION);
   });
 
+  REG.add(Actions.UpdateDataAxis, function () {
+    this.updateDataAxes();
+    this.solveConstraintsAndUpdateGraphics();
+    this.emit(AppStore.EVENT_DATASET);
+    this.emit(AppStore.EVENT_SELECTION);
+  });
+
   REG.add(Actions.ReplaceDataset, function (action) {
     this.currentChartID = null;
     this.currentSelection = null;

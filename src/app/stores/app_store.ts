@@ -9,6 +9,7 @@ import {
   Expression,
   getById,
   getByName,
+  ImageKeyColumn,
   MessageType,
   Prototypes,
   Scale,
@@ -82,6 +83,7 @@ import {
 } from "../../core/prototypes/plot_segments/region_2d/base";
 import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
 import { DataAxisProperties } from "../../core/prototypes/marks/data_axis.attrs";
+import { isBase64Image } from "../../core/dataset/data_types";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -337,7 +339,10 @@ export class AppStore extends BaseStore {
       scaleId: string
     ) {
       for (const map in mappings) {
-        if (mappings[map].type === MappingType.scale) {
+        if (
+          mappings[map].type === MappingType.scale ||
+          mappings[map].type === MappingType.expressionScale
+        ) {
           if ((mappings[map] as any).scale === scaleId) {
             return true;
           }
@@ -859,7 +864,9 @@ export class AppStore extends BaseStore {
 
     // Infer a new scale for this item
     const scaleClassID = Prototypes.Scales.inferScaleType(
-      values?.length > 0 && typeof values[0] === "string"
+      values?.length > 0 &&
+        typeof values[0] === "string" &&
+        !isBase64Image(values[0])
         ? DataType.String
         : options.valueType,
       values?.length > 0 && typeof values[0] === "string"
@@ -889,18 +896,45 @@ export class AppStore extends BaseStore {
         table = parentMainTable;
       }
 
-      scaleClass.inferParameters(
-        this.chartManager.getGroupedExpressionVector(
+      let rangeImage = null;
+      if (
+        scaleClassID === "scale.categorical<image,image>" &&
+        options.valueType === DataType.Image
+      ) {
+        rangeImage = this.chartManager.getGroupedExpressionVector(
           table.name,
           groupBy,
           options.expression
-        ) as Specification.DataValue[],
-        {
-          ...options.hints,
-          extendScaleMax: true,
-          extendScaleMin: true,
-        }
-      );
+        ) as string[];
+
+        scaleClass.inferParameters(
+          this.chartManager.getGroupedExpressionVector(
+            table.name,
+            groupBy,
+            `first(${ImageKeyColumn})` // get ID column values for key
+          ) as Specification.DataValue[],
+          {
+            ...options.hints,
+            extendScaleMax: true,
+            extendScaleMin: true,
+            rangeImage,
+          }
+        );
+      } else {
+        scaleClass.inferParameters(
+          this.chartManager.getGroupedExpressionVector(
+            table.name,
+            groupBy,
+            options.expression
+          ) as Specification.DataValue[],
+          {
+            ...options.hints,
+            extendScaleMax: true,
+            extendScaleMin: true,
+            rangeImage,
+          }
+        );
+      }
 
       return newScale._id;
     } else {
