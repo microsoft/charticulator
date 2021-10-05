@@ -6,16 +6,13 @@ import * as React from "react";
 import * as R from "../../resources";
 
 import { ItemDescription } from "../../backend/abstract";
-import {
-  ButtonFlat,
-  EditableTextView,
-  SVGImageIcon,
-  ButtonRaised,
-} from "../../components";
+import { ButtonFlat, EditableTextView, SVGImageIcon } from "../../components";
 import { Actions } from "../../actions";
 import { showOpenFileDialog, readFileAsString } from "../../utils";
 import { strings } from "../../../strings";
 import { AppStore } from "../../stores";
+import { DefaultButton } from "@fluentui/react";
+import { primaryButtonStyles } from "../../../core";
 
 export interface FileViewOpenState {
   chartList: ItemDescription[];
@@ -65,10 +62,12 @@ export class FileViewOpen extends React.Component<
       } else {
         return (
           <ul className="chart-list">
+            {/* eslint-disable-next-line */}
             {this.state.chartList.map((chart) => {
               return (
                 <li
                   key={chart.id}
+                  tabIndex={0}
                   onClick={() => {
                     this.props.store.dispatcher.dispatch(
                       new Actions.Open(chart.id, (error) => {
@@ -79,6 +78,19 @@ export class FileViewOpen extends React.Component<
                         }
                       })
                     );
+                  }}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      this.props.store.dispatcher.dispatch(
+                        new Actions.Open(chart.id, (error) => {
+                          if (error) {
+                            // TODO: add error reporting
+                          } else {
+                            this.props.onClose();
+                          }
+                        })
+                      );
+                    }
                   }}
                 >
                   <div className="thumbnail">
@@ -175,8 +187,11 @@ export class FileViewOpen extends React.Component<
       <section className="charticulator__file-view-content is-fix-width">
         <h1>{strings.mainTabs.open}</h1>
         <div style={{ marginBottom: "12px" }}>
-          <ButtonRaised
-            url={R.getSVGIcon("toolbar/open")}
+          <DefaultButton
+            iconProps={{
+              iconName: "OpenFolderHorizontal",
+            }}
+            styles={primaryButtonStyles}
             text={strings.fileOpen.open}
             onClick={async () => {
               const file = await showOpenFileDialog(["chart"]);
