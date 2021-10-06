@@ -574,7 +574,6 @@ export class ChartEditorView
               const height = Math.abs(y2[0] - y1[0]);
               const centerX = Math.min(x2[0], x1[0]) + width / 2;
               const centerY = Math.min(y2[0], y1[0]) + height / 2;
-              console.log(centerX, centerY);
               this.doCustomZoom(centerX, centerY, width, height);
             };
           }
