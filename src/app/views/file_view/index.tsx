@@ -105,11 +105,18 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
     inputSaveChartName: HTMLInputElement;
   };
 
+  private buttonBack: HTMLElement;
   constructor(props: FileViewProps) {
     super(props);
     this.state = {
       currentTab: this.props.defaultTab || MainTabs.open,
     };
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.buttonBack?.focus();
+    }, 100);
   }
 
   public switchTab(currentTab: MainTabs) {
@@ -166,8 +173,15 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
         <div className="charticulator__file-view">
           <div className="charticulator__file-view-tabs">
             <div
+              ref={(r) => (this.buttonBack = r)}
+              tabIndex={0}
               className="el-button-back"
               onClick={() => this.props.onClose()}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  this.props.onClose();
+                }
+              }}
             >
               <SVGImageIcon url={R.getSVGIcon("toolbar/back")} />
             </div>
@@ -176,12 +190,18 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
                 <div key={index} className="el-sep" />
               ) : (
                 <div
+                  tabIndex={0}
                   key={index}
                   className={classNames("el-tab", [
                     "active",
                     this.state.currentTab == t,
                   ])}
                   onClick={() => this.switchTab(t)}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      this.switchTab(t);
+                    }
+                  }}
                 >
                   {strings.mainTabs[t]}
                 </div>

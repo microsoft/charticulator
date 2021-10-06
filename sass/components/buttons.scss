@@ -28,7 +28,7 @@
 
 @mixin button-base($height) {
   border: none;
-  outline: none;
+  // outline: none;
   height: $height;
   line-height: $height;
   display: inline-block;
@@ -266,6 +266,8 @@
       @include icon-invert(0%);
       color: $gray-000;
     }
+    display: inline-block;
+    background: none;
   }
 
   &-row {
@@ -563,7 +565,7 @@
       flex: 1;
 
       border: none;
-      outline: none;
+      // outline: none;
     }
 
     .button-flat {

@@ -72,6 +72,7 @@ export interface MainViewState {
   layersViewMaximized: boolean;
   attributeViewMaximized: boolean;
   scaleViewMaximized: boolean;
+  currentFocusComponentIndex: number;
 }
 
 export class MainView extends React.Component<MainViewProps, MainViewState> {
@@ -101,9 +102,49 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
       layersViewMaximized: false,
       attributeViewMaximized: false,
       scaleViewMaximized: false,
+      currentFocusComponentIndex: 0,
     };
 
     props.store.addListener(AppStore.EVENT_GRAPHICS, () => this.forceUpdate());
+  }
+
+  private shortcutKeyHandler(e: KeyboardEvent) {
+    if (e.ctrlKey && e.key === "F6") {
+      const focusableComponents = this.getFocusableComponents();
+      let newIndex = this.state.currentFocusComponentIndex;
+      focusableComponents[newIndex].setAttribute("tabIndex", null);
+      if (e.shiftKey) {
+        newIndex = this.state.currentFocusComponentIndex - 1;
+      } else {
+        newIndex = this.state.currentFocusComponentIndex + 1;
+      }
+      if (newIndex >= focusableComponents.length) {
+        newIndex = 0;
+      }
+      if (newIndex < 0) {
+        newIndex = focusableComponents.length - 1;
+      }
+      this.setState({
+        currentFocusComponentIndex: newIndex,
+      });
+      focusableComponents[newIndex].setAttribute("tabIndex", "0");
+      focusableComponents[newIndex].focus();
+      console.log("current index", newIndex);
+    }
+  }
+
+  componentDidMount() {
+    document.addEventListener("keydown", this.shortcutKeyHandler.bind(this));
+  }
+
+  getFocusableComponents() {
+    return document.querySelectorAll<HTMLElement>(
+      ".charticulator__menu-bar,.charticulator__toolbar-horizontal,.minimizable-pane,.charticulator__floating-panel"
+    );
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.shortcutKeyHandler);
   }
 
   public static childContextTypes = {
