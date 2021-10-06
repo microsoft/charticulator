@@ -239,7 +239,7 @@ export class MarkEditorView extends ContextedComponent<
               }}
             />
             <Button
-              icon="RectangleShape"
+              icon="rect-zoom"
               title={"Rectangle zoom"}
               onClick={() => {
                 this.dispatch(new Actions.SetCurrentTool("rectangle-zoom"));
@@ -321,8 +321,8 @@ export class SingleMarkView
   }
 
   public doCustomZoom(cx: number, cy: number, width: number, height: number) {
-    const newCX = cx + this.props.width / 2;
-    const newCY = cy + this.props.height / 2;
+    const newCX = this.props.width / 2 - cx;
+    const newCY = this.props.height / 2 + cy;
     const newScale =
       this.props.width > this.props.height
         ? this.props.height / height

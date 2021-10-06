@@ -614,8 +614,9 @@ export class ChartEditorView
     const width_main = this.state.viewWidth;
     const height_main = this.state.viewHeight;
 
-    const newCX = cx + width_main / 2;
-    const newCY = cy + height_main / 2;
+    const newCX = width_main / 2 - cx;
+    const newCY = height_main / 2 + cy;
+
     const newScale =
       width_main > height_main ? height_main / height : width_main / width;
 
@@ -1482,14 +1483,12 @@ export class ChartEditorView
               }}
             />
             <Button
-              icon="RectangleShape"
+              icon="rect-zoom"
               title={"Rectangle zoom"}
               onClick={() => {
-                //this.dispatch(new Actions.SetCurrentTool("rectangle-zoom"));
                 new Actions.SetCurrentTool("rectangle-zoom").dispatch(
                   this.props.store.dispatcher
                 );
-                console.log("");
               }}
             />
           </div>
