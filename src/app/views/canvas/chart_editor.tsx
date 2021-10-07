@@ -565,6 +565,19 @@ export class ChartEditorView
             };
           }
           break;
+        case "rectangle-zoom":
+          {
+            mode = "rectangle";
+            onCreate = (x1, y1, x2, y2) => {
+              console.log(x1, y1, x2, y2);
+              const width = Math.abs(x2[0] - x1[0]);
+              const height = Math.abs(y2[0] - y1[0]);
+              const centerX = Math.min(x2[0], x1[0]) + width / 2;
+              const centerY = Math.min(y2[0], y1[0]) + height / 2;
+              this.doCustomZoom(centerX, centerY, width, height);
+            };
+          }
+          break;
       }
       return (
         <CreatingComponent
@@ -594,6 +607,27 @@ export class ChartEditorView
         />
       );
     }
+  }
+
+  public doCustomZoom(cx: number, cy: number, width: number, height: number) {
+    const width_main = this.state.viewWidth;
+    const height_main = this.state.viewHeight;
+
+    const newCX = width_main / 2 - cx;
+    const newCY = height_main / 2 + cy;
+
+    const newScale =
+      width_main > height_main ? height_main / height : width_main / width;
+
+    this.setState({
+      zoom: {
+        centerX: newCX,
+        centerY: newCY,
+        scale: 1,
+      },
+    });
+
+    this.doZoom(newScale);
   }
 
   public renderBoundsGuides() {
@@ -1363,6 +1397,23 @@ export class ChartEditorView
     );
   }
 
+  public doZoom(factor: number) {
+    const { scale, centerX, centerY } = this.state.zoom;
+    const fixPoint = Geometry.unapplyZoom(this.state.zoom, {
+      x: this.state.viewWidth / 2,
+      y: this.state.viewHeight / 2,
+    });
+    let newScale = scale * factor;
+    newScale = Math.min(20, Math.max(0.05, newScale));
+    this.setState({
+      zoom: {
+        centerX: centerX + (scale - newScale) * fixPoint.x,
+        centerY: centerY + (scale - newScale) * fixPoint.y,
+        scale: newScale,
+      },
+    });
+  }
+
   // eslint-disable-next-line
   public render() {
     const width = this.state.viewWidth;
@@ -1406,39 +1457,13 @@ export class ChartEditorView
             <Button
               icon="ZoomIn"
               onClick={() => {
-                const { scale, centerX, centerY } = this.state.zoom;
-                const fixPoint = Geometry.unapplyZoom(this.state.zoom, {
-                  x: this.state.viewWidth / 2,
-                  y: this.state.viewHeight / 2,
-                });
-                let newScale = scale * 1.1;
-                newScale = Math.min(20, Math.max(0.05, newScale));
-                this.setState({
-                  zoom: {
-                    centerX: centerX + (scale - newScale) * fixPoint.x,
-                    centerY: centerY + (scale - newScale) * fixPoint.y,
-                    scale: newScale,
-                  },
-                });
+                this.doZoom(1.1);
               }}
             />
             <Button
               icon="ZoomOut"
               onClick={() => {
-                const { scale, centerX, centerY } = this.state.zoom;
-                const fixPoint = Geometry.unapplyZoom(this.state.zoom, {
-                  x: this.state.viewWidth / 2,
-                  y: this.state.viewHeight / 2,
-                });
-                let newScale = scale / 1.1;
-                newScale = Math.min(20, Math.max(0.05, newScale));
-                this.setState({
-                  zoom: {
-                    centerX: centerX + (scale - newScale) * fixPoint.x,
-                    centerY: centerY + (scale - newScale) * fixPoint.y,
-                    scale: newScale,
-                  },
-                });
+                this.doZoom(1 / 1.1);
               }}
             />
             <Button
@@ -1454,6 +1479,15 @@ export class ChartEditorView
                 this.setState({
                   zoom: newZoom,
                 });
+              }}
+            />
+            <Button
+              icon="rect-zoom"
+              title={"Rectangle zoom"}
+              onClick={() => {
+                new Actions.SetCurrentTool("rectangle-zoom").dispatch(
+                  this.props.store.dispatcher
+                );
               }}
             />
           </div>
