@@ -56,30 +56,4 @@ export class CustomLegendClass extends CategoricalLegendClass {
       mapping: { x: "x", y: "y" },
     },
   };
-
-  public getAttributePanelWidgets(
-    manager: Controls.WidgetManager & CharticulatorPropertyAccessors
-  ): Controls.Widget[] {
-    const widget = super.getAttributePanelWidgets(manager);
-
-    const scale = this.getScale();
-    if (scale) {
-      widget.push(
-        manager.vertical(
-          manager.label(strings.objects.colors, {
-            addMargins: true,
-          }),
-          manager.horizontal(
-            [1],
-            manager.scaleEditor(
-              "mappingOptions",
-              strings.objects.legend.editColors
-            )
-          )
-        )
-      );
-    }
-
-    return widget;
-  }
 }
