@@ -79,7 +79,7 @@ export class FluentInputColor extends React.Component<
             label={this.props.label}
             onRenderLabel={labelRender}
             placeholder={this.props.allowNull ? strings.core.none : ""}
-            value={hex}
+            defaultValue={hex}
             onChange={(event, newValue) => {
               newValue = newValue.trim();
               if (newValue == "") {
