@@ -11,6 +11,7 @@ import {
   KeyColumn,
   LinkSourceKeyColumn,
   LinkTargetKeyColumn,
+  primaryButtonStyles,
 } from "../../../core";
 import {
   classNames,
@@ -28,6 +29,7 @@ import { TableType } from "../../../core/dataset";
 import { AppStore } from "../../stores";
 import { AddMessage, RemoveMessage } from "../../actions/actions";
 import { strings } from "../../../strings";
+import { DefaultButton } from "@fluentui/react";
 
 export interface FileUploaderProps {
   onChange: (file: File) => void;
@@ -106,12 +108,18 @@ export class FileUploader extends React.Component<
   public render() {
     return (
       <div
+        tabIndex={0}
         className={classNames(
           "charticulator__file-uploader",
           ["is-dragging-over", this.state.draggingOver],
           ["is-active", this.state.filename != null]
         )}
         onClick={() => this.showOpenFile()}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            this.showOpenFile();
+          }
+        }}
         onDragOver={(e) => {
           e.preventDefault();
           if (this.isDataTransferValid(e.dataTransfer)) {
@@ -394,9 +402,12 @@ export class ImportDataView extends React.Component<
                   }
                 }
               )}
-              <ButtonRaised
+              <DefaultButton
                 text={strings.fileImport.removeButtonText}
-                url={R.getSVGIcon("ChromeClose")}
+                iconProps={{
+                  iconName: "ChromeClose",
+                }}
+                styles={primaryButtonStyles}
                 title={strings.fileImport.removeButtonTitle}
                 onClick={() => {
                   this.setState({
@@ -492,10 +503,13 @@ export class ImportDataView extends React.Component<
                 });
               }
             )}
-            <ButtonRaised
+            <DefaultButton
               text={strings.fileImport.removeButtonText}
-              url={R.getSVGIcon("ChromeClose")}
+              iconProps={{
+                iconName: "ChromeClose",
+              }}
               title={strings.fileImport.removeButtonTitle}
+              styles={primaryButtonStyles}
               onClick={() => {
                 this.setState({
                   linkTable: null,
@@ -523,9 +537,12 @@ export class ImportDataView extends React.Component<
           />
         )}
         <div className="el-actions">
-          <ButtonRaised
+          <DefaultButton
             text={strings.fileImport.doneButtonText}
-            url={R.getSVGIcon("general/confirm")}
+            iconProps={{
+              iconName: "CheckMark",
+            }}
+            styles={primaryButtonStyles}
             title={strings.fileImport.doneButtonTitle}
             disabled={
               this.state.dataTable == null ||
