@@ -340,9 +340,20 @@ export class DataFieldSelector extends React.Component<
 
   public renderCandidate(item: DataFieldSelectorValueCandidate): JSX.Element {
     let elDerived: HTMLElement;
+    const onClick = (item: DataFieldSelectorValueCandidate) => {
+      if (item.selectable) {
+        this.selectItem(
+          item,
+          this.isValueEqual(this.state.currentSelection, item)
+            ? this.state.currentSelectionAggregation
+            : null
+        );
+      }
+    };
     return (
       <div className="el-column-item" key={item.table + item.expression}>
         <div
+          tabIndex={0}
           className={classNames(
             "el-field-item",
             [
@@ -353,18 +364,12 @@ export class DataFieldSelector extends React.Component<
             ],
             ["is-selectable", item.selectable]
           )}
-          onClick={
-            item.selectable
-              ? () => {
-                  this.selectItem(
-                    item,
-                    this.isValueEqual(this.state.currentSelection, item)
-                      ? this.state.currentSelectionAggregation
-                      : null
-                  );
-                }
-              : null
-          }
+          onClick={() => onClick(item)}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              onClick(item);
+            }
+          }}
         >
           <SVGImageIcon url={R.getSVGIcon(kind2Icon[item.metadata.kind])} />
           <span className="el-text">{item.displayName}</span>
@@ -420,12 +425,18 @@ export class DataFieldSelector extends React.Component<
       <div className="charticulator__data-field-selector">
         {this.props.nullDescription ? (
           <div
+            tabIndex={0}
             className={classNames("el-field-item", "is-null", "is-selectable", [
               "is-active",
               !this.props.nullNotHighlightable &&
                 this.state.currentSelection == null,
             ])}
             onClick={() => this.selectItem(null)}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                this.selectItem(null);
+              }
+            }}
           >
             {this.props.nullDescription}
           </div>

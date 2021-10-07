@@ -5,10 +5,12 @@ import * as React from "react";
 import * as R from "../../resources";
 
 import { CurrentChartView } from ".";
-import { ButtonRaised, SVGImageIcon } from "../../components";
+import { SVGImageIcon } from "../../components";
 import { Actions } from "../../actions";
 import { strings } from "../../../strings";
 import { AppStore } from "../../stores";
+import { DefaultButton } from "@fluentui/react";
+import { primaryButtonStyles } from "../../../container";
 
 export interface FileViewSaveAsProps {
   onClose: () => void;
@@ -49,8 +51,11 @@ export class FileViewSaveAs extends React.Component<
                 <SVGImageIcon url={R.getSVGIcon("loading")} />
               ) : null}
             </span>
-            <ButtonRaised
-              url={R.getSVGIcon("toolbar/save")}
+            <DefaultButton
+              iconProps={{
+                iconName: "Save",
+              }}
+              styles={primaryButtonStyles}
               text={strings.fileSave.saveButton}
               onClick={() => {
                 const name = inputSaveChartName.value.trim();
