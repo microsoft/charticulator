@@ -44,7 +44,7 @@ export class ScaleValueSelector extends React.Component<
     }
 
     this.state = {
-      selectedIndex: selectedIndex,
+      selectedIndex,
     };
   }
 
