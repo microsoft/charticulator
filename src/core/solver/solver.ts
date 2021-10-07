@@ -142,7 +142,7 @@ export class ChartConstraintSolver {
             scaleMapping.table
           );
           rowContext = tableContext.getGroupedContext(rowIndex);
-          const expr = this.expressionCache.parse(scaleMapping.expression);
+          // const expr = this.expressionCache.parse(scaleMapping.expression);
           // const dataValue = <Dataset.DataValue>expr.getValue(rowContext);
           const dataValue = <Dataset.DataValue>"";
           const scaleClass = <Prototypes.Scales.ScaleClass>(
@@ -252,7 +252,9 @@ export class ChartConstraintSolver {
   public addScales(allowScaleParameterChange: boolean = true) {
     const { chart, chartState } = this;
     for (const [scale, scaleState] of zip(chart.scales, chartState.scales)) {
-      this.addObject(scale, scaleState, null, null, allowScaleParameterChange);
+      this.addObject(scale, scaleState, null, null, allowScaleParameterChange, [
+        0,
+      ]);
     }
   }
 
@@ -426,7 +428,7 @@ export class ChartConstraintSolver {
 
   public addChart() {
     const { chart, chartState } = this;
-    this.addObject(chart, chartState, null, null, this.stage == "chart");
+    this.addObject(chart, chartState, null, null, this.stage == "chart", [0]);
     const boundsClass = this.manager.getChartClass(chartState);
     boundsClass.buildIntrinsicConstraints(this.solver);
 
@@ -439,7 +441,8 @@ export class ChartConstraintSolver {
         elementState,
         chartState,
         null,
-        this.stage == "chart"
+        this.stage == "chart",
+        [0]
       );
       const elementClass = this.manager.getChartElementClass(elementState);
 

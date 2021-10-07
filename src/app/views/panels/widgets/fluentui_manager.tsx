@@ -37,11 +37,7 @@ import {
 } from "../../../utils/index";
 import { DataFieldSelectorValue } from "../../dataset/data_field_selector";
 import { ReorderListView } from "../object_list_editor";
-import {
-  Button,
-  InputColorGradient,
-  FluentComboBoxFontFamily,
-} from "./controls";
+import { InputColorGradient, FluentComboBoxFontFamily } from "./controls";
 import { GroupByEditor } from "./groupby_editor";
 import {
   ChartTemplate,
@@ -85,7 +81,6 @@ import {
   defultComponentsHeight,
   FluentButton,
   FluentCheckbox,
-  FluentColumnLayout,
   FluentDatePickerWrapper,
   FluentDropdown,
   FluentDropdownWrapper,
@@ -104,7 +99,8 @@ import {
 import { mergeStyles } from "@fluentui/merge-styles";
 import { CSSProperties } from "react";
 import { strings } from "../../../../strings";
-import { InputImage, InputImageProperty } from "./controls/fluentui_image";
+import { InputImage } from "./controls/fluentui_image";
+import { InputImageProperty } from "./controls/fluentui_image_2";
 import {
   Director,
   IDefaultValue,
@@ -119,6 +115,7 @@ import { EventManager, EventType, UIManagerListener } from "./observer";
 import { FluentUIGradientPicker } from "../../../components/fluent_ui_gradient_picker";
 import { OrderMode } from "../../../../core/specification/types";
 import { ReorderStringsValue } from "./controls/reorder_string_value";
+import { CustomCollapsiblePanel } from "./controls/custom_collapsible_panel";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -1610,7 +1607,11 @@ export class FluentUIWidgetManager
         }}
       >
         {widgets.map((widget, i) => (
-          <div className="charticulator__widget-scroll-list-item" key={i}>
+          <div
+            className="charticulator__widget-scroll-list-item"
+            key={i}
+            style={options.styles}
+          >
             {widget}
           </div>
         ))}
@@ -1623,6 +1624,19 @@ export class FluentUIWidgetManager
     tooltipContent: JSX.Element
   ): JSX.Element {
     return <TooltipHost content={tooltipContent}>{widget}</TooltipHost>;
+  }
+
+  public customCollapsiblePanel(
+    widgets: JSX.Element[],
+    options: Prototypes.Controls.CustomCollapsiblePanelOptions = {}
+  ): JSX.Element {
+    return (
+      <CustomCollapsiblePanel
+        widgets={widgets}
+        styles={options.styles}
+        header={options.header}
+      />
+    );
   }
 }
 

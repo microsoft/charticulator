@@ -184,6 +184,16 @@ export class UpdatePlotSegments extends Action {
   }
 }
 
+export class UpdateDataAxis extends Action {
+  constructor() {
+    super();
+  }
+
+  public digest() {
+    return { name: "UpdateDataAxis" };
+  }
+}
+
 export class ConvertColumnDataType extends Action {
   constructor(
     public tableName: string,

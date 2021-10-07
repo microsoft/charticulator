@@ -1195,6 +1195,8 @@
         vertical-align: top;
         cursor: pointer;
         height: $line-height;
+        border: none;
+        background: none;
         border-radius: 2px;
 
         &.has-text {

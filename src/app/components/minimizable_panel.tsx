@@ -6,10 +6,11 @@
 
 import * as React from "react";
 import { getSVGIcon } from "../resources";
-import { SVGImageIcon } from "./icons";
 import { ButtonFlat } from "./buttons";
 import * as Hammer from "hammerjs";
 import { classNames } from "../utils";
+import { DefaultButton } from "@fluentui/react";
+import { PanelHeaderStyles } from "../views/panels/widgets/controls/fluentui_customized_components";
 
 export class MinimizablePanelView extends React.Component<{}, {}> {
   public render() {
@@ -50,10 +51,18 @@ export class MinimizablePane extends React.Component<
         className="header"
         onClick={() => this.setState({ minimized: !this.state.minimized })}
       >
-        <SVGImageIcon
-          url={getSVGIcon(
-            this.state.minimized ? "ChevronRight" : "ChevronDown"
-          )}
+        <DefaultButton
+          onClick={() => this.setState({ minimized: !this.state.minimized })}
+          iconProps={{
+            iconName: this.state.minimized ? "ChevronRight" : "ChevronDown",
+            styles: {
+              root: {
+                fontSize: "unset",
+                height: 12,
+              },
+            },
+          }}
+          styles={PanelHeaderStyles}
         />
         <span className="title">{this.props.title}</span>
         {this.props.onMaximize ? (

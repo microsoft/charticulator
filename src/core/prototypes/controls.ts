@@ -211,6 +211,7 @@ export interface ArrayWidgetOptions {
 export interface ScrollListOptions {
   height?: number;
   maxHeight?: number;
+  styles?: CSSProperties;
 }
 
 export interface InputExpressionOptions {
@@ -259,6 +260,11 @@ export interface InputFormatOptions {
 export interface InputFormatOptions {
   blank?: string;
   isDateField?: boolean;
+}
+
+export interface CustomCollapsiblePanelOptions {
+  header?: string;
+  styles?: CSSProperties;
 }
 
 export interface WidgetManager {
@@ -342,6 +348,11 @@ export interface WidgetManager {
   nestedChartEditor(
     property: Property,
     options: NestedChartEditorOptions
+  ): Widget;
+
+  customCollapsiblePanel(
+    widgets: Widget[],
+    options: CustomCollapsiblePanelOptions
   ): Widget;
 }
 

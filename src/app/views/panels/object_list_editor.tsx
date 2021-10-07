@@ -46,9 +46,15 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
     return (
       <div>
         <div
+          tabIndex={0}
           className={classNames("el-object-item", ["is-active", sel == null])}
           onClick={() => {
             this.dispatch(new Actions.ClearSelection());
+          }}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              this.dispatch(new Actions.ClearSelection());
+            }
           }}
         >
           <SVGImageIcon
@@ -67,6 +73,7 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
           {chart.elements.map((element) => {
             return (
               <div
+                tabIndex={0}
                 className={classNames("el-object-item", [
                   "is-active",
                   sel instanceof ChartElementSelection &&
@@ -74,6 +81,11 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
                 ])}
                 onClick={() => {
                   this.dispatch(new Actions.SelectChartElement(element));
+                }}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    this.dispatch(new Actions.SelectChartElement(element));
+                  }
                 }}
                 key={element._id}
               >
@@ -125,12 +137,18 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
     return (
       <div key={glyph._id}>
         <div
+          tabIndex={0}
           className={classNames("el-object-item", [
             "is-active",
             sel instanceof GlyphSelection && sel.glyph == glyph,
           ])}
           onClick={() => {
             this.dispatch(new Actions.SelectGlyph(null, glyph));
+          }}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              this.dispatch(new Actions.SelectGlyph(null, glyph));
+            }
           }}
         >
           <SVGImageIcon
@@ -151,6 +169,7 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
             .map((mark) => {
               return (
                 <div
+                  tabIndex={0}
                   className={classNames("el-object-item", [
                     "is-active",
                     sel instanceof MarkSelection &&
@@ -160,6 +179,11 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
                   key={mark._id}
                   onClick={() => {
                     this.dispatch(new Actions.SelectMark(null, glyph, mark));
+                  }}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      this.dispatch(new Actions.SelectMark(null, glyph, mark));
+                    }
                   }}
                 >
                   <SVGImageIcon
