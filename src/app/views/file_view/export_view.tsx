@@ -4,15 +4,20 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-empty-interface */
 
+import { DefaultButton } from "@fluentui/react";
 import * as React from "react";
 import { CurrentChartView } from ".";
-import { deepClone, Specification, Prototypes } from "../../../core";
+import {
+  deepClone,
+  Specification,
+  Prototypes,
+  primaryButtonStyles,
+} from "../../../core";
 import { ensureColumnsHaveExamples } from "../../../core/dataset/examples";
 import { findObjectById } from "../../../core/prototypes";
 import { strings } from "../../../strings";
 import { Actions } from "../../actions";
 import {
-  ButtonRaised,
   ErrorBoundary,
   SVGImageIcon,
   TelemetryContext,
@@ -81,27 +86,36 @@ export class ExportImageView extends React.Component<
           }}
         />
         <div className="buttons">
-          <ButtonRaised
+          <DefaultButton
             text={strings.fileExport.typePNG}
-            url={R.getSVGIcon("toolbar/export")}
+            iconProps={{
+              iconName: "Export",
+            }}
+            styles={primaryButtonStyles}
             onClick={() => {
               this.props.store.dispatcher.dispatch(
                 new Actions.Export("png", { scale: this.getScaler() })
               );
             }}
           />{" "}
-          <ButtonRaised
+          <DefaultButton
             text={strings.fileExport.typeJPEG}
-            url={R.getSVGIcon("toolbar/export")}
+            iconProps={{
+              iconName: "Export",
+            }}
+            styles={primaryButtonStyles}
             onClick={() => {
               this.props.store.dispatcher.dispatch(
                 new Actions.Export("jpeg", { scale: this.getScaler() })
               );
             }}
           />{" "}
-          <ButtonRaised
+          <DefaultButton
             text={strings.fileExport.typeSVG}
-            url={R.getSVGIcon("toolbar/export")}
+            iconProps={{
+              iconName: "Export",
+            }}
+            styles={primaryButtonStyles}
             onClick={() => {
               this.props.store.dispatcher.dispatch(new Actions.Export("svg"));
             }}
@@ -123,9 +137,12 @@ export class ExportHTMLView extends React.Component<
       <div className="el-horizontal-layout-item is-fix-width">
         <CurrentChartView store={this.props.store} />
         <div className="buttons">
-          <ButtonRaised
+          <DefaultButton
             text={strings.fileExport.typeHTML}
-            url={R.getSVGIcon("toolbar/export")}
+            iconProps={{
+              iconName: "Export",
+            }}
+            styles={primaryButtonStyles}
             onClick={() => {
               this.props.store.dispatcher.dispatch(new Actions.Export("html"));
             }}
@@ -179,33 +196,51 @@ export class FileViewExport extends React.Component<
           <div className="el-horizontal-layout-item">
             <div className="charticulator__list-view">
               <div
+                tabIndex={0}
                 className={classNames("el-item", [
                   "is-active",
                   this.state.exportMode == "image",
                 ])}
                 onClick={() => this.setState({ exportMode: "image" })}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    this.setState({ exportMode: "image" });
+                  }
+                }}
               >
                 <SVGImageIcon url={R.getSVGIcon("toolbar/export")} />
                 <span className="el-text">{strings.fileExport.asImage}</span>
               </div>
               <div
+                tabIndex={0}
                 className={classNames("el-item", [
                   "is-active",
                   this.state.exportMode == "html",
                 ])}
                 onClick={() => this.setState({ exportMode: "html" })}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    this.setState({ exportMode: "html" });
+                  }
+                }}
               >
                 <SVGImageIcon url={R.getSVGIcon("toolbar/export")} />
                 <span className="el-text">{strings.fileExport.asHTML}</span>
               </div>
               {this.props.store.listExportTemplateTargets().map((name) => (
                 <div
+                  tabIndex={0}
                   key={name}
                   className={classNames("el-item", [
                     "is-active",
                     this.state.exportMode == name,
                   ])}
                   onClick={() => this.setState({ exportMode: name })}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      this.setState({ exportMode: name });
+                    }
+                  }}
                 >
                   <SVGImageIcon url={R.getSVGIcon("toolbar/export")} />
                   <span className="el-text">{name}</span>
@@ -718,30 +753,44 @@ export class ExportTemplateView extends React.Component<
         continue;
       }
 
+      const onClick = () => {
+        this.props.store.dispatcher.dispatch(
+          new Actions.SetObjectProperty(
+            object,
+            "exposed",
+            null,
+            !(object.properties.exposed === undefined
+              ? true
+              : object.properties.exposed),
+            true,
+            true
+          )
+        );
+        const templateObject = findObjectById(
+          this.state.template.specification,
+          object._id
+        );
+        templateObject.properties.exposed = !templateObject.properties.exposed;
+        this.setState({ template });
+      };
+
       result.push(
         <div
+          aria-checked={
+            object.properties.exposed === undefined
+              ? "true"
+              : object.properties.exposed
+              ? "true"
+              : "false"
+          }
+          tabIndex={0}
           key={key}
           className="el-inference-item"
-          onClick={() => {
-            this.props.store.dispatcher.dispatch(
-              new Actions.SetObjectProperty(
-                object,
-                "exposed",
-                null,
-                !(object.properties.exposed === undefined
-                  ? true
-                  : object.properties.exposed),
-                true,
-                true
-              )
-            );
-            const templateObject = findObjectById(
-              this.state.template.specification,
-              object._id
-            );
-            templateObject.properties.exposed = !templateObject.properties
-              .exposed;
-            this.setState({ template });
+          onClick={onClick}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              onClick();
+            }
           }}
         >
           <SVGImageIcon
@@ -778,9 +827,12 @@ export class ExportTemplateView extends React.Component<
         <h2>{strings.fileExport.labelProperties(this.props.exportKind)}</h2>
         {this.renderTargetProperties()}
         <div className="buttons">
-          <ButtonRaised
+          <DefaultButton
             text={this.props.exportKind}
-            url={R.getSVGIcon("toolbar/export")}
+            iconProps={{
+              iconName: "Export",
+            }}
+            styles={primaryButtonStyles}
             onClick={() => {
               this.props.store.dispatcher.dispatch(
                 new Actions.ExportTemplate(
