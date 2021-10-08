@@ -31,6 +31,16 @@ export enum TickFormatType {
   Number = "number",
 }
 
+export interface AxisOffset extends AttributeMap {
+  xOffset: number;
+  yOffset: number;
+}
+
+export const defaultAxisOffset: AxisOffset = {
+  xOffset: 0,
+  yOffset: 0,
+};
+
 /** Common parameter and mapping types */
 export interface AxisDataBinding extends AttributeMap {
   type: AxisDataBindingType;
@@ -78,6 +88,9 @@ export interface AxisDataBinding extends AttributeMap {
   scrollPosition?: number;
   windowSize?: number;
   barOffset?: number;
+
+  /** Offset options */
+  offset?: AxisOffset;
 }
 
 export interface AxisRenderingStyle extends AttributeMap {

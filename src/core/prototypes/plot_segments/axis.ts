@@ -35,7 +35,11 @@ import { Controls, strokeStyleToDashArray } from "../common";
 import { AttributeMap, DataType } from "../../specification";
 import { strings } from "../../../strings";
 import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
-import { NumericalMode, TickFormatType } from "../../specification/types";
+import {
+  AxisOffset,
+  NumericalMode,
+  TickFormatType,
+} from "../../specification/types";
 import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
 import React = require("react");
 
@@ -79,7 +83,7 @@ export class AxisRenderer {
   public rangeMax: number = 1;
   public valueToPosition: (value: any) => number;
   public oppositeSide: boolean = false;
-
+  public offset: AxisOffset = { xOffset: 0, yOffset: 0 };
   public static SCROLL_BAR_SIZE = 10;
 
   private static textMeasurer = new TextMeasurer();
@@ -443,7 +447,14 @@ export class AxisRenderer {
   }
 
   // eslint-disable-next-line
-  public renderLine(x: number, y: number, angle: number, side: number): Group {
+  public renderLine(
+    x: number,
+    y: number,
+    angle: number,
+    side: number,
+    offset?: AxisOffset
+  ): Group {
+    // debugger
     const g = makeGroup([]);
     const style = this.style;
     const rangeMin = this.rangeMin;
@@ -744,16 +755,29 @@ export class AxisRenderer {
         }
       }
     }
+
+    if (offset) {
+      g.transform = {
+        x: offset.xOffset,
+        y: offset.yOffset,
+        angle: 0,
+      };
+    }
     return g;
   }
 
-  public renderCartesian(x: number, y: number, axis: AxisMode): Group {
+  public renderCartesian(
+    x: number,
+    y: number,
+    axis: AxisMode,
+    offset?: AxisOffset
+  ): Group {
     switch (axis) {
       case AxisMode.X: {
-        return this.renderLine(x, y, 0, 1);
+        return this.renderLine(x, y, 0, 1, offset);
       }
       case AxisMode.Y: {
-        return this.renderLine(x, y, 90, -1);
+        return this.renderLine(x, y, 90, -1, offset);
       }
     }
   }
@@ -1198,6 +1222,24 @@ export function buildAxisAppearanceWidgets(
                 label: strings.objects.position,
                 options: ["default", "opposite"],
                 labels: [strings.objects.default, strings.objects.opposite],
+              }
+            ),
+            manager.inputNumber(
+              {
+                property: axisProperty,
+                field: ["offset", "xOffset"],
+              },
+              {
+                label: strings.objects.axes.offSetX,
+              }
+            ),
+            manager.inputNumber(
+              {
+                property: axisProperty,
+                field: ["offset", "yOffset"],
+              },
+              {
+                label: strings.objects.axes.offSetY,
               }
             ),
           ]
@@ -1845,6 +1887,30 @@ export function buildAxisProperties(
       },
       type: Specification.AttributeType.Text,
       default: null,
+    },
+    {
+      objectID: plotSegment._id,
+      target: {
+        property: {
+          property,
+          field: "offset",
+          subfield: "xOffset",
+        },
+      },
+      type: Specification.AttributeType.Number,
+      default: 0,
+    },
+    {
+      objectID: plotSegment._id,
+      target: {
+        property: {
+          property,
+          field: "offset",
+          subfield: "yOffset",
+        },
+      },
+      type: Specification.AttributeType.Number,
+      default: 0,
     },
   ];
 }

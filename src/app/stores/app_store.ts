@@ -61,6 +61,7 @@ import {
 import { RenderEvents } from "../../core/graphics";
 import {
   AxisDataBindingType,
+  AxisOffset,
   AxisRenderingStyle,
   NumericalMode,
   OrderMode,
@@ -1822,6 +1823,10 @@ export class AppStore extends BaseStore {
         <number>objectProperties?.barOffset !== undefined
           ? <number>objectProperties?.barOffset
           : 0,
+      offset: (objectProperties?.offset as AxisOffset) ?? {
+        yOffset: 0,
+        xOffset: 0,
+      },
     };
 
     let expressions = [groupExpression];
