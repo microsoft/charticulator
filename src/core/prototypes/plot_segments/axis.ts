@@ -83,7 +83,6 @@ export class AxisRenderer {
   public rangeMax: number = 1;
   public valueToPosition: (value: any) => number;
   public oppositeSide: boolean = false;
-  public offset: AxisOffset = { xOffset: 0, yOffset: 0 };
   public static SCROLL_BAR_SIZE = 10;
 
   private static textMeasurer = new TextMeasurer();
@@ -454,7 +453,6 @@ export class AxisRenderer {
     side: number,
     offset?: AxisOffset
   ): Group {
-    // debugger
     const g = makeGroup([]);
     const style = this.style;
     const rangeMin = this.rangeMin;
