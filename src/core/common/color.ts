@@ -49,6 +49,37 @@ export function colorFromHTMLColor(html: string): Color {
   return { r: 0, g: 0, b: 0 };
 }
 
+export function parseColorOrThrowException(html: string): Color {
+  let m: RegExpMatchArray;
+  m = html.match(
+    /^ *rgb *\( *([0-9.\-e]+) *, *([0-9.\-e]+) *, *([0-9.\-e]+) *\) *$/
+  );
+  if (m) {
+    return { r: +m[1], g: +m[2], b: +m[3] };
+  }
+  m = html.match(
+    /^ *rgba *\( *([0-9.\-e]+) *, *([0-9.\-e]+) *, *([0-9.\-e]+) *, *([0-9.\-e]+) *\) *$/
+  );
+  if (m) {
+    return { r: +m[1], g: +m[2], b: +m[3] };
+  }
+  m = html.match(/^ *#([0-9a-fA-F]{3}) *$/);
+  if (m) {
+    const r = parseInt(m[1][0], 16) * 17;
+    const g = parseInt(m[1][1], 16) * 17;
+    const b = parseInt(m[1][2], 16) * 17;
+    return { r, g, b };
+  }
+  m = html.match(/^ *#([0-9a-fA-F]{6}) *$/);
+  if (m) {
+    const r = parseInt(m[1].slice(0, 2), 16);
+    const g = parseInt(m[1].slice(2, 4), 16);
+    const b = parseInt(m[1].slice(4, 6), 16);
+    return { r, g, b };
+  }
+  throw new Error(`Cant recognize color: ${html}`);
+}
+
 export function colorToHTMLColor(color: Color): string {
   return `rgb(${color.r.toFixed(0)},${color.g.toFixed(0)},${color.b.toFixed(
     0

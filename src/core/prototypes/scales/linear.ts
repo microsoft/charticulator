@@ -383,6 +383,7 @@ export class LinearBooleanScale extends ScaleClass<
   ): Specification.AttributeValue {
     const props = this.object.properties;
     const value = <number>data;
+    console.log(value);
     if (props.inclusive) {
       switch (props.mode) {
         case "greater":
