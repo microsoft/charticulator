@@ -22,7 +22,8 @@ export class MarkSnappingSession extends SnappingSession<
     element: Specification.Element,
     elementState: Specification.MarkState,
     bound: Prototypes.Handles.Description,
-    threshold: number
+    threshold: number,
+    findClosestSnappingGuide: boolean
   ) {
     super(
       guides.filter((x) => {
@@ -41,7 +42,7 @@ export class MarkSnappingSession extends SnappingSession<
       }),
       bound,
       threshold,
-      false
+      findClosestSnappingGuide
     );
 
     this.mark = mark;
