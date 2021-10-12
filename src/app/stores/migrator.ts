@@ -30,10 +30,7 @@ import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
 import { CurveProperties } from "../../core/prototypes/plot_segments/region_2d/curve";
 import { DataAxisProperties } from "../../core/prototypes/marks/data_axis";
 import { replaceUndefinedByNull } from "../utils";
-import {
-  defaultAxisOffset,
-  TickFormatType,
-} from "../../core/specification/types";
+import { TickFormatType } from "../../core/specification/types";
 import { SymbolElementProperties } from "../../core/prototypes/marks/symbol.attrs";
 
 /** Upgrade old versions of chart spec and state to newer version */
@@ -577,7 +574,7 @@ export class Migrator {
             if (element.properties.xData === undefined) {
               element.properties.xData = null;
             }
-            element.properties.xData.offset = defaultAxisOffset;
+            element.properties.xData.offset = 0;
             element.properties.xData.tickFormatType = TickFormatType.None;
           }
           if (element.properties.yData) {
@@ -587,7 +584,7 @@ export class Migrator {
             if (element.properties.yData === undefined) {
               element.properties.yData = null;
             }
-            element.properties.yData.offset = defaultAxisOffset;
+            element.properties.yData.offset = 0;
             element.properties.yData.tickFormatType = TickFormatType.None;
           }
         }

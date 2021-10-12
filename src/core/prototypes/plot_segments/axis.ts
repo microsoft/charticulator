@@ -451,7 +451,7 @@ export class AxisRenderer {
     y: number,
     angle: number,
     side: number,
-    offset?: AxisOffset
+    offset?: number
   ): Group {
     const g = makeGroup([]);
     const style = this.style;
@@ -756,8 +756,8 @@ export class AxisRenderer {
 
     if (offset) {
       g.transform = {
-        x: offset.xOffset,
-        y: offset.yOffset,
+        x: angle == 90 ? offset : 0,
+        y: angle == 90 ? 0 : offset,
         angle: 0,
       };
     }
@@ -768,7 +768,7 @@ export class AxisRenderer {
     x: number,
     y: number,
     axis: AxisMode,
-    offset?: AxisOffset
+    offset?: number
   ): Group {
     switch (axis) {
       case AxisMode.X: {
@@ -1225,19 +1225,10 @@ export function buildAxisAppearanceWidgets(
             manager.inputNumber(
               {
                 property: axisProperty,
-                field: ["offset", "xOffset"],
+                field: ["offset"],
               },
               {
-                label: strings.objects.axes.offSetX,
-              }
-            ),
-            manager.inputNumber(
-              {
-                property: axisProperty,
-                field: ["offset", "yOffset"],
-              },
-              {
-                label: strings.objects.axes.offSetY,
+                label: strings.objects.axes.offSet,
               }
             ),
           ]
@@ -1892,19 +1883,6 @@ export function buildAxisProperties(
         property: {
           property,
           field: "offset",
-          subfield: "xOffset",
-        },
-      },
-      type: Specification.AttributeType.Number,
-      default: 0,
-    },
-    {
-      objectID: plotSegment._id,
-      target: {
-        property: {
-          property,
-          field: "offset",
-          subfield: "yOffset",
         },
       },
       type: Specification.AttributeType.Number,

@@ -1824,7 +1824,10 @@ export class AppStore extends BaseStore {
         <number>objectProperties?.barOffset !== undefined
           ? <number>objectProperties?.barOffset
           : 0,
-      offset: (objectProperties?.offset as AxisOffset) ?? defaultAxisOffset,
+      offset:
+        <number>objectProperties?.offset !== undefined
+          ? <number>objectProperties?.offset
+          : 0,
     };
 
     let expressions = [groupExpression];
