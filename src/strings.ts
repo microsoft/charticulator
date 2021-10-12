@@ -425,6 +425,7 @@ export const strings = {
       lineColor: "Line Color",
       tickColor: "Tick Color",
       verticalText: "Vertical text",
+      offSet: "Offset",
     },
     plotSegment: {
       subLayout: "Sub-layout",

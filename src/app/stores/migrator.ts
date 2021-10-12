@@ -30,6 +30,8 @@ import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
 import { CurveProperties } from "../../core/prototypes/plot_segments/region_2d/curve";
 import { DataAxisProperties } from "../../core/prototypes/marks/data_axis";
 import { replaceUndefinedByNull } from "../utils";
+import { TickFormatType } from "../../core/specification/types";
+import { SymbolElementProperties } from "../../core/prototypes/marks/symbol.attrs";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -427,6 +429,8 @@ export class Migrator {
       allowScrolling: replaceUndefinedByNull(axis.allowScrolling),
       windowSize: replaceUndefinedByNull(axis.windowSize),
       barOffset: replaceUndefinedByNull(axis.barOffset),
+      offset: replaceUndefinedByNull(axis.offset),
+      tickFormatType: replaceUndefinedByNull(axis.tickFormatType),
     };
   }
 
@@ -549,10 +553,40 @@ export class Migrator {
 
   public setMissedGlyphRectProperties(state: AppStoreState) {
     for (const item of forEachObject(state.chart)) {
-      if (item.kind == "mark") {
+      if (item.kind == ObjectItemKind.Mark) {
         if (Prototypes.isType(item.mark.classID, "mark.rect")) {
           (item.mark.properties as RectElementProperties).rx = 0;
           (item.mark.properties as RectElementProperties).ry = 0;
+        }
+        if (Prototypes.isType(item.mark.classID, "mark.symbol")) {
+          (item.mark.properties as SymbolElementProperties).rotation = 0;
+        }
+      }
+      if (item.kind == ObjectItemKind.ChartElement) {
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.cartesian")
+        ) {
+          const element = item.chartElement as PlotSegment<CartesianProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+            if (element.properties.xData === undefined) {
+              element.properties.xData = null;
+            }
+            element.properties.xData.offset = 0;
+            element.properties.xData.tickFormatType = TickFormatType.None;
+          }
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+            if (element.properties.yData === undefined) {
+              element.properties.yData = null;
+            }
+            element.properties.yData.offset = 0;
+            element.properties.yData.tickFormatType = TickFormatType.None;
+          }
         }
       }
     }

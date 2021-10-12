@@ -349,7 +349,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         axisRenderer.renderCartesian(
           attrs.x1,
           props.xData.side != "default" ? attrs.y2 : attrs.y1,
-          AxisMode.X
+          AxisMode.X,
+          props.xData?.offset
         )
       );
     }
@@ -374,7 +375,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         axisRenderer.renderCartesian(
           props.yData.side != "default" ? attrs.x2 : attrs.x1,
           attrs.y1,
-          AxisMode.Y
+          AxisMode.Y,
+          props.yData?.offset
         )
       );
     }
