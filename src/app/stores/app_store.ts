@@ -61,9 +61,7 @@ import {
 import { RenderEvents } from "../../core/graphics";
 import {
   AxisDataBindingType,
-  AxisOffset,
   AxisRenderingStyle,
-  defaultAxisOffset,
   NumericalMode,
   OrderMode,
   TickFormatType,

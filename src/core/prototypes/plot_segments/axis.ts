@@ -35,11 +35,7 @@ import { Controls, strokeStyleToDashArray } from "../common";
 import { AttributeMap, DataType } from "../../specification";
 import { strings } from "../../../strings";
 import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
-import {
-  AxisOffset,
-  NumericalMode,
-  TickFormatType,
-} from "../../specification/types";
+import { NumericalMode, TickFormatType } from "../../specification/types";
 import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
 import React = require("react");
 

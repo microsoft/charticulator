@@ -31,14 +31,6 @@ export enum TickFormatType {
   Number = "number",
 }
 
-export interface AxisOffset extends AttributeMap {
-  offset: number;
-}
-
-export const defaultAxisOffset: AxisOffset = {
-  offset: 0,
-};
-
 /** Common parameter and mapping types */
 export interface AxisDataBinding extends AttributeMap {
   type: AxisDataBindingType;
