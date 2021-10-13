@@ -323,6 +323,21 @@ export class ChartStateManager {
           console.log(ex);
           return true;
         }
+
+        //scale mappings
+        try {
+          const currentProperties = currentElement.object?.properties;
+          const originProperties = originElement.object?.properties;
+          expect_deep_approximately_equals(
+            currentProperties,
+            originProperties,
+            defaultDifferenceApproximation,
+            true
+          );
+        } catch (ex) {
+          console.log(ex);
+          return true;
+        }
       }
     }
 
