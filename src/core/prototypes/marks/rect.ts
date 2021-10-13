@@ -686,6 +686,9 @@ export class RectElementClass extends EmphasizableMarkClass<
         actions: [{ type: "attribute", attribute: "x1" }],
         value: x1,
         span: [y1, y2],
+        options: {
+          snapToClosestPoint: true,
+        },
       },
       <Handles.Line>{
         type: "line",
@@ -693,6 +696,9 @@ export class RectElementClass extends EmphasizableMarkClass<
         actions: [{ type: "attribute", attribute: "x2" }],
         value: x2,
         span: [y1, y2],
+        options: {
+          snapToClosestPoint: true,
+        },
       },
       <Handles.Line>{
         type: "line",
@@ -700,6 +706,9 @@ export class RectElementClass extends EmphasizableMarkClass<
         actions: [{ type: "attribute", attribute: "y1" }],
         value: y1,
         span: [x1, x2],
+        options: {
+          snapToClosestPoint: true,
+        },
       },
       <Handles.Line>{
         type: "line",
@@ -707,6 +716,9 @@ export class RectElementClass extends EmphasizableMarkClass<
         actions: [{ type: "attribute", attribute: "y2" }],
         value: y2,
         span: [x1, x2],
+        options: {
+          snapToClosestPoint: true,
+        },
       },
       <Handles.Point>{
         type: "point",

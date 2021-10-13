@@ -931,7 +931,8 @@ export class SingleMarkView
                 element,
                 elementState,
                 bound,
-                10 / this.state.zoom.scale
+                10 / this.state.zoom.scale,
+                bound.options && bound.options.snapToClosestPoint
               );
               ctx.onDrag((e) => {
                 session.handleDrag(e);
@@ -1048,7 +1049,8 @@ export class SingleMarkView
                     element,
                     elementState,
                     handle,
-                    10 / this.state.zoom.scale
+                    10 / this.state.zoom.scale,
+                    handle.options && handle.options.snapToClosestPoint
                   );
                   ctx.onDrag((e) => {
                     session.handleDrag(e);
