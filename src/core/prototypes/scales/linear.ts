@@ -357,8 +357,18 @@ export class LinearColorScale extends ScaleClass<
 export interface LinearBooleanScaleProperties extends LinearScaleProperties {
   min: number;
   max: number;
-  mode: "greater" | "less" | "interval";
-  inclusive: boolean;
+  mode: LinearBooleanScaleMode;
+}
+
+export enum LinearBooleanScaleMode {
+  GreaterThan = "Greater than",
+  LessThan = "Less than",
+  Between = "Between",
+  EqualTo = "Equal to",
+  GreaterThanOrEqualTo = "Greater than or equal to",
+  LessThanOrEqualTo = "Less than or equal to",
+  NotBetween = "Not between",
+  NotEqualTo = "Not Equal to",
 }
 
 export class LinearBooleanScale extends ScaleClass<
@@ -371,8 +381,7 @@ export class LinearBooleanScale extends ScaleClass<
   public static defaultMappingValues: Specification.AttributeMap = {
     min: 0,
     max: 1,
-    mode: "interval",
-    inclusive: true,
+    mode: LinearBooleanScaleMode.GreaterThan,
   };
 
   public attributeNames: string[] = [];
@@ -383,44 +392,36 @@ export class LinearBooleanScale extends ScaleClass<
   ): Specification.AttributeValue {
     const props = this.object.properties;
     const value = <number>data;
-    if (props.inclusive) {
-      switch (props.mode) {
-        case "greater":
-          return value >= props.min;
-        case "less":
-          return value <= props.max;
-        case "interval":
-          return value <= props.max && value >= props.min;
-      }
-    } else {
-      switch (props.mode) {
-        case "greater":
-          return value > props.min;
-        case "less":
-          return value < props.max;
-        case "interval":
-          return value < props.max && value > props.min;
-      }
+    switch (props.mode) {
+      case LinearBooleanScaleMode.GreaterThan:
+        return value > props.min;
+      case LinearBooleanScaleMode.GreaterThanOrEqualTo:
+        return value >= props.min;
+      case LinearBooleanScaleMode.LessThan:
+        return value < props.max;
+      case LinearBooleanScaleMode.LessThanOrEqualTo:
+        return value <= props.max;
+      case LinearBooleanScaleMode.EqualTo:
+        return value == props.min;
+      case LinearBooleanScaleMode.NotEqualTo:
+        return value != props.min;
+      case LinearBooleanScaleMode.Between:
+        return value <= props.max && value >= props.min;
+      case LinearBooleanScaleMode.NotBetween:
+        return value > props.max || value < props.min;
     }
   }
 
-  // eslint-disable-next-line
-  public buildConstraint(
-    // eslint-disable-next-line
-    data: Specification.DataValue,
-    // eslint-disable-next-line
-    target: Variable,
-    // eslint-disable-next-line
-    solver: ConstraintSolver
-    // eslint-disable-next-line
-  ) {}
+  public buildConstraint() {
+    //ignore
+  }
 
-  // eslint-disable-next-line
-  public initializeState(): void {}
+  public initializeState(): void {
+    //ignore
+  }
 
   public inferParameters(
     column: Specification.DataValue[],
-    // eslint-disable-next-line
     options: InferParametersOptions = {}
   ): void {
     const props = this.object.properties;
@@ -433,8 +434,7 @@ export class LinearBooleanScale extends ScaleClass<
     if (options.extendScaleMax || props.max === undefined) {
       props.max = s.domainMax;
     }
-    props.mode = "interval";
-    props.inclusive = true;
+    props.mode = LinearBooleanScaleMode.GreaterThan;
   }
 
   public getAttributePanelWidgets(
@@ -442,64 +442,123 @@ export class LinearBooleanScale extends ScaleClass<
   ): Controls.Widget[] {
     const props = this.object.properties;
     const minMax = [];
-    if (props.mode == "greater" || props.mode == "interval") {
+
+    const isEqual: boolean =
+      props.mode === LinearBooleanScaleMode.EqualTo ||
+      props.mode === LinearBooleanScaleMode.NotEqualTo;
+
+    if (
+      props.mode === LinearBooleanScaleMode.GreaterThan ||
+      props.mode === LinearBooleanScaleMode.GreaterThanOrEqualTo ||
+      props.mode === LinearBooleanScaleMode.Between ||
+      props.mode === LinearBooleanScaleMode.NotBetween ||
+      props.mode === LinearBooleanScaleMode.EqualTo ||
+      props.mode === LinearBooleanScaleMode.NotEqualTo
+    ) {
       minMax.push(
-        manager.row(
-          props.inclusive ? ">=" : ">",
+        manager.vertical(
           this.object.inputType === Specification.DataType.Date
-            ? manager.inputDate({ property: "min" })
+            ? manager.inputDate(
+                { property: "min" },
+                { label: isEqual ? "Date" : "Start date" }
+              )
             : manager.inputNumber(
                 { property: "min" },
-                { stopPropagation: true }
+                {
+                  stopPropagation: true,
+                  label: isEqual ? "Value" : "Minimum value",
+                }
               )
         )
       );
     }
-    if (props.mode == "less" || props.mode == "interval") {
+
+    if (
+      props.mode === LinearBooleanScaleMode.LessThan ||
+      props.mode === LinearBooleanScaleMode.LessThanOrEqualTo ||
+      props.mode === LinearBooleanScaleMode.Between ||
+      props.mode === LinearBooleanScaleMode.NotBetween
+    ) {
       minMax.push(
-        manager.row(
-          props.inclusive ? "<=" : "<",
-          this.object.inputType === Specification.DataType.Date
-            ? manager.inputDate({ property: "max" })
-            : manager.inputNumber(
-                { property: "max" },
-                { stopPropagation: true }
-              )
-        )
+        this.object.inputType === Specification.DataType.Date
+          ? manager.inputDate({ property: "max" }, { label: "End date" })
+          : manager.inputNumber(
+              { property: "max" },
+              { stopPropagation: true, label: "Maximum value" }
+            )
       );
     }
     return [
       manager.sectionHeader(strings.typeDisplayNames.boolean),
-      manager.row(
-        strings.objects.scales.mode,
-        manager.inputSelect(
-          { property: "mode" },
-          {
-            type: "dropdown",
-            options: ["greater", "less", "interval"],
-            showLabel: true,
-            labels: [
-              strings.objects.scales.greater,
-              strings.objects.scales.less,
-              strings.objects.scales.interval,
-            ],
-          }
-        )
+      manager.inputSelect(
+        { property: "mode" },
+        {
+          type: "dropdown",
+          options: [
+            LinearBooleanScaleMode.GreaterThan,
+            LinearBooleanScaleMode.GreaterThanOrEqualTo,
+            LinearBooleanScaleMode.LessThan,
+            LinearBooleanScaleMode.LessThanOrEqualTo,
+            LinearBooleanScaleMode.EqualTo,
+            LinearBooleanScaleMode.NotEqualTo,
+            LinearBooleanScaleMode.Between,
+            LinearBooleanScaleMode.NotBetween,
+          ],
+          labels: [
+            LinearBooleanScaleMode.GreaterThan,
+            LinearBooleanScaleMode.GreaterThanOrEqualTo,
+            LinearBooleanScaleMode.LessThan,
+            LinearBooleanScaleMode.LessThanOrEqualTo,
+            LinearBooleanScaleMode.EqualTo,
+            LinearBooleanScaleMode.NotEqualTo,
+            LinearBooleanScaleMode.Between,
+            LinearBooleanScaleMode.NotBetween,
+          ],
+          showLabel: true,
+          label: strings.objects.scales.mode,
+        }
       ),
-      manager.row(
-        strings.objects.scales.inclusive,
-        manager.inputBoolean({ property: "inclusive" }, { type: "checkbox" })
-      ),
+
       ...minMax,
     ];
   }
 
   public getTemplateParameters(): TemplateParameters {
     const parameters = super.getTemplateParameters();
+    const props = this.object.properties;
     if (!parameters.properties) {
       parameters.properties = [];
     }
-    if (this.object.properties.mode === "interval") {
+    if (
+      props.mode === LinearBooleanScaleMode.GreaterThan ||
+      props.mode === LinearBooleanScaleMode.GreaterThanOrEqualTo
+    ) {
+      parameters.properties.push({
+        objectID: this.object._id,
+        target: {
+          property: "min",
+        },
+        type: Specification.AttributeType.Number,
+        default: this.object.properties.min,
+      });
+    }
+    if (
+      props.mode === LinearBooleanScaleMode.LessThan ||
+      props.mode === LinearBooleanScaleMode.LessThanOrEqualTo
+    ) {
+      parameters.properties.push({
+        objectID: this.object._id,
+        target: {
+          property: "max",
+        },
+        type: Specification.AttributeType.Number,
+        default: this.object.properties.max,
+      });
+    }
+    if (
+      props.mode === LinearBooleanScaleMode.Between ||
+      props.mode === LinearBooleanScaleMode.NotBetween
+    ) {
       parameters.properties.push({
         objectID: this.object._id,
         target: {
@@ -516,16 +575,11 @@ export class LinearBooleanScale extends ScaleClass<
         type: Specification.AttributeType.Number,
         default: this.object.properties.max,
       });
-      parameters.properties.push({
-        objectID: this.object._id,
-        target: {
-          property: "inclusive",
-        },
-        type: Specification.AttributeType.Boolean,
-        default: this.object.properties.inclusive,
-      });
     }
-    if (this.object.properties.mode === "greater") {
+    if (
+      props.mode === LinearBooleanScaleMode.EqualTo ||
+      props.mode === LinearBooleanScaleMode.NotEqualTo
+    ) {
       parameters.properties.push({
         objectID: this.object._id,
         target: {
@@ -533,32 +587,6 @@ export class LinearBooleanScale extends ScaleClass<
         },
         type: Specification.AttributeType.Number,
         default: this.object.properties.min,
-      });
-      parameters.properties.push({
-        objectID: this.object._id,
-        target: {
-          property: "inclusive",
-        },
-        type: Specification.AttributeType.Boolean,
-        default: this.object.properties.inclusive,
-      });
-    }
-    if (this.object.properties.mode === "less") {
-      parameters.properties.push({
-        objectID: this.object._id,
-        target: {
-          property: "max",
-        },
-        type: Specification.AttributeType.Number,
-        default: this.object.properties.max,
-      });
-      parameters.properties.push({
-        objectID: this.object._id,
-        target: {
-          property: "inclusive",
-        },
-        type: Specification.AttributeType.Boolean,
-        default: this.object.properties.inclusive,
       });
     }
     return parameters;

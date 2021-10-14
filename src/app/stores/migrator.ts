@@ -5,12 +5,12 @@
 import { AppStoreState } from "./app_store";
 import {
   compareVersion,
-  zip,
-  Prototypes,
-  Specification,
-  Expression,
   Dataset,
   deepClone,
+  Expression,
+  Prototypes,
+  Specification,
+  zip,
 } from "../../core";
 import { TableType } from "../../core/dataset";
 import { upgradeGuidesToBaseline } from "./migrator_baseline";
@@ -18,8 +18,8 @@ import { LegendProperties } from "../../core/prototypes/legends/legend";
 import {
   ChartElement,
   MappingType,
-  PlotSegment,
   Object,
+  PlotSegment,
 } from "../../core/specification";
 import { NumericalNumberLegendAttributes } from "../../core/prototypes/legends/numerical_legend";
 import { forEachObject, ObjectItemKind } from "../../core/prototypes";
@@ -32,6 +32,7 @@ import { DataAxisProperties } from "../../core/prototypes/marks/data_axis";
 import { replaceUndefinedByNull } from "../utils";
 import { TickFormatType } from "../../core/specification/types";
 import { SymbolElementProperties } from "../../core/prototypes/marks/symbol.attrs";
+import { LinearBooleanScaleMode } from "../../core/prototypes/scales/linear";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -153,7 +154,6 @@ export class Migrator {
     ) {
       state = this.setMissedProperties(state);
     }
-
     if (
       compareVersion(state.version, "2.1.0") < 0 &&
       compareVersion(targetVersion, "2.1.0") >= 0
@@ -590,6 +590,49 @@ export class Migrator {
         }
       }
     }
+
+    //updated visibility number options
+    const scales = state.chart.scales;
+    if (scales) {
+      for (let i = 0; i < scales.length; i++) {
+        if (scales[i].classID == "scale.linear<number,boolean>") {
+          const scaleProperties = scales[i].properties;
+          if (scaleProperties?.mode && scaleProperties?.mode === "interval") {
+            scaleProperties.mode = LinearBooleanScaleMode.Between;
+          }
+          if (scaleProperties?.mode && scaleProperties?.mode === "greater") {
+            if (
+              scaleProperties?.inclusive &&
+              scaleProperties?.inclusive == "true"
+            ) {
+              scaleProperties.mode =
+                LinearBooleanScaleMode.GreaterThanOrEqualTo;
+            }
+            if (
+              scaleProperties?.inclusive &&
+              scaleProperties?.inclusive == "false"
+            ) {
+              scaleProperties.mode = LinearBooleanScaleMode.GreaterThan;
+            }
+          }
+          if (scaleProperties?.mode && scaleProperties?.mode === "less") {
+            if (
+              scaleProperties?.inclusive &&
+              scaleProperties?.inclusive == "true"
+            ) {
+              scaleProperties.mode = LinearBooleanScaleMode.LessThanOrEqualTo;
+            }
+            if (
+              scaleProperties?.inclusive &&
+              scaleProperties?.inclusive == "false"
+            ) {
+              scaleProperties.mode = LinearBooleanScaleMode.LessThan;
+            }
+          }
+        }
+      }
+    }
+
     return state;
   }
 }
