@@ -1293,6 +1293,7 @@ export function buildAxisAppearanceWidgets(
                 updownStyle: "font",
                 updownTick: 2,
                 label: strings.objects.fontSize,
+                minimum: 1,
               }
             ),
             manager.inputBoolean(
