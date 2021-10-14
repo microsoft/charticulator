@@ -16,6 +16,7 @@ import {
   Label,
   Image as FluentUIImage,
   DefaultButton,
+  TextField,
 } from "@fluentui/react";
 import {
   defaultLabelStyle,
@@ -23,6 +24,10 @@ import {
   FluentActionButton,
   FluentButton,
 } from "./fluentui_customized_components";
+import {
+  ImageMappingDragStateWrapper,
+  ImageMappingTextFieldStyles,
+} from "./styles";
 
 export interface ImageDescription {
   src: string;
@@ -233,13 +238,8 @@ export class ImageUploader extends React.Component<
 > {
   public state: ImageUploaderState = { dragOver: false };
   protected refContainer: HTMLDivElement;
-  protected refInput: HTMLInputElement;
 
-  public componentDidMount() {
-    if (this.props.focusOnMount) {
-      this.refInput.focus();
-    }
-  }
+  public componentDidMount() {}
   public componentWillUnmount() {}
 
   public static ReadFileAsImage(
@@ -385,27 +385,27 @@ export class ImageUploader extends React.Component<
         onDrop={this.handleDrop}
       >
         {this.state.dragOver ? (
-          <span className="el-dropzone">{strings.objects.image.dropImage}</span>
+          <ImageMappingDragStateWrapper>
+            {strings.objects.image.dropImage}
+          </ImageMappingDragStateWrapper>
         ) : (
           <span className="el-input-wrapper">
-            <input
-              ref={(e) => (this.refInput = e)}
-              className="el-input"
-              onPaste={this.handlePaste}
-              value=""
-              onChange={() => {}}
-              type="text"
-              placeholder={
+            <TextField
+              value={
                 this.props.placeholder ||
                 strings.objects.image.defaultPlaceholder
               }
-              disabled={true}
+              disabled
+              styles={ImageMappingTextFieldStyles}
+              onPaste={this.handlePaste}
             />
             <FluentButton marginTop="0px">
               <DefaultButton
                 styles={{
                   root: {
-                    minWidht: "unset",
+                    minWidth: "unset",
+                    ...defultBindButtonSize,
+                    marginLeft: 5,
                   },
                 }}
                 iconProps={{
