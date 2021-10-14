@@ -900,8 +900,8 @@ export class ChartStateManager {
         plotSegment.table
       );
 
-      filteredIndices = filteredIndicesX.filter(
-        (value) => filteredIndicesY && filteredIndicesY.includes(value)
+      filteredIndices = filteredIndicesX.filter((value) =>
+        filteredIndicesY.includes(value)
       );
     } else {
       if (plotSegment.properties.xData) {
