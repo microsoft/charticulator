@@ -281,8 +281,8 @@ export const strings = {
     semicolon: "semicolon",
   },
   coordinateSystem: {
-    x: "x:",
-    y: "y:",
+    x: "X",
+    y: "Y",
   },
   templateImport: {
     columnNameTemplate: "Column name from the template",
