@@ -7,7 +7,7 @@ import { ITextFieldStyles, ITooltipHostStyles } from "@fluentui/react";
 export const ImageMappingDragStateWrapper = styled.div`
   border: 1px solid #fa9e13;
   padding-left: 4px;
-  width: 95%;
+  width: 96%;
   background: #fa9e136b;
 `;
 
