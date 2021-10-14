@@ -2,20 +2,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import {
+  deepClone,
   gather,
   getById,
+  makeRange,
   uniqueID,
   zip,
   zipArray,
-  makeRange,
-  deepClone,
 } from "../common";
 import * as Dataset from "../dataset";
 import * as Expression from "../expression";
 import * as Specification from "../specification";
+import { MappingType } from "../specification";
 import * as Charts from "./charts";
 import * as Glyphs from "./glyphs";
 import * as Prototypes from "./index";
+import { forEachObject, ObjectItemKind } from "./index";
 import * as Marks from "./marks";
 import * as PlotSegments from "./plot_segments";
 import * as Scales from "./scales";
@@ -27,8 +29,6 @@ import { CompiledFilter } from "./filter";
 import { ObjectClass, ObjectClasses } from "./object";
 import { ChartConstraintSolver } from "../solver";
 import { ValueType } from "../expression/classes";
-import { MappingType } from "../specification";
-import { forEachObject, ObjectItemKind } from "./index";
 import { expect_deep_approximately_equals } from "../../app/utils";
 import { AxisDataBinding, AxisDataBindingType } from "../specification/types";
 
@@ -817,11 +817,15 @@ export class ChartStateManager {
   private applyScrollingFilter(data: AxisDataBinding, tableName: string) {
     const filteredIndices: number[] = [];
     // TODO fix expression (get column name from expression properly)
-    const parsed = (Expression.parse(
-      data.expression
-    ) as Expression.FunctionCall).args[0];
-
     const table = this.getTable(tableName);
+
+    //in default we dont have expression, we should return all rows
+    if (data.type === AxisDataBindingType.Default) {
+      return table.rows.map((row, id) => id);
+    }
+    const parsed = (Expression.parse(
+      data?.expression
+    ) as Expression.FunctionCall)?.args[0];
 
     if (data.type === AxisDataBindingType.Categorical) {
       for (let i = 0; i < table.rows.length; i++) {
@@ -896,8 +900,8 @@ export class ChartStateManager {
         plotSegment.table
       );
 
-      filteredIndices = filteredIndicesX.filter((value) =>
-        filteredIndicesY.includes(value)
+      filteredIndices = filteredIndicesX.filter(
+        (value) => filteredIndicesY && filteredIndicesY.includes(value)
       );
     } else {
       if (plotSegment.properties.xData) {
