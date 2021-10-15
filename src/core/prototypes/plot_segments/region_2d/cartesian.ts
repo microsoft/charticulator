@@ -308,10 +308,56 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     };
   }
 
-  public getGraphics(manager: ChartStateManager): Graphics.Group {
+  public getGraphics(): Graphics.Group {
+    return null;
+  }
+
+  public getPlotSegmentBackgroundGraphics(
+    manager: ChartStateManager
+  ): Graphics.Group {
     const g = Graphics.makeGroup([]);
     const attrs = this.state.attributes;
     const props = this.object.properties;
+
+    if (props.xData && props.xData.visible) {
+      const axisRenderer = new AxisRenderer().setAxisDataBinding(
+        props.xData,
+        0,
+        attrs.x2 - attrs.x1,
+        false,
+        false,
+        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
+      );
+      g.elements.push(
+        axisRenderer.renderGridlinesForAxes(
+          attrs.x1,
+          props.xData.side != "default" ? attrs.y2 : attrs.y1,
+          AxisMode.X,
+          attrs.y2 - attrs.y1
+        )
+      );
+    }
+
+    if (props.yData && props.yData.visible) {
+      const axisRenderer = new AxisRenderer().setAxisDataBinding(
+        props.yData,
+        0,
+        attrs.y2 - attrs.y1,
+        false,
+        true,
+        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
+      );
+      g.elements.push(
+        axisRenderer.renderGridlinesForAxes(
+          props.yData.side != "default" ? attrs.x2 : attrs.x1,
+          attrs.y1,
+          AxisMode.Y,
+          attrs.x2 - attrs.x1
+        )
+      );
+    }
+
+    //axis
     const getTickData = (axis: Specification.Types.AxisDataBinding) => {
       const table = manager.getTable(this.object.table);
       const axisExpression = manager.dataflow.cache.parse(axis.expression);
@@ -380,54 +426,6 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         )
       );
     }
-    return g;
-  }
-
-  public getPlotSegmentBackgroundGraphics(
-    manager: ChartStateManager
-  ): Graphics.Group {
-    const g = Graphics.makeGroup([]);
-    const attrs = this.state.attributes;
-    const props = this.object.properties;
-
-    if (props.xData && props.xData.visible) {
-      const axisRenderer = new AxisRenderer().setAxisDataBinding(
-        props.xData,
-        0,
-        attrs.x2 - attrs.x1,
-        false,
-        false,
-        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
-      );
-      g.elements.push(
-        axisRenderer.renderGridlinesForAxes(
-          attrs.x1,
-          props.xData.side != "default" ? attrs.y2 : attrs.y1,
-          AxisMode.X,
-          attrs.y2 - attrs.y1
-        )
-      );
-    }
-
-    if (props.yData && props.yData.visible) {
-      const axisRenderer = new AxisRenderer().setAxisDataBinding(
-        props.yData,
-        0,
-        attrs.y2 - attrs.y1,
-        false,
-        true,
-        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
-      );
-      g.elements.push(
-        axisRenderer.renderGridlinesForAxes(
-          props.yData.side != "default" ? attrs.x2 : attrs.x1,
-          attrs.y1,
-          AxisMode.Y,
-          attrs.x2 - attrs.x1
-        )
-      );
-    }
-
     return g;
   }
 
