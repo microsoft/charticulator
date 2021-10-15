@@ -81,6 +81,9 @@ export interface AxisDataBinding extends AttributeMap {
 
   /** Offset options */
   offset?: number;
+
+  /** render axis on top */
+  onTop?: boolean;
 }
 
 export interface AxisRenderingStyle extends AttributeMap {

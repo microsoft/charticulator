@@ -371,7 +371,7 @@ export const strings = {
   objects: {
     default: "Default",
     opposite: "Opposite",
-    position: "Position:",
+    position: "Position",
     general: "General",
     contextMenu: "Context menu",
     interactivity: "Interactivity",
@@ -400,6 +400,8 @@ export const strings = {
     alignY: "Align Y",
     layout: "Layout",
     appearance: "Appearance",
+    visibilityAndPosition: "Visibility & Position",
+    onTop: "On Top",
     invalidFormat: "Invalid format",
     roundX: "Round X",
     roundY: "Round Y",
