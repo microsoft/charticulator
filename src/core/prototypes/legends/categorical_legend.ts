@@ -307,28 +307,27 @@ export class CategoricalLegendClass extends LegendClass {
           ),
         ]
       ),
-      this.getScaleEditor(manager),
     ];
   }
 
-  private getScaleEditor(
-    manager: Controls.WidgetManager & CharticulatorPropertyAccessors
-  ) {
-    const scale = this.getScale();
-    if (scale) {
-      return manager.vertical(
-        manager.label(strings.objects.colors, {
-          addMargins: true,
-        }),
-        manager.horizontal(
-          [1],
-          manager.scaleEditor(
-            "mappingOptions",
-            strings.objects.legend.editColors
-          )
-        )
-      );
-    }
-    return null;
-  }
+  // private getScaleEditor(
+  //   manager: Controls.WidgetManager & CharticulatorPropertyAccessors
+  // ) {
+  //   const scale = this?.getScale();
+  //   if (scale) {
+  //     return manager.vertical(
+  //       manager.label(strings.objects.colors, {
+  //         addMargins: true,
+  //       }),
+  //       manager.horizontal(
+  //         [1],
+  //         manager.scaleEditor(
+  //           "mappingOptions",
+  //           strings.objects.legend.editColors
+  //         )
+  //       )
+  //     );
+  //   }
+  //   return null;
+  // }
 }
