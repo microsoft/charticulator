@@ -3,11 +3,13 @@
 
 import { Color } from "../../common";
 import * as Specification from "../../specification";
-import { ObjectClassMetadata } from "../common";
+import { Controls, ObjectClassMetadata } from "../common";
 import { DataAxisExpression } from "../marks/data_axis.attrs";
 import { LegendProperties, LegendState } from "./legend";
 import { CategoricalLegendClass } from "./categorical_legend";
 import { strings } from "../../../strings";
+
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
 
 export type LegendSourceType = "columnNames" | "columnValues";
 
@@ -54,4 +56,29 @@ export class CustomLegendClass extends CategoricalLegendClass {
       mapping: { x: "x", y: "y" },
     },
   };
+  public getAttributePanelWidgets(
+    manager: Controls.WidgetManager & CharticulatorPropertyAccessors
+  ): Controls.Widget[] {
+    const widget = super.getAttributePanelWidgets(manager);
+
+    const scale = this.getScale();
+    if (scale) {
+      widget.push(
+        manager.vertical(
+          manager.label(strings.objects.colors, {
+            addMargins: true,
+          }),
+          manager.horizontal(
+            [1],
+            manager.scaleEditor(
+              "mappingOptions",
+              strings.objects.legend.editColors
+            )
+          )
+        )
+      );
+    }
+
+    return widget;
+  }
 }
