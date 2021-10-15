@@ -1200,7 +1200,7 @@ export function buildAxisAppearanceWidgets(
       manager.vertical(
         manager.verticalGroup(
           {
-            header: strings.objects.appearance,
+            header: strings.objects.visibilityAndPosition,
           },
           [
             manager.inputBoolean(
@@ -1208,7 +1208,13 @@ export function buildAxisAppearanceWidgets(
               {
                 type: "checkbox",
                 label: "Visible",
-                headerLabel: strings.objects.appearance,
+              }
+            ),
+            manager.inputBoolean(
+              { property: axisProperty, field: "onTop" },
+              {
+                type: "checkbox",
+                label: strings.objects.onTop,
               }
             ),
             manager.inputSelect(

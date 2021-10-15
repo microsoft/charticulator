@@ -308,8 +308,111 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     };
   }
 
-  public getGraphics(): Graphics.Group {
-    return null;
+  public getGraphics(manager: ChartStateManager): Graphics.Group {
+    const g = Graphics.makeGroup([]);
+    const props = this.object.properties;
+    if (props.xData && props.xData.visible) {
+      if (props.xData.onTop) {
+        g.elements.push(this.getPlotSegmentAxisXDataGraphics(manager));
+      }
+    }
+    if (props.yData && props.yData.visible) {
+      if (props.yData.onTop) {
+        g.elements.push(this.getPlotSegmentAxisYDataGraphics(manager));
+      }
+    }
+    return g;
+  }
+
+  private getTickData = (
+    axis: Specification.Types.AxisDataBinding,
+    manager: ChartStateManager
+  ) => {
+    const table = manager.getTable(this.object.table);
+    const axisExpression = manager.dataflow.cache.parse(axis.expression);
+    const tickDataExpression = manager.dataflow.cache.parse(
+      axis.tickDataExpression
+    );
+    const result = [];
+    for (let i = 0; i < table.rows.length; i++) {
+      const c = table.getRowContext(i);
+      const axisValue = axisExpression.getValue(c);
+      const tickData = tickDataExpression.getValue(c);
+      result.push({ value: axisValue, tick: tickData });
+    }
+    return result;
+  };
+
+  private getPlotSegmentAxisXDataGraphics(
+    manager: ChartStateManager
+  ): Graphics.Group {
+    const g = Graphics.makeGroup([]);
+    const attrs = this.state.attributes;
+    const props = this.object.properties;
+    if (props.xData && props.xData.visible) {
+      const axisRenderer = new AxisRenderer().setAxisDataBinding(
+        props.xData,
+        0,
+        attrs.x2 - attrs.x1,
+        false,
+        false,
+        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
+      );
+      if (props.xData.tickDataExpression) {
+        const tickFormatType = props.xData?.tickFormatType;
+        axisRenderer.setTicksByData(
+          this.getTickData(props.xData, manager),
+          props.xData.tickFormat,
+          tickFormatType
+        );
+      }
+      g.elements.push(
+        axisRenderer.renderCartesian(
+          attrs.x1,
+          props.xData.side != "default" ? attrs.y2 : attrs.y1,
+          AxisMode.X,
+          props.xData?.offset
+        )
+      );
+    }
+    return g;
+  }
+
+  private getPlotSegmentAxisYDataGraphics(
+    manager: ChartStateManager
+  ): Graphics.Group {
+    const g = Graphics.makeGroup([]);
+    const attrs = this.state.attributes;
+    const props = this.object.properties;
+
+    if (props.yData && props.yData.visible) {
+      const axisRenderer = new AxisRenderer().setAxisDataBinding(
+        props.yData,
+        0,
+        attrs.y2 - attrs.y1,
+        false,
+        true,
+        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
+      );
+      if (props.yData.tickDataExpression) {
+        const tickFormatType = props.yData?.tickFormatType;
+        axisRenderer.setTicksByData(
+          this.getTickData(props.yData, manager),
+          props.yData.tickFormat,
+          tickFormatType
+        );
+      }
+      g.elements.push(
+        axisRenderer.renderCartesian(
+          props.yData.side != "default" ? attrs.x2 : attrs.x1,
+          attrs.y1,
+          AxisMode.Y,
+          props.yData?.offset
+        )
+      );
+    }
+
+    return g;
   }
 
   public getPlotSegmentBackgroundGraphics(
@@ -357,74 +460,15 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       );
     }
 
-    //axis
-    const getTickData = (axis: Specification.Types.AxisDataBinding) => {
-      const table = manager.getTable(this.object.table);
-      const axisExpression = manager.dataflow.cache.parse(axis.expression);
-      const tickDataExpression = manager.dataflow.cache.parse(
-        axis.tickDataExpression
-      );
-      const result = [];
-      for (let i = 0; i < table.rows.length; i++) {
-        const c = table.getRowContext(i);
-        const axisValue = axisExpression.getValue(c);
-        const tickData = tickDataExpression.getValue(c);
-        result.push({ value: axisValue, tick: tickData });
-      }
-      return result;
-    };
-
     if (props.xData && props.xData.visible) {
-      const axisRenderer = new AxisRenderer().setAxisDataBinding(
-        props.xData,
-        0,
-        attrs.x2 - attrs.x1,
-        false,
-        false,
-        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
-      );
-      if (props.xData.tickDataExpression) {
-        const tickFormatType = props.xData?.tickFormatType;
-        axisRenderer.setTicksByData(
-          getTickData(props.xData),
-          props.xData.tickFormat,
-          tickFormatType
-        );
+      if (!props.xData.onTop) {
+        g.elements.push(this.getPlotSegmentAxisXDataGraphics(manager));
       }
-      g.elements.push(
-        axisRenderer.renderCartesian(
-          attrs.x1,
-          props.xData.side != "default" ? attrs.y2 : attrs.y1,
-          AxisMode.X,
-          props.xData?.offset
-        )
-      );
     }
     if (props.yData && props.yData.visible) {
-      const axisRenderer = new AxisRenderer().setAxisDataBinding(
-        props.yData,
-        0,
-        attrs.y2 - attrs.y1,
-        false,
-        true,
-        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
-      );
-      if (props.yData.tickDataExpression) {
-        const tickFormatType = props.yData?.tickFormatType;
-        axisRenderer.setTicksByData(
-          getTickData(props.yData),
-          props.yData.tickFormat,
-          tickFormatType
-        );
+      if (!props.yData.onTop) {
+        g.elements.push(this.getPlotSegmentAxisYDataGraphics(manager));
       }
-      g.elements.push(
-        axisRenderer.renderCartesian(
-          props.yData.side != "default" ? attrs.x2 : attrs.x1,
-          attrs.y1,
-          AxisMode.Y,
-          props.yData?.offset
-        )
-      );
     }
     return g;
   }
