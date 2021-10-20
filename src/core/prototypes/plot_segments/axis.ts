@@ -42,9 +42,9 @@ import {
   TickFormatType,
 } from "../../specification/types";
 import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
-import React = require("react");
 import { DataflowManager, DataflowTable } from "../dataflow";
 import * as Expression from "../../expression";
+import React = require("react");
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
@@ -2034,8 +2034,10 @@ function applySelectionFilter(
 
   const table = getTable(dataflow, tableName);
 
-  //in default we dont have expression, we should return all rows
-  if (data.type === AxisDataBindingType.Default) {
+  if (
+    data.type === AxisDataBindingType.Default ||
+    data.type === AxisDataBindingType.Numerical
+  ) {
     return table.rows.map((row, id) => id);
   }
   const parsed = (Expression.parse(data?.expression) as Expression.FunctionCall)
