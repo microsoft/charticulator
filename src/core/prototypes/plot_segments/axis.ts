@@ -1424,20 +1424,6 @@ export function buildAxisAppearanceWidgets(
           ]
         )
       ),
-      manager.verticalGroup(
-        {
-          header: "Interactivity",
-        },
-        [
-          manager.inputBoolean(
-            { property: axisProperty, field: "enableSelection" },
-            {
-              type: "checkbox",
-              label: "Selection",
-            }
-          ),
-        ]
-      ),
     ];
   } else {
     return manager.verticalGroup(
@@ -1455,6 +1441,26 @@ export function buildAxisAppearanceWidgets(
       ]
     );
   }
+}
+
+function buildInteractivityGroup(
+  axisProperty: string,
+  manager: Controls.WidgetManager
+) {
+  return manager.verticalGroup(
+    {
+      header: "Interactivity",
+    },
+    [
+      manager.inputBoolean(
+        { property: axisProperty, field: "enableSelection" },
+        {
+          type: "checkbox",
+          label: "Selection",
+        }
+      ),
+    ]
+  );
 }
 
 // eslint-disable-next-line
@@ -1787,6 +1793,7 @@ export function buildAxisWidgets(
               ]
             )
           );
+          widgets.push(buildInteractivityGroup(axisProperty, manager));
           widgets.push(makeAppearance());
         }
         break;
