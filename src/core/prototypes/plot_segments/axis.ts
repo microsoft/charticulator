@@ -1429,20 +1429,6 @@ export function buildAxisAppearanceWidgets(
           header: "Interactivity",
         },
         [
-          // manager.inputBoolean(
-          //   { property: "enableTooltips" },
-          //   {
-          //     type: "checkbox",
-          //     label: "Tooltips",
-          //   }
-          // ),
-          // manager.inputBoolean(
-          //   { property: "enableContextMenu" },
-          //   {
-          //     type: "checkbox",
-          //     label: "Context menu",
-          //   }
-          // ),
           manager.inputBoolean(
             { property: axisProperty, field: "enableSelection" },
             {
