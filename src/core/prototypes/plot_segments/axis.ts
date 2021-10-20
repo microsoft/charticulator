@@ -461,6 +461,10 @@ export class AxisRenderer {
       strokeLinecap: "square",
       strokeColor: style.lineColor,
     };
+    const tickStyle: Style = {
+      strokeLinecap: "square",
+      strokeColor: style.tickColor,
+    };
     AxisRenderer.textMeasurer.setFontFamily(style.fontFamily);
     AxisRenderer.textMeasurer.setFontSize(style.fontSize);
     if (this.oppositeSide) {
@@ -492,7 +496,7 @@ export class AxisRenderer {
       const ty = y + tickPosition * sin;
       const dx = side * tickSize * sin;
       const dy = -side * tickSize * cos;
-      g.elements.push(makeLine(tx, ty, tx + dx, ty + dy, lineStyle));
+      g.elements.push(makeLine(tx, ty, tx + dx, ty + dy, tickStyle));
     }
     // Tick texts
     const ticks = this.ticks.map((x) => {
