@@ -100,6 +100,7 @@ export interface AxisRenderingStyle extends AttributeMap {
   gridlineColor: Color;
   gridlineWidth: number;
   verticalText: boolean;
+  showTicks: boolean;
 }
 
 export enum TextAlignmentHorizontal {
