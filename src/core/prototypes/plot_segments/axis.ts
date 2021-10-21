@@ -41,6 +41,7 @@ import React = require("react");
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
+  showTicks: true,
   lineColor: { r: 0, g: 0, b: 0 },
   fontFamily: defaultFont,
   fontSize: defaultFontSize,
@@ -485,14 +486,16 @@ export class AxisRenderer {
     // Base line
     g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
     // Ticks
-    for (const tickPosition of this.ticks
-      .map((x) => x.position)
-      .concat([rangeMin, rangeMax])) {
-      const tx = x + tickPosition * cos;
-      const ty = y + tickPosition * sin;
-      const dx = side * tickSize * sin;
-      const dy = -side * tickSize * cos;
-      g.elements.push(makeLine(tx, ty, tx + dx, ty + dy, lineStyle));
+    if (style.showTicks) {
+      for (const tickPosition of this.ticks
+        .map((x) => x.position)
+        .concat([rangeMin, rangeMax])) {
+        const tx = x + tickPosition * cos;
+        const ty = y + tickPosition * sin;
+        const dx = side * tickSize * sin;
+        const dy = -side * tickSize * cos;
+        g.elements.push(makeLine(tx, ty, tx + dx, ty + dy, lineStyle));
+      }
     }
     // Tick texts
     const ticks = this.ticks.map((x) => {
@@ -1251,6 +1254,18 @@ export function buildAxisAppearanceWidgets(
               {
                 label: strings.objects.axes.lineColor,
                 labelKey: strings.objects.axes.lineColor,
+              }
+            ),
+            manager.inputBoolean(
+              { property: axisProperty, field: ["style", "showTicks"] },
+              {
+                type: "checkbox",
+                label: strings.objects.axes.showTickLine,
+                checkBoxStyles: {
+                  root: {
+                    marginTop: 5,
+                  },
+                },
               }
             ),
             manager.inputColor(
