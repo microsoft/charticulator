@@ -17,7 +17,6 @@ import {
   GraphicalElementEventHandler,
 } from "../app/renderer";
 import { RenderEvents } from "../core/graphics";
-import { MappingType } from "../core/specification";
 
 export { DataSelection };
 
@@ -48,6 +47,10 @@ export interface ChartComponentProps {
   onGlyphMouseLeave?: GlyphEventHandler;
   onGlyphContextMenuClick?: GlyphEventHandler;
   renderEvents?: RenderEvents;
+
+  scale: number;
+  viewHeight: number;
+  viewWidth: number;
 }
 
 export interface ChartComponentState {
@@ -144,28 +147,6 @@ export class ChartComponent extends React.Component<
       !this.isEqual(newProps.defaultAttributes, this.props.defaultAttributes)
     ) {
       this.recreateManager(newProps);
-      changed = true;
-    }
-    if (
-      !this.manager.chart.mappings.width ||
-      newProps.width !=
-        (this.manager.chart.mappings.width as Specification.ValueMapping).value
-    ) {
-      this.manager.chart.mappings.width = {
-        type: MappingType.value,
-        value: newProps.width,
-      } as Specification.ValueMapping;
-      changed = true;
-    }
-    if (
-      !this.manager.chart.mappings.height ||
-      newProps.height !=
-        (this.manager.chart.mappings.height as Specification.ValueMapping).value
-    ) {
-      this.manager.chart.mappings.height = {
-        type: MappingType.value,
-        value: newProps.height,
-      } as Specification.ValueMapping;
       changed = true;
     }
     return changed;
@@ -297,16 +278,17 @@ export class ChartComponent extends React.Component<
     );
     renderOptions.selection = this.props.selection;
     const gfx = renderGraphicalElementSVG(this.state.graphics, renderOptions);
+
+    const transform = `translate(${this.props.viewWidth / 2}, ${
+      this.props.viewHeight / 2
+    }) scale(${this.props.scale})`;
+
     const inner = (
-      <g
-        transform={`translate(${this.props.width / 2}, ${
-          this.props.height / 2
-        })`}
-      >
+      <g transform={transform}>
         {this.props.onGlyphClick ? (
           <rect
-            x={-this.props.width / 2}
-            y={-this.props.height / 2}
+            x={-this.props.viewWidth / 2}
+            y={-this.props.viewHeight / 2}
             width={this.props.width}
             height={this.props.height}
             style={{
@@ -349,8 +331,8 @@ export class ChartComponent extends React.Component<
           <svg
             x={0}
             y={0}
-            width={this.props.width}
-            height={this.props.height}
+            width={this.props.viewWidth}
+            height={this.props.viewHeight}
             className={this.props.className}
             style={{
               userSelect: "none",

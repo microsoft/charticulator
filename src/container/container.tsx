@@ -24,6 +24,9 @@ import {
 import { TemplateInstance } from "./chart_template";
 
 export interface ChartContainerComponentProps {
+  scale: number;
+  viewHeight: number;
+  viewWidth: number;
   chart: Specification.Chart;
   dataset: Dataset.Dataset;
   defaultAttributes?: Prototypes.DefaultAttributes;
@@ -180,6 +183,9 @@ export class ChartContainerComponent extends React.Component<
   public render() {
     return (
       <ChartComponent
+        scale={this.props.scale}
+        viewWidth={this.props.viewWidth}
+        viewHeight={this.props.viewHeight}
         ref={(e) => (this.component = e)}
         chart={this.props.chart}
         dataset={this.props.dataset}
@@ -321,11 +327,20 @@ export class ChartContainer extends EventEmitter {
     setFormatOptions(options);
   }
 
-  public reactMount(width: number = 1200, height: number = 800) {
+  public reactMount(
+    width: number = 1200,
+    height: number = 800,
+    scale: number = 1,
+    viewWidth: number = 1200,
+    viewHeight: number = 800
+  ) {
     this.width = width;
     this.height = height;
     return (
       <ChartContainerComponent
+        scale={scale}
+        viewWidth={viewWidth}
+        viewHeight={viewHeight}
         ref={(e) => (this.component = e)}
         chart={this.chart}
         dataset={this.dataset}
