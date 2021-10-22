@@ -552,6 +552,9 @@ export function renderGraphicalElementSVG(
 
       return (
         <ChartComponent
+          viewHeight={component.height}
+          viewWidth={component.width}
+          scale={1}
           key={options.key}
           chart={component.chart}
           dataset={component.dataset}
