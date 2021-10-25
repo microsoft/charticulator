@@ -289,8 +289,8 @@ export class ChartComponent extends React.Component<
           <rect
             x={-this.props.viewWidth / 2}
             y={-this.props.viewHeight / 2}
-            width={this.props.width}
-            height={this.props.height}
+            width={this.props.viewWidth}
+            height={this.props.viewHeight}
             style={{
               fill: "none",
               pointerEvents: "all",
