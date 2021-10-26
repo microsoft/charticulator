@@ -231,6 +231,7 @@ addSVGIcon("Line", require("resources/icons/icons_element-line.svg"));
 addSVGIcon("FontColorA", require("resources/icons/icons_element-text.svg"));
 addSVGIcon("TextField", require("resources/icons/icons_element-textbox.svg"));
 addSVGIcon("mark/data-axis", require("resources/icons/icons_data-axis.svg"));
+addSVGIcon("rect-zoom", require("resources/icons/rect-zoom.svg"));
 
 addSVGIcon(
   "BarChartVerticalFilter",

@@ -309,4 +309,25 @@ export class CategoricalLegendClass extends LegendClass {
       ),
     ];
   }
+
+  // private getScaleEditor(
+  //   manager: Controls.WidgetManager & CharticulatorPropertyAccessors
+  // ) {
+  //   const scale = this?.getScale();
+  //   if (scale) {
+  //     return manager.vertical(
+  //       manager.label(strings.objects.colors, {
+  //         addMargins: true,
+  //       }),
+  //       manager.horizontal(
+  //         [1],
+  //         manager.scaleEditor(
+  //           "mappingOptions",
+  //           strings.objects.legend.editColors
+  //         )
+  //       )
+  //     );
+  //   }
+  //   return null;
+  // }
 }

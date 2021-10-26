@@ -18,6 +18,7 @@ import {
   colorFromHTMLColor,
   colorToHTMLColorHEX,
   Expression,
+  parseColorOrThrowException,
   Specification,
 } from "../../../../core";
 import { DataMappingHints } from "../../../../core/prototypes";
@@ -65,15 +66,21 @@ export interface ValueEditorProps {
   menuRender: IRenderFunction<IContextualMenuListProps>;
 }
 
+interface ValueEditorState {
+  value: string;
+  open: boolean;
+}
+
 export class FluentValueEditor extends ContextedComponent<
   ValueEditorProps,
-  Record<string, unknown>
+  ValueEditorState
 > {
   public emitClearValue() {
     this.props.onClear();
   }
-  public state: Record<string, unknown> = {
+  public state: ValueEditorState = {
     open: false,
+    value: "",
   };
 
   public emitSetValue(value: Specification.AttributeValue) {
@@ -82,6 +89,21 @@ export class FluentValueEditor extends ContextedComponent<
 
   public emitMapping(mapping: Specification.Mapping) {
     this.props.onEmitMapping(mapping);
+  }
+
+  public componentWillReceiveProps(nextProps: Readonly<ValueEditorProps>) {
+    let hex: string = "";
+    if (
+      this.props.type === Specification.AttributeType.Color &&
+      nextProps.value
+    ) {
+      hex = colorToHTMLColorHEX(nextProps.value as Color);
+    }
+    if (hex !== this.state.value) {
+      this.setState({
+        value: hex,
+      });
+    }
   }
 
   public render() {
@@ -131,20 +153,26 @@ export class FluentValueEditor extends ContextedComponent<
                 styles={defaultStyle}
                 label={this.props.label}
                 placeholder={this.props.placeholder}
-                defaultValue={hex}
                 onRenderLabel={labelRender}
+                value={this.state.value}
                 type="text"
                 onChange={(event, newValue) => {
                   newValue = newValue.trim();
                   if (newValue == "") {
                     this.emitClearValue();
                   } else {
-                    const newColor = colorFromHTMLColor(newValue);
-                    if (newColor) {
-                      this.emitSetValue(newColor);
-                      return true;
-                    } else {
-                      return false;
+                    this.setState({
+                      value: newValue,
+                    });
+                    try {
+                      const color = parseColorOrThrowException(newValue);
+                      if (color) {
+                        this.emitSetValue(color);
+                      } else {
+                        return false;
+                      }
+                    } catch (ex) {
+                      //ignore
                     }
                   }
                 }}

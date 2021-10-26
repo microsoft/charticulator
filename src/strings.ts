@@ -281,8 +281,8 @@ export const strings = {
     semicolon: "semicolon",
   },
   coordinateSystem: {
-    x: "x:",
-    y: "y:",
+    x: "X",
+    y: "Y",
   },
   templateImport: {
     columnNameTemplate: "Column name from the template",
@@ -371,7 +371,7 @@ export const strings = {
   objects: {
     default: "Default",
     opposite: "Opposite",
-    position: "Position:",
+    position: "Position",
     general: "General",
     contextMenu: "Context menu",
     interactivity: "Interactivity",
@@ -400,6 +400,8 @@ export const strings = {
     alignY: "Align Y",
     layout: "Layout",
     appearance: "Appearance",
+    visibilityAndPosition: "Visibility & Position",
+    onTop: "On Top",
     invalidFormat: "Invalid format",
     roundX: "Round X",
     roundY: "Round Y",
@@ -423,8 +425,10 @@ export const strings = {
       count: "Count",
       dataExpressions: "Data Expressions",
       lineColor: "Line Color",
-      tickColor: "Tick Color",
+      tickColor: "Tick Label Color",
+      showTickLine: "Show Tick Line",
       verticalText: "Vertical text",
+      offSet: "Offset",
     },
     plotSegment: {
       subLayout: "Sub-layout",

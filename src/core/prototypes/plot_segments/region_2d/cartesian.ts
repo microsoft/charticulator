@@ -310,24 +310,45 @@ export class CartesianPlotSegment extends PlotSegmentClass<
 
   public getGraphics(manager: ChartStateManager): Graphics.Group {
     const g = Graphics.makeGroup([]);
+    const props = this.object.properties;
+    if (props.xData && props.xData.visible) {
+      if (props.xData.onTop) {
+        g.elements.push(this.getPlotSegmentAxisXDataGraphics(manager));
+      }
+    }
+    if (props.yData && props.yData.visible) {
+      if (props.yData.onTop) {
+        g.elements.push(this.getPlotSegmentAxisYDataGraphics(manager));
+      }
+    }
+    return g;
+  }
+
+  private getTickData = (
+    axis: Specification.Types.AxisDataBinding,
+    manager: ChartStateManager
+  ) => {
+    const table = manager.getTable(this.object.table);
+    const axisExpression = manager.dataflow.cache.parse(axis.expression);
+    const tickDataExpression = manager.dataflow.cache.parse(
+      axis.tickDataExpression
+    );
+    const result = [];
+    for (let i = 0; i < table.rows.length; i++) {
+      const c = table.getRowContext(i);
+      const axisValue = axisExpression.getValue(c);
+      const tickData = tickDataExpression.getValue(c);
+      result.push({ value: axisValue, tick: tickData });
+    }
+    return result;
+  };
+
+  private getPlotSegmentAxisXDataGraphics(
+    manager: ChartStateManager
+  ): Graphics.Group {
+    const g = Graphics.makeGroup([]);
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const getTickData = (axis: Specification.Types.AxisDataBinding) => {
-      const table = manager.getTable(this.object.table);
-      const axisExpression = manager.dataflow.cache.parse(axis.expression);
-      const tickDataExpression = manager.dataflow.cache.parse(
-        axis.tickDataExpression
-      );
-      const result = [];
-      for (let i = 0; i < table.rows.length; i++) {
-        const c = table.getRowContext(i);
-        const axisValue = axisExpression.getValue(c);
-        const tickData = tickDataExpression.getValue(c);
-        result.push({ value: axisValue, tick: tickData });
-      }
-      return result;
-    };
-
     if (props.xData && props.xData.visible) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.xData,
@@ -340,7 +361,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       if (props.xData.tickDataExpression) {
         const tickFormatType = props.xData?.tickFormatType;
         axisRenderer.setTicksByData(
-          getTickData(props.xData),
+          this.getTickData(props.xData, manager),
           props.xData.tickFormat,
           tickFormatType
         );
@@ -349,10 +370,21 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         axisRenderer.renderCartesian(
           attrs.x1,
           props.xData.side != "default" ? attrs.y2 : attrs.y1,
-          AxisMode.X
+          AxisMode.X,
+          props.xData?.offset
         )
       );
     }
+    return g;
+  }
+
+  private getPlotSegmentAxisYDataGraphics(
+    manager: ChartStateManager
+  ): Graphics.Group {
+    const g = Graphics.makeGroup([]);
+    const attrs = this.state.attributes;
+    const props = this.object.properties;
+
     if (props.yData && props.yData.visible) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.yData,
@@ -365,7 +397,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       if (props.yData.tickDataExpression) {
         const tickFormatType = props.yData?.tickFormatType;
         axisRenderer.setTicksByData(
-          getTickData(props.yData),
+          this.getTickData(props.yData, manager),
           props.yData.tickFormat,
           tickFormatType
         );
@@ -374,10 +406,12 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         axisRenderer.renderCartesian(
           props.yData.side != "default" ? attrs.x2 : attrs.x1,
           attrs.y1,
-          AxisMode.Y
+          AxisMode.Y,
+          props.yData?.offset
         )
       );
     }
+
     return g;
   }
 
@@ -426,6 +460,16 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       );
     }
 
+    if (props.xData && props.xData.visible) {
+      if (!props.xData.onTop) {
+        g.elements.push(this.getPlotSegmentAxisXDataGraphics(manager));
+      }
+    }
+    if (props.yData && props.yData.visible) {
+      if (!props.yData.onTop) {
+        g.elements.push(this.getPlotSegmentAxisYDataGraphics(manager));
+      }
+    }
     return g;
   }
 

@@ -6,16 +6,16 @@ import * as Specification from "../../specification";
 import { Controls, ObjectClassMetadata } from "../common";
 import { DataAxisExpression } from "../marks/data_axis.attrs";
 import { LegendProperties, LegendState } from "./legend";
+import { CategoricalLegendClass } from "./categorical_legend";
+import { strings } from "../../../strings";
+
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
 
 export type LegendSourceType = "columnNames" | "columnValues";
 
 export type LegendType = "color" | "numerical" | "categorical";
 
 export type LegendOrientation = "horizontal" | "vertical";
-
-import { CategoricalLegendClass } from "./categorical_legend";
-import { strings } from "../../../strings";
-import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
 
 export interface CustomLegendProperties extends LegendProperties {
   legendType: LegendType;
@@ -56,7 +56,6 @@ export class CustomLegendClass extends CategoricalLegendClass {
       mapping: { x: "x", y: "y" },
     },
   };
-
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager & CharticulatorPropertyAccessors
   ): Controls.Widget[] {

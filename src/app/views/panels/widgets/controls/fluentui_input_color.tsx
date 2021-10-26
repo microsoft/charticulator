@@ -8,6 +8,7 @@ import {
   colorFromHTMLColor,
   ColorGradient,
   colorToHTMLColorHEX,
+  parseColorOrThrowException,
 } from "../../../../../core";
 import { GradientView } from "../../../../components";
 import { PopupView } from "../../../../controllers/popup_controller";
@@ -42,13 +43,35 @@ export interface InputColorProps {
 
 const ID_PREFIX = "id_";
 
+interface FluentInputColorState {
+  open: boolean;
+  color: string;
+  value: string;
+}
+
 export class FluentInputColor extends React.Component<
   InputColorProps,
-  Record<string, unknown>
+  FluentInputColorState
 > {
   constructor(props: InputColorProps) {
     super(props);
-    this.state = { open: false };
+    let hex: string = "";
+    if (this.props.defaultValue) {
+      hex = colorToHTMLColorHEX(this.props.defaultValue);
+    }
+    this.state = { open: false, color: hex, value: hex };
+  }
+
+  public componentWillReceiveProps(nextProps: Readonly<InputColorProps>) {
+    let hex: string = "";
+    if (nextProps.defaultValue) {
+      hex = colorToHTMLColorHEX(nextProps.defaultValue);
+    }
+    if (hex !== this.state.value) {
+      this.setState({
+        value: hex,
+      });
+    }
   }
 
   public render() {
@@ -78,8 +101,6 @@ export class FluentInputColor extends React.Component<
           <TextField
             label={this.props.label}
             onRenderLabel={labelRender}
-            placeholder={this.props.allowNull ? strings.core.none : ""}
-            value={hex}
             onChange={(event, newValue) => {
               newValue = newValue.trim();
               if (newValue == "") {
@@ -89,12 +110,22 @@ export class FluentInputColor extends React.Component<
                   return false;
                 }
               }
-              const color = colorFromHTMLColor(newValue);
-              if (!color) {
-                return false;
+              this.setState({
+                value: newValue,
+              });
+              try {
+                const color = parseColorOrThrowException(newValue);
+                if (color) {
+                  return this.props.onEnter(color);
+                } else {
+                  return false;
+                }
+              } catch (ex) {
+                //ignore
               }
-              return this.props.onEnter(color);
             }}
+            placeholder={this.props.allowNull ? strings.core.none : ""}
+            value={this.state.value}
             onKeyDown={(e) => {
               if (this.props.stopPropagation) {
                 e.stopPropagation();

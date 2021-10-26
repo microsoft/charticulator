@@ -23,7 +23,6 @@ export interface NestedChartElementAttributes extends AttributeMap {
   cy: number;
   width: number;
   height: number;
-  opacity: number;
   visible: boolean;
 }
 
