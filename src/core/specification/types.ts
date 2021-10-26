@@ -84,6 +84,9 @@ export interface AxisDataBinding extends AttributeMap {
 
   /** render axis on top */
   onTop?: boolean;
+
+  /** First and last ticks */
+  showExtremeTicks?: boolean;
 }
 
 export interface AxisRenderingStyle extends AttributeMap {

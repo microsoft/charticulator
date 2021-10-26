@@ -430,6 +430,7 @@ export class Migrator {
       barOffset: replaceUndefinedByNull(axis.barOffset),
       offset: replaceUndefinedByNull(axis.offset),
       tickFormatType: replaceUndefinedByNull(axis.tickFormatType),
+      showExtremeTicks: replaceUndefinedByNull(axis.showExtremeTicks),
     };
   }
 
@@ -576,6 +577,7 @@ export class Migrator {
             element.properties.xData.offset = 0;
             element.properties.xData.tickFormatType = TickFormatType.None;
             element.properties.xData.style.showTicks = true;
+            element.properties.xData.showExtremeTicks = true;
           }
           if (element.properties.yData) {
             element.properties.yData = this.updateAxis(
@@ -587,6 +589,14 @@ export class Migrator {
             element.properties.yData.offset = 0;
             element.properties.yData.tickFormatType = TickFormatType.None;
             element.properties.yData.style.showTicks = true;
+            element.properties.yData.showExtremeTicks = true;
+          }
+        }
+        if (Prototypes.isType(item.chartElement.classID, "plot-segment.line")) {
+          const element = item.chartElement as PlotSegment<LineGuideProperties>;
+          if (element.properties.axis) {
+            element.properties.axis = this.updateAxis(element.properties.axis);
+            element.properties.axis.showExtremeTicks = true;
           }
         }
       }

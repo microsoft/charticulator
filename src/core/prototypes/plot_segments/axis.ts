@@ -87,6 +87,8 @@ export class AxisRenderer {
   private scrollRequired: boolean = false;
   private shiftAxis: boolean = true;
 
+  private showExtremeTicks: boolean = true;
+
   public setStyle(style?: Partial<Specification.Types.AxisRenderingStyle>) {
     if (!style) {
       this.style = defaultAxisStyle;
@@ -106,7 +108,7 @@ export class AxisRenderer {
   ) {
     this.rangeMin = rangeMin;
     this.rangeMax = rangeMax;
-
+    this.showExtremeTicks = data.showExtremeTicks;
     if (!data) {
       return this;
     }
@@ -416,9 +418,11 @@ export class AxisRenderer {
     // Base line
     g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
     // Ticks
-    for (const tickPosition of this.ticks
-      .map((x) => x.position)
-      .concat([rangeMin, rangeMax])) {
+    const ticksData = this.ticks.map((x) => x.position);
+    const visibleTicks = this.showExtremeTicks
+      ? ticksData.concat([rangeMin, rangeMax])
+      : ticksData;
+    for (const tickPosition of visibleTicks) {
       const tx = x + tickPosition * cos;
       const ty = y + tickPosition * sin;
       const dx = -side * tickSize * sin;
@@ -486,10 +490,14 @@ export class AxisRenderer {
     // Base line
     g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
     // Ticks
+    const ticksData = this.ticks.map((x) => x.position);
+    const visibleTicks = this.showExtremeTicks
+      ? ticksData.concat([rangeMin, rangeMax])
+      : ticksData;
+
     if (style.showTicks) {
-      for (const tickPosition of this.ticks
-        .map((x) => x.position)
-        .concat([rangeMin, rangeMax])) {
+      for (const tickPosition of visibleTicks) {
+        console.log();
         const tx = x + tickPosition * cos;
         const ty = y + tickPosition * sin;
         const dx = side * tickSize * sin;
@@ -1218,6 +1226,13 @@ export function buildAxisAppearanceWidgets(
               {
                 type: "checkbox",
                 label: strings.objects.onTop,
+              }
+            ),
+            manager.inputBoolean(
+              { property: axisProperty, field: "showExtremeTicks" },
+              {
+                type: "checkbox",
+                label: "Show Extreme Ticks",
               }
             ),
             manager.inputSelect(
