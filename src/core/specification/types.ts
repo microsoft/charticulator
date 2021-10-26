@@ -78,6 +78,12 @@ export interface AxisDataBinding extends AttributeMap {
   scrollPosition?: number;
   windowSize?: number;
   barOffset?: number;
+
+  /** Offset options */
+  offset?: number;
+
+  /** render axis on top */
+  onTop?: boolean;
 }
 
 export interface AxisRenderingStyle extends AttributeMap {
@@ -91,6 +97,7 @@ export interface AxisRenderingStyle extends AttributeMap {
   gridlineColor: Color;
   gridlineWidth: number;
   verticalText: boolean;
+  showTicks: boolean;
 }
 
 export enum TextAlignmentHorizontal {

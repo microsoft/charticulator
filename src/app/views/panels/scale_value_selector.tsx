@@ -34,8 +34,14 @@ export class ScaleValueSelector extends React.Component<
     const parsedExpression = Expression.parse(
       this.props.scaleMapping.expression
     ) as FunctionCall;
-    const selectedIndex = (((parsedExpression.args[0] as FunctionCall)
-      .args[0] as FunctionCall).args[1] as NumberValue).value;
+
+    let selectedIndex: number;
+    try {
+      selectedIndex = (((parsedExpression.args[0] as FunctionCall)
+        .args[0] as FunctionCall).args[1] as NumberValue).value;
+    } catch (ex) {
+      selectedIndex = 0;
+    }
 
     this.state = {
       selectedIndex,

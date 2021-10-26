@@ -5,12 +5,12 @@
 import { AppStoreState } from "./app_store";
 import {
   compareVersion,
-  zip,
-  Prototypes,
-  Specification,
-  Expression,
   Dataset,
   deepClone,
+  Expression,
+  Prototypes,
+  Specification,
+  zip,
 } from "../../core";
 import { TableType } from "../../core/dataset";
 import { upgradeGuidesToBaseline } from "./migrator_baseline";
@@ -18,8 +18,8 @@ import { LegendProperties } from "../../core/prototypes/legends/legend";
 import {
   ChartElement,
   MappingType,
-  PlotSegment,
   Object,
+  PlotSegment,
 } from "../../core/specification";
 import { NumericalNumberLegendAttributes } from "../../core/prototypes/legends/numerical_legend";
 import { forEachObject, ObjectItemKind } from "../../core/prototypes";
@@ -30,6 +30,9 @@ import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
 import { CurveProperties } from "../../core/prototypes/plot_segments/region_2d/curve";
 import { DataAxisProperties } from "../../core/prototypes/marks/data_axis";
 import { replaceUndefinedByNull } from "../utils";
+import { TickFormatType } from "../../core/specification/types";
+import { SymbolElementProperties } from "../../core/prototypes/marks/symbol.attrs";
+import { LinearBooleanScaleMode } from "../../core/prototypes/scales/linear";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -151,12 +154,10 @@ export class Migrator {
     ) {
       state = this.setMissedProperties(state);
     }
-
     if (
       compareVersion(state.version, "2.1.0") < 0 &&
       compareVersion(targetVersion, "2.1.0") >= 0
     ) {
-      //Rounded corners in rect
       state = this.setMissedGlyphRectProperties(state);
     }
 
@@ -427,6 +428,8 @@ export class Migrator {
       allowScrolling: replaceUndefinedByNull(axis.allowScrolling),
       windowSize: replaceUndefinedByNull(axis.windowSize),
       barOffset: replaceUndefinedByNull(axis.barOffset),
+      offset: replaceUndefinedByNull(axis.offset),
+      tickFormatType: replaceUndefinedByNull(axis.tickFormatType),
     };
   }
 
@@ -549,13 +552,88 @@ export class Migrator {
 
   public setMissedGlyphRectProperties(state: AppStoreState) {
     for (const item of forEachObject(state.chart)) {
-      if (item.kind == "mark") {
+      if (item.kind == ObjectItemKind.Mark) {
         if (Prototypes.isType(item.mark.classID, "mark.rect")) {
           (item.mark.properties as RectElementProperties).rx = 0;
           (item.mark.properties as RectElementProperties).ry = 0;
         }
+        if (Prototypes.isType(item.mark.classID, "mark.symbol")) {
+          (item.mark.properties as SymbolElementProperties).rotation = 0;
+        }
+      }
+      if (item.kind == ObjectItemKind.ChartElement) {
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.cartesian")
+        ) {
+          const element = item.chartElement as PlotSegment<CartesianProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+            if (element.properties.xData === undefined) {
+              element.properties.xData = null;
+            }
+            element.properties.xData.offset = 0;
+            element.properties.xData.tickFormatType = TickFormatType.None;
+            element.properties.xData.style.showTicks = true;
+          }
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+            if (element.properties.yData === undefined) {
+              element.properties.yData = null;
+            }
+            element.properties.yData.offset = 0;
+            element.properties.yData.tickFormatType = TickFormatType.None;
+            element.properties.yData.style.showTicks = true;
+          }
+        }
       }
     }
+
+    //updated visibility number options
+    const scales = state.chart.scales;
+    if (scales) {
+      for (let i = 0; i < scales.length; i++) {
+        if (scales[i].classID == "scale.linear<number,boolean>") {
+          const scaleProperties = scales[i].properties;
+          if (scaleProperties?.mode && scaleProperties?.mode === "interval") {
+            scaleProperties.mode = LinearBooleanScaleMode.Between;
+          }
+          if (scaleProperties?.mode && scaleProperties?.mode === "greater") {
+            if (
+              scaleProperties?.inclusive &&
+              scaleProperties?.inclusive == "true"
+            ) {
+              scaleProperties.mode =
+                LinearBooleanScaleMode.GreaterThanOrEqualTo;
+            }
+            if (
+              scaleProperties?.inclusive &&
+              scaleProperties?.inclusive == "false"
+            ) {
+              scaleProperties.mode = LinearBooleanScaleMode.GreaterThan;
+            }
+          }
+          if (scaleProperties?.mode && scaleProperties?.mode === "less") {
+            if (
+              scaleProperties?.inclusive &&
+              scaleProperties?.inclusive == "true"
+            ) {
+              scaleProperties.mode = LinearBooleanScaleMode.LessThanOrEqualTo;
+            }
+            if (
+              scaleProperties?.inclusive &&
+              scaleProperties?.inclusive == "false"
+            ) {
+              scaleProperties.mode = LinearBooleanScaleMode.LessThan;
+            }
+          }
+        }
+      }
+    }
+
     return state;
   }
 }

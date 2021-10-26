@@ -6,6 +6,7 @@ import { Point } from "../common";
 import * as Specification from "../specification";
 import * as Dataset from "../dataset";
 import { CSSProperties } from "react";
+import { ICheckboxStyles } from "@fluentui/react";
 
 export type Widget = any;
 
@@ -65,6 +66,7 @@ export interface InputBooleanOptions {
   headerLabel?: string;
   label?: string;
   observerConfig?: ObserverConfig;
+  checkBoxStyles?: ICheckboxStyles;
 }
 
 export interface RowOptions {

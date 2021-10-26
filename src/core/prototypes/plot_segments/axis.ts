@@ -41,6 +41,7 @@ import React = require("react");
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
+  showTicks: true,
   lineColor: { r: 0, g: 0, b: 0 },
   fontFamily: defaultFont,
   fontSize: defaultFontSize,
@@ -79,7 +80,6 @@ export class AxisRenderer {
   public rangeMax: number = 1;
   public valueToPosition: (value: any) => number;
   public oppositeSide: boolean = false;
-
   public static SCROLL_BAR_SIZE = 10;
 
   private static textMeasurer = new TextMeasurer();
@@ -393,6 +393,9 @@ export class AxisRenderer {
     if (style.gridlineStyle === "none") {
       return;
     }
+    if (this.oppositeSide) {
+      side = -side;
+    }
     const g = makeGroup([]);
     const cos = Math.cos(Geometry.degreesToRadians(angle));
     const sin = Math.sin(Geometry.degreesToRadians(angle));
@@ -443,7 +446,13 @@ export class AxisRenderer {
   }
 
   // eslint-disable-next-line
-  public renderLine(x: number, y: number, angle: number, side: number): Group {
+  public renderLine(
+    x: number,
+    y: number,
+    angle: number,
+    side: number,
+    offset?: number
+  ): Group {
     const g = makeGroup([]);
     const style = this.style;
     const rangeMin = this.rangeMin;
@@ -477,14 +486,16 @@ export class AxisRenderer {
     // Base line
     g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
     // Ticks
-    for (const tickPosition of this.ticks
-      .map((x) => x.position)
-      .concat([rangeMin, rangeMax])) {
-      const tx = x + tickPosition * cos;
-      const ty = y + tickPosition * sin;
-      const dx = side * tickSize * sin;
-      const dy = -side * tickSize * cos;
-      g.elements.push(makeLine(tx, ty, tx + dx, ty + dy, lineStyle));
+    if (style.showTicks) {
+      for (const tickPosition of this.ticks
+        .map((x) => x.position)
+        .concat([rangeMin, rangeMax])) {
+        const tx = x + tickPosition * cos;
+        const ty = y + tickPosition * sin;
+        const dx = side * tickSize * sin;
+        const dy = -side * tickSize * cos;
+        g.elements.push(makeLine(tx, ty, tx + dx, ty + dy, lineStyle));
+      }
     }
     // Tick texts
     const ticks = this.ticks.map((x) => {
@@ -744,16 +755,29 @@ export class AxisRenderer {
         }
       }
     }
+
+    if (offset) {
+      g.transform = {
+        x: angle == 90 ? offset : 0,
+        y: angle == 90 ? 0 : offset,
+        angle: 0,
+      };
+    }
     return g;
   }
 
-  public renderCartesian(x: number, y: number, axis: AxisMode): Group {
+  public renderCartesian(
+    x: number,
+    y: number,
+    axis: AxisMode,
+    offset?: number
+  ): Group {
     switch (axis) {
       case AxisMode.X: {
-        return this.renderLine(x, y, 0, 1);
+        return this.renderLine(x, y, 0, 1, offset);
       }
       case AxisMode.Y: {
-        return this.renderLine(x, y, 90, -1);
+        return this.renderLine(x, y, 90, -1, offset);
       }
     }
   }
@@ -1179,15 +1203,21 @@ export function buildAxisAppearanceWidgets(
       manager.vertical(
         manager.verticalGroup(
           {
-            header: strings.objects.appearance,
+            header: strings.objects.visibilityAndPosition,
           },
           [
             manager.inputBoolean(
               { property: axisProperty, field: "visible" },
               {
                 type: "checkbox",
-                label: "Visible",
-                headerLabel: strings.objects.appearance,
+                label: strings.objects.visibleOn.visible,
+              }
+            ),
+            manager.inputBoolean(
+              { property: axisProperty, field: "onTop" },
+              {
+                type: "checkbox",
+                label: strings.objects.onTop,
               }
             ),
             manager.inputSelect(
@@ -1198,6 +1228,15 @@ export function buildAxisAppearanceWidgets(
                 label: strings.objects.position,
                 options: ["default", "opposite"],
                 labels: [strings.objects.default, strings.objects.opposite],
+              }
+            ),
+            manager.inputNumber(
+              {
+                property: axisProperty,
+                field: ["offset"],
+              },
+              {
+                label: strings.objects.axes.offSet,
               }
             ),
           ]
@@ -1215,6 +1254,18 @@ export function buildAxisAppearanceWidgets(
               {
                 label: strings.objects.axes.lineColor,
                 labelKey: strings.objects.axes.lineColor,
+              }
+            ),
+            manager.inputBoolean(
+              { property: axisProperty, field: ["style", "showTicks"] },
+              {
+                type: "checkbox",
+                label: strings.objects.axes.showTickLine,
+                checkBoxStyles: {
+                  root: {
+                    marginTop: 5,
+                  },
+                },
               }
             ),
             manager.inputColor(
@@ -1263,6 +1314,7 @@ export function buildAxisAppearanceWidgets(
                 updownStyle: "font",
                 updownTick: 2,
                 label: strings.objects.fontSize,
+                minimum: 1,
               }
             ),
             manager.inputBoolean(
@@ -1281,7 +1333,7 @@ export function buildAxisAppearanceWidgets(
   } else {
     return manager.verticalGroup(
       {
-        header: strings.objects.appearance,
+        header: strings.objects.visibilityAndPosition,
       },
       [
         manager.inputBoolean(
@@ -1289,7 +1341,6 @@ export function buildAxisAppearanceWidgets(
           {
             type: "checkbox",
             label: strings.objects.visibleOn.visible,
-            headerLabel: strings.objects.appearance,
           }
         ),
       ]
@@ -1845,6 +1896,17 @@ export function buildAxisProperties(
       },
       type: Specification.AttributeType.Text,
       default: null,
+    },
+    {
+      objectID: plotSegment._id,
+      target: {
+        property: {
+          property,
+          field: "offset",
+        },
+      },
+      type: Specification.AttributeType.Number,
+      default: 0,
     },
   ];
 }

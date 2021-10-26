@@ -54,7 +54,6 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultMappingValues: Partial<NestedChartElementAttributes> = {
-    opacity: 1,
     visible: true,
   };
 
@@ -76,7 +75,6 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
     attrs.cy = 0;
     attrs.width = defaultWidth;
     attrs.height = defaultHeight;
-    attrs.opacity = 1;
     attrs.visible = true;
   }
 
@@ -97,11 +95,6 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
       }),
     ];
     widgets = widgets.concat([
-      manager.mappingEditor("Opacity", "opacity", {
-        hints: { rangeNumber: [0, 1] },
-        defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1, step: 0.1 },
-      }),
       manager.mappingEditor("Visibility", "visible", {
         defaultValue: true,
       }),

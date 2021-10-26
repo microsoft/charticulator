@@ -189,6 +189,11 @@ export class IconElementClass extends EmphasizableMarkClass<
       attrs.y + offset.y
     );
     gImage.transform.angle += this.object.properties.rotation;
+
+    // Apply the opacity
+    gImage.style = {
+      opacity: attrs.opacity,
+    };
     return gImage;
   }
 
@@ -311,6 +316,16 @@ export class IconElementClass extends EmphasizableMarkClass<
               sliderFunction: "sqrt",
             },
           }),
+          manager.mappingEditor(strings.objects.opacity, "opacity", {
+            hints: { rangeNumber: [0, 1] },
+            defaultValue: 1,
+            numberOptions: {
+              showSlider: true,
+              minimum: 0,
+              maximum: 1,
+              step: 0.1,
+            },
+          }),
           manager.mappingEditor(
             strings.objects.visibleOn.visibility,
             "visible",
@@ -386,23 +401,6 @@ export class IconElementClass extends EmphasizableMarkClass<
                 )
               : null
           ),
-        ]
-      ),
-      manager.verticalGroup(
-        {
-          header: strings.objects.style,
-        },
-        [
-          manager.mappingEditor(strings.objects.opacity, "opacity", {
-            hints: { rangeNumber: [0, 1] },
-            defaultValue: 1,
-            numberOptions: {
-              showSlider: true,
-              minimum: 0,
-              maximum: 1,
-              step: 0.1,
-            },
-          }),
         ]
       ),
     ]);

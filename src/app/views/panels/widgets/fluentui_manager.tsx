@@ -660,6 +660,7 @@ export class FluentUIWidgetManager
                   root: {
                     ...defultComponentsHeight,
                   },
+                  ...options.checkBoxStyles,
                 }}
                 onChange={(ev, v) => {
                   if (properties instanceof Array) {

@@ -238,6 +238,13 @@ export class MarkEditorView extends ContextedComponent<
                 this.refSingleMarkView.doZoomAuto();
               }}
             />
+            <Button
+              icon="rect-zoom"
+              title={"Rectangle zoom"}
+              onClick={() => {
+                this.dispatch(new Actions.SetCurrentTool("rectangle-zoom"));
+              }}
+            />
           </div>
         </div>
       </div>
@@ -311,6 +318,24 @@ export class SingleMarkView
         scale: newScale,
       },
     });
+  }
+
+  public doCustomZoom(cx: number, cy: number, width: number, height: number) {
+    const newCX = this.props.width / 2 - cx;
+    const newCY = this.props.height / 2 + cy;
+    const newScale =
+      this.props.width > this.props.height
+        ? this.props.height / height
+        : this.props.width / width;
+
+    this.setState({
+      zoom: {
+        centerX: newCX,
+        centerY: newCY,
+        scale: 1,
+      },
+    });
+    this.doZoom(newScale);
   }
 
   public doZoomAuto() {
@@ -906,7 +931,8 @@ export class SingleMarkView
                 element,
                 elementState,
                 bound,
-                10 / this.state.zoom.scale
+                10 / this.state.zoom.scale,
+                bound.options && bound.options.snapToClosestPoint
               );
               ctx.onDrag((e) => {
                 session.handleDrag(e);
@@ -1023,7 +1049,8 @@ export class SingleMarkView
                     element,
                     elementState,
                     handle,
-                    10 / this.state.zoom.scale
+                    10 / this.state.zoom.scale,
+                    handle.options && handle.options.snapToClosestPoint
                   );
                   ctx.onDrag((e) => {
                     session.handleDrag(e);
@@ -1558,6 +1585,18 @@ export class SingleMarkView
         //     };
         //   }
         //   break;
+        case "rectangle-zoom":
+          {
+            mode = "rectangle";
+            onCreate = (x1, y1, x2, y2) => {
+              const width = Math.abs(x2[0] - x1[0]);
+              const height = Math.abs(y2[0] - y1[0]);
+              const centerX = Math.min(x2[0], x1[0]) + width / 2;
+              const centerY = Math.min(y2[0], y1[0]) + height / 2;
+              this.doCustomZoom(centerX, centerY, width, height);
+            };
+          }
+          break;
       }
       return (
         <CreatingComponent
