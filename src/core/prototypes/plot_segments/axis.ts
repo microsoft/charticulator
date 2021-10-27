@@ -489,7 +489,6 @@ export class AxisRenderer {
 
     if (style.showTicks) {
       for (const tickPosition of visibleTicks) {
-        console.log();
         const tx = x + tickPosition * cos;
         const ty = y + tickPosition * sin;
         const dx = side * tickSize * sin;
