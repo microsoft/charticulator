@@ -1830,10 +1830,6 @@ export class AppStore extends BaseStore {
         <boolean>objectProperties?.onTop !== undefined
           ? <boolean>objectProperties?.onTop
           : false,
-      showExtremeTicks:
-        <boolean>objectProperties?.showExtremeTicks !== undefined
-          ? <boolean>objectProperties?.showExtremeTicks
-          : true,
     };
 
     let expressions = [groupExpression];
