@@ -533,7 +533,9 @@ export class LinkCreationPanel extends ContextedComponent<
           glyph,
           rowToMarkState.get(facets[0][0].join(",")),
           glyph,
-          rowToMarkState.get(facets[0][1].join(","))
+          rowToMarkState.get(
+            facets[0][1] ? facets[0][1].join(",") : facets[0][0].join(",")
+          )
         );
 
         const links: Specification.Links = {
