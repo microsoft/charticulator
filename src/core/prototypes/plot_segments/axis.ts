@@ -80,12 +80,17 @@ export class AxisRenderer {
   public rangeMax: number = 1;
   public valueToPosition: (value: any) => number;
   public oppositeSide: boolean = false;
+  //TODO: update scrollbar size
   public static SCROLL_BAR_SIZE = 10;
 
   private static textMeasurer = new TextMeasurer();
 
   private scrollRequired: boolean = false;
   private shiftAxis: boolean = true;
+  private hiddenCategoriesRatio: number = 0;
+  private handlerSize: number = 0;
+  private hiddenElements: number = 0;
+  private windowSize: number = 0;
 
   public setStyle(style?: Partial<Specification.Types.AxisRenderingStyle>) {
     if (!style) {
@@ -104,9 +109,10 @@ export class AxisRenderer {
     reverse: boolean,
     getTickFormat?: (value: any) => string
   ) {
+    //debugger
     this.rangeMin = rangeMin;
     this.rangeMax = rangeMax;
-
+    // debugger
     if (!data) {
       return this;
     }
@@ -117,6 +123,17 @@ export class AxisRenderer {
       (data.barOffset == null || data.barOffset === 0) &&
       ((data.allCategories && data.windowSize < data.allCategories.length) ||
         Math.abs(data.dataDomainMax - data.dataDomainMin) > data.windowSize);
+    // debugger
+    // console.log(data.allCategories)
+    // console.log(data.windowSize < data.allCategories.length)
+
+    if (data.allCategories && data.windowSize < data.allCategories.length) {
+      this.hiddenCategoriesRatio = data.windowSize / data.allCategories.length;
+      this.handlerSize = rangeMax / this.hiddenCategoriesRatio;
+      this.hiddenElements = data.allCategories.length - data.windowSize;
+      this.windowSize = data.windowSize;
+    }
+
     switch (data.type) {
       case "numerical":
         {
@@ -1093,15 +1110,26 @@ export class AxisRenderer {
 
     let width = 0;
     let height = 0;
-
+    let adaptiveScrollBarSize = 0;
     if (angle === 90) {
       height += Math.abs(y2 - y1);
       width = AxisRenderer.SCROLL_BAR_SIZE;
+      adaptiveScrollBarSize = height * this.hiddenCategoriesRatio;
     }
     if (angle === 0) {
       width += Math.abs(x2 - x1);
       height = AxisRenderer.SCROLL_BAR_SIZE;
+      adaptiveScrollBarSize = width * this.hiddenCategoriesRatio;
     }
+
+    //scroll bar size
+    // console.log(width, height)
+    // console.log(adaptiveScrollBarSize)
+    // console.log(this.hiddenCategoriesRatio)
+    // console.log(handlePosition)
+    // console.log("\n")
+    // console.log(this.hiddenElements)
+    // debugger
 
     return React.createElement(VirtualScrollBar, <VirtualScrollBarPropertes>{
       onScroll,
@@ -1113,6 +1141,9 @@ export class AxisRenderer {
       initialPosition: handlePosition,
       vertical: angle === 90,
       zoom,
+      scrollBarRatio: this.hiddenCategoriesRatio,
+      hiddenElements: Math.abs(this.hiddenElements),
+      windowSize: this.windowSize,
     });
   }
 }
