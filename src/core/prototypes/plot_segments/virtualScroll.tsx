@@ -3,8 +3,8 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-import { ZoomInfo } from "../..";
 import { useEffect } from "react";
+import { ZoomInfo } from "../..";
 
 export interface VirtualScrollBarPropertes {
   initialPosition: number;
@@ -40,7 +40,6 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
   if (vertical) {
     trackSize = height;
   }
-  console.log();
   // debugger
   const handleSize = vertical
     ? height * scrollBarRatio
@@ -108,7 +107,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
 
   const track = React.useRef<SVGRectElement>(null);
   const handler = React.useRef<SVGRectElement>(null);
-  console.log(widthPerBar);
+
   const onMouseMove = React.useCallback(
     (e: any) => {
       if (!isActive) {
@@ -129,7 +128,6 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
       if (deltaYHandler > 0 && deltaYHandler < handleSize * zoom.scale) {
         deltaY = deltaY - deltaYHandler;
       }
-      console.log(widthPerBar);
       // debugger
       let newPosition = position;
       if (vertical) {
@@ -200,9 +198,6 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
             opacity: 1,
           }}
           onMouseMove={onMouseMove}
-          onClick={() => {
-            onClick(5);
-          }}
         />
         {/*handler  */}
         <rect
