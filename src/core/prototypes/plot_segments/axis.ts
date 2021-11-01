@@ -120,7 +120,6 @@ export class AxisRenderer {
   ) {
     this.rangeMin = rangeMin;
     this.rangeMax = rangeMax;
-
     if (!data) {
       return this;
     }
@@ -433,9 +432,8 @@ export class AxisRenderer {
     // Base line
     g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
     // Ticks
-    for (const tickPosition of this.ticks
-      .map((x) => x.position)
-      .concat([rangeMin, rangeMax])) {
+    const ticksData = this.ticks.map((x) => x.position);
+    for (const tickPosition of ticksData) {
       const tx = x + tickPosition * cos;
       const ty = y + tickPosition * sin;
       const dx = -side * tickSize * sin;
@@ -503,10 +501,11 @@ export class AxisRenderer {
     // Base line
     g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
     // Ticks
+    const ticksData = this.ticks.map((x) => x.position);
+    const visibleTicks = ticksData.concat([rangeMin, rangeMax]);
+
     if (style.showTicks) {
-      for (const tickPosition of this.ticks
-        .map((x) => x.position)
-        .concat([rangeMin, rangeMax])) {
+      for (const tickPosition of visibleTicks) {
         const tx = x + tickPosition * cos;
         const ty = y + tickPosition * sin;
         const dx = side * tickSize * sin;
