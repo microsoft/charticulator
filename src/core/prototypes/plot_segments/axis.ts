@@ -35,7 +35,11 @@ import { Controls, strokeStyleToDashArray } from "../common";
 import { AttributeMap, DataType } from "../../specification";
 import { strings } from "../../../strings";
 import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
-import { NumericalMode, TickFormatType } from "../../specification/types";
+import {
+  AxisDataBindingType,
+  NumericalMode,
+  TickFormatType,
+} from "../../specification/types";
 import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
 import React = require("react");
 
@@ -86,6 +90,10 @@ export class AxisRenderer {
 
   private scrollRequired: boolean = false;
   private shiftAxis: boolean = true;
+  private hiddenCategoriesRatio: number = 0;
+  private handlerSize: number = 0;
+  private dataType: AxisDataBindingType = AxisDataBindingType.Default;
+  private windowSize: number = 0;
 
   public setStyle(style?: Partial<Specification.Types.AxisRenderingStyle>) {
     if (!style) {
@@ -116,6 +124,14 @@ export class AxisRenderer {
       (data.barOffset == null || data.barOffset === 0) &&
       ((data.allCategories && data.windowSize < data.allCategories.length) ||
         Math.abs(data.dataDomainMax - data.dataDomainMin) > data.windowSize);
+
+    this.dataType = data.type;
+    if (data.allCategories && data.windowSize < data.allCategories.length) {
+      this.hiddenCategoriesRatio = data.windowSize / data.allCategories.length;
+      this.handlerSize = rangeMax / this.hiddenCategoriesRatio;
+      this.windowSize = data.windowSize;
+    }
+
     switch (data.type) {
       case "numerical":
         {
@@ -1092,7 +1108,6 @@ export class AxisRenderer {
 
     let width = 0;
     let height = 0;
-
     if (angle === 90) {
       height += Math.abs(y2 - y1);
       width = AxisRenderer.SCROLL_BAR_SIZE;
@@ -1112,6 +1127,9 @@ export class AxisRenderer {
       initialPosition: handlePosition,
       vertical: angle === 90,
       zoom,
+      scrollBarRatio: this.hiddenCategoriesRatio,
+      windowSize: this.windowSize,
+      dataType: this.dataType,
     });
   }
 }
