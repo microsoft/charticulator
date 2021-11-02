@@ -112,7 +112,6 @@ export class AxisRenderer {
     reverse: boolean,
     getTickFormat?: (value: any) => string
   ) {
-    //debugger
     this.rangeMin = rangeMin;
     this.rangeMax = rangeMax;
     if (!data) {
