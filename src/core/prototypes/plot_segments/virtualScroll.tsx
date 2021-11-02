@@ -79,6 +79,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
 
   useEffect(() => {
     onScroll(position);
+    // eslint-disable-next-line
   }, [windowSize]);
 
   const widthPerBar = !vertical ? width / windowSize : height / windowSize;
@@ -147,11 +148,6 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
       if (newPosition - widthPerBarPercent * 100 < 0) {
         newPosition = 0;
       }
-
-      console.log(deltaXHandler);
-      console.log(deltaYHandler);
-      console.log(newPosition);
-      // debugger
       setPosition(Math.round(newPosition));
       onScroll(Math.round(newPosition));
     },
@@ -169,7 +165,6 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
   const onClick = React.useCallback(
     (sign: number) => {
       let newPosition = position + sign * 5;
-      // debugger
       if (newPosition > 100) {
         newPosition = 100;
       }
