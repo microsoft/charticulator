@@ -158,7 +158,6 @@ export class Migrator {
       compareVersion(state.version, "2.1.0") < 0 &&
       compareVersion(targetVersion, "2.1.0") >= 0
     ) {
-      //Rounded corners in rect
       state = this.setMissedGlyphRectProperties(state);
     }
 
@@ -576,6 +575,7 @@ export class Migrator {
             }
             element.properties.xData.offset = 0;
             element.properties.xData.tickFormatType = TickFormatType.None;
+            element.properties.xData.style.showTicks = true;
           }
           if (element.properties.yData) {
             element.properties.yData = this.updateAxis(
@@ -586,6 +586,7 @@ export class Migrator {
             }
             element.properties.yData.offset = 0;
             element.properties.yData.tickFormatType = TickFormatType.None;
+            element.properties.yData.style.showTicks = true;
           }
         }
       }

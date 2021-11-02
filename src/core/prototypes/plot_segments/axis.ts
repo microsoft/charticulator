@@ -48,6 +48,7 @@ import React = require("react");
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
+  showTicks: true,
   lineColor: { r: 0, g: 0, b: 0 },
   fontFamily: defaultFont,
   fontSize: defaultFontSize,
@@ -97,6 +98,10 @@ export class AxisRenderer {
 
   private scrollRequired: boolean = false;
   private shiftAxis: boolean = true;
+  private hiddenCategoriesRatio: number = 0;
+  private handlerSize: number = 0;
+  private dataType: AxisDataBindingType = AxisDataBindingType.Default;
+  private windowSize: number = 0;
 
   public setStyle(style?: Partial<Specification.Types.AxisRenderingStyle>) {
     if (!style) {
@@ -119,7 +124,6 @@ export class AxisRenderer {
   ) {
     this.rangeMin = rangeMin;
     this.rangeMax = rangeMax;
-
     if (!data) {
       return this;
     }
@@ -133,6 +137,14 @@ export class AxisRenderer {
       (data.barOffset == null || data.barOffset === 0) &&
       ((data.allCategories && data.windowSize < data.allCategories.length) ||
         Math.abs(data.dataDomainMax - data.dataDomainMin) > data.windowSize);
+
+    this.dataType = data.type;
+    if (data.allCategories && data.windowSize < data.allCategories.length) {
+      this.hiddenCategoriesRatio = data.windowSize / data.allCategories.length;
+      this.handlerSize = rangeMax / this.hiddenCategoriesRatio;
+      this.windowSize = data.windowSize;
+    }
+
     switch (data.type) {
       case "numerical":
         {
@@ -432,9 +444,8 @@ export class AxisRenderer {
     // Base line
     g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
     // Ticks
-    for (const tickPosition of this.ticks
-      .map((x) => x.position)
-      .concat([rangeMin, rangeMax])) {
+    const ticksData = this.ticks.map((x) => x.position);
+    for (const tickPosition of ticksData) {
       const tx = x + tickPosition * cos;
       const ty = y + tickPosition * sin;
       const dx = -side * tickSize * sin;
@@ -502,14 +513,17 @@ export class AxisRenderer {
     // Base line
     g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
     // Ticks
-    for (const tickPosition of this.ticks
-      .map((x) => x.position)
-      .concat([rangeMin, rangeMax])) {
-      const tx = x + tickPosition * cos;
-      const ty = y + tickPosition * sin;
-      const dx = side * tickSize * sin;
-      const dy = -side * tickSize * cos;
-      g.elements.push(makeLine(tx, ty, tx + dx, ty + dy, lineStyle));
+    const ticksData = this.ticks.map((x) => x.position);
+    const visibleTicks = ticksData.concat([rangeMin, rangeMax]);
+
+    if (style.showTicks) {
+      for (const tickPosition of visibleTicks) {
+        const tx = x + tickPosition * cos;
+        const ty = y + tickPosition * sin;
+        const dx = side * tickSize * sin;
+        const dy = -side * tickSize * cos;
+        g.elements.push(makeLine(tx, ty, tx + dx, ty + dy, lineStyle));
+      }
     }
     // Tick texts
     const ticks = this.ticks.map((x) => {
@@ -1200,7 +1214,6 @@ export class AxisRenderer {
 
     let width = 0;
     let height = 0;
-
     if (angle === 90) {
       height += Math.abs(y2 - y1);
       width = AxisRenderer.SCROLL_BAR_SIZE;
@@ -1220,6 +1233,9 @@ export class AxisRenderer {
       initialPosition: handlePosition,
       vertical: angle === 90,
       zoom,
+      scrollBarRatio: this.hiddenCategoriesRatio,
+      windowSize: this.windowSize,
+      dataType: this.dataType,
     });
   }
 }
@@ -1361,6 +1377,18 @@ export function buildAxisAppearanceWidgets(
               {
                 label: strings.objects.axes.lineColor,
                 labelKey: strings.objects.axes.lineColor,
+              }
+            ),
+            manager.inputBoolean(
+              { property: axisProperty, field: ["style", "showTicks"] },
+              {
+                type: "checkbox",
+                label: strings.objects.axes.showTickLine,
+                checkBoxStyles: {
+                  root: {
+                    marginTop: 5,
+                  },
+                },
               }
             ),
             manager.inputColor(
