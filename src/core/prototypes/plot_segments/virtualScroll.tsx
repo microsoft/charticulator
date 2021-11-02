@@ -5,6 +5,7 @@
 import * as React from "react";
 import { useEffect } from "react";
 import { ZoomInfo } from "../..";
+import { AxisDataBindingType } from "../../specification/types";
 
 export interface VirtualScrollBarPropertes {
   initialPosition: number;
@@ -17,8 +18,8 @@ export interface VirtualScrollBarPropertes {
   vertical: boolean;
   zoom: ZoomInfo;
   scrollBarRatio: number;
-  hiddenElements: number;
   windowSize: number;
+  dataType: AxisDataBindingType;
 }
 
 export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
@@ -32,18 +33,20 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
   y,
   zoom,
   scrollBarRatio,
-  hiddenElements,
   windowSize,
+  dataType,
 }) => {
   let trackSize = width;
-  // debugger
   if (vertical) {
     trackSize = height;
   }
-  // debugger
-  const handleSize = vertical
-    ? height * scrollBarRatio
-    : width * scrollBarRatio;
+
+  let handleSize: number;
+  if (dataType == AxisDataBindingType.Categorical) {
+    handleSize = vertical ? height * scrollBarRatio : width * scrollBarRatio;
+  } else {
+    handleSize = vertical ? height / 10 : width / 10;
+  }
 
   const mapPositionToCoordinates = React.useCallback(
     (handlePosition: number): [number, number] => {
@@ -158,7 +161,6 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
       onScroll,
       position,
       vertical,
-      widthPerBar,
       widthPerBarPercent,
       zoom.scale,
     ]
