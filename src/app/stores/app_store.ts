@@ -1830,6 +1830,10 @@ export class AppStore extends BaseStore {
         <boolean>objectProperties?.onTop !== undefined
           ? <boolean>objectProperties?.onTop
           : false,
+      enableSelection:
+        <boolean>objectProperties?.enableSelection !== undefined
+          ? <boolean>objectProperties?.enableSelection
+          : false,
     };
 
     let expressions = [groupExpression];
