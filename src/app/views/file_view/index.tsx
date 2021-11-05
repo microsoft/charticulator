@@ -29,15 +29,20 @@ import * as React from "react";
 import * as R from "../../resources";
 
 import { AbstractBackend } from "../../backend/abstract";
-import { ErrorBoundary, SVGImageIcon } from "../../components";
+import {
+  ErrorBoundary,
+  SVGImageIcon,
+  TelemetryContext,
+} from "../../components";
 import { AppStore } from "../../stores";
 import { classNames, stringToDataURL } from "../../utils";
 import { FileViewExport } from "./export_view";
 import { FileViewNew } from "./new_view";
 import { FileViewOpen } from "./open_view";
 import { FileViewSaveAs } from "./save_view";
-import { FileViewOptions } from "./options_view";
+import { FileViewOptionsView } from "./options_view";
 import { strings } from "../../../strings";
+import { MainReactContext } from "../../context_component";
 
 export enum MainTabs {
   about = "about",
@@ -100,11 +105,18 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
     inputSaveChartName: HTMLInputElement;
   };
 
+  private buttonBack: HTMLElement;
   constructor(props: FileViewProps) {
     super(props);
     this.state = {
       currentTab: this.props.defaultTab || MainTabs.open,
     };
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.buttonBack?.focus();
+    }, 100);
   }
 
   public switchTab(currentTab: MainTabs) {
@@ -114,16 +126,28 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
   public renderContent() {
     switch (this.state.currentTab) {
       case MainTabs.new: {
-        return <FileViewNew onClose={this.props.onClose} />;
+        return (
+          <FileViewNew store={this.props.store} onClose={this.props.onClose} />
+        );
       }
       case MainTabs.save: {
-        return <FileViewSaveAs onClose={this.props.onClose} />;
+        return (
+          <FileViewSaveAs
+            store={this.props.store}
+            onClose={this.props.onClose}
+          />
+        );
       }
       case MainTabs.export: {
-        return <FileViewExport onClose={this.props.onClose} />;
+        return (
+          <FileViewExport
+            store={this.props.store}
+            onClose={this.props.onClose}
+          />
+        );
       }
       case MainTabs.options: {
-        return <FileViewOptions onClose={this.props.onClose} />;
+        return <FileViewOptionsView onClose={this.props.onClose} />;
       }
       case MainTabs.about: {
         return (
@@ -136,37 +160,65 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
       }
       case MainTabs.open:
       default: {
-        return <FileViewOpen onClose={this.props.onClose} />;
+        return (
+          <FileViewOpen store={this.props.store} onClose={this.props.onClose} />
+        );
       }
     }
   }
 
   public render() {
     return (
-      <div className="charticulator__file-view">
-        <div className="charticulator__file-view-tabs">
-          <div className="el-button-back" onClick={() => this.props.onClose()}>
-            <SVGImageIcon url={R.getSVGIcon("toolbar/back")} />
+      <MainReactContext.Provider value={{ store: this.props.store }}>
+        <div className="charticulator__file-view">
+          <div className="charticulator__file-view-tabs">
+            <div
+              ref={(r) => (this.buttonBack = r)}
+              tabIndex={0}
+              className="el-button-back"
+              onClick={() => this.props.onClose()}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  this.props.onClose();
+                }
+              }}
+            >
+              <SVGImageIcon url={R.getSVGIcon("toolbar/back")} />
+            </div>
+            {tabOrder.map((t, index) =>
+              t === null ? (
+                <div key={index} className="el-sep" />
+              ) : (
+                <div
+                  tabIndex={0}
+                  key={index}
+                  className={classNames("el-tab", [
+                    "active",
+                    this.state.currentTab == t,
+                  ])}
+                  onClick={() => this.switchTab(t)}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      this.switchTab(t);
+                    }
+                  }}
+                >
+                  {strings.mainTabs[t]}
+                </div>
+              )
+            )}
           </div>
-          {tabOrder.map((t, index) =>
-            t === null ? (
-              <div key={index} className="el-sep" />
-            ) : (
-              <div
-                key={index}
-                className={classNames("el-tab", [
-                  "active",
-                  this.state.currentTab == t,
-                ])}
-                onClick={() => this.switchTab(t)}
-              >
-                {strings.mainTabs[t]}
-              </div>
-            )
-          )}
+          <TelemetryContext.Consumer>
+            {(telemetryRecorder) => {
+              return (
+                <ErrorBoundary telemetryRecorder={telemetryRecorder}>
+                  {this.renderContent()}
+                </ErrorBoundary>
+              );
+            }}
+          </TelemetryContext.Consumer>
         </div>
-        <ErrorBoundary>{this.renderContent()}</ErrorBoundary>
-      </div>
+      </MainReactContext.Provider>
     );
   }
 }

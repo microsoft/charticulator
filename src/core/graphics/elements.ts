@@ -25,6 +25,7 @@
  * @preferred
  */
 
+import * as React from "react";
 import { Color, Geometry, Point } from "../common";
 import * as Specification from "../specification";
 import * as Dataset from "../dataset";
@@ -77,6 +78,14 @@ export interface Style {
   textAnchor?: "start" | "middle" | "end";
 }
 
+export interface Interactable {
+  onClick?: (event: React.MouseEvent<globalThis.Element>) => void;
+  onMousedown?: (event: React.MouseEvent<globalThis.Element>) => void;
+  onMouseup?: (event: React.MouseEvent<globalThis.Element>) => void;
+  onMousewheel?: (event: React.MouseEvent<globalThis.Element>) => void;
+  onMousemove?: (event: React.MouseEvent<globalThis.Element>) => void;
+}
+
 export interface Selectable {
   plotSegment: Specification.PlotSegment;
   glyphIndex: number;
@@ -90,6 +99,7 @@ export interface Element {
   type: string;
   style?: Style;
   selectable?: Selectable;
+  interactable?: Interactable;
 }
 
 export interface ChartContainerElement {
@@ -109,6 +119,9 @@ export interface Rect extends Element {
   y1: number;
   x2: number;
   y2: number;
+  rx?: number;
+  ry?: number;
+  rotation?: number;
 }
 
 export interface Line extends Element {
@@ -126,7 +139,8 @@ export interface Polygon extends Element {
 
 export interface Path extends Element {
   type: "path";
-  cmds: Array<{ cmd: string; args: number[] }>;
+  cmds: { cmd: string; args: number[] }[];
+  transform: string;
 }
 
 export interface Circle extends Element {
@@ -153,10 +167,16 @@ export interface Text extends Element {
   fontSize: number;
 }
 
+export enum PathTextAlignment {
+  Start = "start",
+  Middle = "middle",
+  End = "end",
+}
+
 export interface TextOnPath extends Element {
   type: "text-on-path";
   pathCmds: Path["cmds"];
-  align: "start" | "middle" | "end";
+  align: PathTextAlignment;
   text: string;
   fontFamily: string;
   fontSize: number;
@@ -185,9 +205,11 @@ export function makeRect(
   y1: number,
   x2: number,
   y2: number,
-  style?: Style
+  style?: Style,
+  rx?: number,
+  ry?: number
 ): Rect {
-  return { type: "rect", x1, x2, y1, y2, style };
+  return { type: "rect", x1, x2, y1, y2, style, rx, ry };
 }
 
 export function makeCircle(
@@ -233,13 +255,23 @@ export function makeText(
   text: string,
   fontFamily: string,
   fontSize: number,
-  style?: Style
+  style?: Style,
+  selectable?: Selectable
 ): Text {
-  return { type: "text", cx, cy, text, fontFamily, fontSize, style };
+  return {
+    type: "text",
+    cx,
+    cy,
+    text,
+    fontFamily,
+    fontSize,
+    style,
+    selectable,
+  };
 }
 
 export class PathMaker {
-  public path: Path = { type: "path", cmds: [] };
+  public path: Path = { type: "path", cmds: [], transform: "" };
 
   public currentX: number;
   public currentY: number;
@@ -250,6 +282,10 @@ export class PathMaker {
   public lineTo(x: number, y: number) {
     this.path.cmds.push({ cmd: "L", args: [x, y] });
   }
+  public transformRotation(angle: number, x: number = 0, y: number = 0) {
+    this.path.transform = `rotate(${angle} ${x} ${y})`;
+  }
+
   public cubicBezierCurveTo(
     c1x: number,
     c1y: number,

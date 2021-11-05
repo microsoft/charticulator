@@ -35,7 +35,7 @@ function expect_deep_approximately_equals(a: any, b: any, tol: number) {
   } else {
     if (typeof a == "number" && typeof b == "number") {
       // If both are numbers, test approximately equals
-      expect(a as number).to.approximately(b as number, tol);
+      expect(<number>a).to.approximately(<number>b, tol);
     } else {
       // Otherwise, use regular equals
       expect(a).equals(b);
@@ -60,7 +60,7 @@ describe("Chart Solver", () => {
         fs.readFileSync(path.join(pathPrefix, filename), "utf-8")
       ).state;
 
-      state = new Migrator().migrate(state, "1.7.0");
+      state = new Migrator().migrate(state, "2.0.1");
 
       const manager = new Prototypes.ChartStateManager(
         state.chart,

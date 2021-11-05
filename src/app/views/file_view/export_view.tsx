@@ -1,16 +1,29 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
 
+import { DefaultButton } from "@fluentui/react";
 import * as React from "react";
 import { CurrentChartView } from ".";
-import { deepClone, Specification, Prototypes } from "../../../core";
+import {
+  deepClone,
+  Specification,
+  Prototypes,
+  primaryButtonStyles,
+} from "../../../core";
 import { ensureColumnsHaveExamples } from "../../../core/dataset/examples";
 import { findObjectById } from "../../../core/prototypes";
 import { strings } from "../../../strings";
 import { Actions } from "../../actions";
-import { ButtonRaised, ErrorBoundary, SVGImageIcon } from "../../components";
-import { ContextedComponent } from "../../context_component";
+import {
+  ErrorBoundary,
+  SVGImageIcon,
+  TelemetryContext,
+} from "../../components";
 import * as R from "../../resources";
+import { AppStore } from "../../stores";
 import { ExportTemplateTarget } from "../../template";
 import { classNames } from "../../utils";
 import { InputImageProperty, Button } from "../panels/widgets/controls";
@@ -33,7 +46,7 @@ export class InputGroup extends React.Component<
           type="text"
           required={true}
           value={this.props.value || ""}
-          onChange={(e) => {
+          onChange={() => {
             this.props.onChange(this.ref.value);
           }}
         />
@@ -44,7 +57,12 @@ export class InputGroup extends React.Component<
   }
 }
 
-export class ExportImageView extends ContextedComponent<{}, { dpi: string }> {
+export class ExportImageView extends React.Component<
+  {
+    store: AppStore;
+  },
+  { dpi: string }
+> {
   public state = { dpi: "144" };
   public getScaler() {
     let dpi = +this.state.dpi;
@@ -57,7 +75,7 @@ export class ExportImageView extends ContextedComponent<{}, { dpi: string }> {
   public render() {
     return (
       <div className="el-horizontal-layout-item is-fix-width">
-        <CurrentChartView store={this.store} />
+        <CurrentChartView store={this.props.store} />
         <InputGroup
           label={strings.fileExport.imageDPI}
           value={this.state.dpi}
@@ -68,29 +86,38 @@ export class ExportImageView extends ContextedComponent<{}, { dpi: string }> {
           }}
         />
         <div className="buttons">
-          <ButtonRaised
+          <DefaultButton
             text={strings.fileExport.typePNG}
-            url={R.getSVGIcon("toolbar/export")}
+            iconProps={{
+              iconName: "Export",
+            }}
+            styles={primaryButtonStyles}
             onClick={() => {
-              this.dispatch(
+              this.props.store.dispatcher.dispatch(
                 new Actions.Export("png", { scale: this.getScaler() })
               );
             }}
           />{" "}
-          <ButtonRaised
+          <DefaultButton
             text={strings.fileExport.typeJPEG}
-            url={R.getSVGIcon("toolbar/export")}
+            iconProps={{
+              iconName: "Export",
+            }}
+            styles={primaryButtonStyles}
             onClick={() => {
-              this.dispatch(
+              this.props.store.dispatcher.dispatch(
                 new Actions.Export("jpeg", { scale: this.getScaler() })
               );
             }}
           />{" "}
-          <ButtonRaised
+          <DefaultButton
             text={strings.fileExport.typeSVG}
-            url={R.getSVGIcon("toolbar/export")}
+            iconProps={{
+              iconName: "Export",
+            }}
+            styles={primaryButtonStyles}
             onClick={() => {
-              this.dispatch(new Actions.Export("svg"));
+              this.props.store.dispatcher.dispatch(new Actions.Export("svg"));
             }}
           />
         </div>
@@ -99,17 +126,25 @@ export class ExportImageView extends ContextedComponent<{}, { dpi: string }> {
   }
 }
 
-export class ExportHTMLView extends ContextedComponent<{}, {}> {
+export class ExportHTMLView extends React.Component<
+  {
+    store: AppStore;
+  },
+  {}
+> {
   public render() {
     return (
       <div className="el-horizontal-layout-item is-fix-width">
-        <CurrentChartView store={this.store} />
+        <CurrentChartView store={this.props.store} />
         <div className="buttons">
-          <ButtonRaised
+          <DefaultButton
             text={strings.fileExport.typeHTML}
-            url={R.getSVGIcon("toolbar/export")}
+            iconProps={{
+              iconName: "Export",
+            }}
+            styles={primaryButtonStyles}
             onClick={() => {
-              this.dispatch(new Actions.Export("html"));
+              this.props.store.dispatcher.dispatch(new Actions.Export("html"));
             }}
           />
         </div>
@@ -122,9 +157,10 @@ export interface FileViewExportState {
   exportMode: string;
 }
 
-export class FileViewExport extends ContextedComponent<
+export class FileViewExport extends React.Component<
   {
     onClose: () => void;
+    store: AppStore;
   },
   FileViewExportState
 > {
@@ -134,18 +170,21 @@ export class FileViewExport extends ContextedComponent<
 
   public renderExportView(mode: "image" | "html") {
     if (mode == "image") {
-      return <ExportImageView />;
+      return <ExportImageView store={this.props.store} />;
     }
     if (mode == "html") {
-      return <ExportHTMLView />;
+      return <ExportHTMLView store={this.props.store} />;
     }
   }
 
   public renderExportTemplate() {
     return (
       <div className="el-horizontal-layout-item is-fix-width">
-        <CurrentChartView store={this.store} />
-        <ExportTemplateView exportKind={this.state.exportMode} />
+        <CurrentChartView store={this.props.store} />
+        <ExportTemplateView
+          store={this.props.store}
+          exportKind={this.state.exportMode}
+        />
       </div>
     );
   }
@@ -157,33 +196,51 @@ export class FileViewExport extends ContextedComponent<
           <div className="el-horizontal-layout-item">
             <div className="charticulator__list-view">
               <div
+                tabIndex={0}
                 className={classNames("el-item", [
                   "is-active",
                   this.state.exportMode == "image",
                 ])}
                 onClick={() => this.setState({ exportMode: "image" })}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    this.setState({ exportMode: "image" });
+                  }
+                }}
               >
                 <SVGImageIcon url={R.getSVGIcon("toolbar/export")} />
                 <span className="el-text">{strings.fileExport.asImage}</span>
               </div>
               <div
+                tabIndex={0}
                 className={classNames("el-item", [
                   "is-active",
                   this.state.exportMode == "html",
                 ])}
                 onClick={() => this.setState({ exportMode: "html" })}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    this.setState({ exportMode: "html" });
+                  }
+                }}
               >
                 <SVGImageIcon url={R.getSVGIcon("toolbar/export")} />
                 <span className="el-text">{strings.fileExport.asHTML}</span>
               </div>
-              {this.store.listExportTemplateTargets().map((name) => (
+              {this.props.store.listExportTemplateTargets().map((name) => (
                 <div
+                  tabIndex={0}
                   key={name}
                   className={classNames("el-item", [
                     "is-active",
                     this.state.exportMode == name,
                   ])}
                   onClick={() => this.setState({ exportMode: name })}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      this.setState({ exportMode: name });
+                    }
+                  }}
                 >
                   <SVGImageIcon url={R.getSVGIcon("toolbar/export")} />
                   <span className="el-text">{name}</span>
@@ -191,11 +248,21 @@ export class FileViewExport extends ContextedComponent<
               ))}
             </div>
           </div>
-          <ErrorBoundary maxWidth={300}>
-            {this.state.exportMode == "image" || this.state.exportMode == "html"
-              ? this.renderExportView(this.state.exportMode)
-              : this.renderExportTemplate()}
-          </ErrorBoundary>
+          <TelemetryContext.Consumer>
+            {(telemetryRecorder) => {
+              return (
+                <ErrorBoundary
+                  maxWidth={300}
+                  telemetryRecorder={telemetryRecorder}
+                >
+                  {this.state.exportMode == "image" ||
+                  this.state.exportMode == "html"
+                    ? this.renderExportView(this.state.exportMode)
+                    : this.renderExportTemplate()}
+                </ErrorBoundary>
+              );
+            }}
+          </TelemetryContext.Consumer>
         </div>
       </div>
     );
@@ -208,20 +275,26 @@ export interface ExportTemplateViewState {
   targetProperties: { [name: string]: string };
 }
 
-export class ExportTemplateView extends ContextedComponent<
-  { exportKind: string },
+export class ExportTemplateView extends React.Component<
+  {
+    exportKind: string;
+    store: AppStore;
+  },
   {}
 > {
   public state = this.getDefaultState(this.props.exportKind);
 
   public getDefaultState(kind: string): ExportTemplateViewState {
-    this.store.dataset.tables.forEach((t) => ensureColumnsHaveExamples(t));
-    const template = deepClone(this.store.buildChartTemplate());
-    const target = this.store.createExportTemplateTarget(kind, template);
+    this.props.store.dataset.tables.forEach((t) =>
+      ensureColumnsHaveExamples(t)
+    );
+    const template = deepClone(this.props.store.buildChartTemplate());
+    const target = this.props.store.createExportTemplateTarget(kind, template);
     const targetProperties: { [name: string]: string } = {};
     for (const property of target.getProperties()) {
       targetProperties[property.name] =
-        this.store.getPropertyExportName(property.name) || property.default;
+        this.props.store.getPropertyExportName(property.name) ||
+        property.default;
     }
     return {
       template,
@@ -252,7 +325,7 @@ export class ExportTemplateView extends ContextedComponent<
               type="text"
               required={true}
               value={value || ""}
-              onChange={(e) => {
+              onChange={() => {
                 onChange(ref.value);
               }}
             />
@@ -262,6 +335,7 @@ export class ExportTemplateView extends ContextedComponent<
         );
 
       case "boolean":
+        // eslint-disable-next-line
         const currentValue = value ? true : false;
         return (
           <div
@@ -313,7 +387,7 @@ export class ExportTemplateView extends ContextedComponent<
   /** Renders all fields for extension properties */
   public renderTargetProperties() {
     return this.state.target.getProperties().map((property) => {
-      const displayName = this.store.getPropertyExportName(property.name);
+      const displayName = this.props.store.getPropertyExportName(property.name);
       const targetProperties = this.state.targetProperties;
 
       return (
@@ -324,7 +398,7 @@ export class ExportTemplateView extends ContextedComponent<
             displayName || targetProperties[property.name],
             property.default,
             (value) => {
-              this.store.setPropertyExportName(property.name, value);
+              this.props.store.setPropertyExportName(property.name, value);
               this.setState({
                 targetProperties: {
                   ...targetProperties,
@@ -341,7 +415,7 @@ export class ExportTemplateView extends ContextedComponent<
   /** Renders column names for export view */
   public renderSlots() {
     if (this.state.template.tables.length == 0) {
-      return <p>(none)</p>;
+      return <p>{strings.core.none}</p>;
     }
     return this.state.template.tables.map((table) => (
       <div key={table.name}>
@@ -392,26 +466,31 @@ export class ExportTemplateView extends ContextedComponent<
   }
 
   private getOriginalColumn(tableName: string, columnName: string) {
-    const dataTable = this.store.dataset.tables.find(
+    const dataTable = this.props.store.dataset.tables.find(
       (t) => t.name === tableName
     );
     const dataColumn = dataTable.columns.find((c) => c.name === columnName);
     return dataColumn;
   }
 
+  // eslint-disable-next-line
   public renderInferences() {
     const template = this.state.template;
     if (template.inference.length == 0) {
-      return <p>(none)</p>;
+      return <p>{strings.core.none}</p>;
     }
     return (
       template.inference
         // Only show axis and scale inferences
         .filter((inference) => inference.axis || inference.scale)
+        // eslint-disable-next-line
         .map((inference, index) => {
           let descriptionMin: string;
           let descriptionMax: string;
-          const object = findObjectById(this.store.chart, inference.objectID);
+          const object = findObjectById(
+            this.props.store.chart,
+            inference.objectID
+          );
           const temaplteObject = findObjectById(
             template.specification,
             inference.objectID
@@ -448,7 +527,7 @@ export class ExportTemplateView extends ContextedComponent<
                 keyAutoDomainMax
               ] === undefined
             ) {
-              this.dispatch(
+              this.props.store.dispatcher.dispatch(
                 new Actions.SetObjectProperty(
                   object,
                   inference.axis.property as string,
@@ -467,7 +546,7 @@ export class ExportTemplateView extends ContextedComponent<
             }
 
             onClickAutoDomainMax = () => {
-              this.dispatch(
+              this.props.store.dispatcher.dispatch(
                 new Actions.SetObjectProperty(
                   object,
                   inference.axis.property as string,
@@ -489,7 +568,7 @@ export class ExportTemplateView extends ContextedComponent<
           }
           if (inference.scale) {
             if (object.properties[keyAutoDomainMax] === undefined) {
-              this.dispatch(
+              this.props.store.dispatcher.dispatch(
                 new Actions.SetObjectProperty(
                   object,
                   keyAutoDomainMax,
@@ -508,7 +587,7 @@ export class ExportTemplateView extends ContextedComponent<
             }
 
             onClickAutoDomainMax = () => {
-              this.dispatch(
+              this.props.store.dispatcher.dispatch(
                 new Actions.SetObjectProperty(
                   object,
                   keyAutoDomainMax,
@@ -531,7 +610,7 @@ export class ExportTemplateView extends ContextedComponent<
                 keyAutoDomainMin
               ] === undefined
             ) {
-              this.dispatch(
+              this.props.store.dispatcher.dispatch(
                 new Actions.SetObjectProperty(
                   object,
                   inference.axis.property as string,
@@ -550,7 +629,7 @@ export class ExportTemplateView extends ContextedComponent<
             }
 
             onClickAutoDomainMin = () => {
-              this.dispatch(
+              this.props.store.dispatcher.dispatch(
                 new Actions.SetObjectProperty(
                   object,
                   inference.axis.property as string,
@@ -572,7 +651,7 @@ export class ExportTemplateView extends ContextedComponent<
           }
           if (inference.scale) {
             if (object.properties[keyAutoDomainMin] === undefined) {
-              this.dispatch(
+              this.props.store.dispatcher.dispatch(
                 new Actions.SetObjectProperty(
                   object,
                   keyAutoDomainMin,
@@ -591,7 +670,7 @@ export class ExportTemplateView extends ContextedComponent<
             }
 
             onClickAutoDomainMin = () => {
-              this.dispatch(
+              this.props.store.dispatcher.dispatch(
                 new Actions.SetObjectProperty(
                   object,
                   keyAutoDomainMin,
@@ -644,13 +723,13 @@ export class ExportTemplateView extends ContextedComponent<
     for (const p of this.state.template.properties) {
       const id = p.objectID;
       const object = findObjectById(
-        this.store.chart,
+        this.props.store.chart,
         id
       ) as Specification.ExposableObject;
 
       if (object && (p.target.attribute || p.target.property)) {
         if (object.properties.exposed == undefined) {
-          this.dispatch(
+          this.props.store.dispatcher.dispatch(
             new Actions.SetObjectProperty(
               object,
               "exposed",
@@ -674,30 +753,44 @@ export class ExportTemplateView extends ContextedComponent<
         continue;
       }
 
+      const onClick = () => {
+        this.props.store.dispatcher.dispatch(
+          new Actions.SetObjectProperty(
+            object,
+            "exposed",
+            null,
+            !(object.properties.exposed === undefined
+              ? true
+              : object.properties.exposed),
+            true,
+            true
+          )
+        );
+        const templateObject = findObjectById(
+          this.state.template.specification,
+          object._id
+        );
+        templateObject.properties.exposed = !templateObject.properties.exposed;
+        this.setState({ template });
+      };
+
       result.push(
         <div
+          aria-checked={
+            object.properties.exposed === undefined
+              ? "true"
+              : object.properties.exposed
+              ? "true"
+              : "false"
+          }
+          tabIndex={0}
           key={key}
           className="el-inference-item"
-          onClick={() => {
-            this.dispatch(
-              new Actions.SetObjectProperty(
-                object,
-                "exposed",
-                null,
-                !(object.properties.exposed === undefined
-                  ? true
-                  : object.properties.exposed),
-                true,
-                true
-              )
-            );
-            const templateObject = findObjectById(
-              this.state.template.specification,
-              object._id
-            );
-            templateObject.properties.exposed = !templateObject.properties
-              .exposed;
-            this.setState({ template });
+          onClick={onClick}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              onClick();
+            }
           }}
         >
           <SVGImageIcon
@@ -734,11 +827,14 @@ export class ExportTemplateView extends ContextedComponent<
         <h2>{strings.fileExport.labelProperties(this.props.exportKind)}</h2>
         {this.renderTargetProperties()}
         <div className="buttons">
-          <ButtonRaised
+          <DefaultButton
             text={this.props.exportKind}
-            url={R.getSVGIcon("toolbar/export")}
+            iconProps={{
+              iconName: "Export",
+            }}
+            styles={primaryButtonStyles}
             onClick={() => {
-              this.dispatch(
+              this.props.store.dispatcher.dispatch(
                 new Actions.ExportTemplate(
                   this.props.exportKind,
                   this.state.target,

@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { keys } from "d3";
-import { Prototypes, zipArray } from "../../../container";
-import { string } from "../../expression";
+import { strings } from "../../../strings";
 import {
   ConstraintPlugins,
   ConstraintSolver,
@@ -11,7 +9,7 @@ import {
   Variable,
 } from "../../solver";
 import * as Specification from "../../specification";
-import { AttributeMap, ObjectState } from "../../specification";
+import { ObjectState } from "../../specification";
 import { ChartElementClass } from "../chart_element";
 import {
   AttributeDescription,
@@ -21,17 +19,19 @@ import {
   Controls,
 } from "../common";
 import { ObjectClassMetadata } from "../index";
-import { CartesianPlotSegment } from "../plot_segments";
-// import { PolarState } from "../plot_segments/region_2d/polar";
+import { Region2DAttributes } from "../plot_segments";
 import { ChartStateManager } from "../state";
 
-export interface PolarGuideCoordinatorAttributesExtend {
+export interface PolarGuideCoordinatorAttributesExtend
+  extends Region2DAttributes {
   x: number;
   y: number;
   x1: number;
   y1: number;
   x2: number;
   y2: number;
+  cx: number;
+  cy: number;
 
   angle1: number;
   angle2: number;
@@ -61,10 +61,10 @@ export interface PolarGuideCoordinatorProperties
   extends PolarGuideCoordinatorPropertiesExtend,
     Specification.AttributeMap {}
 
-export const PolarGuidePropertyNames: Array<Extract<
+export const PolarGuidePropertyNames: Extract<
   keyof PolarGuideCoordinatorPropertiesExtend,
   string
->> = [
+>[] = [
   "angularGuidesCount",
   "endAngle",
   "innerRatio",
@@ -83,10 +83,10 @@ export interface PolarGuideObject
   properties: PolarGuideCoordinatorProperties;
 }
 
-export const PolarGuideBaseAttributeNames: Array<Extract<
+export const PolarGuideBaseAttributeNames: Extract<
   keyof PolarGuideCoordinatorAttributes,
   string
->> = ["x", "y", "x1", "y1", "x2", "y2", "angle1", "angle2", "radial1"];
+>[] = ["x", "y", "x1", "y1", "x2", "y2", "angle1", "angle2", "radial1"];
 
 export const getAngularValueName = (index: number) => `angularValue${index}`;
 export const getRadialValueName = (index: number) => `radialValue${index}`;
@@ -120,8 +120,10 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
     radialGuidesCount: 4,
   };
 
+  // eslint-disable-next-line
   public buildConstraints(
     solver: ConstraintSolver,
+    // eslint-disable-next-line
     constr: any,
     manager: ChartStateManager
   ) {
@@ -131,19 +133,19 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
     const radialY = this.getValueNamesForRadial();
     const chunkSizeY = (1 - 0) / radialY.length;
     const chunkRangesY = radialY.map((c, i) => {
-      return [
+      return <[number, number]>[
         0 + (0 + chunkSizeY) * i,
         0 + (0 + chunkSizeY) * i + chunkSizeY,
-      ] as [number, number];
+      ];
     });
 
     const angularX = this.getValueNamesForAngular();
     const chunkSizeX = (1 - 0) / angularX.length;
     const chunkRangesX = angularX.map((c, i) => {
-      return [
+      return <[number, number]>[
         0 + (0 + chunkSizeX) * i,
         0 + (0 + chunkSizeX) * i + chunkSizeX,
-      ] as [number, number];
+      ];
     });
 
     const [
@@ -246,11 +248,11 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
 
     // xy
     {
-      const angleVarable: Array<Variable> = [];
+      const angleVarable: Variable[] = [];
       for (let xindex = 0; xindex < angularX.length; xindex++) {
         angleVarable.push(solver.attr(attrs, angularX[xindex]));
       }
-      const radialVarable: Array<Variable> = [];
+      const radialVarable: Variable[] = [];
       for (let yindex = 0; yindex < radialY.length; yindex++) {
         radialVarable.push(solver.attr(attrs, radialY[yindex]));
       }
@@ -258,14 +260,14 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
       for (let xindex = 0; xindex < angularX.length; xindex++) {
         const [t1, t2] = chunkRangesX[xindex];
 
-        const vx1Expr = [
+        const vx1Expr = <[number, Variable][]>[
           [t1, angle2],
           [1 - t1, angle1],
-        ] as Array<[number, Variable]>;
-        const vx2Expr = [
+        ];
+        const vx2Expr = <[number, Variable][]>[
           [t2, angle2],
           [1 - t2, angle1],
-        ] as Array<[number, Variable]>;
+        ];
 
         const vx1 = solver.attr(
           { value: solver.getLinear(...vx1Expr) },
@@ -293,14 +295,14 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
       for (let yindex = 0; yindex < radialY.length; yindex++) {
         const [t1, t2] = chunkRangesY[yindex];
 
-        const vy1Expr = [
+        const vy1Expr = <[number, Variable][]>[
           [t1, outerRadius],
           [1 - t1, innerRadius],
-        ] as Array<[number, Variable]>;
-        const vy2Expr = [
+        ];
+        const vy2Expr = <[number, Variable][]>[
           [t2, outerRadius],
           [1 - t2, innerRadius],
-        ] as Array<[number, Variable]>;
+        ];
         const vy1 = solver.attr(
           { value: solver.getLinear(...vy1Expr) },
           "valueY",
@@ -336,46 +338,6 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
           attrs,
           chartConstraints,
           this.object._id,
-          (elementID: string, attribute: string, value: any) => {
-            const found = zipArray(
-              manager.chart.elements,
-              manager.chartState.elements
-            ).find(([element, elementState]) => {
-              return element._id === elementID;
-            });
-            if (found) {
-              const elementState = found[1];
-              elementState.attributes[attribute] = value;
-            } else {
-              for (const [element, elementState] of zipArray(
-                manager.chart.elements,
-                manager.chartState.elements
-              )) {
-                if (
-                  Prototypes.isType(element.classID, CartesianPlotSegment.type)
-                ) {
-                  const plotSegment = element as Specification.PlotSegment;
-                  const plotSegmentState = elementState as Specification.PlotSegmentState;
-                  for (const glyphState of plotSegmentState.glyphs) {
-                    const glyph = Prototypes.findObjectById(
-                      manager.chart,
-                      plotSegment.glyph
-                    ) as Specification.Glyph;
-                    const found = zipArray(glyph.marks, glyphState.marks).find(
-                      ([element, elementState]) => {
-                        return element._id === elementID;
-                      }
-                    );
-
-                    if (found) {
-                      const elementState = found[1];
-                      elementState.attributes[attribute] = value;
-                    }
-                  }
-                }
-              }
-            }
-          },
           manager
         )
       );
@@ -455,7 +417,6 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
   }
 
   public initializeState() {
-    const v = this.attributeNames;
     const attrs = this.state.attributes;
     attrs.angle1 = 0;
     attrs.angle2 = 360;
@@ -492,35 +453,35 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
     const { x1, y1, x2, y2 } = attrs;
 
     return [
-      {
+      <Handles.Line>{
         type: "line",
         axis: "y",
         value: y1,
         span: [x1, x2],
         actions: [{ type: "attribute", attribute: "y1" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "y",
         value: y2,
         span: [x1, x2],
         actions: [{ type: "attribute", attribute: "y2" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "x",
         value: x1,
         span: [y1, y2],
         actions: [{ type: "attribute", attribute: "x1" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "x",
         value: x2,
         span: [y1, y2],
         actions: [{ type: "attribute", attribute: "x2" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y1,
@@ -528,8 +489,8 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y1,
@@ -537,8 +498,8 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y2,
@@ -546,8 +507,8 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y2,
@@ -555,7 +516,7 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
+      },
     ];
   }
 
@@ -570,12 +531,12 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
       radial2 = (this.object.properties.outerRatio * (y2 - y1)) / 2;
     }
 
-    return {
+    return <BoundingBox.Circle>{
       type: "circle",
       cx: x,
       cy: y,
       radius: Math.abs(radial2),
-    } as BoundingBox.Circle;
+    };
   }
 
   public getSnappingGuides(): SnappingGuides.PolarAxis[] {
@@ -585,7 +546,7 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
         const nameX = getPointValueName(i, j, "X");
         const nameY = getPointValueName(i, j, "Y");
 
-        result.push({
+        result.push(<SnappingGuides.PolarAxis>{
           type: "point",
           angle: this.state.attributes[nameX],
           radius: this.state.attributes[nameY],
@@ -598,12 +559,12 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
           cy: this.state.attributes.y,
           visibleAngle: this.state.attributes[getAngularValueName(i)],
           visibleRadius: this.state.attributes[getRadialValueName(j)],
-        } as SnappingGuides.PolarAxis);
+        });
       }
     }
 
     // add center for coordinates
-    result.push({
+    result.push(<SnappingGuides.PolarAxis>{
       type: "point",
       angle: this.state.attributes.x,
       radius: this.state.attributes.y,
@@ -616,7 +577,7 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
       cy: this.state.attributes.y,
       visibleAngle: 0,
       visibleRadius: 0,
-    } as SnappingGuides.PolarAxis);
+    });
 
     return result;
   }
@@ -626,23 +587,21 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     return [
-      manager.sectionHeader("Guide Coordinator"),
-      manager.row(
-        "Angular",
-        manager.inputNumber(
-          { property: "angularGuidesCount" },
-          {
-            showUpdown: true,
-            updownTick: 1,
-            updownRange: [1, 100],
-            minimum: 2,
-            maximum: 100,
-          }
-        )
+      manager.sectionHeader(strings.objects.guides.guideCoordinator),
+      manager.inputNumber(
+        { property: "angularGuidesCount" },
+        {
+          showUpdown: true,
+          updownTick: 1,
+          updownRange: [1, 100],
+          minimum: 2,
+          maximum: 100,
+          label: strings.objects.guides.angular,
+        }
       ),
       // uncomment to allow configure count of guides in different radiuses
       // manager.row(
-      //   "Radial",
+      //   strings.objects.guides.radial,
       //   manager.inputNumber(
       //     { property: "radialGuidesCount" },
       //     {
@@ -654,8 +613,8 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
       //     }
       //   )
       // ),
-      manager.row(
-        "Angle",
+      manager.vertical(
+        manager.label(strings.objects.guides.angle),
         manager.horizontal(
           [1, 0, 1],
           manager.inputNumber({ property: "startAngle" }),
@@ -665,7 +624,7 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
       ),
       // uncomment to allow configure raito
       // manager.row(
-      //   "Radius",
+      //   strings.objects.guides.radius,
       //   manager.horizontal(
       //     [0, 1, 0, 1],
       //     manager.label("Inner:"),

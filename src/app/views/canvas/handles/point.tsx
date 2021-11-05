@@ -49,7 +49,7 @@ export class PointHandleView extends React.Component<
     let dYIntegrate: number = 0;
     let dYLast: number = 0;
 
-    this.hammer.on("panstart", (e) => {
+    this.hammer.on("panstart", () => {
       context = new HandlesDragContext();
       oldXValue = this.props.handle.x;
       oldYValue = this.props.handle.y;

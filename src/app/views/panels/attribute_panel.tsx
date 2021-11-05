@@ -1,5 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
+
 import * as React from "react";
 import * as R from "../../resources";
 
@@ -13,7 +17,8 @@ import {
   GlyphSelection,
   MarkSelection,
 } from "../../stores";
-import { WidgetManager } from "./widgets/manager";
+import { FluentUIWidgetManager } from "./widgets/fluentui_manager";
+import { strings } from "../../../strings";
 
 function getObjectIcon(classID: string) {
   return R.getSVGIcon(
@@ -55,17 +60,16 @@ export class AttributePanel extends React.Component<
     );
   }
 
+  // eslint-disable-next-line
   public render() {
     const selection = this.props.store.currentSelection;
     let object: Specification.Object;
     let objectClass: Prototypes.ObjectClass;
-    let manager: WidgetManager;
+    let manager: FluentUIWidgetManager;
     if (selection) {
       if (selection instanceof GlyphSelection) {
         if (!selection.plotSegment) {
-          return this.renderUnexpectedState(
-            "To edit this glyph, please create a plot segment with it."
-          );
+          return this.renderUnexpectedState(strings.canvas.markContainer);
         }
         const glyph = selection.glyph;
         object = glyph;
@@ -76,7 +80,7 @@ export class AttributePanel extends React.Component<
             this.props.store.getSelectedGlyphIndex(selection.plotSegment._id)
           )
         );
-        manager = new WidgetManager(this.props.store, objectClass);
+        manager = new FluentUIWidgetManager(this.props.store, objectClass);
         manager.onEditMappingHandler = (attribute, mapping) => {
           new Actions.SetGlyphAttribute(glyph, attribute, mapping).dispatch(
             this.props.store.dispatcher
@@ -85,9 +89,7 @@ export class AttributePanel extends React.Component<
       }
       if (selection instanceof MarkSelection) {
         if (!selection.plotSegment) {
-          return this.renderUnexpectedState(
-            "To edit this glyph, please create a plot segment with it."
-          );
+          return this.renderUnexpectedState(strings.canvas.markContainer);
         }
         const glyph = selection.glyph;
         const mark = selection.mark;
@@ -100,7 +102,7 @@ export class AttributePanel extends React.Component<
             this.props.store.getSelectedGlyphIndex(selection.plotSegment._id)
           )
         );
-        manager = new WidgetManager(this.props.store, objectClass);
+        manager = new FluentUIWidgetManager(this.props.store, objectClass);
         manager.onEditMappingHandler = (attribute, mapping) => {
           new Actions.SetMarkAttribute(
             glyph,
@@ -118,7 +120,8 @@ export class AttributePanel extends React.Component<
             data.expression,
             data.valueType,
             data.metadata,
-            hints
+            hints,
+            data.table.name
           ).dispatch(this.props.store.dispatcher);
         };
       }
@@ -129,7 +132,7 @@ export class AttributePanel extends React.Component<
         );
         object = markLayout;
         objectClass = layoutClass;
-        manager = new WidgetManager(this.props.store, objectClass);
+        manager = new FluentUIWidgetManager(this.props.store, objectClass);
         manager.onEditMappingHandler = (attribute, mapping) => {
           new Actions.SetChartElementMapping(
             markLayout,
@@ -157,7 +160,7 @@ export class AttributePanel extends React.Component<
       );
       object = chart;
       objectClass = boundClass;
-      manager = new WidgetManager(this.props.store, objectClass);
+      manager = new FluentUIWidgetManager(this.props.store, objectClass);
       manager.onEditMappingHandler = (attribute, mapping) => {
         new Actions.SetChartAttribute(attribute, mapping).dispatch(
           this.props.store.dispatcher
@@ -169,7 +172,11 @@ export class AttributePanel extends React.Component<
         <div className="attribute-editor charticulator__widget-container">
           <section className="attribute-editor-element" key={object._id}>
             <div className="header">
-              <SVGImageIcon url={getObjectIcon(object.classID)} />
+              <SVGImageIcon
+                url={getObjectIcon(object.classID)}
+                height={32}
+                width={32}
+              />
               <EditableTextView
                 text={object.properties.name}
                 onEdit={(newValue) => {

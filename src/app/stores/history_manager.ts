@@ -34,4 +34,16 @@ export class HistoryManager<StateType> {
     this.statesAfter = [];
     this.statesBefore = [];
   }
+
+  public getState() {
+    return {
+      statesAfter: this.statesAfter,
+      statesBefore: this.statesBefore,
+    };
+  }
+
+  public setState(statesAfter: StateType[], statesBefore: StateType[]) {
+    this.statesAfter = statesAfter;
+    this.statesBefore = statesBefore;
+  }
 }

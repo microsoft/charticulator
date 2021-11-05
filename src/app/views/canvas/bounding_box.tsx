@@ -4,8 +4,6 @@ import * as React from "react";
 
 import { Prototypes, Geometry, ZoomInfo, Graphics, Point } from "../../../core";
 
-import { Actions } from "../../actions";
-
 import { classNames, toSVGZoom, toSVGNumber } from "../../utils";
 import { renderGraphicalElementSVG } from "../../renderer";
 
@@ -20,7 +18,10 @@ export interface BoundingBoxViewProps {
   offset?: Point;
 }
 
-export class BoundingBoxView extends React.Component<BoundingBoxViewProps, {}> {
+export class BoundingBoxView extends React.Component<
+  BoundingBoxViewProps,
+  Record<string, unknown>
+> {
   constructor(props: BoundingBoxViewProps) {
     super(props);
 
@@ -47,6 +48,7 @@ export class BoundingBoxView extends React.Component<BoundingBoxViewProps, {}> {
     }
   }
 
+  // eslint-disable-next-line
   public render() {
     const bbox = this.props.boundingBox;
     const zoom = this.props.zoom;
@@ -71,7 +73,6 @@ export class BoundingBoxView extends React.Component<BoundingBoxViewProps, {}> {
           cx + rect.width / 2,
           cy + rect.height / 2
         );
-        const p = Geometry.applyZoom(zoom, { x: cx, y: -cy });
         return (
           <g
             className={mainClassName}

@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 /** 2D point */
+/* eslint-disable @typescript-eslint/no-namespace */
+
 export interface Point {
   x: number;
   y: number;
@@ -145,12 +147,12 @@ export namespace Geometry {
   }
 
   export function degreesToRadians(degrees: number) {
-    return (degrees / 180) * Math.PI
+    return (degrees / 180) * Math.PI;
   }
 }
 
 export function prettyNumber(x: number, digits: number = 8) {
   return x
-    .toFixed(digits)
-    .replace(/^([\+\-]?[0-9]*(\.[0-9]*[1-9]+)?)\.?0+$/, "$1");
+    ?.toFixed(digits)
+    .replace(/^([+-]?[0-9]*(\.[0-9]*[1-9]+)?)\.?0+$/, "$1");
 }

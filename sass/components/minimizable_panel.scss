@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+@use 'sass:math';
 .minimizable-panel-view {
   display: flex;
   flex-direction: column;
@@ -15,7 +16,6 @@
     border-bottom: 1px solid $gray-160;
 
     & > .header {
-
       @include font-bold;
 
       .buttons {
@@ -48,7 +48,7 @@
       .svg-image-icon {
         display: inline-block;
         vertical-align: top;
-        margin: (($header-height - 14px) / 2) 4px;
+        margin: math.div(($header-height - 14px), 2) 4px;
         width: 14px;
         height: 14px;
         filter: invert(30%);
@@ -95,7 +95,7 @@
   border: 1px solid $gray-100;
   border-radius: 2px;
   box-sizing: border-box;
-  background: $theme-secondary-background;
+  background: $white;
   position: absolute;
   width: 322px;
   left: 100px;
@@ -132,13 +132,9 @@
 
     $header-height: 28px;
 
-    background-color: $gray-225;
+    background-color: $gray-230;
 
-    @include shadow-ambient;
-
-    // border-top: 1px solid $gray-160;
-    // border-bottom: 1px solid $gray-160;
-    color: $gray-100;
+    color: $gray-000;
     height: $header-height;
     line-height: $header-height;
     font-size: 16px;

@@ -6,12 +6,19 @@ import { ConstraintSolver } from "../../solver";
 import * as Specification from "../../specification";
 import { BuildConstraintsContext, ChartElementClass } from "../chart_element";
 import { BoundingBox, Controls, DropZones, Handles } from "../common";
-import { DataflowTable } from "../dataflow";
 import { FunctionCall, TextExpression, Variable } from "../../expression";
-import { refineColumnName } from "../..";
+import {
+  getSortFunctionByData,
+  refineColumnName,
+  tickFormatParserExpression,
+  ZoomInfo,
+} from "../..";
 import { AxisRenderer } from "./axis";
 import { utcFormat } from "d3-time-format";
-import { getDateFormat } from "../../dataset/datetime";
+import { AxisDataBindingType, NumericalMode } from "../../specification/types";
+import { strings } from "../../../strings";
+import { PanelMode } from "../controls";
+import { ReactElement } from "react";
 
 export abstract class PlotSegmentClass<
   PropertiesType extends Specification.AttributeMap = Specification.AttributeMap,
@@ -21,18 +28,29 @@ export abstract class PlotSegmentClass<
   public readonly state: Specification.PlotSegmentState<AttributesType>;
 
   /** Fill the layout's default state */
+  // eslint-disable-next-line
   public initializeState(): void {}
 
   /** Build intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles) */
+  // eslint-disable-next-line
   public buildConstraints(
+    // eslint-disable-next-line
     solver: ConstraintSolver,
-    context: BuildConstraintsContext
+    // eslint-disable-next-line
+    context: BuildConstraintsContext,
+    // eslint-disable-next-line
+    manager: ChartStateManager
+    // eslint-disable-next-line
   ): void {}
 
   /** Build constraints for glyphs within */
+  // eslint-disable-next-line
   public buildGlyphConstraints(
+    // eslint-disable-next-line
     solver: ConstraintSolver,
+    // eslint-disable-next-line
     context: BuildConstraintsContext
+    // eslint-disable-next-line
   ): void {}
 
   /** Get the graphics that represent this layout */
@@ -43,12 +61,24 @@ export abstract class PlotSegmentClass<
     return Graphics.makeGroup([glyphGraphics, this.getGraphics(manager)]);
   }
 
-  /** Get the graphics that represent this layout */
+  /** Get the graphics that represent this layout of elements in background*/
   public getPlotSegmentBackgroundGraphics(
+    // eslint-disable-next-line
     manager: ChartStateManager
   ): Graphics.Element {
     return null;
-  }   
+  }
+
+  // Renders interactable elements of plotsegment;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public renderControls(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _manager: ChartStateManager,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _zoom: ZoomInfo
+  ): ReactElement<any>[] {
+    return null;
+  }
 
   public getCoordinateSystem(): Graphics.CoordinateSystem {
     return new Graphics.CartesianCoordinates();
@@ -68,8 +98,6 @@ export abstract class PlotSegmentClass<
     return null;
   }
 
-
-  
   /**
    * Renders gridlines for axis
    * @param data axis data binding
@@ -84,73 +112,95 @@ export abstract class PlotSegmentClass<
     if (!data) {
       return [];
     }
+
+    if (data.type === AxisDataBindingType.Default) {
+      return [];
+    }
+
+    return PlotSegmentClass.getGridLineAttributePanelWidgets(
+      manager,
+      axisProperty
+    );
+  }
+
+  public static getGridLineAttributePanelWidgets(
+    manager: Controls.WidgetManager,
+    axisProperty: string
+  ) {
     return [
-      manager.sectionHeader(
-        "Gridline"
-      ),
-      manager.row(
-        "Style",
-        manager.horizontal(
-          [1, 1],
+      manager.verticalGroup(
+        {
+          header: strings.objects.plotSegment.gridline,
+        },
+        [
           manager.inputSelect(
             { property: axisProperty, field: ["style", "gridlineStyle"] },
             {
               type: "dropdown",
               showLabel: true,
-              icons: ["general/cross","stroke/solid", "stroke/dashed", "stroke/dotted"],
+              icons: [
+                "ChromeClose",
+                "stroke/solid",
+                "stroke/dashed",
+                "stroke/dotted",
+              ],
               options: ["none", "solid", "dashed", "dotted"],
               labels: ["None", "Solid", "Dashed", "Dotted"],
+              label: strings.objects.style,
             }
-          )
-        )
+          ),
+          manager.inputColor(
+            {
+              property: axisProperty,
+              field: ["style", "gridlineColor"],
+            },
+            {
+              label: strings.objects.color,
+              labelKey: strings.objects.color,
+            }
+          ),
+          manager.inputNumber(
+            {
+              property: axisProperty,
+              field: ["style", "gridlineWidth"],
+            },
+            {
+              minimum: 0,
+              maximum: 100,
+              showUpdown: true,
+              label: strings.objects.width,
+            }
+          ),
+        ]
       ),
-      manager.row(
-        "Color",
-        manager.horizontal(
-          [1, 1],
-          manager.inputColor({
-            property: axisProperty,
-            field: ["style", "gridlineColor"],
-          })
-        )
-      ),
-      manager.row(
-        "Width",
-        manager.horizontal(
-          [1, 1],
-          manager.inputNumber({
-            property: axisProperty,
-            field: ["style", "gridlineWidth"],
-          }, {
-            minimum: 0,
-            maximum: 100,
-            showUpdown: true
-          })
-        )
-      ),
-    ]
+    ];
   }
 
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     return [
-      manager.row(
-        "Data",
+      manager.horizontal(
+        [0, 1, 1],
+        manager.label("Data", {
+          addMargins: true,
+        }),
         manager.horizontal(
-          [0, 1],
-          manager.filterEditor({
-            table: this.object.table,
-            target: { plotSegment: this.object },
-            value: this.object.filter,
-            mode: "button",
-          }),
-          manager.groupByEditor({
-            table: this.object.table,
-            target: { plotSegment: this.object },
-            value: this.object.groupBy,
-            mode: "button",
-          })
+          [1],
+          [
+            manager.filterEditor({
+              table: this.object.table,
+              target: { plotSegment: this.object },
+              value: this.object.filter,
+              mode: PanelMode.Button,
+            }),
+            manager.groupByEditor({
+              table: this.object.table,
+              target: { plotSegment: this.object },
+              value: this.object.groupBy,
+              mode: PanelMode.Button,
+            }),
+          ]
         )
       ),
     ];
@@ -159,7 +209,7 @@ export abstract class PlotSegmentClass<
   public static createDefault(
     glyph: Specification.Glyph
   ): Specification.PlotSegment {
-    const plotSegment = super.createDefault() as Specification.PlotSegment;
+    const plotSegment = <Specification.PlotSegment>super.createDefault();
     plotSegment.glyph = glyph._id;
     plotSegment.table = glyph.table;
     return plotSegment;
@@ -174,20 +224,21 @@ export abstract class PlotSegmentClass<
       (table) => table.name === tableName
     );
     const getColumnName = (rawExpression: string) => {
+      // eslint-disable-next-line
       const expression = TextExpression.Parse(`\$\{${rawExpression}\}`);
       const parsedExpression = expression.parts.find((part) => {
         if (part.expression instanceof FunctionCall) {
-          return part.expression.args.find(
-            (arg) => arg instanceof Variable
-          ) as any;
+          return <any>(
+            part.expression.args.find((arg) => arg instanceof Variable)
+          );
         }
       });
       const functionCallpart =
-        parsedExpression && (parsedExpression.expression as FunctionCall);
+        parsedExpression && <FunctionCall>parsedExpression.expression;
       if (functionCallpart) {
-        const variable = functionCallpart.args.find(
-          (arg) => arg instanceof Variable
-        ) as Variable;
+        const variable = <Variable>(
+          functionCallpart.args.find((arg) => arg instanceof Variable)
+        );
         const columnName = variable.name;
         const column = table.columns.find(
           (column) => column.name === columnName
@@ -206,7 +257,7 @@ export abstract class PlotSegmentClass<
         table.rows.forEach((row) => {
           const value = row[columnName];
           const rawValue = row[rawColumnName];
-          if (value !== undefined && rawValue !== undefined) {
+          if (value !== undefined && value !== null && rawValue !== undefined) {
             const stringValue = value.toString();
             const rawValueString = (
               rawValue || row[refineColumnName(rawColumnName)]
@@ -228,10 +279,15 @@ export abstract class PlotSegmentClass<
     tickFormat?: string,
     manager?: ChartStateManager
   ) => {
-    if (binding.numericalMode === "temporal" || binding.valueType === "date") {
+    if (
+      binding.numericalMode === NumericalMode.Temporal ||
+      binding.valueType === Specification.DataType.Date
+    ) {
       if (tickFormat) {
         return (value: any) => {
-          return utcFormat(tickFormat)(value);
+          return utcFormat(
+            tickFormat.replace(tickFormatParserExpression(), "$1")
+          )(value);
         };
       } else {
         return (value: any) => {
@@ -263,7 +319,7 @@ export abstract class PlotSegmentClass<
     if (!this.object.properties.sublayout) {
       return groups;
     }
-    const order = (this.object.properties.sublayout as any).order;
+    const order = (<any>this.object.properties.sublayout).order;
     const dateRowIndices = this.state.dataRowIndices;
     const table = this.parent.dataflow.getTable(this.object.table);
 
@@ -278,17 +334,12 @@ export abstract class PlotSegmentClass<
         const vj = orderExpression.getValue(
           table.getGroupedContext(dateRowIndices[j])
         );
-        if (vi < vj) {
-          return -1;
-        } else if (vi > vj) {
-          return 1;
-        } else {
-          return 0;
-        }
+
+        return getSortFunctionByData([vi + "", vj + ""])(vi, vj);
       };
       groups.sort(compare);
     }
-    if ((this.object.properties.sublayout as any).orderReversed) {
+    if ((<any>this.object.properties.sublayout).orderReversed) {
       groups.reverse();
     }
 

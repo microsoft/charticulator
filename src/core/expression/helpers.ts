@@ -15,6 +15,7 @@ import {
   Context,
 } from "./classes";
 import { DataflowTable } from "../prototypes/dataflow";
+import { DataKind, DataType } from "../specification";
 
 export function variable(name: string): Variable {
   return new Variable(name);
@@ -66,30 +67,116 @@ export interface AggregationFunctionDescription {
   name: string;
   displayName: string;
   /** Supported input types, if unspecified, any */
-  inputTypes?: string[];
+  inputTypes?: DataType[];
+  inputKind?: DataKind[];
 }
 export const aggregationFunctions: AggregationFunctionDescription[] = [
-  { name: "avg", displayName: "Average", inputTypes: ["number"] },
-  { name: "median", displayName: "Median", inputTypes: ["number"] },
-  { name: "sum", displayName: "Sum", inputTypes: ["number"] },
-  { name: "min", displayName: "Min", inputTypes: ["number"] },
-  { name: "max", displayName: "Max", inputTypes: ["number"] },
-  { name: "stdev", displayName: "Standard Deviation", inputTypes: ["number"] },
-  { name: "variance", displayName: "Variance", inputTypes: ["number"] },
-  { name: "first", displayName: "First" },
-  { name: "last", displayName: "Last" },
-  { name: "count", displayName: "Count" },
+  {
+    name: "avg",
+    displayName: "Average",
+    inputTypes: [DataType.Number],
+    inputKind: [DataKind.Numerical, DataKind.Temporal],
+  },
+  {
+    name: "median",
+    displayName: "Median",
+    inputTypes: [DataType.Number],
+    inputKind: [DataKind.Numerical, DataKind.Temporal],
+  },
+  {
+    name: "sum",
+    displayName: "Sum",
+    inputTypes: [DataType.Number],
+    inputKind: [DataKind.Numerical, DataKind.Temporal],
+  },
+  {
+    name: "min",
+    displayName: "Min",
+    inputTypes: [DataType.Number],
+    inputKind: [DataKind.Numerical, DataKind.Temporal],
+  },
+  {
+    name: "max",
+    displayName: "Max",
+    inputTypes: [DataType.Number],
+    inputKind: [DataKind.Numerical, DataKind.Temporal],
+  },
+  {
+    name: "stdev",
+    displayName: "Standard Deviation",
+    inputTypes: [DataType.Number],
+    inputKind: [DataKind.Numerical, DataKind.Temporal],
+  },
+  {
+    name: "variance",
+    displayName: "Variance",
+    inputTypes: [DataType.Number],
+    inputKind: [DataKind.Numerical, DataKind.Temporal],
+  },
+  {
+    name: "first",
+    displayName: "First",
+    inputTypes: [DataType.String, DataType.Boolean],
+    inputKind: [DataKind.Categorical, DataKind.Ordinal],
+  },
+  {
+    name: "last",
+    displayName: "Last",
+    inputTypes: [DataType.String, DataType.Boolean],
+    inputKind: [DataKind.Categorical, DataKind.Ordinal],
+  },
+  {
+    name: "count",
+    displayName: "Count",
+    inputTypes: [DataType.String, DataType.Boolean],
+    inputKind: [DataKind.Categorical, DataKind.Ordinal],
+  },
+  {
+    name: "quartile1",
+    displayName: "1st Quartile",
+    inputTypes: [DataType.Number],
+    inputKind: [DataKind.Numerical, DataKind.Temporal],
+  },
+  {
+    name: "quartile3",
+    displayName: "3rd Quartile",
+    inputTypes: [DataType.Number],
+    inputKind: [DataKind.Numerical, DataKind.Temporal],
+  },
+  {
+    name: "iqr",
+    displayName: "Inter Quartile Range (IQR)",
+    inputTypes: [DataType.Number],
+    inputKind: [DataKind.Numerical, DataKind.Temporal],
+  },
 ];
 
-export function getCompatibleAggregationFunctions(inputType: string) {
+export function getCompatibleAggregationFunctionsByDataType(
+  inputType: DataType
+) {
   return aggregationFunctions.filter(
     (x) => x.inputTypes == null || x.inputTypes.indexOf(inputType) >= 0
   );
 }
 
-export function getDefaultAggregationFunction(inputType: string) {
-  if (inputType == "number" || inputType == "date") {
-    return "avg";
+export function getCompatibleAggregationFunctionsByDataKind(
+  inputKind: DataKind
+) {
+  return aggregationFunctions.filter(
+    (x) => x.inputKind == null || x.inputKind.indexOf(inputKind) >= 0
+  );
+}
+
+export function getDefaultAggregationFunction(
+  inputType: DataType,
+  kind: DataKind
+) {
+  if (inputType == DataType.Number || inputType == DataType.Date) {
+    if (kind === DataKind.Categorical || kind === DataKind.Ordinal) {
+      return "first";
+    } else {
+      return "avg";
+    }
   } else {
     return "first";
   }

@@ -11,6 +11,7 @@ $gray-060: #3e3e3e;
 $gray-070: #484848;
 $gray-080: #525252;
 $gray-090: #5c5c5c;
+$gray-095: #605e5c;
 $gray-100: #676767;
 $gray-110: #717171;
 $gray-120: #7c7c7c;
@@ -55,6 +56,8 @@ $color-canvas-tool: #f1f1f1;
 
 $primary-button-color: #f2c811;
 
+$nested-chart-header-color: rgb(165, 185, 209);
+
 // Shadows
 @mixin shadow-ambient {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -70,4 +73,8 @@ $primary-button-color: #f2c811;
 
 @mixin shadow-focused-left {
   box-shadow: -3px 0 5px rgba(0, 0, 0, 0.3);
+}
+
+@mixin no-shadow {
+  box-shadow: unset;
 }

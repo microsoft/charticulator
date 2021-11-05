@@ -1,6 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Color, Scale, getDefaultColorPalette } from "../../common";
+import {
+  Color,
+  Scale,
+  getDefaultColorPalette,
+  getDefaultColorPaletteByValue,
+  getDefaultColorPaletteGenerator,
+} from "../../common";
 import { ConstraintSolver, ConstraintStrength, Variable } from "../../solver";
 import {
   DataValue,
@@ -15,6 +21,9 @@ import { AttributeDescriptions } from "../object";
 import { InferParametersOptions } from "./scale";
 import { color as d3color } from "d3-color";
 import { OrderMode } from "../../specification/types";
+import { ReservedMappingKeyNamePrefix } from "../legends/categorical_legend";
+import { strings } from "../../../strings";
+import { Specification } from "../..";
 
 function reuseMapping<T>(
   domain: Map<string, any>,
@@ -33,8 +42,9 @@ function reuseMapping<T>(
   }
   // Assign remaining keys from the domain
   domain.forEach((v, d) => {
+    // eslint-disable-next-line
     if (!result.hasOwnProperty(d)) {
-      if (available.length > 1) {
+      if (available.length > 0) {
         result[d] = available[0];
         available.splice(0, 1);
       } else {
@@ -71,11 +81,17 @@ export class CategoricalScaleNumber extends ScaleClass<
     },
   };
 
+  public static defaultProperties: Specification.AttributeMap = {
+    exposed: true,
+    autoDomainMin: true,
+    autoDomainMax: true,
+  };
+
   public mapDataToAttribute(data: DataValue): AttributeValue {
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const number = props.mapping[data.toString()];
-    return number * attrs.rangeScale;
+    const number = props.mapping[data ? data?.toString() : null];
+    return (number ?? 0) * attrs.rangeScale;
   }
 
   public buildConstraint(
@@ -85,7 +101,7 @@ export class CategoricalScaleNumber extends ScaleClass<
   ) {
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const k = props.mapping[data.toString()];
+    const k = props.mapping[data?.toString()];
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
@@ -106,7 +122,7 @@ export class CategoricalScaleNumber extends ScaleClass<
     const attrs = this.state.attributes;
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
-    const values = column.filter((x) => typeof x == "string") as string[];
+    const values = <string[]>column.filter((x) => typeof x == "string");
     s.inferParameters(values, OrderMode.order);
 
     props.mapping = {};
@@ -121,7 +137,7 @@ export class CategoricalScaleNumber extends ScaleClass<
         (v / (s.domain.size - 1)) * (range[1] - range[0]) + range[0];
     });
 
-    attrs.rangeScale = range[1] as number;
+    attrs.rangeScale = <number>range[1];
   }
 
   public getAttributePanelWidgets(
@@ -130,6 +146,7 @@ export class CategoricalScaleNumber extends ScaleClass<
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
+      // eslint-disable-next-line
       if (props.mapping.hasOwnProperty(key)) {
         keys.push(key);
       }
@@ -149,41 +166,33 @@ export class CategoricalScaleNumber extends ScaleClass<
       manager.row(
         "",
         manager.vertical(
-          manager.horizontal(
-            [0, 1],
-            manager.label("Auto range min value"),
-            null,
-            manager.inputBoolean(
-              {
-                property: "autoDomainMin",
-              },
-              {
-                type: "checkbox",
-              }
-            )
+          manager.inputBoolean(
+            {
+              property: "autoDomainMin",
+            },
+            {
+              type: "checkbox",
+              label: "Auto min value",
+            }
           ),
-          manager.horizontal(
-            [0, 1],
-            manager.label("Auto range max value"),
-            null,
-            manager.inputBoolean(
-              {
-                property: "autoDomainMax",
-              },
-              {
-                type: "checkbox",
-              }
-            )
+          manager.inputBoolean(
+            {
+              property: "autoDomainMax",
+            },
+            {
+              type: "checkbox",
+              label: "Auto max value",
+            }
           )
         )
-      )
+      ),
     ];
   }
 }
 
 export class CategoricalScaleColor extends ScaleClass<
   CategoricalScaleProperties<Color>,
-  {}
+  any
 > {
   public static metadata: ObjectClassMetadata = {
     displayName: "Scale",
@@ -198,9 +207,10 @@ export class CategoricalScaleColor extends ScaleClass<
 
   public mapDataToAttribute(data: DataValue): AttributeValue {
     const props = this.object.properties;
-    return props.mapping[data.toString()];
+    return props.mapping[data?.toString()];
   }
 
+  // eslint-disable-next-line
   public initializeState(): void {}
 
   public inferParameters(
@@ -209,33 +219,69 @@ export class CategoricalScaleColor extends ScaleClass<
   ): void {
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
-    const values = column
-      .filter((x) => x != null)
-      .map((x) => x.toString()) as string[];
+    const values = column.filter((x) => x != null).map((x) => x.toString());
     s.inferParameters(values, OrderMode.order);
 
+    props.autoDomainMin = true;
+    props.autoDomainMax = true;
     // If we shouldn't reuse the range, then reset the mapping
     if (!options.reuseRange) {
       props.mapping = null;
 
       // Otherwise, if we already have a mapping, try to reuse it
     } else if (props.mapping != null) {
-      props.mapping = reuseMapping(s.domain, props.mapping);
+      if (options.extendScaleMin || options.extendScaleMax) {
+        const mapping = reuseMapping(s.domain, props.mapping);
+
+        let colorList = literalColorValues(values);
+        if (!colorList) {
+          // Find a good default color palette
+          colorList = getDefaultColorPalette(s.length);
+        }
+        s.domain.forEach((v, d) => {
+          // If we still don't have enough colors, reuse them
+          // NEEDTO: fix this with a better method
+          if (!mapping[d]) {
+            mapping[d] = colorList[v % colorList.length];
+          }
+        });
+
+        // Find unused mapping and save them, if count if new mapping domain is less thant old.
+        const newMappingKeys = Object.keys(mapping);
+        const oldMappingKeys = Object.keys(props.mapping);
+        if (newMappingKeys.length < oldMappingKeys.length) {
+          oldMappingKeys
+            .slice(newMappingKeys.length, oldMappingKeys.length)
+            .filter((key) => key.startsWith(ReservedMappingKeyNamePrefix))
+            .forEach((key) => {
+              mapping[key] = props.mapping[key];
+            });
+        }
+
+        props.mapping = mapping;
+      } else {
+        props.mapping = reuseMapping(s.domain, props.mapping);
+      }
     }
     if (props.mapping == null) {
       // If we can't reuse existing colors, infer from scratch
       props.mapping = {};
       // try to use literal values as color
       let colorList = literalColorValues(values);
-      if (!colorList) {
-        // Find a good default color palette
+      if (colorList) {
+        s.domain.forEach((v, d) => {
+          props.mapping[d] = colorList[v % colorList.length];
+        });
+      } else if (getDefaultColorPaletteGenerator()) {
+        s.domain.forEach((v, d) => {
+          props.mapping[d] = getDefaultColorPaletteByValue(d, s.length);
+        });
+      } else {
         colorList = getDefaultColorPalette(s.length);
+        s.domain.forEach((v, d) => {
+          props.mapping[d] = colorList[v % colorList.length];
+        });
       }
-      s.domain.forEach((v, d) => {
-        // If we still don't have enough colors, reuse them
-        // TODO: fix this with a better method
-        props.mapping[d] = colorList[v % colorList.length];
-      });
     }
   }
 
@@ -245,22 +291,59 @@ export class CategoricalScaleColor extends ScaleClass<
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
+      // eslint-disable-next-line
       if (props.mapping.hasOwnProperty(key)) {
         keys.push(key);
       }
     }
     return [
+      manager.inputBoolean(
+        [
+          {
+            property: "autoDomainMin",
+          },
+          {
+            property: "autoDomainMax",
+          },
+        ],
+        {
+          type: "checkbox",
+          label: strings.objects.dataAxis.autoUpdateValues,
+        }
+      ),
       manager.sectionHeader("Color Mapping"),
       manager.scrollList(
         keys.map((key) =>
           manager.horizontal(
-            [2, 3],
-            manager.text(key, "right"),
-            manager.inputColor({
-              property: "mapping",
-              field: key,
-              noComputeLayout: true,
-            })
+            [1, 0],
+            manager.inputText(
+              { property: "mapping" },
+              {
+                updateProperty: true,
+                value: key,
+                underline: true,
+                styles: {
+                  textAlign: "right",
+                },
+                emitMappingAction: true,
+              }
+            ),
+            manager.inputColor(
+              {
+                property: "mapping",
+                field: key,
+                noComputeLayout: true,
+              },
+              {
+                // label: key,
+                noDefaultMargin: true,
+                stopPropagation: true,
+                labelKey: key,
+                width: 100,
+                underline: true,
+                pickerBeforeTextField: true,
+              }
+            )
           )
         )
       ),
@@ -276,6 +359,7 @@ function literalColorValues(values: string[]) {
     if (cache[value]) {
       continue;
     }
+
     const d3c = d3color(value);
     if (!d3c) {
       return null;
@@ -292,7 +376,7 @@ function literalColorValues(values: string[]) {
 
 export class CategoricalScaleEnum extends ScaleClass<
   CategoricalScaleProperties<string>,
-  {}
+  any
 > {
   public static classID = "scale.categorical<string,enum>";
   public static type = "scale";
@@ -302,9 +386,10 @@ export class CategoricalScaleEnum extends ScaleClass<
 
   public mapDataToAttribute(data: DataValue): AttributeValue {
     const props = this.object.properties;
-    return props.mapping[data.toString()];
+    return props.mapping[data?.toString()];
   }
 
+  // eslint-disable-next-line
   public initializeState(): void {}
 
   public inferParameters(
@@ -313,9 +398,7 @@ export class CategoricalScaleEnum extends ScaleClass<
   ): void {
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
-    const values = column
-      .filter((x) => x != null)
-      .map((x) => x.toString()) as string[];
+    const values = column.filter((x) => x != null).map((x) => x.toString());
     s.inferParameters(values, OrderMode.order);
 
     // If we shouldn't reuse the range, then reset the mapping
@@ -347,6 +430,7 @@ export class CategoricalScaleEnum extends ScaleClass<
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
+      // eslint-disable-next-line
       if (props.mapping.hasOwnProperty(key)) {
         keys.push(key);
       }
@@ -357,11 +441,23 @@ export class CategoricalScaleEnum extends ScaleClass<
         keys.map((key) =>
           manager.horizontal(
             [2, 3],
-            manager.text(key, "right"),
+            manager.inputText(
+              { property: "mapping" },
+              {
+                updateProperty: true,
+                value: key,
+                underline: true,
+                styles: {
+                  textAlign: "right",
+                },
+              }
+            ),
             manager.inputComboBox(
               { property: "mapping", field: key },
-              props.defaultRange,
-              false
+              {
+                defaultRange: props.defaultRange,
+                valuesOnly: false,
+              }
             )
           )
         )
@@ -372,7 +468,7 @@ export class CategoricalScaleEnum extends ScaleClass<
 
 export class CategoricalScaleBoolean extends ScaleClass<
   CategoricalScaleProperties<boolean>,
-  {}
+  any
 > {
   public static classID = "scale.categorical<string,boolean>";
   public static type = "scale";
@@ -382,9 +478,10 @@ export class CategoricalScaleBoolean extends ScaleClass<
 
   public mapDataToAttribute(data: DataValue): AttributeValue {
     const props = this.object.properties;
-    return props.mapping[data.toString()];
+    return props.mapping[data?.toString()];
   }
 
+  // eslint-disable-next-line
   public initializeState(): void {}
 
   public inferParameters(
@@ -393,9 +490,7 @@ export class CategoricalScaleBoolean extends ScaleClass<
   ): void {
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
-    const values = column
-      .filter((x) => x != null)
-      .map((x) => x.toString()) as string[];
+    const values = column.filter((x) => x != null).map((x) => x.toString());
     s.inferParameters(values, OrderMode.order);
 
     // If we shouldn't reuse the range, then reset the mapping
@@ -422,6 +517,7 @@ export class CategoricalScaleBoolean extends ScaleClass<
     const mappingALL: { [name: string]: boolean } = {};
     const mappingNONE: { [name: string]: boolean } = {};
     for (const key in props.mapping) {
+      // eslint-disable-next-line
       if (props.mapping.hasOwnProperty(key)) {
         items.push(
           manager.inputBoolean(
@@ -455,7 +551,7 @@ export class CategoricalScaleBoolean extends ScaleClass<
 
 export class CategoricalScaleImage extends ScaleClass<
   CategoricalScaleProperties<string>,
-  {}
+  any
 > {
   public static classID = "scale.categorical<string,image>";
   public static type = "scale";
@@ -465,9 +561,10 @@ export class CategoricalScaleImage extends ScaleClass<
 
   public mapDataToAttribute(data: DataValue): AttributeValue {
     const props = this.object.properties;
-    return props.mapping[data.toString()];
+    return props.mapping[data?.toString()];
   }
 
+  // eslint-disable-next-line
   public initializeState(): void {}
 
   public inferParameters(
@@ -476,9 +573,7 @@ export class CategoricalScaleImage extends ScaleClass<
   ): void {
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
-    const values = column
-      .filter((x) => x != null)
-      .map((x) => x.toString()) as string[];
+    const values = column.filter((x) => x != null).map((x) => x.toString());
     s.inferParameters(values, OrderMode.order);
 
     // If we shouldn't reuse the range, then reset the mapping
@@ -507,21 +602,156 @@ export class CategoricalScaleImage extends ScaleClass<
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
+      // eslint-disable-next-line
       if (props.mapping.hasOwnProperty(key)) {
         keys.push(key);
       }
     }
     return [
+      manager.inputBoolean(
+        [
+          {
+            property: "autoDomainMin",
+          },
+          {
+            property: "autoDomainMax",
+          },
+        ],
+        {
+          type: "checkbox",
+          label: strings.objects.dataAxis.autoUpdateValues,
+        }
+      ),
+      manager.sectionHeader("Image Mapping"),
+      manager.scrollList(
+        keys.map((key) =>
+          manager.horizontal(
+            [2, 5, 0],
+            manager.inputText(
+              { property: "mapping" },
+              {
+                updateProperty: true,
+                value: key,
+                underline: true,
+                styles: {
+                  textAlign: "right",
+                },
+              }
+            ),
+            manager.inputImageProperty({ property: "mapping", field: key }),
+            manager.clearButton({ property: "mapping", field: key }, "", true)
+          )
+        ),
+        {
+          styles: {
+            paddingBottom: 5,
+            paddingTop: 5,
+          },
+        }
+      ),
+    ];
+  }
+}
+
+export class CategoricalScaleBase64Image extends ScaleClass<
+  CategoricalScaleProperties<string>,
+  any
+> {
+  public static classID = "scale.categorical<image,image>";
+  public static type = "scale";
+
+  public attributeNames: string[] = [];
+  public attributes: { [name: string]: AttributeDescription } = {};
+
+  public mapDataToAttribute(data: DataValue): AttributeValue {
+    const props = this.object.properties;
+    return props.mapping[data?.toString()];
+  }
+
+  // eslint-disable-next-line
+  public initializeState(): void {}
+
+  public inferParameters(
+    idColumn: string[],
+    options: InferParametersOptions
+  ): void {
+    const props = this.object.properties;
+    const s = new Scale.CategoricalScale();
+    const idValues = idColumn.filter((x) => x != null).map((x) => x.toString());
+    s.inferParameters(idValues, OrderMode.order);
+
+    // If we shouldn't reuse the range, then reset the mapping
+    if (!options.reuseRange) {
+      props.mapping = null;
+
+      // Otherwise, if we already have a mapping, try to reuse it
+    } else if (props.mapping != null) {
+      props.mapping = reuseMapping(s.domain, props.mapping);
+    }
+    if (props.mapping == null) {
+      props.mapping = {};
+      s.domain.forEach((v, d) => {
+        if (options.rangeImage) {
+          props.mapping[d] = options.rangeImage[v % options.rangeImage.length];
+        } else {
+          props.mapping[d] = null;
+        }
+      });
+    }
+  }
+
+  public getAttributePanelWidgets(
+    manager: Controls.WidgetManager
+  ): Controls.Widget[] {
+    const props = this.object.properties;
+    const keys: string[] = [];
+    for (const key in props.mapping) {
+      // eslint-disable-next-line
+      if (props.mapping.hasOwnProperty(key)) {
+        keys.push(key);
+      }
+    }
+    return [
+      manager.inputBoolean(
+        [
+          {
+            property: "autoDomainMin",
+          },
+          {
+            property: "autoDomainMax",
+          },
+        ],
+        {
+          type: "checkbox",
+          label: strings.objects.dataAxis.autoUpdateValues,
+        }
+      ),
       manager.sectionHeader("Image Mapping"),
       manager.scrollList(
         keys.map((key) =>
           manager.horizontal(
             [2, 5],
-            manager.text(key, "right"),
+            manager.inputText(
+              { property: "mapping" },
+              {
+                updateProperty: true,
+                value: key,
+                underline: true,
+                styles: {
+                  textAlign: "right",
+                },
+              }
+            ),
             manager.inputImageProperty({ property: "mapping", field: key }),
-            manager.clearButton({ property: "mapping", field: key }, "")
+            manager.clearButton({ property: "mapping", field: key }, "", true)
           )
-        )
+        ),
+        {
+          styles: {
+            paddingTop: 5,
+            paddingBottom: 5,
+          },
+        }
       ),
     ];
   }

@@ -1,19 +1,30 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as React from "react";
-import * as R from "../../resources";
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
 
-import { EventSubscription, Specification } from "../../../core";
+import * as React from "react";
+
+import { EventSubscription, Specification, uniqueID } from "../../../core";
 import { Actions } from "../../actions";
-import { ButtonRaised, EditableTextView } from "../../components";
+import { EditableTextView } from "../../components";
 
 import { AppStore } from "../../stores";
-import { WidgetManager } from "./widgets/manager";
+import { FluentUIWidgetManager } from "./widgets/fluentui_manager";
+import { ReservedMappingKeyNamePrefix } from "../../../core/prototypes/legends/categorical_legend";
+import { strings } from "../../../strings";
+import { AttributeMap } from "../../../core/specification";
+import { ObjectClass } from "../../../core/prototypes";
+import { DefaultButton } from "@fluentui/react";
+import { EventType } from "./widgets/observer";
+import { ScaleEditorWrapper } from "./panel_styles";
 
 export interface ScaleEditorProps {
   scale: Specification.Scale;
   scaleMapping: Specification.ScaleMapping;
   store: AppStore;
+  plotSegment: ObjectClass;
 }
 
 export interface ScaleEditorState {}
@@ -34,10 +45,11 @@ export class ScaleEditor extends React.Component<
     this.token.remove();
   }
 
+  // eslint-disable-next-line
   public render() {
     const { scale, store, scaleMapping } = this.props;
     const scaleClass = store.chartManager.getClassById(scale._id);
-    const manager = new WidgetManager(this.props.store, scaleClass);
+    const manager = new FluentUIWidgetManager(this.props.store, scaleClass);
     manager.onEditMappingHandler = (
       attribute: string,
       mapping: Specification.Mapping
@@ -47,13 +59,23 @@ export class ScaleEditor extends React.Component<
       );
     };
     let canAddLegend = true;
-    if (scale.classID.startsWith("scale.format")) {
+    if (
+      scale.classID.startsWith("scale.format") ||
+      scale.classID === "scale.categorical<string,image>"
+    ) {
       canAddLegend = false;
     }
+    let canExtendLegend = false;
+    if (
+      scale.classID === "scale.categorical<string,color>" ||
+      scale.classID === "scale.categorical<date,color>"
+    ) {
+      canExtendLegend = true;
+    }
+    const currentSelection = this.props.store.currentMappingAttributeFocus;
     return (
-      <div
+      <ScaleEditorWrapper
         className="scale-editor-view"
-        style={{ width: "400px", padding: "10px" }}
       >
         <div className="attribute-editor">
           <section className="attribute-editor-element">
@@ -72,27 +94,91 @@ export class ScaleEditor extends React.Component<
               />
             </div>
             {manager.vertical(...scaleClass.getAttributePanelWidgets(manager))}
-            {canAddLegend ? (
-              <div className="action-buttons">
-                <ButtonRaised
-                  url={R.getSVGIcon("legend/legend")}
+            <div className="action-buttons">
+              {canExtendLegend ? (
+                <>
+                  <DefaultButton
+                    iconProps={{
+                      iconName: "Add",
+                    }}
+                    text={strings.scaleEditor.add}
+                    onClick={() => {
+                      manager.eventManager.notify(
+                        EventType.UPDATE_FIELD,
+                        {
+                          property: "autoDomainMin",
+                        },
+                        false
+                      );
+                      manager.eventManager.notify(
+                        EventType.UPDATE_FIELD,
+                        {
+                          property: "autoDomainMax",
+                        },
+                        false
+                      );
+                      const mappingsKey = Object.keys(scale.properties.mapping);
+                      const theLastMapping: string =
+                        mappingsKey[mappingsKey.length - 1];
+                      const value = (scale.properties.mapping as AttributeMap)[
+                        theLastMapping
+                      ];
+                      new Actions.SetObjectProperty(
+                        scale,
+                        "mapping",
+                        ReservedMappingKeyNamePrefix + uniqueID(),
+                        value,
+                        true,
+                        true
+                      ).dispatch(this.props.store.dispatcher);
+                    }}
+                  />
+                  <DefaultButton
+                    iconProps={{
+                      iconName: "Remove",
+                    }}
+                    disabled={(currentSelection?.length ?? 0) === 0}
+                    text={strings.scaleEditor.removeSelected}
+                    onClick={() => {
+                      if (currentSelection?.length > 0) {
+                        new Actions.DeleteObjectProperty(
+                          scale,
+                          "mapping",
+                          currentSelection,
+                          false,
+                          true
+                        ).dispatch(this.props.store.dispatcher);
+                        new Actions.SetCurrentMappingAttribute(null).dispatch(
+                          this.props.store.dispatcher
+                        );
+                      }
+                    }}
+                  />
+                </>
+              ) : null}
+              {canAddLegend ? (
+                <DefaultButton
+                  iconProps={{
+                    iconName: "CharticulatorLegend",
+                  }}
                   text={
                     store.isLegendExistForScale(scale._id)
-                      ? "Remove Legend"
-                      : "Add Legend"
+                      ? strings.scaleEditor.removeLegend
+                      : strings.scaleEditor.addLegend
                   }
                   onClick={() => {
                     new Actions.ToggleLegendForScale(
                       scale._id,
-                      scaleMapping
+                      scaleMapping,
+                      this.props.plotSegment
                     ).dispatch(store.dispatcher);
                   }}
                 />
-              </div>
-            ) : null}
+              ) : null}
+            </div>
           </section>
         </div>
-      </div>
+      </ScaleEditorWrapper>
     );
   }
 }

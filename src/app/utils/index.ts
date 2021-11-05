@@ -3,8 +3,9 @@
 import { prettyNumber, ZoomInfo, Dataset } from "../../core";
 import { DataType, DataKind } from "../../core/specification";
 import { convertColumn } from "../../core/dataset/data_types";
+import { expect } from "chai";
 
-export function classNames(...args: Array<string | [string, boolean]>) {
+export function classNames(...args: (string | [string, boolean])[]) {
   return args
     .filter((x) => x != null && (typeof x == "string" || x[1] == true))
     .map((x) => (typeof x == "string" ? x : x[0]))
@@ -123,6 +124,7 @@ export function readFileAsDataUrl(file: File): Promise<string> {
 }
 
 export function getExtensionFromFileName(filename: string) {
+  // eslint-disable-next-line
   const m = filename.match(/\.([^\.]+)$/);
   if (m) {
     return m[1].toLowerCase();
@@ -132,6 +134,7 @@ export function getExtensionFromFileName(filename: string) {
 }
 
 export function getFileNameWithoutExtension(filename: string) {
+  // eslint-disable-next-line
   return filename.replace(/\.([^\.]+)$/, "");
 }
 
@@ -142,7 +145,7 @@ export function showOpenFileDialog(accept?: string[]): Promise<File> {
     if (accept != null) {
       inputElement.accept = accept.map((x) => "." + x).join(",");
     }
-    inputElement.onchange = (e) => {
+    inputElement.onchange = () => {
       if (inputElement.files.length == 1) {
         resolve(inputElement.files[0]);
       } else {
@@ -166,7 +169,7 @@ export function stringToDataURL(mimeType: string, content: string) {
 
 function checkConvertion(
   type: DataType,
-  dataSample: Array<string | boolean | Date | number>
+  dataSample: (string | boolean | Date | number)[]
 ) {
   let convertable = true;
   if (type === DataType.String) {
@@ -217,32 +220,55 @@ function checkConvertion(
   }
 }
 
-export function getConvertableDataKind(
-  type: DataType,
-  dataSample?: Array<string | boolean | Date | number>
-): DataKind[] {
-  let types;
+export function getConvertableDataKind(type: DataType): DataKind[] {
+  let kinds;
   switch (type) {
     case DataType.Boolean:
-      types = [DataKind.Ordinal, DataKind.Categorical];
+      kinds = [DataKind.Categorical, DataKind.Ordinal];
       break;
     case DataType.Date:
-      types = [DataKind.Categorical, DataKind.Ordinal, DataKind.Temporal];
+      kinds = [DataKind.Categorical, DataKind.Ordinal, DataKind.Temporal];
       break;
     case DataType.String:
-      types = [DataKind.Categorical, DataKind.Ordinal];
+      kinds = [DataKind.Categorical, DataKind.Ordinal];
+      break;
+    case DataType.Image:
+      kinds = [DataKind.Categorical];
       break;
     case DataType.Number:
-      types = [DataKind.Categorical, DataKind.Numerical];
+      kinds = [DataKind.Categorical, DataKind.Numerical];
       break;
   }
 
-  return types;
+  return kinds;
+}
+
+export function getPreferredDataKind(type: DataType): DataKind {
+  let kind;
+  switch (type) {
+    case DataType.Boolean:
+      kind = DataKind.Categorical;
+      break;
+    case DataType.Date:
+      kind = DataKind.Temporal;
+      break;
+    case DataType.String:
+      kind = DataKind.Categorical;
+      break;
+    case DataType.Image:
+      kind = DataKind.Categorical;
+      break;
+    case DataType.Number:
+      kind = DataKind.Numerical;
+      break;
+  }
+
+  return kind;
 }
 
 export function getConvertableTypes(
   type: DataType,
-  dataSample?: Array<string | boolean | Date | number>
+  dataSample?: (string | boolean | Date | number)[]
 ): DataType[] {
   let types;
   switch (type) {
@@ -258,6 +284,7 @@ export function getConvertableTypes(
         DataType.String,
         DataType.Boolean,
         DataType.Date,
+        DataType.Image,
       ];
       break;
     case DataType.Number:
@@ -267,6 +294,9 @@ export function getConvertableTypes(
         DataType.Boolean,
         DataType.Date,
       ];
+      break;
+    case DataType.Image:
+      types = [DataType.Image, DataType.String];
       break;
   }
 
@@ -293,7 +323,7 @@ export function convertColumns(
   const applyConvertedValues = (
     table: Dataset.Table,
     columnName: string,
-    convertedValues: Array<string | number | boolean>
+    convertedValues: (string | number | boolean)[]
   ) => {
     table.rows.forEach((value: any, index: number) => {
       value[columnName] = convertedValues[index];
@@ -362,11 +392,61 @@ export function getAligntment(anchor: Element) {
     | "end-inner"
     | "end-outer";
   const avgPopupWindowWidth = 500;
-  const anchorCloseToWindowBorder = window.innerWidth - anchor.getBoundingClientRect().x < avgPopupWindowWidth;
+  const anchorCloseToWindowBorder =
+    window.innerWidth - anchor.getBoundingClientRect().x < avgPopupWindowWidth;
   let alignLeft: boolean = false;
   if (anchorCloseToWindowBorder) {
-    alignX = "start-outer";
+    alignX = "end-inner";
     alignLeft = true;
+  } else {
+    alignX = "end-outer";
+    alignLeft = false;
   }
   return { alignLeft, alignX };
+}
+
+/** Test if a deep equals b with tolerance on numeric values */
+export function expect_deep_approximately_equals(
+  a: any,
+  b: any,
+  tol: number,
+  weak: boolean = false
+) {
+  if (weak && a == null && b == null) {
+    return;
+  } else if (a == null || b == null) {
+    // If either of a, b is null/undefined
+    expect(a).equals(b);
+  } else if (typeof a == "object" && typeof b == "object") {
+    if (a instanceof Array && b instanceof Array) {
+      // Both are arrays, recursively test for each item in the arrays
+      expect(a.length).to.equals(b.length);
+      for (let i = 0; i < a.length; i++) {
+        expect_deep_approximately_equals(a[i], b[i], tol, weak);
+      }
+    } else if (a instanceof Array || b instanceof Array) {
+      // One of them is an array, the other one isn't, error
+      throw new Error("type mismatch");
+    } else {
+      // Both are objects, recursively test for each key in the objects
+      const keysA = Object.keys(a).sort();
+      const keysB = Object.keys(b).sort();
+      expect(keysA).to.deep.equals(keysB);
+      for (const key of keysA) {
+        expect_deep_approximately_equals(a[key], b[key], tol, weak);
+      }
+    }
+  } else {
+    if (typeof a == "number" && typeof b == "number") {
+      // If both are numbers, test approximately equals
+      expect(a as number).to.approximately(b as number, tol);
+    } else {
+      // Otherwise, use regular equals
+      expect(a).equals(b);
+    }
+  }
+}
+
+export function replaceUndefinedByNull(value: any): any {
+  return value === undefined ? null : value;
 }

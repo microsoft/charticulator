@@ -2,30 +2,32 @@
 // Licensed under the MIT license.
 
 import {
+  compareMarkAttributeNames,
   Dataset,
   deepClone,
+  defineCategories,
   Expression,
   getById,
   getByName,
+  ImageKeyColumn,
+  MessageType,
   Prototypes,
+  Scale,
   setField,
   Solver,
   Specification,
-  zipArray,
   uniqueID,
-  Scale,
-  MessageType,
-  compareMarkAttributeNames,
+  zipArray,
 } from "../../core";
 import { BaseStore } from "../../core/store/base";
-import { CharticulatorWorker } from "../../worker";
+import { CharticulatorWorkerInterface } from "../../worker";
 import { Actions, DragData } from "../actions";
 import { AbstractBackend } from "../backend/abstract";
 import { IndexedDBBackend } from "../backend/indexed_db";
 import { ChartTemplateBuilder, ExportTemplateTarget } from "../template";
 import {
-  renderDataURLToPNG,
   b64EncodeUnicode,
+  renderDataURLToPNG,
   stringToDataURL,
 } from "../utils";
 import {
@@ -47,18 +49,41 @@ import {
 } from "./selection";
 import { LocaleFileFormat } from "../../core/dataset/dsv_parser";
 import { TableType } from "../../core/dataset";
-import { TextExpression, ValueType } from "../../core/expression/classes";
+import { ValueType } from "../../core/expression/classes";
 import {
-  AttributeType,
   DataKind,
   DataType,
-  DataValue,
-  Mapping,
+  MappingType,
+  ObjectProperties,
   ScaleMapping,
   ValueMapping,
 } from "../../core/specification";
 import { RenderEvents } from "../../core/graphics";
-import { OrderMode } from "../../core/specification/types";
+import {
+  AxisDataBindingType,
+  AxisRenderingStyle,
+  NumericalMode,
+  OrderMode,
+  TickFormatType,
+} from "../../core/specification/types";
+import {
+  NumericalNumberLegendAttributeNames,
+  NumericalNumberLegendProperties,
+} from "../../core/prototypes/legends/numerical_legend";
+
+import {
+  defaultAxisStyle,
+  Region2DProperties,
+} from "../../core/prototypes/plot_segments";
+import { isType, ObjectClass } from "../../core/prototypes";
+import { LinearScaleProperties } from "../../core/prototypes/scales/linear";
+import {
+  PlotSegmentAxisPropertyNames,
+  Region2DSublayoutType,
+} from "../../core/prototypes/plot_segments/region_2d/base";
+import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
+import { DataAxisProperties } from "../../core/prototypes/marks/data_axis.attrs";
+import { isBase64Image } from "../../core/dataset/data_types";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -83,9 +108,26 @@ export interface AppStoreState {
   chartState: Specification.ChartState;
 }
 
+export interface ScaleInferenceOptions {
+  expression: string;
+  valueType: Specification.DataType;
+  valueKind: Specification.DataKind;
+  outputType: Specification.AttributeType;
+  hints?: Prototypes.DataMappingHints;
+  markAttribute?: string;
+}
+
+export enum EditorType {
+  Nested = "nested",
+  Embedded = "embedded",
+  NestedEmbedded = "nestedembedded",
+  Chart = "chart",
+}
+
 export class AppStore extends BaseStore {
   public static EVENT_IS_NESTED_EDITOR = "is-nested-editor";
   public static EVENT_NESTED_EDITOR_EDIT = "nested-editor-edit";
+  public static EVENT_NESTED_EDITOR_CLOSE = "nested-editor-close";
 
   /** Fires when the dataset changes */
   public static EVENT_DATASET = "dataset";
@@ -99,12 +141,14 @@ export class AppStore extends BaseStore {
   public static EVENT_SOLVER_STATUS = "solver-status";
   /** Fires when the chart was saved */
   public static EVENT_SAVECHART = "savechart";
+  /** Fires when user clicks Edit nested chart for embedded editor */
+  public static EVENT_OPEN_NESTED_EDITOR = "openeditor";
 
   /** The WebWorker for solving constraints */
-  public readonly worker: CharticulatorWorker;
+  public readonly worker: CharticulatorWorkerInterface;
 
   /** Is this app a nested chart editor? */
-  public editorType: "chart" | "nested" | "embedded" = "chart";
+  public editorType: EditorType = EditorType.Chart;
   /** Should we disable the FileView */
   public disableFileView: boolean = false;
 
@@ -116,11 +160,13 @@ export class AppStore extends BaseStore {
   public chart: Specification.Chart;
   /** The current chart state */
   public chartState: Specification.ChartState;
+  public version: string;
   /** Rendering Events */
   public renderEvents?: RenderEvents;
 
   public currentSelection: Selection;
   public currentAttributeFocus: string;
+  public currentMappingAttributeFocus: string;
   public currentGlyph: Specification.Glyph;
   protected selectedGlyphIndex: { [id: string]: number } = {};
   protected localeFileFormat: LocaleFileFormat = {
@@ -153,7 +199,7 @@ export class AppStore extends BaseStore {
 
   public messageState: Map<MessageType | string, string>;
 
-  constructor(worker: CharticulatorWorker, dataset: Dataset.Dataset) {
+  constructor(worker: CharticulatorWorkerInterface, dataset: Dataset.Dataset) {
     super(null);
 
     /** Register action handlers */
@@ -186,7 +232,7 @@ export class AppStore extends BaseStore {
           ],
           getFileName: (props: { name: string }) => `${props.name}.tmplt`,
           generate: () => {
-            return new Promise<string>((resolve, reject) => {
+            return new Promise<string>((resolve) => {
               const r = b64EncodeUnicode(JSON.stringify(template, null, 2));
               resolve(r);
             });
@@ -226,12 +272,19 @@ export class AppStore extends BaseStore {
     this.originDataset = state.dataset;
     this.chart = state.chart;
     this.chartState = state.chartState;
+    this.version = state.version;
 
     this.chartManager = new Prototypes.ChartStateManager(
       this.chart,
       this.dataset,
-      this.chartState
+      this.chartState,
+      {},
+      {},
+      this.chartManager.getOriginChart()
     );
+    this.chartManager.onUpdate(() => {
+      this.solveConstraintsAndUpdateGraphics();
+    });
 
     this.emit(AppStore.EVENT_DATASET);
     this.emit(AppStore.EVENT_GRAPHICS);
@@ -240,6 +293,11 @@ export class AppStore extends BaseStore {
 
   public saveHistory() {
     this.historyManager.addState(this.saveDecoupledState());
+    try {
+      this.emit(AppStore.EVENT_GRAPHICS);
+    } catch (ex) {
+      console.error(ex);
+    }
   }
 
   public renderSVG() {
@@ -271,6 +329,7 @@ export class AppStore extends BaseStore {
       CHARTICULATOR_PACKAGE.version
     );
     this.loadState(state);
+    this.chartManager?.resetDifference();
   }
 
   // removes unused scale objecs
@@ -280,7 +339,10 @@ export class AppStore extends BaseStore {
       scaleId: string
     ) {
       for (const map in mappings) {
-        if (mappings[map].type === "scale") {
+        if (
+          mappings[map].type === MappingType.scale ||
+          mappings[map].type === MappingType.expressionScale
+        ) {
           if ((mappings[map] as any).scale === scaleId) {
             return true;
           }
@@ -334,6 +396,9 @@ export class AppStore extends BaseStore {
       });
       chart.metadata.thumbnail = png.toDataURL();
       await this.backend.put(chart.id, chart.data, chart.metadata);
+      this.chartManager?.resetDifference();
+
+      this.emit(AppStore.EVENT_GRAPHICS);
       this.emit(AppStore.EVENT_SAVECHART);
     }
   }
@@ -359,18 +424,20 @@ export class AppStore extends BaseStore {
       }
     );
     this.currentChartID = id;
+    this.emit(AppStore.EVENT_GRAPHICS);
     this.emit(AppStore.EVENT_SAVECHART);
     return id;
   }
 
   public setupNestedEditor(
     callback: (newSpecification: Specification.Chart) => void,
-    type: "nested" | "embedded"
+    type: EditorType
   ) {
     this.editorType = type;
     this.disableFileView = true;
     this.emit(AppStore.EVENT_IS_NESTED_EDITOR);
     this.addListener(AppStore.EVENT_NESTED_EDITOR_EDIT, () => {
+      this.updateChartState();
       callback(this.chart);
     });
   }
@@ -518,6 +585,7 @@ export class AppStore extends BaseStore {
     if (!plotSegment) {
       return 0;
     }
+    // eslint-disable-next-line
     if (this.selectedGlyphIndex.hasOwnProperty(plotSegmentID)) {
       const idx = this.selectedGlyphIndex[plotSegmentID];
       if (idx >= plotSegment.state.dataRowIndices.length) {
@@ -560,9 +628,12 @@ export class AppStore extends BaseStore {
     }
   }
 
-  public preSolveValues: Array<
-    [Solver.ConstraintStrength, Specification.AttributeMap, string, number]
-  > = [];
+  public preSolveValues: [
+    Solver.ConstraintStrength,
+    Specification.AttributeMap,
+    string,
+    number
+  ][] = [];
   public addPresolveValue(
     strength: Solver.ConstraintStrength,
     state: Specification.AttributeMap,
@@ -606,14 +677,10 @@ export class AppStore extends BaseStore {
     }
   }
 
+  // eslint-disable-next-line
   public scaleInference(
     context: { glyph?: Specification.Glyph; chart?: { table: string } },
-    expression: string,
-    valueType: Specification.DataType,
-    valueKind: Specification.DataKind,
-    outputType: Specification.AttributeType,
-    hints: Prototypes.DataMappingHints = {},
-    markAttribute?: string
+    options: ScaleInferenceOptions
   ): string {
     // Figure out the source table
     let tableName: string = null;
@@ -635,8 +702,55 @@ export class AppStore extends BaseStore {
     }
     let table = this.getTable(tableName);
 
+    // compares the ranges of two expression to determine similarity
+    const compareDomainRanges = (
+      scaleID: string,
+      expression: string
+    ): boolean => {
+      const scaleClass = this.chartManager.getClassById(
+        scaleID
+      ) as Prototypes.Scales.ScaleClass;
+
+      // compare only numerical scales
+      if (
+        !Prototypes.isType(
+          scaleClass.object.classID,
+          "scale.linear<number,number>"
+        )
+      ) {
+        return false;
+      }
+
+      const values = this.chartManager.getGroupedExpressionVector(
+        table.name,
+        groupBy,
+        expression
+      ) as number[];
+
+      const min = Math.min(...values);
+      const max = Math.min(...values);
+
+      const domainMin = (scaleClass.object as Specification.Scale<
+        LinearScaleProperties
+      >).properties.domainMin;
+      const domainMax = (scaleClass.object as Specification.Scale<
+        LinearScaleProperties
+      >).properties.domainMax;
+
+      const domainRange = Math.abs(domainMin - domainMax) * 2;
+
+      if (domainMin - domainRange < min && min < domainMax + domainRange) {
+        return true;
+      }
+      if (domainMin - domainRange < max && max < domainMax + domainRange) {
+        return true;
+      }
+
+      return false;
+    };
+
     // If there is an existing scale on the same column in the table, return that one
-    if (!hints.newScale) {
+    if (!options.hints?.newScale) {
       const getExpressionUnit = (expr: string) => {
         const parsed = Expression.parse(expr);
         // In the case of an aggregation function
@@ -654,40 +768,42 @@ export class AppStore extends BaseStore {
 
       const findScale = (mappings: Specification.Mappings) => {
         for (const name in mappings) {
+          // eslint-disable-next-line
           if (!mappings.hasOwnProperty(name)) {
             continue;
           }
-          if (mappings[name].type == "scale") {
+          if (mappings[name].type == MappingType.scale) {
             const scaleMapping = mappings[name] as Specification.ScaleMapping;
             if (scaleMapping.scale != null) {
               if (
-                scaleMapping.expression == expression &&
+                (compareDomainRanges(scaleMapping.scale, options.expression) ||
+                  scaleMapping.expression == options.expression) &&
                 (compareMarkAttributeNames(
-                  markAttribute,
+                  options.markAttribute,
                   scaleMapping.attribute
                 ) ||
-                  !markAttribute ||
+                  !options.markAttribute ||
                   !scaleMapping.attribute)
               ) {
                 const scaleObject = getById(
                   this.chart.scales,
                   scaleMapping.scale
                 );
-                if (scaleObject.outputType == outputType) {
+                if (scaleObject.outputType == options.outputType) {
                   return scaleMapping.scale;
                 }
               }
               // TODO: Fix this part
               if (
                 getExpressionUnit(scaleMapping.expression) ==
-                  getExpressionUnit(expression) &&
+                  getExpressionUnit(options.expression) &&
                 getExpressionUnit(scaleMapping.expression) != null
               ) {
                 const scaleObject = getById(
                   this.chart.scales,
                   scaleMapping.scale
                 );
-                if (scaleObject.outputType == outputType) {
+                if (scaleObject.outputType == options.outputType) {
                   return scaleMapping.scale;
                 }
               }
@@ -723,27 +839,42 @@ export class AppStore extends BaseStore {
       if (this.chart.scaleMappings) {
         for (const scaleMapping of this.chart.scaleMappings) {
           if (
-            scaleMapping.expression == expression &&
+            (compareDomainRanges(scaleMapping.scale, options.expression) ||
+              scaleMapping.expression == options.expression) &&
             ((scaleMapping.attribute &&
               compareMarkAttributeNames(
                 scaleMapping.attribute,
-                markAttribute
+                options.markAttribute
               )) ||
               !scaleMapping.attribute)
           ) {
             const scaleObject = getById(this.chart.scales, scaleMapping.scale);
-            if (scaleObject && scaleObject.outputType == outputType) {
+            if (scaleObject && scaleObject.outputType == options.outputType) {
               return scaleMapping.scale;
             }
           }
         }
       }
     }
+    const values = this.chartManager.getGroupedExpressionVector(
+      table.name,
+      groupBy,
+      options.expression
+    ) as number[] | string[];
+
     // Infer a new scale for this item
     const scaleClassID = Prototypes.Scales.inferScaleType(
-      valueType,
-      valueKind,
-      outputType
+      values?.length > 0 &&
+        typeof values[0] === "string" &&
+        !isBase64Image(values[0])
+        ? DataType.String
+        : options.valueType,
+      values?.length > 0 && typeof values[0] === "string"
+        ? DataKind.Categorical
+        : options.valueKind,
+
+      // options.valueKind,
+      options.outputType
     );
 
     if (scaleClassID != null) {
@@ -751,8 +882,8 @@ export class AppStore extends BaseStore {
         scaleClassID
       ) as Specification.Scale;
       newScale.properties.name = this.chartManager.findUnusedName("Scale");
-      newScale.inputType = valueType;
-      newScale.outputType = outputType;
+      newScale.inputType = options.valueType;
+      newScale.outputType = options.outputType;
       this.chartManager.addScale(newScale);
       const scaleClass = this.chartManager.getClassById(
         newScale._id
@@ -765,14 +896,45 @@ export class AppStore extends BaseStore {
         table = parentMainTable;
       }
 
-      scaleClass.inferParameters(
-        this.chartManager.getGroupedExpressionVector(
+      let rangeImage = null;
+      if (
+        scaleClassID === "scale.categorical<image,image>" &&
+        options.valueType === DataType.Image
+      ) {
+        rangeImage = this.chartManager.getGroupedExpressionVector(
           table.name,
           groupBy,
-          expression
-        ) as Specification.DataValue[],
-        hints
-      );
+          options.expression
+        ) as string[];
+
+        scaleClass.inferParameters(
+          this.chartManager.getGroupedExpressionVector(
+            table.name,
+            groupBy,
+            `first(${ImageKeyColumn})` // get ID column values for key
+          ) as Specification.DataValue[],
+          {
+            ...options.hints,
+            extendScaleMax: true,
+            extendScaleMin: true,
+            rangeImage,
+          }
+        );
+      } else {
+        scaleClass.inferParameters(
+          this.chartManager.getGroupedExpressionVector(
+            table.name,
+            groupBy,
+            options.expression
+          ) as Specification.DataValue[],
+          {
+            ...options.hints,
+            extendScaleMax: true,
+            extendScaleMin: true,
+            rangeImage,
+          }
+        );
+      }
 
       return newScale._id;
     } else {
@@ -792,9 +954,11 @@ export class AppStore extends BaseStore {
     return false;
   }
 
+  // eslint-disable-next-line
   public toggleLegendForScale(
     scale: string,
-    mapping: Specification.ScaleMapping
+    mapping: Specification.ScaleMapping,
+    plotSegment: ObjectClass
   ) {
     const scaleObject = getById(this.chartManager.chart.scales, scale);
     // See if we already have a legend
@@ -806,33 +970,25 @@ export class AppStore extends BaseStore {
         }
       }
     }
-    let newLegend = null;
+    let newLegend: Specification.ChartElement;
     // Categorical-color scale
     if (scaleObject.classID == "scale.categorical<string,color>") {
-      if (
-        mapping &&
-        mapping.valueIndex !== undefined &&
-        mapping.valueIndex !== null
-      ) {
-        newLegend = this.chartManager.createObject(
-          `legend.custom`
-        ) as Specification.ChartElement;
+      if (mapping && mapping.valueIndex != undefined) {
+        newLegend = this.chartManager.createObject(`legend.custom`);
       } else {
-        newLegend = this.chartManager.createObject(
-          `legend.categorical`
-        ) as Specification.ChartElement;
+        newLegend = this.chartManager.createObject(`legend.categorical`);
       }
       newLegend.properties.scale = scale;
       newLegend.mappings.x = {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: "x2",
       } as Specification.ParentMapping;
       newLegend.mappings.y = {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: "y2",
       } as Specification.ParentMapping;
       this.chartManager.chart.mappings.marginRight = {
-        type: "value",
+        type: MappingType.value,
         value: 100,
       } as Specification.ValueMapping;
     }
@@ -841,20 +997,18 @@ export class AppStore extends BaseStore {
       scaleObject.classID == "scale.linear<number,color>" ||
       scaleObject.classID == "scale.linear<integer,color>"
     ) {
-      newLegend = this.chartManager.createObject(
-        `legend.numerical-color`
-      ) as Specification.ChartElement;
+      newLegend = this.chartManager.createObject(`legend.numerical-color`);
       newLegend.properties.scale = scale;
       newLegend.mappings.x = {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: "x2",
       } as Specification.ParentMapping;
       newLegend.mappings.y = {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: "y2",
       } as Specification.ParentMapping;
       this.chartManager.chart.mappings.marginRight = {
-        type: "value",
+        type: MappingType.value,
         value: 100,
       } as Specification.ValueMapping;
     }
@@ -863,43 +1017,90 @@ export class AppStore extends BaseStore {
       scaleObject.classID == "scale.linear<number,number>" ||
       scaleObject.classID == "scale.linear<integer,number>"
     ) {
-      newLegend = this.chartManager.createObject(
-        `legend.numerical-number`
-      ) as Specification.ChartElement;
-      newLegend.properties.scale = scale;
-      newLegend.mappings.x1 = {
-        type: "parent",
-        parentAttribute: "x1",
-      } as Specification.ParentMapping;
-      newLegend.mappings.y1 = {
-        type: "parent",
-        parentAttribute: "y1",
-      } as Specification.ParentMapping;
-      newLegend.mappings.x2 = {
-        type: "parent",
-        parentAttribute: "x1",
-      } as Specification.ParentMapping;
-      newLegend.mappings.y2 = {
-        type: "parent",
-        parentAttribute: "y2",
-      } as Specification.ParentMapping;
+      if (!plotSegment) {
+        console.log("Numerical-number legend needs plot segment parameter.");
+        return;
+      }
+      newLegend = this.chartManager.createObject(`legend.numerical-number`);
+      const properties = newLegend.properties as NumericalNumberLegendProperties;
+      properties.scale = scale;
+      let legendAttributes: NumericalNumberLegendAttributeNames[] = [
+        NumericalNumberLegendAttributeNames.x1,
+        NumericalNumberLegendAttributeNames.y1,
+        NumericalNumberLegendAttributeNames.x2,
+        NumericalNumberLegendAttributeNames.y2,
+      ];
+      let targetAttributes: string[];
+      if (isType(plotSegment.object.classID, "plot-segment.polar")) {
+        switch (mapping.attribute) {
+          case "height": {
+            // radial
+            targetAttributes = ["a1r1x", "a1r1y", "a1r2x", "a1r2y"];
+            properties.axis.side = "default";
+            break;
+          }
+          case "width": {
+            // angular
+            legendAttributes = [
+              NumericalNumberLegendAttributeNames.cx,
+              NumericalNumberLegendAttributeNames.cy,
+              NumericalNumberLegendAttributeNames.radius,
+              NumericalNumberLegendAttributeNames.startAngle,
+              NumericalNumberLegendAttributeNames.endAngle,
+            ];
+            targetAttributes = ["cx", "cy", "radial2", "angle1", "angle2"];
+            properties.axis.side = "default";
+            properties.polarAngularMode = true;
+            break;
+          }
+        }
+      } else {
+        switch (mapping.attribute) {
+          case "height": {
+            targetAttributes = ["x1", "y1", "x1", "y2"];
+            properties.axis.side = "default";
+            break;
+          }
+          case "width": {
+            targetAttributes = ["x1", "y1", "x2", "y1"];
+            properties.axis.side = "opposite";
+            break;
+          }
+          default: {
+            targetAttributes = ["x1", "y1", "x1", "y2"];
+            properties.axis.side = "default";
+            break;
+          }
+        }
+      }
+      legendAttributes.forEach((attribute, i) => {
+        // //snap legend to plot segment
+        this.chartManager.chart.constraints.push({
+          type: "snap",
+          attributes: {
+            element: newLegend._id,
+            attribute,
+            targetElement: plotSegment.object._id,
+            targetAttribute: targetAttributes[i],
+            gap: 0,
+          },
+        });
+      });
     }
 
-    const mappingOptions = {
-      type: "scale",
-      table: mapping.table,
-      expression: mapping.expression,
-      valueType: mapping.valueType,
-      scale: scaleObject._id,
-      allowSelectValue:
-        mapping &&
-        mapping.valueIndex !== undefined &&
-        mapping.valueIndex !== null,
-    } as Specification.ScaleMapping;
+    if (newLegend) {
+      const mappingOptions = {
+        type: MappingType.scale,
+        table: mapping.table,
+        expression: mapping.expression,
+        valueType: mapping.valueType,
+        scale: scaleObject._id,
+        allowSelectValue: mapping && mapping.valueIndex != undefined,
+      } as Specification.ScaleMapping;
 
-    newLegend.mappings.mappingOptions = mappingOptions;
-
-    this.chartManager.addChartElement(newLegend);
+      newLegend.mappings.mappingOptions = mappingOptions;
+      this.chartManager.addChartElement(newLegend);
+    }
   }
 
   public getRepresentativeGlyphState(glyph: Specification.Glyph) {
@@ -950,11 +1151,17 @@ export class AppStore extends BaseStore {
     this.currentTool = null;
     this.currentToolOptions = null;
 
-    this.chart = createDefaultChart(this.dataset);
+    this.chart = createDefaultChart(
+      this.dataset,
+      this.editorType === EditorType.Chart
+    );
     this.chartManager = new Prototypes.ChartStateManager(
       this.chart,
       this.dataset
     );
+    this.chartManager.onUpdate(() => {
+      this.solveConstraintsAndUpdateGraphics();
+    });
     this.chartState = this.chartManager.chartState;
   }
 
@@ -1002,13 +1209,10 @@ export class AppStore extends BaseStore {
     const elements = this.chartManager.chart.elements;
     const elementStates = this.chartManager.chartState.elements;
     zipArray(elements, elementStates).forEach(
-      (
-        [layout, layoutState]: [
-          Specification.ChartElement,
-          Specification.ChartElementState
-        ],
-        index
-      ) => {
+      ([layout, layoutState]: [
+        Specification.ChartElement,
+        Specification.ChartElementState
+      ]) => {
         const layoutClass = this.chartManager.getChartElementClass(layoutState);
         chartGuides = chartGuides.concat(
           layoutClass.getSnappingGuides().map((bounds) => {
@@ -1050,8 +1254,10 @@ export class AppStore extends BaseStore {
     const builder = new ChartTemplateBuilder(
       this.chart,
       this.dataset,
-      this.chartManager
+      this.chartManager,
+      CHARTICULATOR_PACKAGE.version
     );
+
     const template = builder.build();
     return template;
   }
@@ -1079,9 +1285,11 @@ export class AppStore extends BaseStore {
     }
   }
 
+  // eslint-disable-next-line
   public updateScales() {
     try {
       const updatedScales: string[] = [];
+      // eslint-disable-next-line
       const updateScalesInternal = (
         scaleId: string,
         mappings: Specification.Guide<Specification.ObjectProperties>[],
@@ -1094,6 +1302,13 @@ export class AppStore extends BaseStore {
           this.chart,
           scaleId
         ) as Specification.Scale;
+        // prevent updating if auto scale is disabled
+        if (
+          !scale.properties.autoDomainMin &&
+          !scale.properties.autoDomainMin
+        ) {
+          return;
+        }
         const filteredMappings = mappings
           .flatMap((el) => {
             return Object.keys(el.mappings).map((key) => {
@@ -1106,7 +1321,7 @@ export class AppStore extends BaseStore {
           })
           .filter(
             (mapping) =>
-              mapping.mapping.type === "scale" &&
+              mapping.mapping.type === MappingType.scale &&
               (mapping.mapping as ScaleMapping).scale === scaleId
           ) as {
           element: Specification.Element<Specification.ObjectProperties>;
@@ -1130,7 +1345,10 @@ export class AppStore extends BaseStore {
             scaleId
           ) as Prototypes.Scales.ScaleClass;
 
-          let values = [];
+          let values: any = [];
+          let newScale = true;
+          let reuseRange = false;
+          let extendScale = true;
 
           // special case for legend to draw column names
           if (mapping.element.classID === "legend.custom") {
@@ -1141,7 +1359,19 @@ export class AppStore extends BaseStore {
               mapping.mapping.expression
             );
             values = parsedExpression.getValue(table) as ValueType[];
+            newScale = true;
+            extendScale = true;
+            reuseRange = true;
           } else {
+            if (scale.classID == "scale.categorical<string,color>") {
+              newScale = true;
+              extendScale = true;
+              reuseRange = true;
+            } else {
+              newScale = false;
+              extendScale = true;
+              reuseRange = true;
+            }
             values = this.chartManager.getGroupedExpressionVector(
               mapping.mapping.table,
               groupBy,
@@ -1149,8 +1379,10 @@ export class AppStore extends BaseStore {
             );
           }
           scaleClass.inferParameters(values as any, {
-            newScale: true,
-            reuseRange: false,
+            newScale,
+            reuseRange,
+            extendScaleMax: extendScale,
+            extendScaleMin: extendScale,
             rangeNumber: [
               (scale.mappings.rangeMin as ValueMapping)?.value as number,
               (scale.mappings.rangeMax as ValueMapping)?.value as number,
@@ -1185,19 +1417,36 @@ export class AppStore extends BaseStore {
     }
   }
 
+  public getDataKindByType = (type: AxisDataBindingType): DataKind => {
+    switch (type) {
+      case AxisDataBindingType.Categorical:
+        return DataKind.Categorical;
+      case AxisDataBindingType.Numerical:
+        return DataKind.Numerical;
+      case AxisDataBindingType.Default:
+        return DataKind.Categorical;
+      default:
+        return DataKind.Categorical;
+    }
+  };
+
+  // eslint-disable-next-line
   public updatePlotSegments() {
     // Get plot segments to update with new data
     const plotSegments: Specification.PlotSegment[] = this.chart.elements.filter(
       (element) => Prototypes.isType(element.classID, "plot-segment")
     ) as Specification.PlotSegment[];
-    plotSegments.forEach((plot) => {
+
+    // eslint-disable-next-line
+    plotSegments.forEach((plot: Specification.PlotSegment) => {
       const table = this.dataset.tables.find(
         (table) => table.name === plot.table
       );
 
       // xData
-      const xDataProperty: any = plot.properties.xData;
-      if (xDataProperty) {
+      const xDataProperty: Specification.Types.AxisDataBinding = (plot.properties as Region2DProperties)
+        .xData;
+      if (xDataProperty && xDataProperty.expression) {
         const xData = new DragData.DataExpression(
           table,
           xDataProperty.expression,
@@ -1207,30 +1456,39 @@ export class AppStore extends BaseStore {
               xDataProperty.type === "numerical" &&
               xDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
-                : xDataProperty.type,
+                : xDataProperty.dataKind
+                ? xDataProperty.dataKind
+                : this.getDataKindByType(xDataProperty.type),
             orderMode: xDataProperty.orderMode
               ? xDataProperty.orderMode
               : xDataProperty.valueType === "string"
-              ? "order"
+              ? OrderMode.order
               : null,
-            order: xDataProperty.order,
+            order:
+              xDataProperty.order !== undefined ? xDataProperty.order : null,
           },
-          xDataProperty.rawColumnExpr
+          xDataProperty.rawExpression as string
         );
 
         this.bindDataToAxis({
-          property: "xData",
+          property: PlotSegmentAxisPropertyNames.xData,
           dataExpression: xData,
           object: plot,
           appendToProperty: null,
-          type: null, // TODO get type for column, from current dataset
+          type: xDataProperty.type, // TODO get type for column, from current dataset
           numericalMode: xDataProperty.numericalMode,
+          autoDomainMax: xDataProperty.autoDomainMax,
+          autoDomainMin: xDataProperty.autoDomainMin,
+          domainMin: xDataProperty.domainMin,
+          domainMax: xDataProperty.domainMax,
+          defineCategories: true,
         });
       }
 
       // yData
-      const yDataProperty: any = plot.properties.yData;
-      if (yDataProperty) {
+      const yDataProperty: Specification.Types.AxisDataBinding = (plot.properties as Region2DProperties)
+        .yData;
+      if (yDataProperty && yDataProperty.expression) {
         const yData = new DragData.DataExpression(
           table,
           yDataProperty.expression,
@@ -1240,81 +1498,210 @@ export class AppStore extends BaseStore {
               yDataProperty.type === "numerical" &&
               yDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
-                : yDataProperty.type,
+                : yDataProperty.dataKind
+                ? yDataProperty.dataKind
+                : this.getDataKindByType(yDataProperty.type),
             orderMode: yDataProperty.orderMode
               ? yDataProperty.orderMode
               : yDataProperty.valueType === "string"
-              ? "order"
+              ? OrderMode.order
               : null,
-            order: yDataProperty.order,
+            order:
+              yDataProperty.order !== undefined ? yDataProperty.order : null,
           },
-          yDataProperty.rawColumnExpr
+          yDataProperty.rawExpression as string
         );
 
         this.bindDataToAxis({
-          property: "yData",
+          property: PlotSegmentAxisPropertyNames.yData,
           dataExpression: yData,
           object: plot,
           appendToProperty: null,
-          type: null, // TODO get type for column, from current dataset
+          type: yDataProperty.type, // TODO get type for column, from current dataset
           numericalMode: yDataProperty.numericalMode,
+          autoDomainMax: yDataProperty.autoDomainMax,
+          autoDomainMin: yDataProperty.autoDomainMin,
+          domainMin: yDataProperty.domainMin,
+          domainMax: yDataProperty.domainMax,
+          defineCategories: true,
         });
       }
 
-      const axis: any = plot.properties.axis;
-      if (axis) {
+      const axisProperty: Specification.Types.AxisDataBinding = (plot.properties as LineGuideProperties)
+        .axis;
+      if (axisProperty && axisProperty.expression) {
         const axisData = new DragData.DataExpression(
           table,
-          axis.expression,
-          axis.valueType,
+          axisProperty.expression !== undefined
+            ? axisProperty.expression
+            : null,
+          axisProperty.valueType !== undefined ? axisProperty.valueType : null,
           {
             kind:
-              axis.type === "numerical" && axis.numericalMode === "temporal"
+              axisProperty.type === "numerical" &&
+              axisProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
-                : axis.type,
-            orderMode: axis.orderMode
-              ? axis.orderMode
-              : axis.valueType === "string"
-              ? "order"
+                : axisProperty.dataKind
+                ? axisProperty.dataKind
+                : this.getDataKindByType(axisProperty.type),
+            orderMode: axisProperty.orderMode
+              ? axisProperty.orderMode
+              : axisProperty.valueType === "string"
+              ? OrderMode.order
               : null,
-            order: axis.order,
+            order: axisProperty.order !== undefined ? axisProperty.order : null,
           },
-          axis.rawColumnExpr
+          axisProperty.rawExpression as string
         );
 
         this.bindDataToAxis({
-          property: "axis",
+          property: PlotSegmentAxisPropertyNames.axis,
           dataExpression: axisData,
           object: plot,
           appendToProperty: null,
-          type: null, // TODO get type for column, from current dataset
-          numericalMode: axis.numericalMode,
+          type: axisProperty.type, // TODO get type for column, from current dataset
+          numericalMode: axisProperty.numericalMode
+            ? axisProperty.numericalMode
+            : null,
+          autoDomainMax: axisProperty.autoDomainMax,
+          autoDomainMin: axisProperty.autoDomainMin,
+          domainMin: axisProperty.domainMin,
+          domainMax: axisProperty.domainMax,
+          defineCategories: true,
         });
       }
     });
   }
 
+  public updateDataAxes() {
+    const mapElementWithTable = (table: string) => (el: any) => {
+      return {
+        table,
+        element: el,
+      };
+    };
+
+    const bindAxis = (
+      dataAxisElement: { table: string; element: any },
+      expression: string,
+      axisProperty: Specification.Types.AxisDataBinding,
+      dataAxis: Specification.ChartElement<DataAxisProperties>,
+      appendToProperty: string = null
+    ) => {
+      const axisData = new DragData.DataExpression(
+        this.dataset.tables.find((t) => t.name == dataAxisElement.table),
+        expression,
+        axisProperty.valueType,
+        {
+          kind:
+            axisProperty.type === "numerical" &&
+            axisProperty.numericalMode === "temporal"
+              ? DataKind.Temporal
+              : axisProperty.dataKind
+              ? axisProperty.dataKind
+              : this.getDataKindByType(axisProperty.type),
+          orderMode: axisProperty.orderMode
+            ? axisProperty.orderMode
+            : axisProperty.valueType === "string"
+            ? OrderMode.order
+            : null,
+          order: axisProperty.order,
+        },
+        axisProperty.rawExpression as string
+      );
+
+      this.bindDataToAxis({
+        property: PlotSegmentAxisPropertyNames.axis,
+        dataExpression: axisData,
+        object: dataAxis as any,
+        appendToProperty,
+        type: axisProperty.type,
+        numericalMode: axisProperty.numericalMode,
+        autoDomainMax: axisProperty.autoDomainMax,
+        autoDomainMin: axisProperty.autoDomainMin,
+        domainMin: axisProperty.domainMin,
+        domainMax: axisProperty.domainMax,
+        defineCategories: false,
+      });
+    };
+
+    const table = this.dataset.tables.find((t) => t.type === TableType.Main);
+    this.chart.elements
+      .map(mapElementWithTable(table.name))
+      .concat(
+        this.chart.glyphs.flatMap((gl) =>
+          gl.marks.map(mapElementWithTable(gl.table))
+        )
+      )
+      .filter((element) =>
+        Prototypes.isType(element.element.classID, "mark.data-axis")
+      )
+      .forEach((dataAxisElement) => {
+        const dataAxis = dataAxisElement.element as Specification.ChartElement<
+          DataAxisProperties
+        >;
+        const axisProperty: Specification.Types.AxisDataBinding = (dataAxis.properties as LineGuideProperties)
+          .axis;
+        if (axisProperty) {
+          const expression = axisProperty.expression;
+
+          bindAxis(dataAxisElement, expression, axisProperty, dataAxis);
+        }
+
+        const dataExpressions = dataAxis.properties.dataExpressions;
+        // remove all and added again
+        dataAxis.properties.dataExpressions = [];
+        dataExpressions.forEach((dataExpression, index) => {
+          const axisProperty: Specification.Types.AxisDataBinding = (dataAxis.properties as LineGuideProperties)
+            .axis;
+          if (axisProperty) {
+            const expression = dataExpression.expression;
+
+            bindAxis(
+              dataAxisElement,
+              expression,
+              axisProperty,
+              dataAxis,
+              "dataExpressions"
+            );
+
+            // save old name/id of expression to hold binding marks to those axis points
+            dataAxis.properties.dataExpressions[index].name =
+              dataExpression.name;
+          }
+        });
+      });
+  }
+
   private getBindingByDataKind(kind: DataKind) {
     switch (kind) {
       case DataKind.Numerical:
-        return "numerical";
+        return AxisDataBindingType.Numerical;
       case DataKind.Temporal:
       case DataKind.Ordinal:
       case DataKind.Categorical:
-        return "categorical";
+        return AxisDataBindingType.Categorical;
     }
   }
 
+  // eslint-disable-next-line
   public bindDataToAxis(options: {
-    object: Specification.Object;
+    object: Specification.PlotSegment;
     property?: string;
     appendToProperty?: string;
     dataExpression: DragData.DataExpression;
-    type?: "default" | "numerical" | "categorical";
-    numericalMode?: "linear" | "logarithmic" | "temporal";
+    type?: AxisDataBindingType;
+    numericalMode?: NumericalMode;
+    autoDomainMax: boolean;
+    autoDomainMin: boolean;
+    domainMin: number;
+    domainMax: number;
+    defineCategories: boolean;
   }) {
-    this.saveHistory();
     const { object, property, appendToProperty, dataExpression } = options;
+
+    this.normalizeDataExpression(dataExpression);
+
     let groupExpression = dataExpression.expression;
     let valueType = dataExpression.valueType;
     const propertyValue = object.properties[options.property] as any;
@@ -1332,25 +1719,121 @@ export class AppStore extends BaseStore {
       valueType = DataType.String;
     }
 
+    const objectProperties = object.properties[
+      options.property
+    ] as ObjectProperties;
+
+    const expression =
+      appendToProperty === "dataExpressions" && propertyValue
+        ? ((propertyValue as any).expression as string)
+        : groupExpression;
+
     let dataBinding: Specification.Types.AxisDataBinding = {
       type: options.type || type,
       // Don't change current expression (use current expression), if user appends data expression ()
-      expression:
-        appendToProperty === "dataExpressions" && propertyValue
-          ? ((propertyValue as any).expression as string)
-          : groupExpression,
-      rawExpression: dataExpression.rawColumnExpression,
-      valueType,
-      gapRatio: propertyValue?.gapRatio || 0.1,
-      visible: true,
+      expression: expression,
+      rawExpression:
+        dataExpression.rawColumnExpression != undefined
+          ? dataExpression.rawColumnExpression
+          : expression,
+      valueType: valueType !== undefined ? valueType : null,
+      gapRatio:
+        propertyValue?.gapRatio === undefined ? 0.1 : propertyValue.gapRatio,
+      visible:
+        objectProperties?.visible !== undefined
+          ? objectProperties?.visible
+          : true,
       side: propertyValue?.side || "default",
-      style: deepClone(Prototypes.PlotSegments.defaultAxisStyle),
-      numericalMode: options.numericalMode,
-      dataKind: dataExpression.metadata.kind,
-      order: dataExpression.metadata.order,
-      orderMode: dataExpression.metadata.orderMode,
-      autoDomainMax: true,
-      autoDomainMin: true,
+      style:
+        (objectProperties?.style as AxisRenderingStyle) ||
+        deepClone(defaultAxisStyle),
+      numericalMode:
+        options.numericalMode != undefined ? options.numericalMode : null,
+      dataKind:
+        dataExpression.metadata.kind != undefined
+          ? dataExpression.metadata.kind
+          : null,
+      order:
+        dataExpression.metadata.order !== undefined
+          ? dataExpression.metadata.order
+          : null,
+      orderMode:
+        dataExpression.metadata.orderMode !== undefined
+          ? dataExpression.metadata.orderMode
+          : null,
+      autoDomainMax:
+        options.autoDomainMax != undefined ? options.autoDomainMax : true,
+      autoDomainMin:
+        options.autoDomainMin != undefined ? options.autoDomainMin : true,
+      tickFormat:
+        <string>objectProperties?.tickFormat !== undefined
+          ? <string>objectProperties?.tickFormat
+          : null,
+      tickDataExpression:
+        <string>objectProperties?.tickDataExpression !== undefined
+          ? <string>objectProperties?.tickDataExpression
+          : null,
+      tickFormatType:
+        (objectProperties?.tickFormatType as TickFormatType) ??
+        TickFormatType.None,
+      domainMin:
+        <number>objectProperties?.domainMin !== undefined
+          ? <number>objectProperties?.domainMin
+          : null,
+      domainMax:
+        <number>objectProperties?.domainMax !== undefined
+          ? <number>objectProperties?.domainMax
+          : null,
+      dataDomainMin:
+        <number>objectProperties?.domainMin !== undefined
+          ? <number>objectProperties?.domainMin
+          : null,
+      dataDomainMax:
+        <number>objectProperties?.domainMax !== undefined
+          ? <number>objectProperties?.domainMax
+          : null,
+      enablePrePostGap:
+        <boolean>objectProperties?.enablePrePostGap !== undefined
+          ? <boolean>objectProperties?.enablePrePostGap
+          : null,
+      categories:
+        <string[]>objectProperties?.categories !== undefined
+          ? <string[]>objectProperties?.categories
+          : null,
+      allCategories:
+        <string[]>objectProperties?.allCategories !== undefined
+          ? <string[]>objectProperties?.allCategories
+          : <string[]>objectProperties?.categories !== undefined
+          ? <string[]>objectProperties?.categories
+          : null,
+      scrollPosition:
+        <number>objectProperties?.scrollPosition !== undefined
+          ? <number>objectProperties?.scrollPosition
+          : 0,
+      allowScrolling:
+        <boolean>objectProperties?.allowScrolling !== undefined
+          ? <boolean>objectProperties?.allowScrolling
+          : false,
+      windowSize:
+        <number>objectProperties?.windowSize !== undefined
+          ? <number>objectProperties?.windowSize
+          : 10,
+      barOffset:
+        <number>objectProperties?.barOffset !== undefined
+          ? <number>objectProperties?.barOffset
+          : 0,
+      offset:
+        <number>objectProperties?.offset !== undefined
+          ? <number>objectProperties?.offset
+          : 0,
+      onTop:
+        <boolean>objectProperties?.onTop !== undefined
+          ? <boolean>objectProperties?.onTop
+          : false,
+      enableSelection:
+        <boolean>objectProperties?.enableSelection !== undefined
+          ? <boolean>objectProperties?.enableSelection
+          : false,
     };
 
     let expressions = [groupExpression];
@@ -1393,12 +1876,14 @@ export class AppStore extends BaseStore {
       values = values.concat(dataBinding.domainMax, dataBinding.domainMin);
     }
     for (const expr of expressions) {
-      const r = this.chartManager.getGroupedExpressionVector(
-        dataExpression.table.name,
-        groupBy,
-        expr
-      );
-      values = values.concat(r);
+      if (expr) {
+        const r = this.chartManager.getGroupedExpressionVector(
+          dataExpression.table.name,
+          groupBy,
+          expr
+        );
+        values = values.concat(r);
+      }
     }
 
     if (dataExpression.metadata) {
@@ -1406,37 +1891,110 @@ export class AppStore extends BaseStore {
         case Specification.DataKind.Categorical:
         case Specification.DataKind.Ordinal:
           {
-            dataBinding.type = "categorical";
+            dataBinding.type = AxisDataBindingType.Categorical;
             dataBinding.valueType = dataExpression.valueType;
-            dataBinding.categories = this.getCategoriesForDataBinding(
+            const { categories, order } = this.getCategoriesForDataBinding(
               dataExpression.metadata,
+              dataExpression.valueType,
               values
             );
+            dataBinding.order = order != undefined ? order : null;
+            dataBinding.allCategories = deepClone(categories);
+            if (dataBinding.windowSize == null) {
+              dataBinding.windowSize = Math.ceil(categories.length / 10);
+            }
+            dataBinding.categories = categories;
+            if (dataBinding.allowScrolling) {
+              const start = Math.floor(
+                ((categories.length - dataBinding.windowSize) / 100) *
+                  dataBinding.scrollPosition
+              );
+              dataBinding.categories = categories.slice(
+                start,
+                start + dataBinding.windowSize
+              );
+            }
           }
 
           break;
         case Specification.DataKind.Numerical:
           {
-            const scale = new Scale.LinearScale();
-            scale.inferParameters(values as number[]);
-            dataBinding.domainMin = scale.domainMin;
-            dataBinding.domainMax = scale.domainMax;
-            dataBinding.type = "numerical";
-            dataBinding.numericalMode = "linear";
+            if (options.numericalMode === NumericalMode.Logarithmic) {
+              const scale = new Scale.LogarithmicScale();
+              scale.inferParameters(values as number[]);
+              if (dataBinding.autoDomainMin) {
+                dataBinding.domainMin = scale.domainMin;
+              } else {
+                dataBinding.domainMin = options.domainMin;
+              }
+              if (dataBinding.autoDomainMax) {
+                dataBinding.domainMax = scale.domainMax;
+              } else {
+                dataBinding.domainMax = options.domainMax;
+              }
+              dataBinding.type = AxisDataBindingType.Numerical;
+              dataBinding.numericalMode = NumericalMode.Logarithmic;
+            } else {
+              const scale = new Scale.LinearScale();
+              scale.inferParameters(values as number[]);
+              if (dataBinding.autoDomainMin) {
+                dataBinding.domainMin = scale.domainMin;
+              } else {
+                dataBinding.domainMin = options.domainMin;
+              }
+              if (dataBinding.autoDomainMax) {
+                dataBinding.domainMax = scale.domainMax;
+              } else {
+                dataBinding.domainMax = options.domainMax;
+              }
+              dataBinding.type = AxisDataBindingType.Numerical;
+              dataBinding.numericalMode = NumericalMode.Linear;
+            }
+            if (options.defineCategories) {
+              dataBinding.categories = defineCategories(values);
+            }
+
+            if (dataBinding.windowSize == null) {
+              dataBinding.windowSize =
+                (dataBinding.domainMax - dataBinding.domainMin) / 10;
+              dataBinding.dataDomainMin = dataBinding.domainMin;
+              dataBinding.dataDomainMax = dataBinding.domainMax;
+            }
           }
           break;
         case Specification.DataKind.Temporal:
           {
             const scale = new Scale.DateScale();
             scale.inferParameters(values as number[], false);
-            dataBinding.domainMin = scale.domainMin;
-            dataBinding.domainMax = scale.domainMax;
-            dataBinding.type = "numerical";
-            dataBinding.numericalMode = "temporal";
-            dataBinding.categories = this.getCategoriesForDataBinding(
+            if (dataBinding.autoDomainMin) {
+              dataBinding.domainMin = scale.domainMin;
+            } else {
+              dataBinding.domainMin = options.domainMin;
+            }
+            if (dataBinding.autoDomainMax) {
+              dataBinding.domainMax = scale.domainMax;
+            } else {
+              dataBinding.domainMax = options.domainMax;
+            }
+            dataBinding.type = AxisDataBindingType.Numerical;
+            dataBinding.numericalMode = NumericalMode.Temporal;
+            const { categories } = this.getCategoriesForDataBinding(
               dataExpression.metadata,
+              dataExpression.valueType,
               values
             );
+            dataBinding.allCategories = deepClone(categories);
+            dataBinding.categories = categories;
+            if (dataBinding.allowScrolling) {
+              const start = Math.floor(
+                ((categories.length - dataBinding.windowSize) / 100) *
+                  dataBinding.scrollPosition
+              );
+              dataBinding.categories = categories.slice(
+                start,
+                start + dataBinding.windowSize
+              );
+            }
           }
           break;
       }
@@ -1446,33 +2004,106 @@ export class AppStore extends BaseStore {
     const props = object.properties as Prototypes.PlotSegments.Region2DProperties;
     if (props.sublayout) {
       if (
-        props.sublayout.type == "dodge-x" ||
-        props.sublayout.type == "dodge-y" ||
-        props.sublayout.type == "grid"
+        props.sublayout.type == Region2DSublayoutType.DodgeX ||
+        props.sublayout.type == Region2DSublayoutType.DodgeY ||
+        props.sublayout.type == Region2DSublayoutType.Grid
       ) {
         if (props.xData && props.xData.type == "numerical") {
-          props.sublayout.type = "overlap";
+          props.sublayout.type = Region2DSublayoutType.Overlap;
         }
         if (props.yData && props.yData.type == "numerical") {
-          props.sublayout.type = "overlap";
+          props.sublayout.type = Region2DSublayoutType.Overlap;
         }
+      }
+    }
+  }
+
+  /**
+   * Due to undefined "value" will not saved after JSON.stringfy, need to update all undefined "values" to null
+   * deepClone uses JSON.stringfy to create copy of object. If object losses some property after copy
+   * the function expect_deep_approximately_equals gives difference for identical tempalte/chart state
+   * See {@link ChartStateManager.hasUnsavedChanges} for details
+   * @param dataExpression Data expression for axis
+   */
+  private normalizeDataExpression(dataExpression: DragData.DataExpression) {
+    if (dataExpression.metadata) {
+      if (dataExpression.metadata.order === undefined) {
+        dataExpression.metadata.order = null;
+      }
+      if (dataExpression.metadata.orderMode === undefined) {
+        dataExpression.metadata.orderMode = null;
+      }
+      if (dataExpression.metadata.rawColumnName === undefined) {
+        dataExpression.metadata.rawColumnName = null;
+      }
+      if (dataExpression.metadata.unit === undefined) {
+        dataExpression.metadata.unit = null;
+      }
+      if (dataExpression.metadata.kind === undefined) {
+        dataExpression.metadata.kind = null;
+      }
+      if (dataExpression.metadata.isRaw === undefined) {
+        dataExpression.metadata.isRaw = null;
+      }
+      if (dataExpression.metadata.format === undefined) {
+        dataExpression.metadata.format = null;
+      }
+      if (dataExpression.metadata.examples === undefined) {
+        dataExpression.metadata.examples = null;
+      }
+      if (dataExpression.scaleID === undefined) {
+        dataExpression.scaleID = null;
+      }
+      if (dataExpression.type === undefined) {
+        dataExpression.type = null;
+      }
+      if (dataExpression.rawColumnExpression === undefined) {
+        dataExpression.rawColumnExpression = null;
+      }
+      if (dataExpression.valueType === undefined) {
+        dataExpression.valueType = null;
       }
     }
   }
 
   public getCategoriesForDataBinding(
     metadata: Dataset.ColumnMetadata,
+    type: DataType,
     values: ValueType[]
   ) {
     let categories: string[];
-    if (metadata.order) {
+    let order: string[];
+    if (metadata.order && metadata.orderMode === OrderMode.order) {
       categories = metadata.order.slice();
-    } else {
       const scale = new Scale.CategoricalScale();
-      let orderMode: OrderMode =
-      OrderMode.alphabetically;
+      scale.inferParameters(values as string[], metadata.orderMode);
+      const newData = new Array<string>(scale.length);
+      scale.domain.forEach(
+        (index: any, x: any) => (newData[index] = x.toString())
+      );
+
+      metadata.order = metadata.order.filter((value) =>
+        scale.domain.has(value)
+      );
+      const newItems = newData.filter(
+        (category) => !metadata.order.find((order) => order === category)
+      );
+
+      categories = new Array<string>(metadata.order.length);
+      metadata.order.forEach((value, index) => {
+        categories[index] = value;
+      });
+      categories = categories.concat(newItems);
+      order = metadata.order.concat(newItems);
+    } else {
+      let orderMode: OrderMode = OrderMode.alphabetically;
+      const scale = new Scale.CategoricalScale();
       if (metadata.orderMode) {
         orderMode = metadata.orderMode;
+      }
+      if (type === "number") {
+        values = (values as number[]).sort((a, b) => a - b);
+        orderMode = OrderMode.order;
       }
       scale.inferParameters(values as string[], orderMode);
       categories = new Array<string>(scale.length);
@@ -1480,7 +2111,7 @@ export class AppStore extends BaseStore {
         (index: any, x: any) => (categories[index] = x.toString())
       );
     }
-    return categories;
+    return { categories, order };
   }
 
   public getGroupingExpression(
@@ -1522,10 +2153,44 @@ export class AppStore extends BaseStore {
   ): Specification.Template.Column[] {
     const unmappedColumns: Specification.Template.Column[] = [];
     const dataTable = dataset.tables.find((t) => t.type === tableType);
-    const found = dataTable.columns.find((c) => c.name === column.name);
+    const found = dataTable?.columns.find((c) => c.name === column.name);
     if (!found) {
       unmappedColumns.push(column);
     }
     return unmappedColumns;
+  }
+
+  public setProperty(config: {
+    object: Specification.Object;
+    property: string;
+    field: number | string | (number | string)[];
+    value: Specification.AttributeValue;
+    noUpdateState?: boolean;
+    noComputeLayout?: boolean;
+  }) {
+    if (
+      config.property === "name" &&
+      this.chartManager.isNameUsed(config.value as string)
+    ) {
+      return;
+    }
+    this.saveHistory();
+
+    if (config.field == null) {
+      config.object.properties[config.property] = config.value;
+    } else {
+      const obj = config.object.properties[config.property];
+      config.object.properties[config.property] = setField(
+        obj,
+        config.field,
+        config.value
+      );
+    }
+
+    if (config.noUpdateState) {
+      this.emit(AppStore.EVENT_GRAPHICS);
+    } else {
+      this.solveConstraintsAndUpdateGraphics(config.noComputeLayout);
+    }
   }
 }

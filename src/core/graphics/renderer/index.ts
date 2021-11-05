@@ -8,18 +8,20 @@
  * @preferred
  */
 
+import { ReactElement } from "react";
 import {
   getById,
   MultistringHashMap,
   Point,
   transpose,
   zipArray,
+  ZoomInfo,
 } from "../../common";
 import * as Dataset from "../../dataset";
 import * as Prototypes from "../../prototypes";
 import * as Specification from "../../specification";
 import { CartesianCoordinates, CoordinateSystem } from "../coordinate_system";
-import { Element, Group, makeGroup } from "../elements";
+import { Element, Group, makeGroup, makeRect } from "../elements";
 
 export function facetRows(
   rows: Dataset.Row[],
@@ -32,7 +34,7 @@ export function facetRows(
     const facets = new MultistringHashMap<number[]>();
     for (const index of indices) {
       const row = rows[index];
-      const facetValues = columns.map((c) => row[c] as string);
+      const facetValues = columns.map((c) => <string>row[c]);
       if (facets.has(facetValues)) {
         facets.get(facetValues).push(index);
       } else {
@@ -53,8 +55,10 @@ export interface RenderEvents {
  *
  */
 export class ChartRenderer {
-
-  constructor(private manager: Prototypes.ChartStateManager, private renderEvents?: RenderEvents) {
+  constructor(
+    private manager: Prototypes.ChartStateManager,
+    private renderEvents?: RenderEvents
+  ) {
     this.manager = manager;
   }
 
@@ -88,9 +92,9 @@ export class ChartRenderer {
           plotSegment,
           glyphIndex: index,
           rowIndices: plotSegmentState.dataRowIndices[index],
-          enableTooltips: cls.object.properties.enableTooltips as boolean,
-          enableContextMenu: cls.object.properties.enableContextMenu as boolean,
-          enableSelection: cls.object.properties.enableSelection as boolean,
+          enableTooltips: <boolean>cls.object.properties.enableTooltips,
+          enableContextMenu: <boolean>cls.object.properties.enableContextMenu,
+          enableSelection: <boolean>cls.object.properties.enableSelection,
         };
         return makeGroup([g]);
       } else {
@@ -105,7 +109,9 @@ export class ChartRenderer {
    * @param chart Chart object
    * @param chartState State of chart and chart elements
    */
+  // eslint-disable-next-line
   private renderChart(
+    // eslint-disable-next-line
     dataset: Dataset.Dataset,
     chart: Specification.Chart,
     chartState: Specification.ChartState
@@ -131,8 +137,8 @@ export class ChartRenderer {
       }
       // Render marks if this is a plot segment
       if (Prototypes.isType(element.classID, "plot-segment")) {
-        const plotSegment = element as Specification.PlotSegment;
-        const plotSegmentState = elementState as Specification.PlotSegmentState;
+        const plotSegment = <Specification.PlotSegment>element;
+        const plotSegmentState = <Specification.PlotSegmentState>elementState;
         const mark = getById(chart.glyphs, plotSegment.glyph);
         const plotSegmentClass = this.manager.getPlotSegmentClass(
           plotSegmentState
@@ -144,10 +150,10 @@ export class ChartRenderer {
           glyphIndex,
           glyphState,
         ] of plotSegmentState.glyphs.entries()) {
-          const anchorX = glyphState.marks[0].attributes.x as number;
-          const anchorY = glyphState.marks[0].attributes.y as number;
-          const offsetX = (glyphState.attributes.x as number) - anchorX;
-          const offsetY = (glyphState.attributes.y as number) - anchorY;
+          const anchorX = <number>glyphState.marks[0].attributes.x;
+          const anchorY = <number>glyphState.marks[0].attributes.y;
+          const offsetX = <number>glyphState.attributes.x - anchorX;
+          const offsetY = <number>glyphState.attributes.y - anchorY;
           const g = this.renderGlyphMarks(
             plotSegment,
             plotSegmentState,
@@ -201,7 +207,65 @@ export class ChartRenderer {
       }
     }
 
-    return makeGroup(graphics);
+    const chartEventHandlerRect = makeRect(
+      <number>chartState.attributes.x1,
+      <number>chartState.attributes.y1,
+      <number>chartState.attributes.x2,
+      <number>chartState.attributes.y2,
+      {
+        fillColor: null,
+        opacity: 1,
+      }
+    );
+
+    // don't need to handle other events by chart.
+    if (chart.properties.enableContextMenu) {
+      chartEventHandlerRect.selectable = {
+        plotSegment: null,
+        glyphIndex: null,
+        rowIndices: null,
+        enableTooltips: false,
+        enableContextMenu:
+          chart.properties.enableContextMenu !== undefined
+            ? <boolean>chart.properties.enableContextMenu
+            : true,
+        enableSelection: false,
+      };
+    }
+
+    return makeGroup([chartEventHandlerRect, ...graphics]);
+  }
+
+  public renderControls(
+    chart: Specification.Chart,
+    chartState: Specification.ChartState,
+    zoom: ZoomInfo
+  ) {
+    const elementsAndStates = zipArray(chart.elements, chartState.elements);
+
+    let controls: ReactElement<any>[] = [];
+
+    // Render control graphics
+    for (const [element, elementState] of elementsAndStates) {
+      if (!element.properties.visible) {
+        continue;
+      }
+      // Render plotsegment controls
+      if (Prototypes.isType(element.classID, "plot-segment")) {
+        const plotSegmentState = <Specification.PlotSegmentState>elementState;
+        const plotSegmentClass = this.manager.getPlotSegmentClass(
+          plotSegmentState
+        );
+        const plotSegmentBackgroundControlElements = plotSegmentClass.renderControls(
+          this.manager,
+          zoom
+        );
+
+        controls = controls.concat(plotSegmentBackgroundControlElements);
+      }
+    }
+
+    return controls;
   }
 
   public render(): Group {

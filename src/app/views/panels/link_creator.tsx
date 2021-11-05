@@ -15,7 +15,7 @@ import {
   uniqueID,
 } from "../../../core";
 import { Actions } from "../../actions";
-import { ButtonRaised, SVGImageIcon } from "../../components";
+import { SVGImageIcon } from "../../components";
 import { ContextedComponent } from "../../context_component";
 
 import { classNames } from "../../utils";
@@ -24,8 +24,9 @@ import {
   DataFieldSelectorValue,
 } from "../dataset/data_field_selector";
 import { ReorderListView } from "./object_list_editor";
-import { LinkMarkType } from "../../../core/prototypes/links";
 import { PanelRadioControl } from "./radio_control";
+import { MappingType } from "../../../core/specification";
+import { PrimaryButton } from "@fluentui/react";
 
 export interface LinkCreationPanelProps {
   onFinish?: () => void;
@@ -140,7 +141,7 @@ export class LinkCreationPanel extends ContextedComponent<
           </div>
         ) : null}
         <div className="el-row">
-          <ButtonRaised
+          <PrimaryButton
             text="Create Links"
             onClick={() => {
               const links = this.getLinkObject();
@@ -164,12 +165,14 @@ export class LinkCreationPanel extends ContextedComponent<
     );
   }
 
+  // eslint-disable-next-line
   private getDefaultAnchor(
     manager: Prototypes.ChartStateManager,
     linkMode: string,
     cs: Graphics.CoordinateSystem,
     glyph1: Specification.Glyph,
     glyphState1: Specification.GlyphState,
+    // eslint-disable-next-line
     glyph2: Specification.Glyph,
     glyphState2: Specification.GlyphState
   ): {
@@ -187,19 +190,25 @@ export class LinkCreationPanel extends ContextedComponent<
       case "line":
         {
           color = {
-            type: "value",
+            type: MappingType.value,
             value: { r: 0, g: 0, b: 0 },
           } as Specification.ValueMapping;
-          opacity = { type: "value", value: 1 } as Specification.ValueMapping;
+          opacity = {
+            type: MappingType.value,
+            value: 1,
+          } as Specification.ValueMapping;
         }
         break;
       case "band":
         {
           color = {
-            type: "value",
+            type: MappingType.value,
             value: { r: 0, g: 0, b: 0 },
           } as Specification.ValueMapping;
-          opacity = { type: "value", value: 0.5 } as Specification.ValueMapping;
+          opacity = {
+            type: MappingType.value,
+            value: 0.5,
+          } as Specification.ValueMapping;
         }
         break;
     }
@@ -209,11 +218,15 @@ export class LinkCreationPanel extends ContextedComponent<
     let candidates2: Prototypes.LinkAnchor.Description[] = [];
     for (const mark of glyphState1.marks) {
       const c = manager.getMarkClass(mark);
-      candidates1 = candidates1.concat(c.getLinkAnchors("begin"));
+      if (c.getLinkAnchors) {
+        candidates1 = candidates1.concat(c.getLinkAnchors("begin"));
+      }
     }
     for (const mark of glyphState2.marks) {
       const c = manager.getMarkClass(mark);
-      candidates2 = candidates2.concat(c.getLinkAnchors("end"));
+      if (c.getLinkAnchors) {
+        candidates2 = candidates2.concat(c.getLinkAnchors("end"));
+      }
     }
     // Filter based on link type
     switch (this.state.linkType) {
@@ -465,24 +478,9 @@ export class LinkCreationPanel extends ContextedComponent<
     };
   }
 
+  // eslint-disable-next-line
   public getLinkObject() {
     const manager = this.store.chartManager;
-    let defaultColor: Specification.ValueMapping;
-    let defaultOpacity: Specification.ValueMapping;
-    switch (this.state.linkType) {
-      case "line":
-        {
-          defaultColor = { type: "value", value: { r: 0, g: 0, b: 0 } };
-          defaultOpacity = { type: "value", value: 0.5 };
-        }
-        break;
-      case "band":
-        {
-          defaultColor = { type: "value", value: { r: 0, g: 0, b: 0 } };
-          defaultOpacity = { type: "value", value: 0.5 };
-        }
-        break;
-    }
     const plotSegmentIDs = this.state.selectedPlotSegments;
     const plotSegmentClasses = plotSegmentIDs.map(
       (x) => manager.getClassById(x) as Prototypes.PlotSegments.PlotSegmentClass
@@ -535,7 +533,9 @@ export class LinkCreationPanel extends ContextedComponent<
           glyph,
           rowToMarkState.get(facets[0][0].join(",")),
           glyph,
-          rowToMarkState.get(facets[0][1].join(","))
+          rowToMarkState.get(
+            facets[0][1] ? facets[0][1].join(",") : facets[0][0].join(",")
+          )
         );
 
         const links: Specification.Links = {

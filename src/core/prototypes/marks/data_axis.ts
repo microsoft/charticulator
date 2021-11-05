@@ -16,6 +16,7 @@ import {
   Controls,
   DropZones,
   Handles,
+  ObjectClass,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters,
@@ -31,6 +32,8 @@ import {
   DataAxisProperties,
   DataAxisExpression,
 } from "./data_axis.attrs";
+import React = require("react");
+import { strings } from "../../../strings";
 
 export { DataAxisAttributes, DataAxisProperties };
 
@@ -51,6 +54,7 @@ export class DataAxisClass extends MarkClass<
   };
 
   public static defaultProperties: Partial<DataAxisProperties> = {
+    ...ObjectClass.defaultProperties,
     dataExpressions: [],
     axis: null,
     visible: true,
@@ -103,10 +107,9 @@ export class DataAxisClass extends MarkClass<
       if (props.axis.type == "numerical") {
         for (const item of props.dataExpressions) {
           const [attrX, attrY] = this.getAttributeNames(item);
-          const expr = context.getExpressionValue(
-            item.expression,
-            context.rowContext
-          ) as number;
+          const expr = <number>(
+            context.getExpressionValue(item.expression, context.rowContext)
+          );
           const interp = getNumericalInterpolate(props.axis);
           const t = interp(expr);
           if (attrs[attrX] == null) {
@@ -151,7 +154,7 @@ export class DataAxisClass extends MarkClass<
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes;
     return [
-      {
+      <Handles.Point>{
         type: "point",
         x: attrs.x1,
         y: attrs.y1,
@@ -159,8 +162,8 @@ export class DataAxisClass extends MarkClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: attrs.x2,
         y: attrs.y2,
@@ -168,7 +171,7 @@ export class DataAxisClass extends MarkClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
+      },
     ];
   }
 
@@ -261,44 +264,44 @@ export class DataAxisClass extends MarkClass<
     if (attrs.x1 != attrs.x2) {
       for (const item of this.object.properties.dataExpressions) {
         const attr = this.getAttributeNames(item)[0];
-        guides.push({
+        guides.push(<SnappingGuides.Axis>{
           type: "x",
-          value: attrs[attr] as number,
+          value: <number>attrs[attr],
           attribute: attr,
-        } as SnappingGuides.Axis);
+        });
       }
     }
     if (attrs.y1 != attrs.y2) {
       for (const item of this.object.properties.dataExpressions) {
         const attr = this.getAttributeNames(item)[1];
-        guides.push({
+        guides.push(<SnappingGuides.Axis>{
           type: "y",
-          value: attrs[attr] as number,
+          value: <number>attrs[attr],
           attribute: attr,
-        } as SnappingGuides.Axis);
+        });
       }
     }
     for (const item of this.object.properties.dataExpressions) {
       const [attrX, attrY] = this.getAttributeNames(item);
-      guides.push({
+      guides.push(<SnappingGuides.Label>{
         type: "label",
-        x: attrs[attrX] as number,
-        y: attrs[attrY] as number,
+        x: <number>attrs[attrX],
+        y: <number>attrs[attrY],
         text: item.expression,
-      } as SnappingGuides.Label);
+      });
     }
     return guides;
   }
 
   public getBoundingBox(): BoundingBox.Description {
     const attrs = this.state.attributes;
-    return {
+    return <BoundingBox.Line>{
       type: "line",
       x1: attrs.x1,
       y1: attrs.y1,
       x2: attrs.x2,
       y2: attrs.y2,
-    } as BoundingBox.Line;
+    };
   }
 
   // Get DropZones given current state
@@ -306,7 +309,7 @@ export class DataAxisClass extends MarkClass<
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     return [
-      {
+      <DropZones.Line>{
         type: "line",
         p1: { x: x1, y: y1 },
         p2: { x: x2, y: y2 },
@@ -317,7 +320,7 @@ export class DataAxisClass extends MarkClass<
             appendToProperty: "dataExpressions",
           },
         },
-      } as DropZones.Line,
+      },
     ];
   }
 
@@ -329,44 +332,64 @@ export class DataAxisClass extends MarkClass<
       props.axis,
       "axis",
       manager,
-      "Data Axis"
+      strings.toolbar.dataAxis
     );
-    const r = [...axisWidgets];
-    r.push(
-      manager.row(
-        "Visible On",
-        manager.inputSelect(
-          { property: "visibleOn" },
-          {
-            labels: ["All", "First", "Last"],
-            showLabel: true,
-            options: ["all", "first", "last"],
-            type: "dropdown",
-          }
-        )
-      )
-    );
+    const r = [
+      manager.verticalGroup(
+        {
+          header: strings.objects.general,
+        },
+        [
+          manager.inputSelect(
+            { property: "visibleOn" },
+            {
+              labels: [
+                strings.objects.visibleOn.all,
+                strings.objects.visibleOn.first,
+                strings.objects.visibleOn.last,
+              ],
+              showLabel: true,
+              options: ["all", "first", "last"],
+              type: "dropdown",
+              label: strings.objects.visibleOn.label,
+            }
+          ),
+        ]
+      ),
+      ...axisWidgets,
+    ];
     if (props.dataExpressions.length > 0) {
-      r.push(manager.sectionHeader("Data Expressions"));
       r.push(
-        manager.arrayWidget(
-          { property: "dataExpressions" },
-          (item) => {
-            return manager.inputExpression(
-              {
-                property: "dataExpressions",
-                field:
-                  item.field instanceof Array
-                    ? [...item.field, "expression"]
-                    : [item.field, "expression"],
-              },
-              { table: this.getGlyphClass().object.table }
-            );
-          },
+        manager.verticalGroup(
           {
-            allowDelete: true,
-            allowReorder: true,
-          }
+            header: strings.objects.axes.dataExpressions,
+          },
+          [
+            manager.arrayWidget(
+              { property: "dataExpressions" },
+              (item, index) => {
+                const expressionInput = manager.inputExpression(
+                  {
+                    property: "dataExpressions",
+                    field:
+                      item.field instanceof Array
+                        ? [...item.field, "expression"]
+                        : [item.field, "expression"],
+                  },
+                  { table: this.getGlyphClass().object.table }
+                );
+                return React.createElement(
+                  "fragment",
+                  { key: index },
+                  expressionInput
+                );
+              },
+              {
+                allowDelete: true,
+                allowReorder: true,
+              }
+            ),
+          ]
         )
       );
     }
@@ -381,9 +404,8 @@ export class DataAxisClass extends MarkClass<
     };
     let properties: Specification.Template.Property[] = [];
     if (this.object.properties.axis) {
-      const axis = this.object.properties.axis;
       properties = properties.concat(
-        buildAxisProperties(this.object as any, "axis")
+        buildAxisProperties(<any>this.object, "axis")
       );
       properties.push({
         objectID: this.object._id,
@@ -410,6 +432,7 @@ export class DataAxisClass extends MarkClass<
               ),
               type: props.axis.type,
               property: "axis",
+              defineCategories: false,
             },
           },
           ...props.dataExpressions.map((x, i) => {

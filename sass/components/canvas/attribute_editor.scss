@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+@use 'sass:math';
+
 .attribute-editor {
   font-size: 14px;
   box-sizing: border-box;
@@ -16,14 +18,15 @@
     display: flex;
     flex-direction: row;
     font-size: 14px;
+    font-weight: bold;
     line-height: 24px;
     padding-bottom: 4px;
+    margin-top: 1px;
     margin-bottom: 0px;
-    border-bottom: 1px solid $gray-180;
+    border-bottom: 0px solid $gray-180;
     color: $black;
 
     .svg-image-icon {
-      padding: 2px;
       width: 20px;
       height: 20px;
       vertical-align: top;
@@ -339,10 +342,6 @@
       }
     }
   }
-
-  .is-active {
-    background: $gray-230;
-  }
 }
 
 .slider-control {
@@ -549,6 +548,7 @@
 
   &__widget {
     $line-height: 24px;
+    $line-header-height: 24px;
 
     // Vertical layout
     &-vertical {
@@ -560,10 +560,11 @@
       flex: 1 1;
       display: flex;
       flex-direction: row;
+      align-items: center;
 
       .el-layout-item {
         &:not(:last-child) {
-          margin-right: 4px;
+          margin-right: 2px;
         }
       }
 
@@ -672,6 +673,35 @@
       }
     }
 
+    &-row-fluentui {
+      display: flex;
+      flex-direction: column;
+      margin: 2px 0;
+
+      &-label {
+        word-break: keep-all;
+        white-space: nowrap;
+        font-size: 12px;
+        width: 70px;
+        flex: 0 0;
+        flex-basis: 70px;
+        line-height: $line-height;
+        text-align: right;
+        padding-right: 4px;
+        margin-right: 4px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: block;
+        color: $gray-100;
+        transition: background-color $transition-default;
+      }
+
+      &-widget {
+        display: flex;
+        flex-direction: row;
+      }
+    }
+
     &-grid {
       display: flex;
       flex-direction: row;
@@ -679,6 +709,7 @@
 
     &-array-view {
       &-item {
+        margin: 2px;
         display: flex;
       }
 
@@ -721,11 +752,12 @@
     &-section-header {
       color: $gray-100;
       font-size: 12px;
-      height: $line-height;
-      line-height: $line-height;
+      height: $line-header-height;
+      line-height: $line-header-height;
       display: flex;
       flex-direction: row;
       margin: 2px 0;
+      align-items: center;
 
       &-title {
         flex: 1 1;
@@ -851,6 +883,7 @@
           background: none;
           font-size: 14px;
 
+          margin-right: 5px;
           @include font-mono;
 
           height: $line-height;
@@ -995,18 +1028,20 @@
         display: flex;
         flex-direction: row;
         width: 100%;
+        margin-left: 1px;
 
         .el-color-display {
           cursor: pointer;
           border-radius: 2px;
           flex-shrink: 0;
           display: inline-block;
-          width: $line-height - 4px;
-          height: $line-height - 4px;
+          width: $line-height - 2px;
+          height: $line-height - 2px;
           vertical-align: top;
-          margin: 1px;
-          margin-right: 8px;
-          border: 1px solid $white;
+          margin-left: 5px;
+          margin-right: 0px;
+          margin-top: 24px;
+          border: 1px solid $gray-095;
         }
       }
 
@@ -1014,9 +1049,7 @@
         display: flex;
         flex-direction: row;
         width: 100%;
-        cursor: pointer;
         border-radius: 2px;
-        height: $line-height;
         line-height: $line-height;
         overflow: hidden;
 
@@ -1060,8 +1093,6 @@
         }
 
         &:hover {
-          background: $color-primary;
-
           .el-image {
             border: 1px solid $color-primary-dark;
           }
@@ -1076,7 +1107,14 @@
           width: 100%;
           border: 1px solid $color-active;
           padding-left: 4px;
+          padding-top: 4px;
           background: lighten($color-active, 30%);
+          height: 26px;
+
+          &-attrubutes {
+            @extend .el-drag-over;
+            width: auto;
+          }
         }
       }
 
@@ -1117,13 +1155,13 @@
 
         .el-part {
           display: block;
-          width: $line-height / 2;
-          height: $line-height / 2;
+          width: math.div($line-height, 2);
+          height: math.div($line-height, 2);
           padding: 0 2px;
 
           .el-svg-icon {
-            width: $line-height / 2;
-            height: $line-height / 2;
+            width: math.div($line-height, 2);
+            height: math.div($line-height, 2);
             filter: invert(40%);
           }
 
@@ -1157,6 +1195,8 @@
         vertical-align: top;
         cursor: pointer;
         height: $line-height;
+        border: none;
+        background: none;
         border-radius: 2px;
 
         &.has-text {
@@ -1265,6 +1305,7 @@
       &-slider {
         cursor: default;
         height: $line-height;
+        width: 100%;
 
         svg {
           pointer-events: all;
@@ -1634,20 +1675,18 @@
         &.is-dragging-over {
           outline: 1px solid $color-active;
           background: $color-active;
-
-          & > * {
-            display: none;
-          }
+          height: 100%;
 
           &:after {
             display: block;
             position: absolute;
+            right: 10px;
             left: 0;
             top: 0;
-            height: $line-height;
-            line-height: $line-height;
             padding-left: 4px;
+            padding-top: 4px;
             content: "Drop here to map data";
+            text-align: end;
             color: white;
           }
         }
@@ -1673,16 +1712,21 @@
           flex-direction: row;
 
           .el-color-item {
+            $border-width: 1px;
             cursor: pointer;
             border-radius: 2px;
             flex-shrink: 0;
             display: inline-block;
-            width: $line-height - 4px;
-            height: $line-height - 4px;
+            width: $line-height - $border-width - $border-width;
+            height: $line-height - $border-width - $border-width;
+            max-width: $line-height - $border-width - $border-width;
+            max-height: $line-height - $border-width - $border-width;
             vertical-align: top;
-            margin: 1px;
-            margin-right: 8px;
+            margin-top: 24px;
+            margin-left: 8px;
             border: 1px solid $gray-200;
+            border-radius: 2px;
+            margin-right: 5px;
           }
         }
 
@@ -1874,6 +1918,11 @@
   .action-buttons {
     text-align: right;
     margin-top: 10px;
+
+    .ms-Button {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
   }
 }
 

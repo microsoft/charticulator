@@ -17,6 +17,7 @@ import { Element } from "../../core/specification";
 import { SVGImageIcon } from ".";
 import { RemoveMessage } from "../actions/actions";
 
+// eslint-disable-next-line
 function getObjectIcon(classID: string) {
   return R.getSVGIcon(
     Prototypes.ObjectClasses.GetMetadata(classID).iconPath || "object"
@@ -27,7 +28,7 @@ export class MessagePanel extends ContextedComponent<
   {
     store: AppStore;
   },
-  {}
+  Record<string, never>
 > {
   public mappingButton: Element;
   private tokens: EventSubscription[];
@@ -57,7 +58,7 @@ export class MessagePanel extends ContextedComponent<
 
     return (
       <div className="charticulator__object-list-editor">
-        {Array.from(messages, ([key, value]) => key).map((key, index) => {
+        {Array.from(messages, ([key]) => key).map((key, index) => {
           const message = messages.get(key);
           if (messageTypes.find((k) => k === key)) {
             return (
@@ -78,7 +79,7 @@ export class MessagePanel extends ContextedComponent<
                   }}
                 >
                   <span className="el-text">{message}</span>
-                  <SVGImageIcon url={R.getSVGIcon("general/cross")} />
+                  <SVGImageIcon url={R.getSVGIcon("ChromeClose")} />
                 </div>
               </div>
             );

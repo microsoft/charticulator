@@ -5,11 +5,11 @@ import { AppStore } from "./stores";
 import { Action } from "./actions/actions";
 import { strings } from "../strings";
 
-export interface MainContext {
+export interface MainContextInterface {
   store: AppStore;
 }
 
-export let MainContextTypes = {
+export const MainContextTypes = {
   store: (props: any, propName: string, componentName: string) => {
     if (props[propName] instanceof AppStore) {
       return null;
@@ -23,9 +23,9 @@ export class ContextedComponent<TProps, TState> extends React.Component<
   TProps,
   TState
 > {
-  public context: MainContext;
+  public context: MainContextInterface;
 
-  constructor(props: TProps, context: MainContext) {
+  constructor(props: TProps, context: MainContextInterface) {
     super(props, context);
   }
 
@@ -39,3 +39,5 @@ export class ContextedComponent<TProps, TState> extends React.Component<
     return this.context.store;
   }
 }
+
+export const MainReactContext = React.createContext<MainContextInterface>(null);

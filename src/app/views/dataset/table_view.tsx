@@ -9,9 +9,8 @@
 
 import * as React from "react";
 import { Dataset } from "../../../core";
-import { Select } from "../panels/widgets/controls";
-import { DataType } from "../../../core/specification";
 import { getConvertableTypes } from "../../utils";
+import { Dropdown } from "@fluentui/react";
 
 export interface TableViewProps {
   table: Dataset.Table;
@@ -26,7 +25,7 @@ export interface TableViewProps {
  *
  * ![Table view](media://table_view_leftside.png)
  */
-export class TableView extends React.Component<TableViewProps, {}> {
+export class TableView extends React.Component<TableViewProps, any> {
   public render() {
     const table = this.props.table;
     const onTypeChange = this.props.onTypeChange;
@@ -60,18 +59,24 @@ export class TableView extends React.Component<TableViewProps, {}> {
                   return (
                     <td key={`${c.name}-${index}`}>
                       {
-                        <Select
-                          onChange={(newType) => {
-                            onTypeChange(c.name, newType);
+                        <Dropdown
+                          onChange={(ev, newType) => {
+                            onTypeChange(c.name, newType.key as string);
                             this.forceUpdate();
                           }}
-                          value={c.type}
-                          options={convertableTypes}
-                          labels={convertableTypes.map((type) => {
+                          styles={{
+                            title: {
+                              borderWidth: "0px",
+                            },
+                          }}
+                          selectedKey={c.type}
+                          options={convertableTypes.map((type) => {
                             const str = type.toString();
-                            return str[0].toUpperCase() + str.slice(1);
+                            return {
+                              key: type,
+                              text: str[0].toUpperCase() + str.slice(1),
+                            };
                           })}
-                          showText={true}
                         />
                       }
                     </td>

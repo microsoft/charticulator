@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+@use 'sass:math';
+
 .el-svg-icon {
   vertical-align: top;
   width: 24px;
@@ -26,7 +28,7 @@
 
 @mixin button-base($height) {
   border: none;
-  outline: none;
+  // outline: none;
   height: $height;
   line-height: $height;
   display: inline-block;
@@ -56,13 +58,25 @@
   &-tool {
     @include button-base(32px);
     @include icon-size(24px);
-    // @include shadow-ambient;
 
     padding: 4px;
 
     margin-right: 0px;
 
     background: $color-well;
+
+    &.is-disabled {
+      color: $gray-180;
+      cursor: not-allowed;
+      .el-svg-icon {
+        filter: invert(80%);
+      }
+      &:hover,
+      &:active {
+        background: $gray-230;
+        @include no-shadow;
+      }
+    }
 
     .el-text {
       font-size: 14px;
@@ -252,6 +266,8 @@
       @include icon-invert(0%);
       color: $gray-000;
     }
+    display: inline-block;
+    background: none;
   }
 
   &-row {
@@ -308,7 +324,7 @@
     $button-size: 20px;
     width: $button-size;
     height: $button-size;
-    padding: (32px - $button-size) / 2;
+    padding: math.div((32px - $button-size), 2);
     vertical-align: top;
     display: inline-block;
     .el-svg-icon {
@@ -342,7 +358,7 @@
     $button-size: 20px;
     line-height: $button-size;
     height: $button-size;
-    padding: (32px - $button-size) / 2;
+    padding: math.div((32px - $button-size), 2);
     vertical-align: top;
     display: inline-block;
 
@@ -380,13 +396,24 @@
         filter: invert(100%);
       }
     }
+    &.is-disabled {
+      color: $gray-180;
+      cursor: not-allowed;
+      .el-svg-icon {
+        filter: invert(80%);
+      }
+      &:hover,
+      &:active {
+        @include no-shadow;
+      }
+    }
   }
 
   &-menu-app {
     $button-size: 20px;
     line-height: $button-size;
     height: $button-size;
-    padding: (32px - $button-size) / 2;
+    padding: math.div((32px - $button-size), 2);
     vertical-align: top;
     display: inline-block;
 
@@ -491,7 +518,7 @@
 .editable-text-view {
   $font-size: 14px;
   $padding: 0;
-  $height: 24px;
+  $height: 32px;
 
   display: flex;
   flex-direction: row;
@@ -517,7 +544,7 @@
 
   transition: border-color $transition-default;
 
-  border-bottom: 2px solid transparent;
+  border-bottom: 2px solid $gray-210;
 
   &:hover {
     border-bottom: 2px solid $gray-210;
@@ -538,7 +565,7 @@
       flex: 1;
 
       border: none;
-      outline: none;
+      // outline: none;
     }
 
     .button-flat {

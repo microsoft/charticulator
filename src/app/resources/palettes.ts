@@ -1,6 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Color, colorFromHTMLColor, getColorConverter } from "../../core";
+import {
+  Color,
+  colorFromHTMLColor,
+  getColorConverter,
+  getDefaultColorGeneratorResetFunction,
+  getDefaultColorPalette,
+} from "../../core";
 
 /** A color scheme is a source of colors for categorical/ordinal/numerical scales */
 export interface ColorPalette {
@@ -9,7 +15,7 @@ export interface ColorPalette {
   type: "sequential" | "diverging" | "qualitative" | "palette";
 }
 
-export let predefinedPalettes: ColorPalette[] = [];
+export const predefinedPalettes: ColorPalette[] = [];
 const converter = getColorConverter("sRGB", "sRGB");
 
 export function addPalette(
@@ -28,6 +34,49 @@ export function addPalette(
       })
     ),
   });
+}
+
+export function transformPowerBIThemeColors(colors: Color[]): Color[][] {
+  const columnAmount = 10;
+  const newColors = [];
+  for (let i = 0; i < columnAmount; i++) {
+    newColors.push([]);
+  }
+  for (let i = 0; i < colors.length; i++) {
+    newColors[i % columnAmount].push(colors[i]);
+  }
+  return newColors;
+}
+
+export function addPowerBIThemeColors(): void {
+  const amount = 60;
+  const colors = getDefaultColorPalette(amount);
+  if (colors.length == amount) {
+    const newColorArr = transformPowerBIThemeColors(colors);
+    const colorPalette: ColorPalette = {
+      name: "Palette/Power BI Theme",
+      type: "palette",
+      colors: newColorArr,
+    };
+    addColorPalette(colorPalette);
+    const resetFn = getDefaultColorGeneratorResetFunction();
+    if (resetFn) {
+      resetFn();
+    }
+  }
+}
+
+/* eslint-disable no-var */
+//singleton
+var flag: boolean = false;
+
+export function addColorPalette(colorPalette: ColorPalette) {
+  if (!flag) {
+    predefinedPalettes.push({
+      ...colorPalette,
+    });
+    flag = true;
+  }
 }
 
 // D3 colors
@@ -700,6 +749,7 @@ addPalette(
   ["#796408", "#b6960b", "#f5d33f", "#f7de6f", "#fae99f", "#f2c80f"].reverse(),
   ["#303637", "#475052", "#7f898a", "#9fa6a7", "#bfc4c5", "#5f6b6d"].reverse(),
   ["#456a76", "#689fb0", "#a1ddef", "#b9e5f3", "#d0eef7", "#8ad4eb"].reverse(),
+  ["#118dff", "#a0d1ff", "#70bbff", "#41a4ff", "#0d6abf", "#094780"].reverse(),
   ["#7f4b33", "#bf714d", "#feab85", "#fec0a3", "#ffd5c2", "#fe9666"].reverse(),
   ["#53354d", "#7d4f73", "#b887ad", "#caa5c2", "#dbc3d6", "#a66999"].reverse()
 );

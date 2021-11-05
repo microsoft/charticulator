@@ -1,11 +1,26 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
+
 import * as React from "react";
 import * as R from "../../../../resources";
 import * as globals from "../../../../globals";
 import { SVGImageIcon } from "../../../../components";
 import { PopupView } from "../../../../controllers";
 import { classNames } from "../../../../utils";
+import {
+  IComboBoxOption,
+  ComboBox as FluentCombobox,
+  Label,
+} from "@fluentui/react";
+import { fontList } from "../../../../../core";
+import {
+  defaultLabelStyle,
+  defaultStyle,
+  defultComponentsHeight,
+} from "./fluentui_customized_components";
 
 export interface ComboBoxOptionProps {
   onClick: () => void;
@@ -61,10 +76,10 @@ export class ComboBox extends React.Component<ComboBoxProps, ComboBoxState> {
       value: e.target.value,
     });
   };
-  protected handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+  protected handleFocus = () => {
     this.refInput.select();
   };
-  protected handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+  protected handleBlur = () => {
     this.tryEmitValue(this.refInput.value);
   };
   protected handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -156,29 +171,9 @@ export class ComboBox extends React.Component<ComboBoxProps, ComboBoxState> {
   }
 }
 
-const fontList = [
-  "Arial Black",
-  "Arial",
-  "Comic Sans MS",
-  "Consolas",
-  "Courier New",
-  "Geneva",
-  "Georgia",
-  "Helvetica",
-  "Impact",
-  "Inconsolata",
-  "Lato",
-  "Lucida Console",
-  "Lucida Grande",
-  "Palatino",
-  "Tahoma",
-  "Times",
-  "Trebuchet MS",
-  "Verdana",
-];
-
 export interface ComboBoxFontFamilyProps {
   defaultValue: string;
+  label?: string;
   onEnter?: (value: string) => boolean;
   onCancel?: () => void;
 }
@@ -209,3 +204,65 @@ export class ComboBoxFontFamily extends React.Component<
     );
   }
 }
+
+export const FluentComboBoxFontFamily: React.FC<ComboBoxFontFamilyProps> = (
+  props
+) => {
+  const [currentValue, setCurrentValue] = React.useState<string>(
+    props.defaultValue
+  );
+
+  const optionsWithCustomStyling: IComboBoxOption[] = React.useMemo<
+    IComboBoxOption[]
+  >(() => {
+    const cuurentFontList = [...new Set([...fontList, currentValue])];
+
+    return cuurentFontList.map((fontName: string) => ({
+      key: fontName,
+      text: fontName,
+      styles: {
+        optionText: {
+          fontFamily: fontName,
+        },
+        root: {
+          ...defultComponentsHeight,
+          minHeight: defultComponentsHeight.height,
+        },
+      },
+    }));
+  }, [currentValue]);
+
+  const onCancel = React.useCallback(() => props.onCancel?.(), [props]);
+  const onEnter = React.useCallback(
+    (event, value) => {
+      const currentInputValue: string = event.target.value;
+      const currentFontValue: string =
+        value?.key?.toString() ??
+        (currentInputValue.length > 0 ? currentInputValue : props.defaultValue);
+      setCurrentValue(currentFontValue);
+      props.onEnter?.(currentFontValue);
+    },
+    [props]
+  );
+
+  return (
+    <FluentCombobox
+      styles={{
+        ...defaultStyle,
+        root: {
+          ...defultComponentsHeight,
+        },
+      }}
+      selectedKey={currentValue}
+      label={props.label}
+      onRenderLabel={({ props }) => (
+        <Label styles={defaultLabelStyle}>{props.label}</Label>
+      )}
+      autoComplete="on"
+      options={optionsWithCustomStyling}
+      onChange={onEnter}
+      onAbort={onCancel}
+      allowFreeform
+    />
+  );
+};

@@ -13,6 +13,7 @@ import { DragData, Actions } from "../../actions";
 import { ButtonFlat, DraggableElement, SVGImageIcon } from "../../components";
 import {
   ModalView,
+  PopupAlignment,
   PopupContainer,
   PopupController,
   PopupView,
@@ -26,20 +27,24 @@ import {
   getFileNameWithoutExtension,
   getConvertableDataKind,
 } from "../../utils";
-import { Button, Select, DropdownListView } from "../panels/widgets/controls";
+import { DropdownListView } from "../panels/widgets/controls";
 import { kind2Icon, type2DerivedColumns } from "./common";
 import { TableView } from "./table_view";
-import { TableType } from "../../../core/dataset";
+import { TableType, tableTypeName } from "../../../core/dataset";
 import { DataType, DataKind } from "../../../core/specification";
 import { ChartTemplateBuilder } from "../../template";
 import { ChartTemplate } from "../../../container";
-import { FileViewImport } from "../file_view/import_view";
+import { FileViewImport, MappingMode } from "../file_view/import_view";
 import { strings } from "../../../strings";
+import { EditorType } from "../../stores/app_store";
+import { Callout, DefaultButton } from "@fluentui/react";
+import { defultBindButtonSize } from "../panels/widgets/controls/fluentui_customized_components";
 
 export interface DatasetViewProps {
   store: AppStore;
 }
 
+// eslint-disable-next-line
 export interface DatasetViewState {}
 
 /**
@@ -58,7 +63,7 @@ export class DatasetView extends React.Component<
   }
   public render() {
     const tables = this.props.store.getTables();
-    const mainTables = [TableType.Main, TableType.Links];
+    const mainTables = [TableType.Main, TableType.Links, TableType.Image];
     return (
       <div className="charticulator__dataset-view">
         {tables
@@ -86,7 +91,18 @@ export interface ColumnsViewProps {
 
 export interface ColumnsViewState {
   selectedColumn: string;
+  tableViewIsOpened: boolean;
 }
+
+const buttonStyles = {
+  root: {
+    height: `${defultBindButtonSize}px`,
+    width: `${defultBindButtonSize}px`,
+    minWidth: `${defultBindButtonSize}px`,
+    padding: "0px",
+    border: "none",
+  },
+};
 
 export class ColumnsView extends React.Component<
   ColumnsViewProps,
@@ -98,34 +114,35 @@ export class ColumnsView extends React.Component<
     super(props);
     this.state = {
       selectedColumn: null,
+      tableViewIsOpened: false,
     };
   }
 
+  // eslint-disable-next-line
   public render() {
     const table = this.props.table;
-    let anchor: HTMLDivElement;
     return (
       <>
         <PopupContainer controller={this.popupController} />
-        <div
-          className="charticulator__dataset-view-columns"
-          ref={(e) => (anchor = e)}
-        >
+        <div className="charticulator__dataset-view-columns">
           <h2 className="el-title">
             <span className="el-text">
-              {this.props.table.type === TableType.Links
-                ? strings.dataset.tableTitleLinks
-                : strings.dataset.tableTitleColumns}
+              {tableTypeName[this.props.table.type]}
             </span>
-            {this.props.store.editorType === "chart" ? (
-              <Button
-                icon="general/replace"
+            {this.props.store.editorType === EditorType.Chart ? (
+              <DefaultButton
+                iconProps={{
+                  iconName: "general/replace",
+                }}
+                styles={buttonStyles}
                 title={strings.dataset.replaceWithCSV}
-                active={false}
+                // eslint-disable-next-line
                 onClick={() => {
+                  // eslint-disable-next-line
                   showOpenFileDialog(["csv"]).then((file) => {
                     const loader = new Dataset.DatasetLoader();
                     const reader = new FileReader();
+                    // eslint-disable-next-line
                     reader.onload = () => {
                       const newTable = loader.loadDSVFromContents(
                         table.name,
@@ -152,7 +169,8 @@ export class ColumnsView extends React.Component<
                         const builder = new ChartTemplateBuilder(
                           store.chart,
                           store.dataset,
-                          store.chartManager
+                          store.chartManager,
+                          CHARTICULATOR_PACKAGE.version
                         );
                         const template = builder.build();
 
@@ -190,6 +208,7 @@ export class ColumnsView extends React.Component<
                           );
                         }
 
+                        // eslint-disable-next-line
                         const loadTemplateIntoState = (
                           store: AppStore,
                           tableMapping: Map<string, string>,
@@ -235,6 +254,7 @@ export class ColumnsView extends React.Component<
                                 <ModalView context={context}>
                                   <div onClick={(e) => e.stopPropagation()}>
                                     <FileViewImport
+                                      mode={MappingMode.ImportDataset}
                                       tables={template.tables}
                                       datasetTables={newDataset.tables}
                                       tableMapping={tableMapping}
@@ -271,47 +291,58 @@ export class ColumnsView extends React.Component<
                 }}
               />
             ) : null}
-            <Button
-              icon="general/more-horizontal"
+            <DefaultButton
+              iconProps={{
+                iconName: "More",
+              }}
+              styles={buttonStyles}
+              id={`charticulator__dataset-view-detail-${this.props.table.displayName}`}
               title={strings.dataset.showDataValues}
-              active={false}
+              // ={false}
               onClick={() => {
-                globals.popupController.popupAt(
-                  (context) => (
-                    <PopupView context={context}>
-                      <div className="charticulator__dataset-view-detail">
-                        <h2>{table.displayName || table.name}</h2>
-                        <p>
-                          {strings.dataset.dimensions(
-                            table.rows.length,
-                            table.columns.length
-                          )}
-                        </p>
-                        <TableView
-                          table={table}
-                          onTypeChange={
-                            this.props.store.editorType === "chart"
-                              ? (column, type) => {
-                                  const store = this.props.store;
-
-                                  store.dispatcher.dispatch(
-                                    new Actions.ConvertColumnDataType(
-                                      table.name,
-                                      column,
-                                      type as DataType
-                                    )
-                                  );
-                                }
-                              : null
-                          }
-                        />
-                      </div>
-                    </PopupView>
-                  ),
-                  { anchor, alignX: "outer", alignY: "start-inner" }
-                );
+                this.setState({
+                  tableViewIsOpened: !this.state.tableViewIsOpened,
+                });
               }}
             />
+            {this.state.tableViewIsOpened ? (
+              <Callout
+                target={`#charticulator__dataset-view-detail-${this.props.table.displayName}`}
+                onDismiss={() => {
+                  this.setState({
+                    tableViewIsOpened: false,
+                  });
+                }}
+              >
+                <div className="charticulator__dataset-view-detail">
+                  <h2>{table.displayName || table.name}</h2>
+                  <p>
+                    {strings.dataset.dimensions(
+                      table.rows.length,
+                      table.columns.length
+                    )}
+                  </p>
+                  <TableView
+                    table={table}
+                    onTypeChange={
+                      this.props.store.editorType === EditorType.Chart
+                        ? (column, type) => {
+                            const store = this.props.store;
+
+                            store.dispatcher.dispatch(
+                              new Actions.ConvertColumnDataType(
+                                table.name,
+                                column,
+                                type as DataType
+                              )
+                            );
+                          }
+                        : null
+                    }
+                  />
+                </div>
+              </Callout>
+            ) : null}
           </h2>
           <p className="el-details">{table.displayName || table.name}</p>
           {table.columns
@@ -345,6 +376,7 @@ export class ColumnView extends React.Component<
   ColumnViewProps,
   ColumnViewState
 > {
+  private columnRef: HTMLElement;
   constructor(props: ColumnViewProps) {
     super(props);
     this.state = {
@@ -386,15 +418,16 @@ export class ColumnView extends React.Component<
             null,
             desc.metadata,
             undefined,
-            expr
+            expr,
+            desc.displayName
           );
         })}
       </div>
     );
   }
 
-  public applyAggregation(expr: string, type: string) {
-    const aggregation = Expression.getDefaultAggregationFunction(type);
+  public applyAggregation(expr: string, type: DataType, kind: DataKind) {
+    const aggregation = Expression.getDefaultAggregationFunction(type, kind);
     return Expression.functionCall(
       aggregation,
       Expression.parse(expr)
@@ -410,41 +443,56 @@ export class ColumnView extends React.Component<
     additionalElement: JSX.Element = null,
     metadata: Dataset.ColumnMetadata,
     onColumnKindChanged?: (column: string, type: string) => void,
-    rawColumnExpr?: string
+    rawColumnExpr?: string,
+    displayLabel?: string
   ) {
     let anchor: HTMLDivElement;
+    const onClickHandler = () => {
+      if (!onColumnKindChanged) {
+        return;
+      }
+      globals.popupController.popupAt(
+        (context) => (
+          <PopupView key={label} context={context}>
+            <div>
+              <DropdownListView
+                selected={type}
+                list={getConvertableDataKind(type).map((type) => {
+                  return {
+                    name: type.toString(),
+                    text: type.toString(),
+                    url: R.getSVGIcon(kind2Icon[type]),
+                  };
+                })}
+                context={context}
+                onClick={(value: string) => {
+                  onColumnKindChanged(label, value);
+                }}
+                onClose={() => {
+                  anchor?.focus();
+                }}
+              />
+            </div>
+          </PopupView>
+        ),
+        {
+          anchor,
+          alignX: PopupAlignment.Outer,
+          alignY: PopupAlignment.StartInner,
+        }
+      );
+    };
     return (
       <div
+        tabIndex={0}
         key={label}
         className="click-handler"
         ref={(e) => (anchor = e)}
-        onClick={() => {
-          if (!onColumnKindChanged) {
-            return;
+        onClick={onClickHandler}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            onClickHandler();
           }
-          globals.popupController.popupAt(
-            (context) => (
-              <PopupView key={label} context={context}>
-                <div>
-                  <DropdownListView
-                    selected={type}
-                    list={getConvertableDataKind(type).map((type) => {
-                      return {
-                        name: type.toString(),
-                        text: type.toString(),
-                        url: R.getSVGIcon(kind2Icon[type]),
-                      };
-                    })}
-                    context={context}
-                    onClick={(value: string) => {
-                      onColumnKindChanged(label, value);
-                    }}
-                  />
-                </div>
-              </PopupView>
-            ),
-            { anchor, alignX: "outer", alignY: "start-inner" }
-          );
         }}
       >
         <DraggableElement
@@ -459,11 +507,16 @@ export class ColumnView extends React.Component<
             this.setState({ isSelected: expr });
             const r = new DragData.DataExpression(
               this.props.table,
-              this.applyAggregation(expr, type),
+              this.applyAggregation(expr, type, metadata.kind),
               type,
               metadata,
-              rawColumnExpr &&
-                this.applyAggregation(rawColumnExpr, DataType.String)
+              rawColumnExpr
+                ? this.applyAggregation(
+                    rawColumnExpr,
+                    DataType.String,
+                    metadata.kind
+                  )
+                : this.applyAggregation(expr, type, metadata.kind)
             );
             return r;
           }}
@@ -473,13 +526,14 @@ export class ColumnView extends React.Component<
           ]}
         >
           <SVGImageIcon url={icon} />
-          <span className="el-text">{label}</span>
+          <span className="el-text">{displayLabel ?? label}</span>
           {additionalElement}
         </DraggableElement>
       </div>
     );
   }
 
+  // eslint-disable-next-line
   public render() {
     const c = this.props.column;
     const derivedColumnsControl = this.renderDerivedColumns();
@@ -501,8 +555,8 @@ export class ColumnView extends React.Component<
               stopPropagation={true}
               url={
                 this.state.isExpanded
-                  ? R.getSVGIcon("general/chevron-down")
-                  : R.getSVGIcon("general/chevron-left")
+                  ? R.getSVGIcon("ChevronDown")
+                  : R.getSVGIcon("ChevronLeft")
               }
               onClick={() => {
                 this.setState({ isExpanded: !this.state.isExpanded });
@@ -516,7 +570,8 @@ export class ColumnView extends React.Component<
                 new Actions.UpdatePlotSegments()
               );
             },
-            Expression.variable(c.metadata.rawColumnName || c.name).toString()
+            Expression.variable(c.metadata.rawColumnName || c.name).toString(),
+            c.displayName
           )}
           {this.state.isExpanded ? derivedColumnsControl : null}
         </div>
@@ -540,7 +595,8 @@ export class ColumnView extends React.Component<
           );
           this.forceUpdate();
         },
-        Expression.variable(c.metadata.rawColumnName || c.name).toString()
+        Expression.variable(c.metadata.rawColumnName || c.name).toString(),
+        c.displayName
       );
     }
   }

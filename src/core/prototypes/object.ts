@@ -5,6 +5,7 @@ import * as Specification from "../specification";
 
 import { TemplateParameters } from ".";
 import { Controls, CreatingInteraction } from "./common";
+import { MappingType } from "../specification";
 
 export interface AttributeDescription {
   name: string;
@@ -50,7 +51,12 @@ export abstract class ObjectClass<
   public static metadata: ObjectClassMetadata = {};
 
   /** Default attributes */
-  public static defaultProperties: Specification.AttributeMap = {};
+  public static defaultProperties: Specification.AttributeMap = {
+    enableTooltips: true,
+    enableContextMenu: true,
+    enableSelection: true,
+    exposed: true,
+  };
 
   /** Default mapping values */
   public static defaultMappingValues: Specification.AttributeMap = {};
@@ -78,6 +84,7 @@ export abstract class ObjectClass<
   }
 
   /** Initialize the state of the object */
+  // eslint-disable-next-line
   public initializeState() {}
 
   /** Get the UI spec for property panel */
@@ -85,36 +92,33 @@ export abstract class ObjectClass<
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     return [
-      manager.sectionHeader("Interactivity"),
-      manager.row(
-        "",
-        manager.inputBoolean(
-          { property: "enableTooltips" },
-          {
-            type: "checkbox",
-            label: "Tooltips",
-          }
-        )
-      ),
-      manager.row(
-        "",
-        manager.inputBoolean(
-          { property: "enableContextMenu" },
-          {
-            type: "checkbox",
-            label: "Context menu",
-          }
-        )
-      ),
-      manager.row(
-        "",
-        manager.inputBoolean(
-          { property: "enableSelection" },
-          {
-            type: "checkbox",
-            label: "Selection",
-          }
-        )
+      manager.verticalGroup(
+        {
+          header: "Interactivity",
+        },
+        [
+          manager.inputBoolean(
+            { property: "enableTooltips" },
+            {
+              type: "checkbox",
+              label: "Tooltips",
+            }
+          ),
+          manager.inputBoolean(
+            { property: "enableContextMenu" },
+            {
+              type: "checkbox",
+              label: "Context menu",
+            }
+          ),
+          manager.inputBoolean(
+            { property: "enableSelection" },
+            {
+              type: "checkbox",
+              label: "Selection",
+            }
+          ),
+        ]
       ),
     ];
   }
@@ -124,6 +128,7 @@ export abstract class ObjectClass<
   }
 
   /** Create a default object */
+  // eslint-disable-next-line
   public static createDefault(...args: any[]): Specification.Object {
     const id = uniqueID();
     const obj: Specification.Object = {
@@ -134,12 +139,13 @@ export abstract class ObjectClass<
     };
     obj.properties = deepClone(this.defaultProperties);
     for (const attr in this.defaultMappingValues) {
+      // eslint-disable-next-line
       if (this.defaultMappingValues.hasOwnProperty(attr)) {
         const value = deepClone(this.defaultMappingValues[attr]);
-        obj.mappings[attr] = {
-          type: "value",
+        obj.mappings[attr] = <Specification.ValueMapping>{
+          type: MappingType.value,
           value,
-        } as Specification.ValueMapping;
+        };
       }
     }
     return obj;
@@ -233,4 +239,4 @@ export class ObjectClasses {
   }
 }
 
-export let isType = ObjectClasses.isType;
+export const isType = ObjectClasses.isType;

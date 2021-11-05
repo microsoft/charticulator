@@ -1,34 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
-import * as R from "../../resources";
 
-import {
-  argMax,
-  argMin,
-  Geometry,
-  getById,
-  Graphics,
-  Point,
-  Prototypes,
-  Specification,
-  uniqueID,
-  Expression,
-} from "../../../core";
-import { Actions } from "../../actions";
-import { ButtonRaised, SVGImageIcon } from "../../components";
+import { getById, Prototypes, Specification, Expression } from "../../../core";
 import { ContextedComponent } from "../../context_component";
 
-import { classNames } from "../../utils";
 import {
   DataFieldSelector,
   DataFieldSelectorValue,
 } from "../dataset/data_field_selector";
-import { ReorderListView } from "./object_list_editor";
-import { LinkMarkType } from "../../../core/prototypes/links";
 import { PanelRadioControl } from "./radio_control";
 import { DataKind, TableType } from "../../../core/dataset";
-import { AttributeType } from "../../../core/specification";
+import { AttributeType, MappingType } from "../../../core/specification";
+import { Label, PrimaryButton } from "@fluentui/react";
+import { strings } from "../../../strings";
 
 export interface LegendCreationPanelProps {
   onFinish?: () => void;
@@ -56,11 +41,13 @@ export class LegendCreationPanel extends ContextedComponent<
     };
   }
 
+  // eslint-disable-next-line
   public render() {
     return (
       <div className="charticulator__link-type-table">
         <div className="el-row">
-          <h2>Legend type:</h2>
+          {/* <h2>Legend type:</h2> */}
+          <Label>{strings.legendCreator.legendType}</Label>
           <PanelRadioControl
             options={["columnValues", "columnNames"]}
             labels={["Column values", "Column names"]}
@@ -73,7 +60,8 @@ export class LegendCreationPanel extends ContextedComponent<
         </div>
         {this.state.legendDataSource == "columnValues" ? (
           <div>
-            <h2>Connect by:</h2>
+            {/* <h2>Connect by:</h2> */}
+            <Label>{strings.legendCreator.connectBy}</Label>
             <div className="el-row">
               <DataFieldSelector
                 multiSelect={false}
@@ -91,7 +79,8 @@ export class LegendCreationPanel extends ContextedComponent<
           </div>
         ) : (
           <div>
-            <h2>Connect by:</h2>
+            {/* <h2>Connect by:</h2> */}
+            <Label>{strings.legendCreator.connectBy}</Label>
             <div className="el-row">
               <DataFieldSelector
                 multiSelect={true}
@@ -109,8 +98,9 @@ export class LegendCreationPanel extends ContextedComponent<
           </div>
         )}
         <div className="el-row">
-          <ButtonRaised
-            text="Create Legend"
+          <PrimaryButton
+            text={strings.legendCreator.createLegend}
+            // eslint-disable-next-line
             onClick={() => {
               const columns = this.groupBySelector
                 ? this.groupBySelector.value
@@ -120,8 +110,6 @@ export class LegendCreationPanel extends ContextedComponent<
                   : []
                 : [];
 
-              const keyOptions = "dataExpressionColumns";
-              let legendType: "color" | "numerical" | "categorical" = "color";
               let attributeType: AttributeType = AttributeType.Color;
 
               if (this.state.legendDataSource === "columnNames") {
@@ -144,10 +132,12 @@ export class LegendCreationPanel extends ContextedComponent<
                 const table = this.store.chartManager.dataflow.getTable(
                   tableName
                 );
-                
+
                 const data = (columns as any[])
                   .map((ex) => {
-                    const index = table.columns.findIndex(col => col.name == ex.columnName)
+                    const index = table.columns.findIndex(
+                      (col) => col.name == ex.columnName
+                    );
                     return `get(get(${ex.table}.columns, ${index}), "displayName")`;
                   })
                   .filter((v) => v != null);
@@ -159,7 +149,7 @@ export class LegendCreationPanel extends ContextedComponent<
                   .join(",")})`;
 
                 const parsedExpression = this.store.chartManager.dataflow.cache.parse(
-                      expression
+                  expression
                 );
                 const expressionData = parsedExpression.getValue(table);
 
@@ -186,21 +176,21 @@ export class LegendCreationPanel extends ContextedComponent<
                 ) as Specification.ChartElement;
                 newLegend.properties.scale = newScale._id;
                 newLegend.mappings.x = {
-                  type: "parent",
+                  type: MappingType.parent,
                   parentAttribute: "x2",
                 } as Specification.ParentMapping;
                 newLegend.mappings.y = {
-                  type: "parent",
+                  type: MappingType.parent,
                   parentAttribute: "y2",
                 } as Specification.ParentMapping;
                 this.store.chartManager.addChartElement(newLegend);
                 this.store.chartManager.chart.mappings.marginRight = {
-                  type: "value",
+                  type: MappingType.value,
                   value: 100,
                 } as Specification.ValueMapping;
 
                 const mappingOptions = {
-                  type: "scale",
+                  type: MappingType.scale,
                   table: tableName,
                   expression,
                   valueType,
@@ -208,6 +198,9 @@ export class LegendCreationPanel extends ContextedComponent<
                   allowSelectValue: true,
                 } as Specification.ScaleMapping;
 
+                if (!newLegend.mappings) {
+                  newLegend.mappings = {};
+                }
                 newLegend.mappings.mappingOptions = mappingOptions;
               } else {
                 const kind = (this.groupBySelector
@@ -215,11 +208,9 @@ export class LegendCreationPanel extends ContextedComponent<
                 switch (kind) {
                   case DataKind.Numerical:
                   case DataKind.Temporal:
-                    legendType = "numerical";
                     attributeType = AttributeType.Number;
                     break;
                   case DataKind.Ordinal:
-                    legendType = "color";
                     attributeType = AttributeType.Text;
                     break;
                 }
@@ -227,7 +218,8 @@ export class LegendCreationPanel extends ContextedComponent<
 
               if (this.state.legendDataSource === "columnValues") {
                 const aggregation = Expression.getDefaultAggregationFunction(
-                  columns[0].type
+                  columns[0].type,
+                  columns[0].metadata?.kind
                 );
                 const aggregatedExpression = Expression.functionCall(
                   aggregation,
@@ -237,11 +229,13 @@ export class LegendCreationPanel extends ContextedComponent<
                 const table = columns[0].table;
                 const inferred = this.store.scaleInference(
                   { chart: { table } },
-                  aggregatedExpression,
-                  columns[0].type,
-                  columns[0].metadata.kind,
-                  attributeType,
-                  {}
+                  {
+                    expression: aggregatedExpression,
+                    valueType: columns[0].type,
+                    valueKind: columns[0].metadata.kind,
+                    outputType: attributeType,
+                    hints: {},
+                  }
                 );
 
                 const scaleObject = getById(
@@ -256,16 +250,16 @@ export class LegendCreationPanel extends ContextedComponent<
                     ) as Specification.ChartElement;
                     newLegend.properties.scale = inferred;
                     newLegend.mappings.x = {
-                      type: "parent",
+                      type: MappingType.parent,
                       parentAttribute: "x2",
                     } as Specification.ParentMapping;
                     newLegend.mappings.y = {
-                      type: "parent",
+                      type: MappingType.parent,
                       parentAttribute: "y2",
                     } as Specification.ParentMapping;
                     this.store.chartManager.addChartElement(newLegend);
                     this.store.chartManager.chart.mappings.marginRight = {
-                      type: "value",
+                      type: MappingType.value,
                       value: 100,
                     } as Specification.ValueMapping;
                     break;
@@ -276,16 +270,16 @@ export class LegendCreationPanel extends ContextedComponent<
                     ) as Specification.ChartElement;
                     newLegend.properties.scale = inferred;
                     newLegend.mappings.x = {
-                      type: "parent",
+                      type: MappingType.parent,
                       parentAttribute: "x2",
                     } as Specification.ParentMapping;
                     newLegend.mappings.y = {
-                      type: "parent",
+                      type: MappingType.parent,
                       parentAttribute: "y2",
                     } as Specification.ParentMapping;
                     this.store.chartManager.addChartElement(newLegend);
                     this.store.chartManager.chart.mappings.marginRight = {
-                      type: "value",
+                      type: MappingType.value,
                       value: 100,
                     } as Specification.ValueMapping;
                     break;
@@ -296,26 +290,26 @@ export class LegendCreationPanel extends ContextedComponent<
                     ) as Specification.ChartElement;
                     newLegend.properties.scale = inferred;
                     newLegend.mappings.x1 = {
-                      type: "parent",
+                      type: MappingType.parent,
                       parentAttribute: "x1",
                     } as Specification.ParentMapping;
                     newLegend.mappings.y1 = {
-                      type: "parent",
+                      type: MappingType.parent,
                       parentAttribute: "y1",
                     } as Specification.ParentMapping;
                     newLegend.mappings.x2 = {
-                      type: "parent",
+                      type: MappingType.parent,
                       parentAttribute: "x1",
                     } as Specification.ParentMapping;
                     newLegend.mappings.y2 = {
-                      type: "parent",
+                      type: MappingType.parent,
                       parentAttribute: "y2",
                     } as Specification.ParentMapping;
                     this.store.chartManager.addChartElement(newLegend);
                 }
 
                 newLegend.mappings.mappingOptions = {
-                  type: "scale",
+                  type: MappingType.scale,
                   table,
                   expression: aggregatedExpression,
                   valueType: columns[0].type,

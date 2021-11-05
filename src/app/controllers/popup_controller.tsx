@@ -1,27 +1,42 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
+
 import * as React from "react";
 import { EventEmitter, EventSubscription } from "../../core";
 import { classNames } from "../utils";
-import { ErrorBoundary } from "../components";
+import { ErrorBoundary, TelemetryContext } from "../components";
+
+export enum PopupAlignment {
+  Inner = "inner",
+  Outer = "outer",
+  StartInner = "start-inner",
+  StartOuter = "start-outer",
+  EndInner = "end-inner",
+  EndOuter = "end-outer",
+}
 
 export interface PopupOptions {
   parent?: PopupContext;
   anchor: Element;
-  alignX?:
-    | "inner"
-    | "outer"
-    | "start-inner"
-    | "start-outer"
-    | "end-inner"
-    | "end-outer";
-  alignY?:
-    | "inner"
-    | "outer"
-    | "start-inner"
-    | "start-outer"
-    | "end-inner"
-    | "end-outer";
+  alignX?: PopupAlignment;
+  alignY?: PopupAlignment;
+}
+
+export function getAlignment(anchor: Element) {
+  let alignX: PopupAlignment;
+  const avgPopupWindowWidth = 500;
+  const anchorCloseToWindowBorder =
+    window.innerWidth - anchor.getBoundingClientRect().right <
+    avgPopupWindowWidth;
+  let alignLeft: boolean = false;
+  if (anchorCloseToWindowBorder) {
+    alignX = PopupAlignment.StartOuter;
+    alignLeft = true;
+  }
+  return { alignLeft, alignX };
 }
 
 const popupViewMapping = new WeakMap<HTMLDivElement, PopupContext>();
@@ -103,10 +118,10 @@ export class PopupController extends EventEmitter {
     options: PopupOptions
   ) {
     if (options.alignX == undefined) {
-      options.alignX = "start-inner";
+      options.alignX = PopupAlignment.StartInner;
     }
     if (options.alignY == undefined) {
-      options.alignY = "outer";
+      options.alignY = PopupAlignment.Outer;
     }
     if (!options.parent && options.anchor) {
       options.parent = findParentPopup(options.anchor);
@@ -170,6 +185,7 @@ export interface PopupViewProps {
 
 export class PopupContainer extends React.Component<PopupViewProps, {}> {
   public token: EventSubscription;
+  private popupContainer: HTMLDivElement;
   constructor(props: PopupViewProps) {
     super(props);
     this.onKeyDown = this.onKeyDown.bind(this);
@@ -198,6 +214,11 @@ export class PopupContainer extends React.Component<PopupViewProps, {}> {
       this.forceUpdate();
     });
     window.addEventListener("keydown", this.onKeyDown);
+    setTimeout(() => {
+      if (this.popupContainer) {
+        this.popupContainer.focus();
+      }
+    }, 100);
   }
   public componentWillUnmount() {
     this.token.remove();
@@ -208,6 +229,7 @@ export class PopupContainer extends React.Component<PopupViewProps, {}> {
       const modal = this.props.controller.currentModal;
       return (
         <div
+          tabIndex={0}
           className="popup-container popup-container-modal"
           style={{
             position: "fixed",
@@ -220,6 +242,7 @@ export class PopupContainer extends React.Component<PopupViewProps, {}> {
           onMouseDown={() => {
             this.props.controller.reset();
           }}
+          ref={(r) => (this.popupContainer = r)}
         >
           {modal.element}
           {this.renderPopups()}
@@ -242,6 +265,7 @@ export class PopupContainer extends React.Component<PopupViewProps, {}> {
     } else {
       return (
         <div
+          tabIndex={0}
           className="popup-container"
           style={{
             position: "fixed",
@@ -251,7 +275,8 @@ export class PopupContainer extends React.Component<PopupViewProps, {}> {
             bottom: 0,
             pointerEvents: "all",
           }}
-          onMouseDown={(e) => {
+          ref={(r) => (this.popupContainer = r)}
+          onMouseDown={() => {
             this.props.controller.resetPopups();
           }}
         >
@@ -283,6 +308,17 @@ export class PopupView extends React.Component<
   },
   {}
 > {
+  private popupContainer: HTMLDivElement;
+
+  public componentDidMount() {
+    setTimeout(() => {
+      if (this.popupContainer) {
+        this.popupContainer.focus();
+      }
+    }, 100);
+  }
+
+  // eslint-disable-next-line
   public render() {
     const popup = this.props.context;
     const position = popup.options.anchor.getBoundingClientRect();
@@ -296,11 +332,11 @@ export class PopupView extends React.Component<
         {
           if ((position.left + position.right) / 2 < window.innerWidth / 2) {
             style.left = position.left + "px";
-            alignX = "start-inner";
+            alignX = PopupAlignment.StartInner;
           } else {
             style.right =
               window.innerWidth - (position.left + position.width) + "px";
-            alignX = "end-inner";
+            alignX = PopupAlignment.EndInner;
           }
         }
         break;
@@ -308,10 +344,10 @@ export class PopupView extends React.Component<
         {
           if ((position.left + position.right) / 2 > window.innerWidth / 2) {
             style.right = window.innerWidth - position.left + marginX + "px";
-            alignX = "start-outer";
+            alignX = PopupAlignment.StartOuter;
           } else {
             style.left = position.left + position.width + marginX + "px";
-            alignX = "end-outer";
+            alignX = PopupAlignment.EndOuter;
           }
         }
         break;
@@ -342,11 +378,11 @@ export class PopupView extends React.Component<
         {
           if ((position.top + position.bottom) / 2 < window.innerHeight / 2) {
             style.top = position.top + "px";
-            alignY = "start-inner";
+            alignY = PopupAlignment.StartInner;
           } else {
             style.bottom =
               window.innerHeight - (position.top + position.height) + "px";
-            alignY = "end-inner";
+            alignY = PopupAlignment.EndInner;
           }
         }
         break;
@@ -354,10 +390,10 @@ export class PopupView extends React.Component<
         {
           if ((position.top + position.bottom) / 2 > window.innerHeight / 2) {
             style.bottom = window.innerHeight - position.top + marginY + "px";
-            alignY = "start-outer";
+            alignY = PopupAlignment.StartOuter;
           } else {
             style.top = position.top + position.height + marginY + "px";
-            alignY = "end-outer";
+            alignY = PopupAlignment.EndOuter;
           }
         }
         break;
@@ -388,13 +424,15 @@ export class PopupView extends React.Component<
     }
     return (
       <div
+        tabIndex={0}
+        ref={(r) => (this.popupContainer = r)}
         className={
           this.props.className
             ? this.props.className + " popup-view-container"
             : "popup-view-container"
         }
         style={style}
-        onMouseDownCapture={(e) => {
+        onMouseDownCapture={() => {
           newlyCreatedContexts = new WeakSet<PopupContext>();
         }}
         onMouseDown={(e) => {
@@ -443,7 +481,15 @@ export class PopupView extends React.Component<
             ]
           )}
         >
-          <ErrorBoundary>{this.props.children}</ErrorBoundary>
+          <TelemetryContext.Consumer>
+            {(telemetryRecorder) => {
+              return (
+                <ErrorBoundary telemetryRecorder={telemetryRecorder}>
+                  {this.props.children}
+                </ErrorBoundary>
+              );
+            }}
+          </TelemetryContext.Consumer>
         </div>
       </div>
     );

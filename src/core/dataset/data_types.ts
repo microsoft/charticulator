@@ -33,7 +33,7 @@ export interface DataTypeDescription {
   convert: (v: string, localeNumberFormat?: LocaleNumberFormat) => DataValue;
 }
 
-export let dataTypes: { [name in DataType]: DataTypeDescription } = {
+export const dataTypes: { [name in DataType]: DataTypeDescription } = {
   boolean: {
     test: (x: string) => {
       const lx = x.toLowerCase();
@@ -68,7 +68,12 @@ export let dataTypes: { [name in DataType]: DataTypeDescription } = {
     convert: (x: string) => parseDate(x),
   },
   string: {
+    // eslint-disable-next-line
     test: (x: string) => true,
+    convert: (x: string) => x.toString(),
+  },
+  image: {
+    test: (x: string) => isBase64Image(x),
     convert: (x: string) => x.toString(),
   },
 };
@@ -78,11 +83,12 @@ export function inferColumnType(
   values: string[],
   localeNumberFormat: LocaleNumberFormat
 ): DataType {
-  const candidates: DataType[] = [
+  const candidates: DataType[] = <any>[
+    DataType.Image,
     DataType.Boolean,
     DataType.Number,
     DataType.Date,
-  ] as any;
+  ];
   for (let i = 0; i < values.length; i++) {
     let v = values[i];
     v = v.trim();
@@ -130,6 +136,7 @@ export function getDistinctValues(values: DataValue[]): DataValue[] {
 }
 
 /** Infer column metadata and update type if necessary */
+// eslint-disable-next-line
 export function inferAndConvertColumn(
   values: string[],
   localeNumberFormat: LocaleNumberFormat,
@@ -154,10 +161,24 @@ export function inferAndConvertColumn(
   }
 
   switch (inferredType) {
+    case DataType.Image: {
+      const metadata: ColumnMetadata = {
+        kind: DataKind.Categorical,
+        unit: hints.unit,
+      };
+      metadata.orderMode = OrderMode.order;
+      metadata.kind = DataKind.Categorical;
+      return {
+        type: DataType.Image,
+        values: convertedValues,
+        metadata,
+      };
+      break;
+    }
     case DataType.Number: {
       const validValues = convertedValues.filter((x) => x != null);
-      const minValue = Math.min(...(validValues as number[]));
-      const maxValue = Math.max(...(validValues as number[]));
+      const minValue = Math.min(...(<number[]>validValues));
+      const maxValue = Math.max(...(<number[]>validValues));
       if (validValues.every((x: number) => Math.round(x) == x)) {
         // All integers
         if (minValue >= 1900 && maxValue <= 2100) {
@@ -313,4 +334,13 @@ export function convertColumnType(values: any[], type: DataType): DataValue[] {
       });
     }
   }
+}
+
+export function isBase64Image(string: string) {
+  return (
+    typeof string === "string" &&
+    string.match(
+      /data:image\/(ico|jpg|jpeg|png|webp|svg|gif|svg\+xml);base64,/
+    ) != null
+  );
 }

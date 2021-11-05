@@ -1,28 +1,37 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
+
 import * as React from "react";
-import { defaultCurrency, defaultDigitsGroup, parseSafe, setFormatOptions } from "../../../core/common";
+import { useContext } from "react";
+
+import {
+  defaultCurrency,
+  defaultDigitsGroup,
+  parseSafe,
+  setFormatOptions,
+} from "../../../core/common";
 import { LocaleFileFormat } from "../../../core/dataset/dsv_parser";
 import { strings } from "../../../strings";
-import { ContextedComponent, MainContext } from "../../context_component";
+import { MainReactContext } from "../../context_component";
 import { LocalStorageKeys } from "../../globals";
 import { AppStore } from "../../stores";
 import { useLocalStorage } from "../../utils/hooks";
-import { InputText } from "../panels/widgets/controls";
 
 export interface FileViewOptionsProps {
   onClose: () => void;
 }
 
+// eslint-disable-next-line
+export const FileViewOptionsView: React.FC<FileViewOptionsProps> = () => {
+  const { store } = useContext(MainReactContext);
 
-const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({
-  store,
-  onClose,
-}) => {
   const localeFileFormat: LocaleFileFormat = store.getLocaleFileFormat();
 
-  const [numberFormatDecimal, setNumberFormatDecimal] = useLocalStorage<string>(
-    localeFileFormat.numberFormat.decimal,
+  const [numberFormatRemove, setNumberFormatRemove] = useLocalStorage<string>(
+    localeFileFormat.numberFormat.remove,
     LocalStorageKeys.NumberFormatRemove
   );
   const [delimiterSymbol, setDelimiterSymbol] = useLocalStorage<string>(
@@ -30,15 +39,15 @@ const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({
     LocalStorageKeys.DelimiterSymbol
   );
 
-  const [currencySymbol, setCurrencySymbol] = useLocalStorage<string>(
-    localeFileFormat.currency,
-    LocalStorageKeys.CurrencySymbol
-  );
+  // const [currencySymbol, setCurrencySymbol] = useLocalStorage<string>(
+  //   localeFileFormat.currency,
+  //   LocalStorageKeys.CurrencySymbol
+  // );
 
-  const [groupSymbol, setGroupSymbol] = useLocalStorage<string>(
-    localeFileFormat.group,
-    LocalStorageKeys.GroupSymbol
-  );
+  // const [groupSymbol, setGroupSymbol] = useLocalStorage<string>(
+  //   localeFileFormat.group,
+  //   LocalStorageKeys.GroupSymbol
+  // );
 
   const changeLocaleFileFormat = (localeFileFormat: LocaleFileFormat) => {
     store.setLocaleFileFormat(localeFileFormat);
@@ -73,29 +82,33 @@ const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({
           <div className="form-group">
             <select
               onChange={(e) => {
-                const isDot =
-                  e.target.options[e.target.selectedIndex].value === ".";
+                const isDecimalDot =
+                  e.target.options[e.target.selectedIndex].value === ","; // values is removeal
                 changeLocaleFileFormat({
                   ...localeFileFormat,
                   numberFormat: {
-                    decimal: isDot ? "." : ",",
-                    remove: isDot ? "," : ".",
+                    decimal: isDecimalDot ? "." : ",",
+                    remove: isDecimalDot ? "," : ".",
                   },
                 });
-                setNumberFormatDecimal(
-                  e.target.options[e.target.selectedIndex].value
-                );
+                setNumberFormatRemove(isDecimalDot ? "," : ".");
                 setFormatOptions({
-                  decimal: isDot ? "." : ",",
-                  thousands: isDot ? "," : ".",
-                  currency: parseSafe(localeFileFormat.currency, defaultCurrency),
-                  grouping: parseSafe(localeFileFormat.group, defaultDigitsGroup),
+                  decimal: isDecimalDot ? "." : ",",
+                  thousands: isDecimalDot ? "," : ".",
+                  currency: parseSafe(
+                    localeFileFormat.currency,
+                    defaultCurrency
+                  ),
+                  grouping: parseSafe(
+                    localeFileFormat.group,
+                    defaultDigitsGroup
+                  ),
                 });
               }}
-              value={numberFormatDecimal}
+              value={numberFormatRemove}
             >
-              <option value=".">{strings.options.numberFormatDot}</option>
-              <option value=",">{strings.options.numberFormatComma}</option>
+              <option value=",">{strings.options.numberFormatDot}</option>
+              <option value=".">{strings.options.numberFormatComma}</option>
             </select>
             <label>{strings.options.numberFormat}</label>
           </div>
@@ -153,9 +166,10 @@ const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({
 };
 
 // TODO create HOC
-export class FileViewOptions extends ContextedComponent<
+export class FileViewOptions extends React.Component<
   {
     onClose: () => void;
+    store: AppStore;
   },
   {}
 > {
@@ -163,7 +177,7 @@ export class FileViewOptions extends ContextedComponent<
     return (
       <FileViewOptionsView
         onClose={this.props.onClose}
-        store={this.context.store}
+        // store={this.props.store}
       />
     );
   }

@@ -19,6 +19,8 @@ import { ChartStateManager } from "../state";
 import { AttributeDescription, ObjectClasses } from "../object";
 import { PlotSegmentClass } from "../plot_segments";
 import { PointDirection } from "../../graphics";
+import { MappingType } from "../../specification";
+import { strings } from "../../../strings";
 
 export type LinkType = "line" | "band";
 export type InterpolationType = "line" | "bezier" | "circle";
@@ -121,7 +123,7 @@ export abstract class LinksClass extends ChartElementClass {
   public readonly state: Specification.ObjectState;
 
   public static metadata: ObjectClassMetadata = {
-    iconPath: "link/tool",
+    iconPath: "CharticulatorLine",
   };
 
   public attributeNames: string[] = ["color", "opacity"];
@@ -186,26 +188,26 @@ export abstract class LinksClass extends ChartElementClass {
     glyphState: Specification.GlyphState,
     row: Expression.Context
   ): AnchorAttributes {
-    let dx = glyphState.attributes.x as number;
-    let dy = glyphState.attributes.y as number;
+    let dx = <number>glyphState.attributes.x;
+    let dy = <number>glyphState.attributes.y;
     const anchorIndex = anchorPoints[0].anchorIndex;
-    dx -= glyphState.marks[anchorIndex].attributes.x as number;
-    dy -= glyphState.marks[anchorIndex].attributes.y as number;
+    dx -= <number>glyphState.marks[anchorIndex].attributes.x;
+    dy -= <number>glyphState.marks[anchorIndex].attributes.y;
 
     const cs = plotSegmentClass.getCoordinateSystem();
 
     return {
       points: anchorPoints.map((pt) => {
-        const x = (pt.x.element < 0
-          ? glyphState.attributes[pt.x.attribute]
-          : glyphState.marks[pt.x.element].attributes[
-              pt.x.attribute
-            ]) as number;
-        const y = (pt.y.element < 0
-          ? glyphState.attributes[pt.y.attribute]
-          : glyphState.marks[pt.y.element].attributes[
-              pt.y.attribute
-            ]) as number;
+        const x = <number>(
+          (pt.x.element < 0
+            ? glyphState.attributes[pt.x.attribute]
+            : glyphState.marks[pt.x.element].attributes[pt.x.attribute])
+        );
+        const y = <number>(
+          (pt.y.element < 0
+            ? glyphState.attributes[pt.y.attribute]
+            : glyphState.marks[pt.y.element].attributes[pt.y.attribute])
+        );
         const px = dx + x;
         const py = dy + y;
         return {
@@ -219,9 +221,9 @@ export abstract class LinksClass extends ChartElementClass {
           ? this.object.properties.curveness
           : 30,
       coordinateSystem: cs,
-      color: renderState.colorFunction(row) as Color,
-      opacity: renderState.opacityFunction(row) as number,
-      strokeWidth: renderState.strokeWidthFunction(row) as number,
+      color: <Color>renderState.colorFunction(row),
+      opacity: <number>renderState.opacityFunction(row),
+      strokeWidth: <number>renderState.strokeWidthFunction(row),
     };
   }
 
@@ -334,6 +336,7 @@ export abstract class LinksClass extends ChartElementClass {
     }
   }
 
+  // eslint-disable-next-line
   public static LinkPath(
     path: Graphics.PathMaker,
     linkType: LinkType,
@@ -495,6 +498,7 @@ export abstract class LinksClass extends ChartElementClass {
     }
   }
 
+  // eslint-disable-next-line
   protected renderLinks(
     linkGraphics: LinkType,
     lineType: InterpolationType,
@@ -529,10 +533,7 @@ export abstract class LinksClass extends ChartElementClass {
       case "band": {
         const splitAnchors = true;
         if (splitAnchors) {
-          const map = new Map<
-            string,
-            Array<[AnchorAttributes, AnchorAttributes]>
-          >();
+          const map = new Map<string, [AnchorAttributes, AnchorAttributes][]>();
           const hashAnchor = (points: PointDirection[]) => {
             const dx = points[0].x - points[1].x;
             const dy = points[0].y - points[1].y;
@@ -564,7 +565,7 @@ export abstract class LinksClass extends ChartElementClass {
               }
             }
           }
-          map.forEach((anchors, points) => {
+          map.forEach((anchors) => {
             const x1 = anchors[0][0].points[0].x;
             const y1 = anchors[0][0].points[0].y;
             const x2 = anchors[0][0].points[1].x;
@@ -640,6 +641,7 @@ export abstract class LinksClass extends ChartElementClass {
   }
 
   /** Get the graphics that represent this layout */
+  // eslint-disable-next-line
   public getGraphics(manager: ChartStateManager): Graphics.Element {
     return null;
   }
@@ -649,56 +651,53 @@ export abstract class LinksClass extends ChartElementClass {
   ): Controls.Widget[] {
     const props = this.object.properties;
     const widgets = [
-      manager.sectionHeader("Line Type"),
-      manager.row(
-        "Type",
-        manager.inputSelect(
-          { property: "interpolationType" },
-          {
-            type: "dropdown",
-            showLabel: true,
-            options: ["line", "bezier", "circle"],
-            labels: ["Line", "Bezier", "Arc"],
-          }
-        )
+      manager.inputSelect(
+        { property: "interpolationType" },
+        {
+          type: "dropdown",
+          showLabel: true,
+          options: ["line", "bezier", "circle"],
+          labels: [
+            strings.objects.links.line,
+            strings.objects.links.bezier,
+            strings.objects.links.arc,
+          ],
+          label: strings.objects.links.type,
+        }
       ),
-      manager.row(
-        "Line mark type",
-        manager.inputSelect(
-          { property: "linkMarkType" },
-          {
-            type: "dropdown",
-            showLabel: true,
-            options: ["", "8", "1 10"],
-            labels: ["Solid", "Dashed", "Dotted"],
-          }
-        )
+      manager.inputSelect(
+        { property: "linkMarkType" },
+        {
+          type: "dropdown",
+          showLabel: true,
+          options: ["", "8", "1 10"],
+          labels: ["Solid", "Dashed", "Dotted"],
+          label: strings.objects.links.linkMarkType,
+        }
       ),
     ];
     if (props.interpolationType == "bezier") {
       widgets.push(
-        manager.row(
-          "Curveness",
-          manager.inputNumber(
-            { property: "curveness" },
-            {
-              showSlider: true,
-              minimum: 0,
-              sliderRange: [0, 500],
-            }
-          )
+        manager.inputNumber(
+          { property: "curveness" },
+          {
+            showSlider: true,
+            minimum: 0,
+            sliderRange: [0, 500],
+            label: strings.objects.links.curveness,
+          }
         )
       );
     }
-    widgets.push(manager.sectionHeader("Style"));
+    widgets.push(manager.sectionHeader(strings.objects.style));
     widgets.push(
-      manager.mappingEditor("Color", "color", {
+      manager.mappingEditor(strings.objects.color, "color", {
         table: props.linkTable && props.linkTable.table,
       })
     );
     // if (props.linkType == "line") {
     widgets.push(
-      manager.mappingEditor("Width", "strokeWidth", {
+      manager.mappingEditor(strings.objects.width, "strokeWidth", {
         hints: { rangeNumber: [0, 5] },
         defaultValue: 1,
         numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
@@ -707,10 +706,10 @@ export abstract class LinksClass extends ChartElementClass {
     );
     // }
     widgets.push(
-      manager.mappingEditor("Opacity", "opacity", {
+      manager.mappingEditor(strings.objects.opacity, "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
+        numberOptions: { showSlider: true, minimum: 0, maximum: 1, step: 0.1 },
         table: props.linkTable && props.linkTable.table,
       })
     );
@@ -722,7 +721,7 @@ export abstract class LinksClass extends ChartElementClass {
 
     if (
       this.object.mappings.color &&
-      this.object.mappings.color.type === "value"
+      this.object.mappings.color.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -733,15 +732,16 @@ export abstract class LinksClass extends ChartElementClass {
         default:
           this.object.mappings.color &&
           rgbToHex(
-            (this.object.mappings.color as Specification.ValueMapping)
-              .value as Color
+            <Color>(
+              (<Specification.ValueMapping>this.object.mappings.color).value
+            )
           ), // TODO fix it
       });
     }
 
     if (
       this.object.mappings.strokeWidth &&
-      this.object.mappings.strokeWidth.type === "value"
+      this.object.mappings.strokeWidth.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -751,14 +751,15 @@ export abstract class LinksClass extends ChartElementClass {
         type: Specification.AttributeType.Number,
         default:
           this.object.mappings.strokeWidth &&
-          ((this.object.mappings.strokeWidth as Specification.ValueMapping)
-            .value as number), // TODO fix it
+          <number>(
+            (<Specification.ValueMapping>this.object.mappings.strokeWidth).value
+          ), // TODO fix it
       });
     }
 
     if (
       this.object.mappings.opacity &&
-      this.object.mappings.opacity.type === "value"
+      this.object.mappings.opacity.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -768,8 +769,9 @@ export abstract class LinksClass extends ChartElementClass {
         type: Specification.AttributeType.Number,
         default:
           this.object.mappings.opacity &&
-          ((this.object.mappings.opacity as Specification.ValueMapping)
-            .value as number), // TODO fix it
+          <number>(
+            (<Specification.ValueMapping>this.object.mappings.opacity).value
+          ), // TODO fix it
       });
     }
 
@@ -794,11 +796,13 @@ export class SeriesLinksClass extends LinksClass {
     const linkGroup = Graphics.makeGroup([]);
 
     const renderState: RenderState = {
-      colorFunction: this.parent.resolveMapping(this.object.mappings.color, {
+      colorFunction: this.parent.resolveMapping(this.object.mappings.color, <
+        Color
+      >{
         r: 0,
         g: 0,
         b: 0,
-      } as Color),
+      }),
       opacityFunction: this.parent.resolveMapping(
         this.object.mappings.opacity,
         1
@@ -809,7 +813,6 @@ export class SeriesLinksClass extends LinksClass {
       ),
     };
 
-    const links = this.object;
     const chart = this.parent.object;
     const chartState = this.parent.state;
     // Resolve the anchors
@@ -817,11 +820,11 @@ export class SeriesLinksClass extends LinksClass {
       chart.elements,
       (l) => l._id == props.linkThrough.plotSegment
     );
-    const layout = chart.elements[layoutIndex] as Specification.PlotSegment;
+    const layout = <Specification.PlotSegment>chart.elements[layoutIndex];
     const mark = getById(chart.glyphs, layout.glyph);
-    const layoutState = chartState.elements[
-      layoutIndex
-    ] as Specification.PlotSegmentState;
+    const layoutState = <Specification.PlotSegmentState>(
+      chartState.elements[layoutIndex]
+    );
     const layoutClass = manager.getPlotSegmentClass(layoutState);
     const table = this.parent.dataflow.getTable(layout.table);
     const facets = facetRows(
@@ -895,11 +898,13 @@ export class LayoutsLinksClass extends LinksClass {
     const linkGroup = Graphics.makeGroup([]);
 
     const renderState: RenderState = {
-      colorFunction: this.parent.resolveMapping(this.object.mappings.color, {
+      colorFunction: this.parent.resolveMapping(this.object.mappings.color, <
+        Color
+      >{
         r: 0,
         g: 0,
         b: 0,
-      } as Color),
+      }),
       opacityFunction: this.parent.resolveMapping(
         this.object.mappings.opacity,
         1
@@ -910,20 +915,18 @@ export class LayoutsLinksClass extends LinksClass {
       ),
     };
 
-    const links = this.object;
     const chart = this.parent.object;
     const chartState = this.parent.state;
-    const dataset = this.parent.dataflow;
 
     const layoutIndices = props.linkBetween.plotSegments.map((lid) =>
       indexOf(chart.elements, (l) => l._id == lid)
     );
-    const layouts = layoutIndices.map(
-      (i) => chart.elements[i]
-    ) as Specification.PlotSegment[];
-    const layoutStates = layoutIndices.map(
-      (i) => chartState.elements[i]
-    ) as Specification.PlotSegmentState[];
+    const layouts = <Specification.PlotSegment[]>(
+      layoutIndices.map((i) => chart.elements[i])
+    );
+    const layoutStates = <Specification.PlotSegmentState[]>(
+      layoutIndices.map((i) => chartState.elements[i])
+    );
     const layoutClasses = layoutStates.map((layoutState) =>
       manager.getPlotSegmentClass(layoutState)
     );
@@ -995,17 +998,20 @@ export class TableLinksClass extends LinksClass {
   };
 
   /** Get the graphics that represent this layout */
+  // eslint-disable-next-line
   public getGraphics(manager: ChartStateManager): Graphics.Element {
     const props = this.object.properties;
 
     const linkGroup = Graphics.makeGroup([]);
 
     const renderState: RenderState = {
-      colorFunction: this.parent.resolveMapping(this.object.mappings.color, {
+      colorFunction: this.parent.resolveMapping(this.object.mappings.color, <
+        Color
+      >{
         r: 0,
         g: 0,
         b: 0,
-      } as Color),
+      }),
       opacityFunction: this.parent.resolveMapping(
         this.object.mappings.opacity,
         1
@@ -1016,20 +1022,18 @@ export class TableLinksClass extends LinksClass {
       ),
     };
 
-    const links = this.object;
     const chart = this.parent.object;
     const chartState = this.parent.state;
-    const dataset = this.parent.dataflow;
 
     const layoutIndices = props.linkTable.plotSegments.map((lid) =>
       indexOf(chart.elements, (l) => l._id == lid)
     );
-    const layouts = layoutIndices.map(
-      (i) => chart.elements[i]
-    ) as Specification.PlotSegment[];
-    const layoutStates = layoutIndices.map(
-      (i) => chartState.elements[i]
-    ) as Specification.PlotSegmentState[];
+    const layouts = <Specification.PlotSegment[]>(
+      layoutIndices.map((i) => chart.elements[i])
+    );
+    const layoutStates = <Specification.PlotSegmentState[]>(
+      layoutIndices.map((i) => chartState.elements[i])
+    );
     const layoutClasses = layoutStates.map((layoutState) =>
       manager.getPlotSegmentClass(layoutState)
     );
@@ -1072,14 +1076,16 @@ export class TableLinksClass extends LinksClass {
         rowItem.source_id &&
         tables[0].id2RowGlyphIndex.get(rowItem.source_id.toString());
       const r2 =
-        rowItem.source_id &&
+        rowItem.target_id &&
         tables[1].id2RowGlyphIndex.get(rowItem.target_id.toString());
 
       if (!r1 || !r2) {
         continue;
       }
 
+      // eslint-disable-next-line
       const [iRow0, i0] = r1;
+      // eslint-disable-next-line
       const [iRow1, i1] = r2;
 
       anchors.push([

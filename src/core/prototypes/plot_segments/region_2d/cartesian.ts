@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { ChartStateManager } from "../..";
@@ -15,15 +16,34 @@ import {
   SnappingGuides,
   TemplateParameters,
 } from "../../common";
-import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
 import {
+  AxisMode,
+  AxisRenderer,
+  buildAxisInference,
+  buildAxisProperties,
+} from "../axis";
+import {
+  GridDirection,
+  GridStartPosition,
+  PlotSegmentAxisPropertyNames,
   Region2DAttributes,
   Region2DConfiguration,
+  Region2DConfigurationIcons,
   Region2DConstraintBuilder,
   Region2DProperties,
+  Region2DSublayoutType,
+  SublayoutAlignment,
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
-import { getSortDirection } from "../../..";
+import { getSortDirection, ZoomInfo } from "../../..";
+import { strings } from "../../../../strings";
+import {
+  AxisDataBinding,
+  AxisDataBindingType,
+} from "../../../specification/types";
+import { scaleLinear } from "d3-scale";
+import { FluentUIWidgetManager } from "../../../../app/views/panels/widgets/fluentui_manager";
+import { EventType } from "../../../../app/views/panels/widgets/observer";
 
 export type CartesianAxisMode =
   | "null"
@@ -31,7 +51,7 @@ export type CartesianAxisMode =
   | "numerical"
   | "categorical";
 
-export interface CartesianProperties extends Region2DProperties {}
+export type CartesianProperties = Region2DProperties;
 
 export interface CartesianAttributes extends Region2DAttributes {
   /** Cartesian plot segment region */
@@ -45,35 +65,24 @@ export interface CartesianState extends Specification.PlotSegmentState {
   attributes: CartesianAttributes;
 }
 
-export let cartesianTerminology: Region2DConfiguration = {
-  terminology: {
-    xAxis: "X Axis", // X Axis / Angular Axis
-    yAxis: "Y Axis", // Y Axis / Radial Axis
-    xMin: "Left",
-    xMinIcon: "align/left",
-    xMiddle: "Middle",
-    xMiddleIcon: "align/x-middle",
-    xMax: "Right",
-    xMaxIcon: "align/right",
-    yMiddle: "Middle",
-    yMiddleIcon: "align/y-middle",
-    yMin: "Bottom",
-    yMinIcon: "align/bottom",
-    yMax: "Top",
-    yMaxIcon: "align/top",
-    dodgeX: "Stack X",
-    dodgeXIcon: "sublayout/dodge-x",
-    dodgeY: "Stack Y",
-    dodgeYIcon: "sublayout/dodge-y",
-    grid: "Grid",
-    gridIcon: "sublayout/grid",
-    gridDirectionX: "X",
-    gridDirectionY: "Y",
-    packing: "Packing",
-    packingIcon: "sublayout/packing",
-    overlap: "Overlap",
-    overlapIcon: "sublayout/overlap",
-  },
+const icons: Region2DConfigurationIcons = {
+  xMinIcon: "AlignHorizontalLeft",
+  xMiddleIcon: "AlignHorizontalCenter",
+  xMaxIcon: "AlignHorizontalRight",
+  yMiddleIcon: "AlignVerticalCenter",
+  yMinIcon: "AlignVerticalBottom",
+  yMaxIcon: "AlignVerticalTop",
+  dodgeXIcon: "HorizontalDistributeCenter",
+  dodgeYIcon: "VerticalDistributeCenter",
+  gridIcon: "GridViewSmall",
+  packingIcon: "sublayout/packing",
+  jitterIcon: "sublayout/jitter",
+  overlapIcon: "Stack",
+};
+
+export const config: Region2DConfiguration = {
+  terminology: strings.cartesianTerminology,
+  icons,
   xAxisPrePostGap: false,
   yAxisPrePostGap: false,
 };
@@ -96,27 +105,37 @@ export class CartesianPlotSegment extends PlotSegmentClass<
 
   public static defaultMappingValues: Specification.AttributeMap = {};
 
-  public static defaultProperties: Specification.AttributeMap = {
+  public static defaultProperties: CartesianProperties = {
     marginX1: 0,
     marginY1: 0,
     marginX2: 0,
     marginY2: 0,
     visible: true,
     sublayout: {
-      type: "dodge-x",
+      type: Region2DSublayoutType.DodgeX,
       order: null,
       ratioX: 0.1,
       ratioY: 0.1,
       align: {
-        x: "start",
-        y: "start",
+        x: SublayoutAlignment.Start,
+        y: SublayoutAlignment.Start,
       },
       grid: {
-        direction: "x",
+        direction: GridDirection.X,
         xCount: null,
         yCount: null,
+        gridStartPosition: GridStartPosition.LeftTop,
       },
-    }
+      jitter: {
+        horizontal: true,
+        vertical: true,
+      },
+      packing: {
+        gravityX: 0.1,
+        gravityY: 0.1,
+      },
+      orderReversed: null,
+    },
   };
 
   public readonly state: CartesianState;
@@ -186,7 +205,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
   ) {
     const builder = new Region2DConstraintBuilder(
       this,
-      cartesianTerminology,
+      config,
       "x1",
       "x2",
       "y1",
@@ -208,34 +227,70 @@ export class CartesianPlotSegment extends PlotSegmentClass<
   public getBoundingBox(): BoundingBox.Description {
     const attrs = this.state.attributes;
     const { x1, x2, y1, y2 } = attrs;
-    return {
+    return <BoundingBox.Rectangle>{
       type: "rectangle",
       cx: (x1 + x2) / 2,
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
       rotation: 0,
-    } as BoundingBox.Rectangle;
+    };
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     return [
-      { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
-      { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
-      { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
-      { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
+      <SnappingGuides.Axis>{
+        type: "x",
+        value: x1,
+        attribute: "x1",
+        priority: 1,
+      },
+      <SnappingGuides.Axis>{
+        type: "x",
+        value: x2,
+        attribute: "x2",
+        priority: 1,
+      },
+      <SnappingGuides.Axis>{
+        type: "y",
+        value: y1,
+        attribute: "y1",
+        priority: 1,
+      },
+      <SnappingGuides.Axis>{
+        type: "y",
+        value: y2,
+        attribute: "y2",
+        priority: 1,
+      },
     ];
   }
 
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
+    const fluentUIManager = manager as FluentUIWidgetManager;
+    fluentUIManager.eventManager.subscribe(EventType.UPDATE_FIELD, {
+      update: (property: Controls.Property | Controls.Property[]) => {
+        if (
+          typeof property === "object" &&
+          ((property as Controls.Property).property === "xData" ||
+            (property as Controls.Property).property === "yData" ||
+            (property as Controls.Property).property === "axis") &&
+          (property as Controls.Property).field === "windowSize"
+        ) {
+          fluentUIManager.store.updatePlotSegments();
+          fluentUIManager.store.emit("graphics");
+        }
+      },
+    });
+
     const builder = this.createBuilder();
     return [
       ...super.getAttributePanelWidgets(manager),
-      ...builder.buildPanelWidgets(manager)
+      ...builder.buildPanelWidgets(manager),
     ];
   }
 
@@ -255,24 +310,45 @@ export class CartesianPlotSegment extends PlotSegmentClass<
 
   public getGraphics(manager: ChartStateManager): Graphics.Group {
     const g = Graphics.makeGroup([]);
+    const props = this.object.properties;
+    if (props.xData && props.xData.visible) {
+      if (props.xData.onTop) {
+        g.elements.push(this.getPlotSegmentAxisXDataGraphics(manager));
+      }
+    }
+    if (props.yData && props.yData.visible) {
+      if (props.yData.onTop) {
+        g.elements.push(this.getPlotSegmentAxisYDataGraphics(manager));
+      }
+    }
+    return g;
+  }
+
+  private getTickData = (
+    axis: Specification.Types.AxisDataBinding,
+    manager: ChartStateManager
+  ) => {
+    const table = manager.getTable(this.object.table);
+    const axisExpression = manager.dataflow.cache.parse(axis.expression);
+    const tickDataExpression = manager.dataflow.cache.parse(
+      axis.tickDataExpression
+    );
+    const result = [];
+    for (let i = 0; i < table.rows.length; i++) {
+      const c = table.getRowContext(i);
+      const axisValue = axisExpression.getValue(c);
+      const tickData = tickDataExpression.getValue(c);
+      result.push({ value: axisValue, tick: tickData });
+    }
+    return result;
+  };
+
+  private getPlotSegmentAxisXDataGraphics(
+    manager: ChartStateManager
+  ): Graphics.Group {
+    const g = Graphics.makeGroup([]);
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const getTickData = (axis: Specification.Types.AxisDataBinding) => {
-      const table = manager.getTable(this.object.table);
-      const axisExpression = manager.dataflow.cache.parse(axis.expression);
-      const tickDataExpression = manager.dataflow.cache.parse(
-        axis.tickDataExpression
-      );
-      const result = [];
-      for (let i = 0; i < table.rows.length; i++) {
-        const c = table.getRowContext(i);
-        const axisValue = axisExpression.getValue(c);
-        const tickData = tickDataExpression.getValue(c);
-        result.push({ value: axisValue, tick: tickData });
-      }
-      return result;
-    };
-
     if (props.xData && props.xData.visible) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.xData,
@@ -280,19 +356,37 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         attrs.x2 - attrs.x1,
         false,
         false,
-        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
+        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager),
+        this.object,
+        this.parent.dataflow
       );
       if (props.xData.tickDataExpression) {
-        axisRenderer.setTicksByData(getTickData(props.xData));
+        const tickFormatType = props.xData?.tickFormatType;
+        axisRenderer.setTicksByData(
+          this.getTickData(props.xData, manager),
+          props.xData.tickFormat,
+          tickFormatType
+        );
       }
       g.elements.push(
         axisRenderer.renderCartesian(
           attrs.x1,
           props.xData.side != "default" ? attrs.y2 : attrs.y1,
-          "x"
+          AxisMode.X,
+          props.xData?.offset
         )
       );
     }
+    return g;
+  }
+
+  private getPlotSegmentAxisYDataGraphics(
+    manager: ChartStateManager
+  ): Graphics.Group {
+    const g = Graphics.makeGroup([]);
+    const attrs = this.state.attributes;
+    const props = this.object.properties;
+
     if (props.yData && props.yData.visible) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.yData,
@@ -300,27 +394,38 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         attrs.y2 - attrs.y1,
         false,
         true,
-        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
+        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager),
+        this.object,
+        this.parent.dataflow
       );
       if (props.yData.tickDataExpression) {
-        axisRenderer.setTicksByData(getTickData(props.yData));
+        const tickFormatType = props.yData?.tickFormatType;
+        axisRenderer.setTicksByData(
+          this.getTickData(props.yData, manager),
+          props.yData.tickFormat,
+          tickFormatType
+        );
       }
       g.elements.push(
         axisRenderer.renderCartesian(
           props.yData.side != "default" ? attrs.x2 : attrs.x1,
           attrs.y1,
-          "y"
+          AxisMode.Y,
+          props.yData?.offset
         )
       );
     }
+
     return g;
   }
 
-  public getPlotSegmentBackgroundGraphics(manager: ChartStateManager): Graphics.Group {
+  public getPlotSegmentBackgroundGraphics(
+    manager: ChartStateManager
+  ): Graphics.Group {
     const g = Graphics.makeGroup([]);
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    
+
     if (props.xData && props.xData.visible) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.xData,
@@ -334,7 +439,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         axisRenderer.renderGridlinesForAxes(
           attrs.x1,
           props.xData.side != "default" ? attrs.y2 : attrs.y1,
-          "x",
+          AxisMode.X,
           attrs.y2 - attrs.y1
         )
       );
@@ -353,8 +458,161 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         axisRenderer.renderGridlinesForAxes(
           props.yData.side != "default" ? attrs.x2 : attrs.x1,
           attrs.y1,
-          "y",
+          AxisMode.Y,
           attrs.x2 - attrs.x1
+        )
+      );
+    }
+
+    if (props.xData && props.xData.visible) {
+      if (!props.xData.onTop) {
+        g.elements.push(this.getPlotSegmentAxisXDataGraphics(manager));
+      }
+    }
+    if (props.yData && props.yData.visible) {
+      if (!props.yData.onTop) {
+        g.elements.push(this.getPlotSegmentAxisYDataGraphics(manager));
+      }
+    }
+    return g;
+  }
+
+  public renderControls(
+    manager: ChartStateManager,
+    zoom: ZoomInfo
+  ): React.ReactElement<any>[] {
+    const attrs = this.state.attributes;
+    const props = this.object.properties;
+    const g = [];
+
+    if (
+      props.xData &&
+      props.xData.visible &&
+      props.xData.allowScrolling &&
+      ((props.xData.allCategories &&
+        props.xData.allCategories.length > props.xData.windowSize) ||
+        Math.abs(props.xData.dataDomainMax - props.xData.dataDomainMin) >
+          props.xData.windowSize)
+    ) {
+      const axisRenderer = new AxisRenderer().setAxisDataBinding(
+        props.xData,
+        0,
+        attrs.x2 - attrs.x1,
+        false,
+        false,
+        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
+      );
+      g.push(
+        axisRenderer.renderVirtualScrollBar(
+          attrs.x1,
+          (props.xData.side != "default" ? attrs.y2 : attrs.y1) +
+            (props.xData.barOffset
+              ? (props.xData.side === "default" ? -1 : 1) *
+                <number>props.xData.barOffset
+              : 0),
+          AxisMode.X,
+          props.xData.scrollPosition ? props.xData.scrollPosition : 0,
+          (position) => {
+            if (props.xData.type === AxisDataBindingType.Categorical) {
+              if (!props.xData.allCategories) {
+                return;
+              }
+              props.xData.scrollPosition = 100 - position;
+
+              const start = Math.floor(
+                ((props.xData.allCategories.length - props.xData.windowSize) /
+                  100) *
+                  props.xData.scrollPosition
+              );
+              props.xData.categories = props.xData.allCategories.slice(
+                start,
+                start + props.xData.windowSize
+              );
+
+              if (props.xData.categories.length === 0) {
+                props.xData.allCategories.slice(
+                  start - 1,
+                  start + props.xData.windowSize
+                );
+              }
+            } else if (props.xData.type === AxisDataBindingType.Numerical) {
+              const scale = scaleLinear()
+                .domain([100, 0])
+                .range([props.xData.dataDomainMin, props.xData.dataDomainMax]);
+              props.xData.scrollPosition = position;
+              const start = scale(position);
+              props.xData.domainMin = start;
+              props.xData.domainMax = start + props.xData.windowSize;
+            }
+            manager.remapPlotSegmentGlyphs(this.object);
+            manager.solveConstraints();
+          },
+          zoom
+        )
+      );
+    }
+    if (
+      props.yData &&
+      props.yData.visible &&
+      props.yData.allowScrolling &&
+      ((props.yData.allCategories &&
+        props.yData.allCategories.length > props.yData.windowSize) ||
+        Math.abs(props.yData.dataDomainMax - props.yData.dataDomainMin) >
+          props.yData.windowSize)
+    ) {
+      const axisRenderer = new AxisRenderer().setAxisDataBinding(
+        props.yData,
+        0,
+        attrs.y2 - attrs.y1,
+        false,
+        true,
+        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
+      );
+      g.push(
+        axisRenderer.renderVirtualScrollBar(
+          (props.yData.side != "default" ? attrs.x2 : attrs.x1) +
+            (props.yData.barOffset
+              ? (props.yData.side === "default" ? -1 : 1) *
+                <number>props.yData.barOffset
+              : 0),
+          attrs.y1,
+          AxisMode.Y,
+          props.yData.scrollPosition ? props.yData.scrollPosition : 0,
+          (position) => {
+            if (props.yData?.type === AxisDataBindingType.Categorical) {
+              if (!props.yData.allCategories) {
+                return;
+              }
+              props.yData.scrollPosition = position;
+              const start = Math.floor(
+                ((props.yData.allCategories.length - props.yData.windowSize) /
+                  100) *
+                  position
+              );
+              props.yData.categories = props.yData.allCategories.slice(
+                start,
+                start + props.yData.windowSize
+              );
+
+              if (props.yData.categories.length === 0) {
+                props.yData.allCategories.slice(
+                  start - 1,
+                  start + props.yData.windowSize
+                );
+              }
+            } else if (props.yData.type === AxisDataBindingType.Numerical) {
+              const scale = scaleLinear()
+                .domain([100, 0])
+                .range([props.yData.dataDomainMin, props.yData.dataDomainMax]);
+              props.yData.scrollPosition = position;
+              const start = scale(position);
+              props.yData.domainMin = start;
+              props.yData.domainMax = start + props.yData.windowSize;
+            }
+            manager.remapPlotSegmentGlyphs(this.object);
+            manager.solveConstraints();
+          },
+          zoom
         )
       );
     }
@@ -366,64 +624,64 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     const zones: DropZones.Description[] = [];
-    zones.push({
+    zones.push(<DropZones.Region>{
       type: "region",
       accept: { scaffolds: ["cartesian-y"] },
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
       title: "Add Y Scaffold",
-    } as DropZones.Region);
-    zones.push({
+    });
+    zones.push(<DropZones.Region>{
       type: "region",
       accept: { scaffolds: ["cartesian-x"] },
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
       title: "Add X Scaffold",
-    } as DropZones.Region);
-    zones.push({
+    });
+    zones.push(<DropZones.Region>{
       type: "region",
       accept: { scaffolds: ["polar"] },
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
       title: "Convert to Polar Coordinates",
-    } as DropZones.Region);
-    zones.push({
+    });
+    zones.push(<DropZones.Region>{
       type: "region",
       accept: { scaffolds: ["curve"] },
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
       title: "Convert to Curve Coordinates",
-    } as DropZones.Region);
-    zones.push({
+    });
+    zones.push(<DropZones.Region>{
       type: "region",
       accept: { scaffolds: ["map"] },
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
       title: "Convert to Map",
-    } as DropZones.Region);
-    zones.push({
+    });
+    zones.push(<DropZones.Line>{
       type: "line",
       p1: { x: x2, y: y1 },
       p2: { x: x1, y: y1 },
       title: "X Axis",
       dropAction: {
-        axisInference: { property: "xData" },
+        axisInference: { property: PlotSegmentAxisPropertyNames.xData },
       },
-    } as DropZones.Line);
-    zones.push({
+    });
+    zones.push(<DropZones.Line>{
       type: "line",
       p1: { x: x1, y: y1 },
       p2: { x: x1, y: y2 },
       title: "Y Axis",
       dropAction: {
-        axisInference: { property: "yData" },
+        axisInference: { property: PlotSegmentAxisPropertyNames.yData },
       },
-    } as DropZones.Line);
+    });
     return zones;
   }
 
@@ -439,35 +697,47 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     const attrs = this.state.attributes;
     const { x1, x2, y1, y2 } = attrs;
     const h: Handles.Description[] = [
-      {
+      <Handles.Line>{
         type: "line",
         axis: "y",
         value: y1,
         span: [x1, x2],
         actions: [{ type: "attribute", attribute: "y1" }],
-      } as Handles.Line,
-      {
+        options: {
+          snapToClosestPoint: true,
+        },
+      },
+      <Handles.Line>{
         type: "line",
         axis: "y",
         value: y2,
         span: [x1, x2],
         actions: [{ type: "attribute", attribute: "y2" }],
-      } as Handles.Line,
-      {
+        options: {
+          snapToClosestPoint: true,
+        },
+      },
+      <Handles.Line>{
         type: "line",
         axis: "x",
         value: x1,
         span: [y1, y2],
         actions: [{ type: "attribute", attribute: "x1" }],
-      } as Handles.Line,
-      {
+        options: {
+          snapToClosestPoint: true,
+        },
+      },
+      <Handles.Line>{
         type: "line",
         axis: "x",
         value: x2,
         span: [y1, y2],
         actions: [{ type: "attribute", attribute: "x2" }],
-      } as Handles.Line,
-      {
+        options: {
+          snapToClosestPoint: true,
+        },
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y1,
@@ -475,8 +745,11 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+        options: {
+          snapToClosestPoint: true,
+        },
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y1,
@@ -484,8 +757,11 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+        options: {
+          snapToClosestPoint: true,
+        },
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y2,
@@ -493,8 +769,11 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
-      {
+        options: {
+          snapToClosestPoint: true,
+        },
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y2,
@@ -502,14 +781,17 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
+        options: {
+          snapToClosestPoint: true,
+        },
+      },
     ];
 
     const builder = this.createBuilder();
 
     const handles = builder.getHandles();
     for (const handle of handles) {
-      h.push({
+      h.push(<Handles.GapRatio>{
         type: "gap-ratio",
         axis: handle.gap.axis,
         reference: handle.gap.reference,
@@ -525,22 +807,31 @@ export class CartesianPlotSegment extends PlotSegmentClass<
             field: handle.gap.property.field,
           },
         ],
-      } as Handles.GapRatio);
+      });
     }
 
     return h;
   }
 
+  // eslint-disable-next-line
   public getTemplateParameters(): TemplateParameters {
     const r: Specification.Template.Inference[] = [];
     let p: Specification.Template.Property[] = [];
     if (this.object.properties.xData) {
-      r.push(buildAxisInference(this.object, "xData"));
-      p = p.concat(buildAxisProperties(this.object, "xData"));
+      r.push(
+        buildAxisInference(this.object, PlotSegmentAxisPropertyNames.xData)
+      );
+      p = p.concat(
+        buildAxisProperties(this.object, PlotSegmentAxisPropertyNames.xData)
+      );
     }
     if (this.object.properties.yData) {
-      r.push(buildAxisInference(this.object, "yData"));
-      p = p.concat(buildAxisProperties(this.object, "yData"));
+      r.push(
+        buildAxisInference(this.object, PlotSegmentAxisPropertyNames.yData)
+      );
+      p = p.concat(
+        buildAxisProperties(this.object, PlotSegmentAxisPropertyNames.yData)
+      );
     }
     if (
       this.object.properties.sublayout.order &&
@@ -574,14 +865,18 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         default: this.object.properties.sublayout.order,
       });
     }
-    if (this.object.properties.xData) {
+    if (
+      this.object.properties.xData &&
+      (this.object.properties.xData.autoDomainMin ||
+        this.object.properties.xData.autoDomainMax)
+    ) {
       const values = this.object.properties.xData.categories;
       const defaultValue = getSortDirection(values);
       p.push({
         objectID: this.object._id,
         target: {
           property: {
-            property: "xData",
+            property: PlotSegmentAxisPropertyNames.xData,
             field: "categories",
           },
         },
@@ -589,14 +884,18 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         default: defaultValue,
       });
     }
-    if (this.object.properties.yData) {
+    if (
+      this.object.properties.yData &&
+      (this.object.properties.yData.autoDomainMin ||
+        this.object.properties.yData.autoDomainMax)
+    ) {
       const values = this.object.properties.yData.categories;
       const defaultValue = getSortDirection(values);
       p.push({
         objectID: this.object._id,
         target: {
           property: {
-            property: "yData",
+            property: PlotSegmentAxisPropertyNames.yData,
             field: "categories",
           },
         },
@@ -605,7 +904,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       });
     }
     if (this.object.properties.axis) {
-      const values = (this.object.properties.axis as any).categories;
+      const values = (<AxisDataBinding>this.object.properties.axis).categories;
       const defaultValue = getSortDirection(values);
       p.push({
         objectID: this.object._id,

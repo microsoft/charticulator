@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types */
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { strings } from "../../../../strings";
 import {
   Color,
   colorFromHTMLColor,
@@ -12,6 +14,7 @@ import {
 } from "../../../../core";
 import { DataMappingHints } from "../../../../core/prototypes";
 import { InputNumberOptions } from "../../../../core/prototypes/controls";
+import { MappingType } from "../../../../core/specification";
 import { ColorPicker } from "../../../components";
 import { ContextedComponent } from "../../../context_component";
 import { PopupView } from "../../../controllers";
@@ -25,6 +28,7 @@ import {
   InputNumber,
   InputText,
 } from "./controls";
+import { getAligntment } from "../../../utils";
 
 export interface ValueEditorProps {
   value: Specification.AttributeValue;
@@ -46,6 +50,7 @@ export interface ValueEditorProps {
 
   hints?: DataMappingHints;
   numberOptions?: InputNumberOptions;
+  anchorReference?: Element;
 }
 
 export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
@@ -61,10 +66,11 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
     this.props.onEmitMapping(mapping);
   }
 
+  // eslint-disable-next-line
   public render() {
     const value = this.props.value;
 
-    let placeholderText = this.props.placeholder || "(none)";
+    let placeholderText = this.props.placeholder || strings.core.none;
     if (this.props.defaultValue != null) {
       placeholderText = this.props.defaultValue.toString();
     }
@@ -107,6 +113,11 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
               ref={(e) => (colorItem = e)}
               style={{ backgroundColor: hex }}
               onClick={() => {
+                const {
+                  alignX,
+                }: { alignLeft: boolean; alignX: any } = getAligntment(
+                  colorItem
+                );
                 globals.popupController.popupAt(
                   (context) => (
                     <PopupView context={context}>
@@ -125,7 +136,7 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
                       />
                     </PopupView>
                   ),
-                  { anchor: colorItem }
+                  { anchor: colorItem, alignX: alignX }
                 );
               }}
             />
@@ -185,12 +196,12 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
                     Expression.parseTextExpression(newValue).isTrivialString()
                   ) {
                     this.emitMapping({
-                      type: "value",
+                      type: MappingType.value,
                       value: newValue,
                     } as Specification.ValueMapping);
                   } else {
                     this.emitMapping({
-                      type: "text",
+                      type: MappingType.text,
                       table: this.props.getTable(),
                       textExpression: newValue,
                     } as Specification.TextMapping);
@@ -245,8 +256,9 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
               text="Conditioned by..."
               ref={(e) => (ref = ReactDOM.findDOMNode(e) as Element)}
               onClick={() => {
-                // this.beginDataFieldSelection(ref);
-                this.props.onBeginDataFieldSelection(ref);
+                this.props.onBeginDataFieldSelection(
+                  this.props.anchorReference || ref
+                );
               }}
             />
           );

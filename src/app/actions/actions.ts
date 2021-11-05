@@ -15,6 +15,13 @@ import {
 import * as DragData from "./drag_data";
 import { ExportTemplateTarget } from "../template";
 import { DataType } from "../../core/dataset";
+import { ObjectClass } from "../../core/prototypes";
+import {
+  AxisDataBindingType,
+  NumericalMode,
+} from "../../core/specification/types";
+import { NestedChartEditorOptions } from "../../core/prototypes/controls";
+import { AttributeMap } from "../../core/specification";
 
 // Reexport these actions so consumers don't need to pull from both core/actions and app/actions
 export { Action, SelectMark, ClearSelection };
@@ -138,7 +145,8 @@ export class ImportChartAndDataset extends Action {
     public dataset: Dataset.Dataset,
     public options: {
       [key: string]: any;
-    }
+    },
+    public originSpecification?: Specification.Chart
   ) {
     super();
   }
@@ -149,12 +157,19 @@ export class ImportChartAndDataset extends Action {
 }
 
 export class ReplaceDataset extends Action {
-  constructor(public dataset: Dataset.Dataset) {
+  constructor(
+    public dataset: Dataset.Dataset,
+    public keepState: boolean = false
+  ) {
     super();
   }
 
   public digest() {
-    return { name: "ReplaceDataset", datasetName: this.dataset.name };
+    return {
+      name: "ReplaceDataset",
+      datasetName: this.dataset.name,
+      keepState: this.keepState,
+    };
   }
 }
 
@@ -166,6 +181,16 @@ export class UpdatePlotSegments extends Action {
 
   public digest() {
     return { name: "UpdatePlotSegments" };
+  }
+}
+
+export class UpdateDataAxis extends Action {
+  constructor() {
+    super();
+  }
+
+  public digest() {
+    return { name: "UpdateDataAxis" };
   }
 }
 
@@ -278,7 +303,8 @@ export class MapDataToMarkAttribute extends Action {
     public expression: string,
     public valueType: Specification.DataType,
     public valueMetadata: Dataset.ColumnMetadata,
-    public hints: Prototypes.DataMappingHints
+    public hints: Prototypes.DataMappingHints,
+    public expressionTable: string
   ) {
     super();
   }
@@ -292,7 +318,7 @@ export class MapDataToMarkAttribute extends Action {
       attributeType: this.attributeType,
       expression: this.expression,
       valueType: this.valueType,
-      hints: this.hints as any,
+      hints: <any>this.hints,
     };
   }
 }
@@ -509,7 +535,7 @@ export class MapDataToChartElementAttribute extends Action {
       attributeType: this.attributeType,
       expression: this.expression,
       valueType: this.valueType,
-      hints: this.hints as any,
+      hints: <any>this.hints,
     };
   }
 }
@@ -568,7 +594,8 @@ export class SetScaleAttribute extends Action {
 export class ToggleLegendForScale extends Action {
   constructor(
     public scale: string,
-    public mapping: Specification.ScaleMapping
+    public mapping: Specification.ScaleMapping,
+    public plotSegment: ObjectClass
   ) {
     super();
   }
@@ -622,12 +649,13 @@ export class SnapChartElements extends Action {
 
 export class BindDataToAxis extends Action {
   constructor(
-    public object: Specification.Object,
+    public object: Specification.PlotSegment,
     public property: string,
     public appendToProperty: string,
     public dataExpression: DragData.DataExpression,
-    public type?: "default" | "numerical" | "categorical",
-    public numericalMode?: "linear" | "logarithmic" | "temporal"
+    public defineCategories: boolean,
+    public type?: AxisDataBindingType,
+    public numericalMode?: NumericalMode
   ) {
     super();
   }
@@ -712,7 +740,7 @@ export class SetObjectProperty extends Action {
   constructor(
     public object: Specification.Object,
     public property: string,
-    public field: number | string | Array<number | string>,
+    public field: number | string | (number | string)[],
     public value: Specification.AttributeValue,
     public noUpdateState: boolean = false,
     public noComputeLayout: boolean = false
@@ -727,6 +755,29 @@ export class SetObjectProperty extends Action {
       property: this.property,
       field: this.field,
       value: this.value,
+      noUpdateState: this.noUpdateState,
+      noComputeLayout: this.noComputeLayout,
+    };
+  }
+}
+
+export class DeleteObjectProperty extends Action {
+  constructor(
+    public object: Specification.Object,
+    public property: string,
+    public field: number | string | (number | string)[],
+    public noUpdateState: boolean = false,
+    public noComputeLayout: boolean = false
+  ) {
+    super();
+  }
+
+  public digest() {
+    return {
+      name: "DeleteObjectProperty",
+      object: objectDigest(this.object),
+      property: this.property,
+      field: this.field,
       noUpdateState: this.noUpdateState,
       noComputeLayout: this.noComputeLayout,
     };
@@ -851,6 +902,19 @@ export class FocusToMarkAttribute extends Action {
   }
 }
 
+export class SetCurrentMappingAttribute extends Action {
+  constructor(public attributeName: string) {
+    super();
+  }
+
+  public digest() {
+    return {
+      name: "SetCurrentMappingAttribute",
+      attributeName: this.attributeName,
+    };
+  }
+}
+
 export class SetCurrentTool extends Action {
   constructor(public tool: string, public options: string = null) {
     super();
@@ -898,5 +962,18 @@ export class ClearMessages extends Action {
 
   public digest() {
     return { name: "ClearMessages" };
+  }
+}
+
+export class OpenNestedEditor extends Action {
+  constructor(
+    public object: Specification.Object<AttributeMap>,
+    public property: Prototypes.Controls.Property,
+    public options: NestedChartEditorOptions
+  ) {
+    super();
+  }
+  public digest() {
+    return { name: "OpenNestedEditor" };
   }
 }

@@ -17,8 +17,10 @@ import {
 } from "../common";
 
 export interface InferParametersOptions extends DataMappingHints {
-  /** Whether to extend the scale domain/range with new data */
-  extendScale?: boolean;
+  /** Whether to extend the scale min domain with new data */
+  extendScaleMin?: boolean;
+  /** Whether to extend the scale max domain with new data */
+  extendScaleMax?: boolean;
   /** Whether to reuse the existing range of the scale, applies to color and image */
   reuseRange?: boolean;
   /** Whether to ensure the domainMin == 0 (for numeric scales) */
@@ -39,10 +41,15 @@ export abstract class ScaleClass<
 
   public abstract mapDataToAttribute(data: DataValue): AttributeValue;
 
+  // eslint-disable-next-line
   public buildConstraint(
+    // eslint-disable-next-line
     data: DataValue,
+    // eslint-disable-next-line
     target: Variable,
+    // eslint-disable-next-line
     solver: ConstraintSolver
+    // eslint-disable-next-line
   ): void {}
 
   public abstract inferParameters(
@@ -55,6 +62,8 @@ export abstract class ScaleClass<
       inferences: [
         {
           objectID: this.object._id,
+          autoDomainMax: <boolean>this.object.properties.autoDomainMax,
+          autoDomainMin: <boolean>this.object.properties.autoDomainMin,
           scale: {
             classID: this.object.classID,
             expressions: [],

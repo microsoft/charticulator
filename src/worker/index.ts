@@ -10,8 +10,30 @@ import {
 } from "../core";
 import { WorkerRPC } from "./communication";
 
-/** The representation of the background worker. This is used from the main process. */
-export class CharticulatorWorker extends WorkerRPC {
+export { CharticulatorWorkerProcess } from "./worker_main";
+
+export interface CharticulatorWorkerInterface {
+  initialize(config: CharticulatorCoreConfig): Promise<any>;
+  solveChartConstraints: (
+    chart: Specification.Chart,
+    chartState: Specification.ChartState,
+    dataset: Dataset.Dataset,
+    preSolveValues: [
+      Solver.ConstraintStrength,
+      Specification.AttributeMap,
+      string,
+      number
+    ][],
+    mappingOnly: boolean
+  ) => Promise<any> | any;
+}
+
+/**
+ * The representation of the background worker. This is used from the main process.
+ */
+export class CharticulatorWorker
+  extends WorkerRPC
+  implements CharticulatorWorkerInterface {
   constructor(workerLocation: string) {
     super(workerLocation);
   }
@@ -20,13 +42,17 @@ export class CharticulatorWorker extends WorkerRPC {
     await this.rpc("initialize", config);
   }
 
+  // eslint-disable-next-line
   public async solveChartConstraints(
     chart: Specification.Chart,
     chartState: Specification.ChartState,
     dataset: Dataset.Dataset,
-    preSolveValues: Array<
-      [Solver.ConstraintStrength, Specification.AttributeMap, string, number]
-    >,
+    preSolveValues: [
+      Solver.ConstraintStrength,
+      Specification.AttributeMap,
+      string,
+      number
+    ][],
     mappingOnly: boolean = false
   ) {
     const result: Specification.ChartState = await this.rpc(
@@ -76,8 +102,9 @@ export class CharticulatorWorker extends WorkerRPC {
       src: Specification.AttributeMap
     ) => {
       for (const key in src) {
+        // eslint-disable-next-line
         if (src.hasOwnProperty(key)) {
-          dest[key] = src[key];
+          dest[key] = src[key] as any;
         }
       }
     };
@@ -91,8 +118,10 @@ export class CharticulatorWorker extends WorkerRPC {
       );
       // Is this a plot segment
       if (Prototypes.isType(chart.elements[i].classID, "plot-segment")) {
-        const plotSegmentState = elementState as Specification.PlotSegmentState;
-        const resultPlotSegmentState = resultElementState as Specification.PlotSegmentState;
+        const plotSegmentState = <Specification.PlotSegmentState>elementState;
+        const resultPlotSegmentState = <Specification.PlotSegmentState>(
+          resultElementState
+        );
         for (const [glyphState, resultGlyphState] of zipArray(
           plotSegmentState.glyphs,
           resultPlotSegmentState.glyphs

@@ -17,13 +17,19 @@ import {
 } from "../../common";
 import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
 import {
+  GridDirection,
+  GridStartPosition,
+  PlotSegmentAxisPropertyNames,
   Region2DAttributes,
   Region2DConfiguration,
+  Region2DConfigurationIcons,
   Region2DConstraintBuilder,
   Region2DProperties,
+  Region2DSublayoutType,
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
 import { ChartStateManager } from "../..";
+import { strings } from "../../../../strings";
 
 export type CurveAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -51,7 +57,7 @@ export interface CurveState extends Specification.PlotSegmentState {
 
 export interface CurveProperties extends Region2DProperties {
   /** The bezier curve specification in relative proportions (-1, +1) => (x1, x2) */
-  curve: Array<[Point, Point, Point, Point]>;
+  curve: [Point, Point, Point, Point][];
   normalStart: number;
   normalEnd: number;
 }
@@ -60,33 +66,19 @@ export interface CurveObject extends Specification.PlotSegment {
   properties: CurveProperties;
 }
 
-export let curveTerminology: Region2DConfiguration["terminology"] = {
-  xAxis: "Tangent Axis",
-  yAxis: "Normal Axis",
-  xMin: "Left",
-  xMinIcon: "align/left",
-  xMiddle: "Middle",
-  xMiddleIcon: "align/x-middle",
-  xMax: "Right",
-  xMaxIcon: "align/right",
-  yMiddle: "Middle",
+export const icons: Region2DConfigurationIcons = {
+  xMinIcon: "AlignHorizontalLeft",
+  xMiddleIcon: "AlignHorizontalCenter",
+  xMaxIcon: "AlignHorizontalRight",
   yMiddleIcon: "align/y-middle",
-  yMin: "Bottom",
-  yMinIcon: "align/bottom",
-  yMax: "Top",
-  yMaxIcon: "align/top",
-  dodgeX: "Stack Tangential",
-  dodgeXIcon: "sublayout/dodge-x",
-  dodgeY: "Stack Normal",
-  dodgeYIcon: "sublayout/dodge-y",
-  grid: "Grid",
-  gridIcon: "sublayout/grid",
-  gridDirectionX: "Tangent",
-  gridDirectionY: "Normal",
-  packing: "Packing",
+  yMinIcon: "Bottom",
+  yMaxIcon: "Top",
+  dodgeXIcon: "HorizontalDistributeCenter",
+  dodgeYIcon: "VerticalDistributeCenter",
+  gridIcon: "GridViewSmall",
   packingIcon: "sublayout/packing",
-  overlap: "Overlap",
-  overlapIcon: "sublayout/overlap",
+  jitterIcon: "sublayout/jitter",
+  overlapIcon: "Stack",
 };
 
 export class CurvePlotSegment extends PlotSegmentClass<
@@ -112,7 +104,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
     marginY2: 0,
     visible: true,
     sublayout: {
-      type: "dodge-x",
+      type: Region2DSublayoutType.DodgeX,
       order: null,
       ratioX: 0.1,
       ratioY: 0.1,
@@ -121,9 +113,10 @@ export class CurvePlotSegment extends PlotSegmentClass<
         y: "start",
       },
       grid: {
-        direction: "x",
+        direction: GridDirection.X,
         xCount: null,
         yCount: null,
+        gridStartPosition: GridStartPosition.LeftTop,
       },
     },
     curve: [
@@ -228,9 +221,9 @@ export class CurvePlotSegment extends PlotSegmentClass<
     solver?: ConstraintSolver,
     context?: BuildConstraintsContext
   ) {
-    const props = this.object.properties;
-    const config = {
-      terminology: curveTerminology,
+    const config: Region2DConfiguration = {
+      terminology: strings.curveTerminology,
+      icons,
       xAxisPrePostGap: false,
       yAxisPrePostGap: false,
     };
@@ -257,6 +250,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
 
   public buildConstraints(
     solver: ConstraintSolver,
+    // eslint-disable-next-line
     context: BuildConstraintsContext
   ): void {
     const attrs = this.state.attributes;
@@ -264,9 +258,12 @@ export class CurvePlotSegment extends PlotSegmentClass<
 
     const [
       x1,
+      // eslint-disable-next-line
       y1,
       x2,
+      // eslint-disable-next-line
       y2,
+      // eslint-disable-next-line
       tangent1,
       tangent2,
       normal1,
@@ -329,24 +326,24 @@ export class CurvePlotSegment extends PlotSegmentClass<
   public getBoundingBox(): BoundingBox.Description {
     const attrs = this.state.attributes;
     const { x1, x2, y1, y2 } = attrs;
-    return {
+    return <BoundingBox.Rectangle>{
       type: "rectangle",
       cx: (x1 + x2) / 2,
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
       rotation: 0,
-    } as BoundingBox.Rectangle;
+    };
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     return [
-      { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
-      { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
-      { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
-      { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
+      <SnappingGuides.Axis>{ type: "x", value: x1, attribute: "x1" },
+      <SnappingGuides.Axis>{ type: "x", value: x2, attribute: "x2" },
+      <SnappingGuides.Axis>{ type: "y", value: y1, attribute: "y1" },
+      <SnappingGuides.Axis>{ type: "y", value: y2, attribute: "y2" },
     ];
   }
 
@@ -425,32 +422,32 @@ export class CurvePlotSegment extends PlotSegmentClass<
   }
 
   public getDropZones(): DropZones.Description[] {
-    const attrs = this.state.attributes as CurveAttributes;
+    const attrs = <CurveAttributes>this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     const zones: DropZones.Description[] = [];
-    zones.push({
+    zones.push(<DropZones.Region>{
       type: "region",
       accept: { scaffolds: ["polar"] },
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
       title: "Convert to Polar Coordinates",
-    } as DropZones.Region);
-    zones.push({
+    });
+    zones.push(<DropZones.Region>{
       type: "region",
       accept: { scaffolds: ["cartesian-x", "cartesian-y"] },
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
       title: "Convert to Cartesian Coordinates",
-    } as DropZones.Region);
+    });
     // zones.push(
     //     <DropZones.Line>{
     //         type: "line",
     //         p1: { x: cx + radial1, y: cy }, p2: { x: cx + radial2, y: cy },
     //         title: "Radial Axis",
     //         dropAction: {
-    //             axisInference: { property: "yData" }
+    //             axisInference: { property: AxisPropertiesNames.yData }
     //         }
     //     }
     // );
@@ -462,7 +459,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
     //         angleStart: attrs.angle1, angleEnd: attrs.angle2,
     //         title: "Angular Axis",
     //         dropAction: {
-    //             axisInference: { property: "xData" }
+    //             axisInference: { property: AxisPropertiesNames.xData }
     //         }
     //     }
     // );
@@ -479,42 +476,37 @@ export class CurvePlotSegment extends PlotSegmentClass<
 
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes;
-    const props = this.object.properties;
-    const rows = this.parent.dataflow.getTable(this.object.table).rows;
     const { x1, x2, y1, y2 } = attrs;
-    const radius = Math.min(Math.abs(x2 - x1), Math.abs(y2 - y1)) / 2;
-    const cx = (x1 + x2) / 2,
-      cy = (y1 + y2) / 2;
     const h: Handles.Description[] = [
-      {
+      <Handles.Line>{
         type: "line",
         axis: "y",
         value: y1,
         span: [x1, x2],
         actions: [{ type: "attribute", attribute: "y1" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "y",
         value: y2,
         span: [x1, x2],
         actions: [{ type: "attribute", attribute: "y2" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "x",
         value: x1,
         span: [y1, y2],
         actions: [{ type: "attribute", attribute: "x1" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "x",
         value: x2,
         span: [y1, y2],
         actions: [{ type: "attribute", attribute: "x2" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y1,
@@ -522,8 +514,8 @@ export class CurvePlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y1,
@@ -531,8 +523,8 @@ export class CurvePlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y2,
@@ -540,8 +532,8 @@ export class CurvePlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y2,
@@ -549,15 +541,15 @@ export class CurvePlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.InputCurve>{
         type: "input-curve",
         x1,
         y1,
         x2,
         y2,
         actions: [{ type: "property", property: "curve" }],
-      } as Handles.InputCurve,
+      },
     ];
     return h;
   }
@@ -593,22 +585,22 @@ export class CurvePlotSegment extends PlotSegmentClass<
     const builder = this.createBuilder();
     return [
       ...super.getAttributePanelWidgets(manager),
-      manager.sectionHeader("Curve Coordinates"),
-      manager.row(
-        "Normal",
-        manager.horizontal(
-          [1, 0, 1],
-          manager.inputNumber({ property: "normalStart" }),
-          manager.label("-"),
-          manager.inputNumber({ property: "normalEnd" })
-        )
+      manager.verticalGroup(
+        {
+          header: strings.objects.plotSegment.curveCoordinates,
+        },
+        [
+          manager.vertical(
+            manager.label(strings.objects.plotSegment.normal),
+            manager.horizontal(
+              [1, 0, 1],
+              manager.inputNumber({ property: "normalStart" }),
+              manager.label("-"),
+              manager.inputNumber({ property: "normalEnd" })
+            )
+          ),
+        ]
       ),
-      // manager.row("Radius", manager.horizontal([0, 1, 0, 1],
-      //     manager.label("Inner:"),
-      //     manager.inputNumber({ property: "innerRatio" }),
-      //     manager.label("Outer:"),
-      //     manager.inputNumber({ property: "outerRatio" })
-      // )),
       ...builder.buildPanelWidgets(manager),
     ];
   }
@@ -617,12 +609,20 @@ export class CurvePlotSegment extends PlotSegmentClass<
     const r: Specification.Template.Inference[] = [];
     let p: Specification.Template.Property[] = [];
     if (this.object.properties.xData) {
-      r.push(buildAxisInference(this.object, "xData"));
-      p = p.concat(buildAxisProperties(this.object, "xData"));
+      r.push(
+        buildAxisInference(this.object, PlotSegmentAxisPropertyNames.xData)
+      );
+      p = p.concat(
+        buildAxisProperties(this.object, PlotSegmentAxisPropertyNames.xData)
+      );
     }
     if (this.object.properties.yData) {
-      r.push(buildAxisInference(this.object, "yData"));
-      p = p.concat(buildAxisProperties(this.object, "yData"));
+      r.push(
+        buildAxisInference(this.object, PlotSegmentAxisPropertyNames.yData)
+      );
+      p = p.concat(
+        buildAxisProperties(this.object, PlotSegmentAxisPropertyNames.yData)
+      );
     }
     if (
       this.object.properties.sublayout.order &&
@@ -640,12 +640,16 @@ export class CurvePlotSegment extends PlotSegmentClass<
         },
       });
     }
-    if (this.object.properties.xData) {
+    if (
+      this.object.properties.xData &&
+      (this.object.properties.xData.autoDomainMin ||
+        this.object.properties.xData.autoDomainMax)
+    ) {
       p.push({
         objectID: this.object._id,
         target: {
           property: {
-            property: "xData",
+            property: PlotSegmentAxisPropertyNames.xData,
             field: "categories",
           },
         },
@@ -653,12 +657,16 @@ export class CurvePlotSegment extends PlotSegmentClass<
         default: "ascending",
       });
     }
-    if (this.object.properties.yData) {
+    if (
+      this.object.properties.yData &&
+      (this.object.properties.yData.autoDomainMin ||
+        this.object.properties.yData.autoDomainMax)
+    ) {
       p.push({
         objectID: this.object._id,
         target: {
           property: {
-            property: "yData",
+            property: PlotSegmentAxisPropertyNames.yData,
             field: "categories",
           },
         },

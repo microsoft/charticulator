@@ -1,26 +1,42 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 import { AppStoreState } from "./app_store";
 import {
   compareVersion,
-  zip,
-  Prototypes,
-  Specification,
-  Expression,
   Dataset,
   deepClone,
+  Expression,
+  Prototypes,
+  Specification,
+  zip,
 } from "../../core";
 import { TableType } from "../../core/dataset";
 import { upgradeGuidesToBaseline } from "./migrator_baseline";
+import { LegendProperties } from "../../core/prototypes/legends/legend";
 import {
-  LegendClass,
-  LegendProperties,
-} from "../../core/prototypes/legends/legend";
-import { ChartElement } from "../../core/specification";
+  ChartElement,
+  MappingType,
+  Object,
+  PlotSegment,
+} from "../../core/specification";
+import { NumericalNumberLegendAttributes } from "../../core/prototypes/legends/numerical_legend";
+import { forEachObject, ObjectItemKind } from "../../core/prototypes";
+import { RectElementProperties } from "../../core/prototypes/marks/rect.attrs";
+import { CartesianProperties } from "../../core/prototypes/plot_segments/region_2d/cartesian";
+import { PolarProperties } from "../../core/prototypes/plot_segments/region_2d/polar";
+import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
+import { CurveProperties } from "../../core/prototypes/plot_segments/region_2d/curve";
+import { DataAxisProperties } from "../../core/prototypes/marks/data_axis";
+import { replaceUndefinedByNull } from "../utils";
+import { TickFormatType } from "../../core/specification/types";
+import { SymbolElementProperties } from "../../core/prototypes/marks/symbol.attrs";
+import { LinearBooleanScaleMode } from "../../core/prototypes/scales/linear";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
+  // eslint-disable-next-line
   public migrate(state: AppStoreState, targetVersion: string): AppStoreState {
     // First, fix version if missing
     if (!state.version) {
@@ -72,14 +88,14 @@ export class Migrator {
       compareVersion(state.version, "1.5.0") < 0 &&
       compareVersion(targetVersion, "1.5.0") >= 0
     ) {
-      // Major change at version 1.4.0: Links are not automatically sorted in rendering now
+      // Minor change at version 1.5.0: Links are not automatically sorted in rendering now
       state = this.addScaleMappings(state);
     }
     if (
       compareVersion(state.version, "1.5.1") < 0 &&
       compareVersion(targetVersion, "1.5.1") >= 0
     ) {
-      // Major change at version 1.4.0: Links are not automatically sorted in rendering now
+      // Minor change at version 1.5.1: Links are not automatically sorted in rendering now
       state = this.addTableTypes(state);
     }
 
@@ -87,7 +103,7 @@ export class Migrator {
       compareVersion(state.version, "1.6.0") < 0 &&
       compareVersion(targetVersion, "1.6.0") >= 0
     ) {
-      // Major change at version 1.4.0: Links are not automatically sorted in rendering now
+      // Minor change at version 1.6.0: Links are not automatically sorted in rendering now
       state = this.addOriginDataSet(state);
     }
 
@@ -105,7 +121,7 @@ export class Migrator {
       compareVersion(state.version, "1.8.0") < 0 &&
       compareVersion(targetVersion, "1.8.0") >= 0
     ) {
-      // Minor change at version 1.7.0: Add default value for property layout in legend
+      // Minor change at version 1.8.0: Add default value for property layout in legend
       state = this.setValueToLayoutPropertyOfLegend(state);
     }
 
@@ -113,8 +129,36 @@ export class Migrator {
       compareVersion(state.version, "2.0.0") < 0 &&
       compareVersion(targetVersion, "2.0.0") >= 0
     ) {
-      // Minor change at version 1.7.0: Add default value for property layout in legend
+      // Major change at version 2.0.0: Add default value for property layout in legend
       state = this.setValueItemShapeOfLegend(state);
+    }
+
+    if (
+      compareVersion(state.version, "2.0.1") < 0 &&
+      compareVersion(targetVersion, "2.0.1") >= 0
+    ) {
+      // Patch change at version 2.0.1: Add polar/angular legend
+      state = this.setPolarAngularLegend(state);
+    }
+
+    if (
+      compareVersion(state.version, "2.0.2") < 0 &&
+      compareVersion(targetVersion, "2.0.2") >= 0
+    ) {
+      state = this.setAllowFlipToMarks(state);
+    }
+
+    if (
+      compareVersion(state.version, "2.0.4") < 0 &&
+      compareVersion(targetVersion, "2.0.4") >= 0
+    ) {
+      state = this.setMissedProperties(state);
+    }
+    if (
+      compareVersion(state.version, "2.1.0") < 0 &&
+      compareVersion(targetVersion, "2.1.0") >= 0
+    ) {
+      state = this.setMissedGlyphRectProperties(state);
     }
 
     // After migration, set version to targetVersion
@@ -188,10 +232,7 @@ export class Migrator {
     }
   }
 
-  public fixAxisDataMapping(
-    mapping: Specification.Types.AxisDataBinding,
-    table: string
-  ) {
+  public fixAxisDataMapping(mapping: Specification.Types.AxisDataBinding) {
     if (!mapping) {
       return;
     }
@@ -202,20 +243,14 @@ export class Migrator {
   }
 
   public fixDataMappingExpressions(state: AppStoreState) {
-    for (const [element, elementState] of zip(
+    for (const [element] of zip(
       state.chart.elements,
       state.chartState.elements
     )) {
       if (Prototypes.isType(element.classID, "plot-segment")) {
         const plotSegment = element as Specification.PlotSegment;
-        this.fixAxisDataMapping(
-          plotSegment.properties.xData as any,
-          plotSegment.table
-        );
-        this.fixAxisDataMapping(
-          plotSegment.properties.yData as any,
-          plotSegment.table
-        );
+        this.fixAxisDataMapping(plotSegment.properties.xData as any);
+        this.fixAxisDataMapping(plotSegment.properties.yData as any);
         if (plotSegment.properties.sublayout) {
           const sublayout = plotSegment.properties.sublayout as any;
           if (sublayout.order) {
@@ -257,16 +292,20 @@ export class Migrator {
     for (const glyph of state.chart.glyphs) {
       for (const mark of glyph.marks) {
         for (const key in mark.mappings) {
+          // eslint-disable-next-line
           if (mark.mappings.hasOwnProperty(key)) {
             const mapping = mark.mappings[key];
-            if (mapping.type == "scale") {
+            if (mapping.type == MappingType.scale) {
               const scaleMapping = mapping as Specification.ScaleMapping;
               scaleMapping.expression = this.addAggregationToExpression(
                 scaleMapping.expression,
                 scaleMapping.valueType
               );
             }
-            if (mapping.type == "scale" || mapping.type == "text") {
+            if (
+              mapping.type == MappingType.scale ||
+              mapping.type == MappingType.text
+            ) {
               (mapping as any).table = glyph.table;
             }
           }
@@ -337,6 +376,260 @@ export class Migrator {
         const legend = element as ChartElement<LegendProperties>;
         if (legend.properties.markerShape === undefined) {
           legend.properties.markerShape = "circle";
+        }
+      }
+    }
+
+    return state;
+  }
+
+  public setPolarAngularLegend(state: AppStoreState) {
+    for (let i = 0; i < state.chart.elements.length; i++) {
+      const element = state.chart.elements[i];
+      if (Prototypes.isType(element.classID, "legend")) {
+        const attrs = state.chartState.elements[i]
+          .attributes as NumericalNumberLegendAttributes;
+        // add new properties
+        attrs.cx = 0;
+        attrs.cy = 0;
+        attrs.radius = 0;
+        attrs.startAngle = 0;
+        attrs.endAngle = 0;
+      }
+    }
+    return state;
+  }
+
+  private updateAxis(
+    axis: Specification.Types.AxisDataBinding
+  ): Specification.Types.AxisDataBinding {
+    return {
+      ...axis,
+      side: replaceUndefinedByNull(axis.side),
+      type: replaceUndefinedByNull(axis.type),
+      visible: replaceUndefinedByNull(axis.visible),
+      autoDomainMax: replaceUndefinedByNull(axis.autoDomainMax),
+      autoDomainMin: replaceUndefinedByNull(axis.autoDomainMin),
+      orderMode: replaceUndefinedByNull(axis.orderMode),
+      style: replaceUndefinedByNull(axis.style),
+      categories: replaceUndefinedByNull(axis.categories),
+      dataKind: replaceUndefinedByNull(axis.dataKind),
+      domainMax: replaceUndefinedByNull(axis.domainMax),
+      domainMin: replaceUndefinedByNull(axis.domainMin),
+      enablePrePostGap: replaceUndefinedByNull(axis.enablePrePostGap),
+      expression: replaceUndefinedByNull(axis.expression),
+      gapRatio: replaceUndefinedByNull(axis.gapRatio),
+      numericalMode: replaceUndefinedByNull(axis.numericalMode),
+      order: replaceUndefinedByNull(axis.order),
+      rawExpression: replaceUndefinedByNull(axis.rawExpression),
+      tickDataExpression: replaceUndefinedByNull(axis.tickDataExpression),
+      tickFormat: replaceUndefinedByNull(axis.tickFormat),
+      valueType: replaceUndefinedByNull(axis.valueType),
+      allowScrolling: replaceUndefinedByNull(axis.allowScrolling),
+      windowSize: replaceUndefinedByNull(axis.windowSize),
+      barOffset: replaceUndefinedByNull(axis.barOffset),
+      offset: replaceUndefinedByNull(axis.offset),
+      tickFormatType: replaceUndefinedByNull(axis.tickFormatType),
+    };
+  }
+
+  public setMissedProperties(state: AppStoreState) {
+    for (const item of forEachObject(state.chart)) {
+      if (item.kind == ObjectItemKind.Chart) {
+        item.object.properties.exposed = true;
+      }
+      if (item.kind == ObjectItemKind.ChartElement) {
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.cartesian")
+        ) {
+          const element = item.chartElement as PlotSegment<CartesianProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+            if (element.properties.xData === undefined) {
+              element.properties.xData = null;
+            }
+          }
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+            if (element.properties.yData === undefined) {
+              element.properties.yData = null;
+            }
+          }
+        }
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.polar")
+        ) {
+          const element = item.chartElement as PlotSegment<PolarProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+          }
+          if (element.properties.xData === undefined) {
+            element.properties.xData = null;
+          }
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+          }
+          if (element.properties.yData === undefined) {
+            element.properties.yData = null;
+          }
+        }
+        if (Prototypes.isType(item.chartElement.classID, "plot-segment.line")) {
+          const element = item.chartElement as PlotSegment<LineGuideProperties>;
+          if (element.properties.axis) {
+            element.properties.axis = this.updateAxis(element.properties.axis);
+          }
+        }
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.curve")
+        ) {
+          const element = item.chartElement as PlotSegment<CurveProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+          }
+          if (element.properties.xData === undefined) {
+            element.properties.xData = null;
+          }
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+          }
+          if (element.properties.yData === undefined) {
+            element.properties.yData = null;
+          }
+        }
+        if (Prototypes.isType(item.chartElement.classID, "mark.data-axis")) {
+          // eslint-disable-next-line @typescript-eslint/ban-types
+          const element = (item.chartElement as unknown) as Object<
+            DataAxisProperties
+          >;
+          if (element.properties.axis) {
+            element.properties.axis = this.updateAxis(element.properties.axis);
+          }
+          if (element.properties.axis === undefined) {
+            element.properties.axis = null;
+          }
+        }
+      }
+      if (item.kind == ObjectItemKind.Mark) {
+        if (Prototypes.isType(item.mark.classID, "mark.data-axis")) {
+          // eslint-disable-next-line @typescript-eslint/ban-types
+          const element = (item.mark as unknown) as Object<DataAxisProperties>;
+          if (element.properties.axis) {
+            element.properties.axis = this.updateAxis(element.properties.axis);
+          }
+          if (element.properties.axis === undefined) {
+            element.properties.axis = null;
+          }
+        }
+      }
+    }
+
+    return state;
+  }
+
+  public setAllowFlipToMarks(state: AppStoreState) {
+    for (const item of forEachObject(state.chart)) {
+      if (item.kind == "mark") {
+        // legend with column names
+        if (Prototypes.isType(item.mark.classID, "mark.rect")) {
+          (item.mark.properties as RectElementProperties).allowFlipping = true;
+        }
+      }
+    }
+    return state;
+  }
+
+  public setMissedGlyphRectProperties(state: AppStoreState) {
+    for (const item of forEachObject(state.chart)) {
+      if (item.kind == ObjectItemKind.Mark) {
+        if (Prototypes.isType(item.mark.classID, "mark.rect")) {
+          (item.mark.properties as RectElementProperties).rx = 0;
+          (item.mark.properties as RectElementProperties).ry = 0;
+        }
+        if (Prototypes.isType(item.mark.classID, "mark.symbol")) {
+          (item.mark.properties as SymbolElementProperties).rotation = 0;
+        }
+      }
+      if (item.kind == ObjectItemKind.ChartElement) {
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.cartesian")
+        ) {
+          const element = item.chartElement as PlotSegment<CartesianProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+            if (element.properties.xData === undefined) {
+              element.properties.xData = null;
+            }
+            element.properties.xData.offset = 0;
+            element.properties.xData.tickFormatType = TickFormatType.None;
+            element.properties.xData.style.showTicks = true;
+          }
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+            if (element.properties.yData === undefined) {
+              element.properties.yData = null;
+            }
+            element.properties.yData.offset = 0;
+            element.properties.yData.tickFormatType = TickFormatType.None;
+            element.properties.yData.style.showTicks = true;
+          }
+        }
+      }
+    }
+
+    //updated visibility number options
+    const scales = state.chart.scales;
+    if (scales) {
+      for (let i = 0; i < scales.length; i++) {
+        if (scales[i].classID == "scale.linear<number,boolean>") {
+          const scaleProperties = scales[i].properties;
+          if (scaleProperties?.mode && scaleProperties?.mode === "interval") {
+            scaleProperties.mode = LinearBooleanScaleMode.Between;
+          }
+          if (scaleProperties?.mode && scaleProperties?.mode === "greater") {
+            if (
+              scaleProperties?.inclusive &&
+              scaleProperties?.inclusive == "true"
+            ) {
+              scaleProperties.mode =
+                LinearBooleanScaleMode.GreaterThanOrEqualTo;
+            }
+            if (
+              scaleProperties?.inclusive &&
+              scaleProperties?.inclusive == "false"
+            ) {
+              scaleProperties.mode = LinearBooleanScaleMode.GreaterThan;
+            }
+          }
+          if (scaleProperties?.mode && scaleProperties?.mode === "less") {
+            if (
+              scaleProperties?.inclusive &&
+              scaleProperties?.inclusive == "true"
+            ) {
+              scaleProperties.mode = LinearBooleanScaleMode.LessThanOrEqualTo;
+            }
+            if (
+              scaleProperties?.inclusive &&
+              scaleProperties?.inclusive == "false"
+            ) {
+              scaleProperties.mode = LinearBooleanScaleMode.LessThan;
+            }
+          }
         }
       }
     }

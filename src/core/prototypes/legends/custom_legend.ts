@@ -1,20 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Color, deepClone } from "../../common";
+import { Color } from "../../common";
 import * as Specification from "../../specification";
-import { AttributeDescription, Controls, ObjectClassMetadata } from "../common";
+import { Controls, ObjectClassMetadata } from "../common";
 import { DataAxisExpression } from "../marks/data_axis.attrs";
-import { LegendProperties, LegendState, LegendClass } from "./legend";
-import { defaultAxisStyle } from "../plot_segments/axis";
+import { LegendProperties, LegendState } from "./legend";
+import { CategoricalLegendClass } from "./categorical_legend";
+import { strings } from "../../../strings";
+
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
 
 export type LegendSourceType = "columnNames" | "columnValues";
 
 export type LegendType = "color" | "numerical" | "categorical";
 
 export type LegendOrientation = "horizontal" | "vertical";
-
-import { CategoricalLegendClass } from "./categorical_legend";
 
 export interface CustomLegendProperties extends LegendProperties {
   legendType: LegendType;
@@ -32,7 +33,7 @@ export interface CustomLegendObject extends Specification.Object {
   properties: CustomLegendProperties;
 }
 
-export interface CustomLegendState extends LegendState {}
+export type CustomLegendState = LegendState;
 
 export interface CustomLegendItem {
   type: "number" | "color" | "boolean";
@@ -48,26 +49,32 @@ export class CustomLegendClass extends CategoricalLegendClass {
   public readonly state: CustomLegendState;
 
   public static metadata: ObjectClassMetadata = {
-    displayName: "Legend",
-    iconPath: "legend/legend",
+    displayName: strings.objects.legend.legend,
+    iconPath: "CharticulatorLegend",
     creatingInteraction: {
       type: "point",
       mapping: { x: "x", y: "y" },
     },
   };
-
   public getAttributePanelWidgets(
-    manager: Controls.WidgetManager
+    manager: Controls.WidgetManager & CharticulatorPropertyAccessors
   ): Controls.Widget[] {
     const widget = super.getAttributePanelWidgets(manager);
 
     const scale = this.getScale();
     if (scale) {
-      widget.push(manager.sectionHeader("Colors"));
       widget.push(
-        manager.row(
-          "Scale",
-          manager.scaleEditor("mappingOptions", "Edit scale colors")
+        manager.vertical(
+          manager.label(strings.objects.colors, {
+            addMargins: true,
+          }),
+          manager.horizontal(
+            [1],
+            manager.scaleEditor(
+              "mappingOptions",
+              strings.objects.legend.editColors
+            )
+          )
         )
       );
     }

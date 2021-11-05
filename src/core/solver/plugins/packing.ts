@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { forceSimulation, forceCollide, forceX, forceY } from "d3-force";
+import { AxisMode } from "../../prototypes/plot_segments/axis";
 import { ConstraintPlugin, ConstraintSolver, Variable } from "../abstract";
 
 interface NodeType {
@@ -18,7 +19,7 @@ export class PackingPlugin extends ConstraintPlugin {
   public solver: ConstraintSolver;
   public cx: Variable;
   public cy: Variable;
-  public points: Array<[Variable, Variable, number]>;
+  public points: [Variable, Variable, number][];
   public xEnable: boolean;
   public yEnable: boolean;
   public getXYScale: () => { x: number; y: number };
@@ -29,8 +30,8 @@ export class PackingPlugin extends ConstraintPlugin {
     solver: ConstraintSolver,
     cx: Variable,
     cy: Variable,
-    points: Array<[Variable, Variable, number]>,
-    axisOnly?: "x" | "y",
+    points: [Variable, Variable, number][],
+    axisOnly?: AxisMode,
     getXYScale?: () => { x: number; y: number },
     options?: PackingPluginOptions
   ) {
@@ -60,11 +61,11 @@ export class PackingPlugin extends ConstraintPlugin {
       const x = (this.solver.getValue(pt[0]) - cx) / xScale;
       const y = (this.solver.getValue(pt[1]) - cy) / yScale;
       // Use forceSimulation's default initialization
-      return {
+      return <NodeType>{
         fx: !this.xEnable ? x : undefined, // keep x unchanged if x is disabled
         fy: !this.yEnable ? y : undefined, // keep y unchanged if y is disabled
         r: pt[2],
-      } as NodeType;
+      };
     });
 
     const force = forceSimulation(nodes);

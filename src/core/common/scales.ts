@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/no-namespace */
 
 import { scaleUtc, scaleLinear, scaleLog } from "d3-scale";
 import { getSortFunctionByData } from ".";
@@ -23,6 +24,7 @@ export namespace Scale {
     public domainMax: number;
 
     public inferParameters(values: number[]) {
+      values = values.filter(v => !isNaN(v))
       const scale = scaleLinear()
         .domain([Math.min(...values), Math.max(...values)])
         .nice();
@@ -65,8 +67,9 @@ export namespace Scale {
     public domainMax: number;
 
     public inferParameters(values: number[]) {
+      const min = Math.min(...values);
       const scale = scaleLog()
-        .domain([Math.min(...values), Math.max(...values)])
+        .domain([min <= 0 ? 1 : min, Math.max(...values)])
         .nice();
       this.domainMin = scale.domain()[0];
       this.domainMax = scale.domain()[1];
@@ -164,10 +167,10 @@ export namespace Scale {
             });
           }
           break;
-        case "order":
-          {
-          }
-          break;
+        // case "order":
+        //   {
+        //   }
+        //   break;
       }
       this.domain = new Map<string, number>();
       for (let i = 0; i < domain.length; i++) {

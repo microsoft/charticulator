@@ -1,11 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Geometry, Specification, zipArray } from "../..";
+import { Geometry, Specification } from "../..";
 import { ChartStateManager } from "../../prototypes";
-import { getPointValueName } from "../../prototypes/guides/polar_coordinator";
-import { PolarAttributes } from "../../prototypes/plot_segments/region_2d/polar";
+import {
+  getPointValueName,
+  PolarGuideCoordinatorAttributesExtend,
+} from "../../prototypes/guides/polar_coordinator";
+import { snapToAttribute } from "../../prototypes/update_attribute";
 import { ConstraintPlugin, ConstraintSolver, Variable } from "../abstract";
 
+// eslint-disable-next-line
 export interface PolarCoordinatorPluginOptions {}
 
 // Converts Polar coordinates to cartesian coordinates
@@ -13,25 +17,23 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
   public solver: ConstraintSolver;
   public cx: Variable;
   public cy: Variable;
-  public an: Array<Variable>;
-  attrs: PolarAttributes;
-  radialVarable: Array<Variable>;
-  angleVarable: Array<Variable>;
+  public an: Variable[];
+  attrs: PolarGuideCoordinatorAttributesExtend;
+  radialVarable: Variable[];
+  angleVarable: Variable[];
   chartConstraints: Specification.Constraint[];
   coordinatoObjectID: string;
-  onUpdateAttribute: (element: string, attribute: string, value: any) => void;
   chartMananger: ChartStateManager;
 
   constructor(
     solver: ConstraintSolver,
     cx: Variable,
     cy: Variable,
-    radialVarable: Array<Variable>,
-    angleVarable: Array<Variable>,
-    attrs: PolarAttributes,
+    radialVarable: Variable[],
+    angleVarable: Variable[],
+    attrs: PolarGuideCoordinatorAttributesExtend,
     chartConstraints: Specification.Constraint[],
     coordinatoObjectID: string,
-    onUpdateAttribute: (element: string, attribute: string, value: any) => void,
     chartMananger: ChartStateManager
   ) {
     super();
@@ -43,7 +45,6 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
     this.attrs = attrs;
     this.chartConstraints = chartConstraints;
     this.coordinatoObjectID = coordinatoObjectID;
-    this.onUpdateAttribute = onUpdateAttribute;
     this.chartMananger = chartMananger;
   }
 
@@ -55,7 +56,7 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
     for (let i = 0; i < this.angleVarable.length; i++) {
       const angleAttr = this.solver.attr(
         attrs,
-        (this.angleVarable[i] as any).name,
+        (<any>this.angleVarable[i]).name,
         {
           edit: false,
         }
@@ -67,7 +68,7 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
 
         const radialAttr = this.solver.attr(
           attrs,
-          (this.radialVarable[j] as any).name,
+          (<any>this.radialVarable[j]).name,
           {
             edit: false,
           }
@@ -91,39 +92,21 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
         this.solver.setValue(pointX, cx + tx);
         this.solver.setValue(pointY, cy + ty);
 
-        // TODO take snapped attributes and apply new value
-
-        this.chartConstraints
-          .filter(
-            (constraint) =>
-              constraint.type == "snap" &&
-              constraint.attributes.targetAttribute === attrXname &&
-              constraint.attributes.targetElement === this.coordinatoObjectID
-          )
-          .forEach((constraint) => {
-            // UpdateChartElementAttribute
-            this.onUpdateAttribute(
-              constraint.attributes.element,
-              constraint.attributes.attribute,
-              cx + tx
-            );
-          });
-
-        this.chartConstraints
-          .filter(
-            (constraint) =>
-              constraint.type == "snap" &&
-              constraint.attributes.targetAttribute === attrYname &&
-              constraint.attributes.targetElement === this.coordinatoObjectID
-          )
-          .forEach((constraint) => {
-            // UpdateChartElementAttribute
-            this.onUpdateAttribute(
-              constraint.attributes.element,
-              constraint.attributes.attribute,
-              cy + ty
-            );
-          });
+        // take snapped attributes and apply new value
+        snapToAttribute(
+          this.chartMananger,
+          this.chartConstraints,
+          this.coordinatoObjectID,
+          attrXname,
+          cx + tx
+        );
+        snapToAttribute(
+          this.chartMananger,
+          this.chartConstraints,
+          this.coordinatoObjectID,
+          attrYname,
+          cy + ty
+        );
       }
     }
     return true;

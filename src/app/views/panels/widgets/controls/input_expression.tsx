@@ -1,7 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
-import { Expression, replaceNewLineBySymbol, replaceSymbolByTab, replaceSymbolByNewLine, replaceTabBySymbol } from "../../../../../core";
+import {
+  Expression,
+  replaceNewLineBySymbol,
+  replaceSymbolByTab,
+  replaceSymbolByNewLine,
+  replaceTabBySymbol,
+} from "../../../../../core";
 import { classNames } from "../../../../utils";
 
 export interface InputExpressionProps {
@@ -23,7 +29,7 @@ export interface InputExpressionState {
 export class InputExpression extends React.Component<
   InputExpressionProps,
   InputExpressionState
-  > {
+> {
   protected refInput: HTMLInputElement;
   public state: InputExpressionState = {
     errorMessage: null,
@@ -97,7 +103,7 @@ export class InputExpression extends React.Component<
               this.doCancel();
             }
           }}
-          onFocus={(e) => {
+          onFocus={() => {
             this.refInput.select();
           }}
           onBlur={() => {
@@ -112,11 +118,8 @@ export class InputExpression extends React.Component<
                 errorIndicator: false,
               });
             } else {
-              const result = Expression.verifyUserExpression(
-                replaceTabBySymbol(replaceNewLineBySymbol(newValue)),
-                {
-                  textExpression: this.props.textExpression,
-                }
+              const result = this.props.validate(
+                replaceTabBySymbol(replaceNewLineBySymbol(this.refInput.value))
               );
               this.setState({
                 value: this.refInput.value,

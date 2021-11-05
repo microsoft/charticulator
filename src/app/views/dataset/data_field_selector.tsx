@@ -142,7 +142,7 @@ export class DataFieldSelector extends React.Component<
         (table) => table.name == this.props.table || this.props.table == null
       )[0];
     const columns = table.columns;
-    const columnFilters: Array<(x: DataFieldSelectorValue) => boolean> = [];
+    const columnFilters: ((x: DataFieldSelectorValue) => boolean)[] = [];
     columnFilters.push((x) => !x.metadata.isRaw);
     if (this.props.table) {
       columnFilters.push((x) => x.table == this.props.table);
@@ -251,7 +251,10 @@ export class DataFieldSelector extends React.Component<
     } else {
       if (this.props.useAggregation) {
         if (aggregation == null) {
-          aggregation = Expression.getDefaultAggregationFunction(item.type);
+          aggregation = Expression.getDefaultAggregationFunction(
+            item.type,
+            item.metadata?.kind
+          );
         }
       }
       if (this.props.multiSelect) {
@@ -337,9 +340,20 @@ export class DataFieldSelector extends React.Component<
 
   public renderCandidate(item: DataFieldSelectorValueCandidate): JSX.Element {
     let elDerived: HTMLElement;
+    const onClick = (item: DataFieldSelectorValueCandidate) => {
+      if (item.selectable) {
+        this.selectItem(
+          item,
+          this.isValueEqual(this.state.currentSelection, item)
+            ? this.state.currentSelectionAggregation
+            : null
+        );
+      }
+    };
     return (
       <div className="el-column-item" key={item.table + item.expression}>
         <div
+          tabIndex={0}
           className={classNames(
             "el-field-item",
             [
@@ -350,18 +364,14 @@ export class DataFieldSelector extends React.Component<
             ],
             ["is-selectable", item.selectable]
           )}
-          onClick={
-            item.selectable
-              ? (event) => {
-                  this.selectItem(
-                    item,
-                    this.isValueEqual(this.state.currentSelection, item)
-                      ? this.state.currentSelectionAggregation
-                      : null
-                  );
-                }
-              : null
-          }
+          onClick={() => {
+            onClick(item);
+          }}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              onClick(item);
+            }
+          }}
         >
           <SVGImageIcon url={R.getSVGIcon(kind2Icon[item.metadata.kind])} />
           <span className="el-text">{item.displayName}</span>
@@ -369,10 +379,10 @@ export class DataFieldSelector extends React.Component<
           this.isValueEqual(this.state.currentSelection, item) ? (
             <Select
               value={this.state.currentSelectionAggregation}
-              options={Expression.getCompatibleAggregationFunctions(
+              options={Expression.getCompatibleAggregationFunctionsByDataType(
                 item.type
               ).map((x) => x.name)}
-              labels={Expression.getCompatibleAggregationFunctions(
+              labels={Expression.getCompatibleAggregationFunctionsByDataType(
                 item.type
               ).map((x) => x.displayName)}
               showText={true}
@@ -415,12 +425,18 @@ export class DataFieldSelector extends React.Component<
       <div className="charticulator__data-field-selector">
         {this.props.nullDescription ? (
           <div
+            tabIndex={0}
             className={classNames("el-field-item", "is-null", "is-selectable", [
               "is-active",
               !this.props.nullNotHighlightable &&
                 this.state.currentSelection == null,
             ])}
             onClick={() => this.selectItem(null)}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                this.selectItem(null);
+              }
+            }}
           >
             {this.props.nullDescription}
           </div>

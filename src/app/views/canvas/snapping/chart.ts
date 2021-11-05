@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Specification, Prototypes } from "../../../../core";
+import { MappingType } from "../../../../core/specification";
 import { Actions } from "../../../actions";
 import { SnappingAction, SnappableGuide } from "./common";
 import { SnappingSession } from "./session";
@@ -13,7 +14,7 @@ export class ChartSnappingSession extends SnappingSession<
   public markLayout: Specification.ChartElement;
 
   constructor(
-    guides: Array<SnappableGuide<Specification.ChartElement>>,
+    guides: SnappableGuide<Specification.ChartElement>[],
     markLayout: Specification.ChartElement,
     bound: Prototypes.Handles.Description,
     threshold: number,
@@ -29,7 +30,7 @@ export class ChartSnappingSession extends SnappingSession<
   }
 
   public getActions(
-    actions: Array<SnappingAction<Specification.ChartElement>>
+    actions: SnappingAction<Specification.ChartElement>[]
   ): Actions.Action[] {
     const result: Actions.Action[] = [];
     for (const action of actions) {
@@ -42,7 +43,7 @@ export class ChartSnappingSession extends SnappingSession<
                   this.markLayout,
                   action.attribute,
                   {
-                    type: "parent",
+                    type: MappingType.parent,
                     parentAttribute: action.snapAttribute,
                   } as Specification.ParentMapping
                 )
@@ -89,7 +90,7 @@ export class ChartSnappingSession extends SnappingSession<
                 this.markLayout,
                 action.attribute,
                 {
-                  type: "value",
+                  type: MappingType.value,
                   value: action.value,
                 } as Specification.ValueMapping
               )

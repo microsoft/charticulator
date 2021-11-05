@@ -1,16 +1,27 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
+
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as globals from "../globals";
 import * as R from "../resources";
+import {
+  DefaultButton,
+  Dialog,
+  DialogFooter,
+  PrimaryButton,
+} from "@fluentui/react";
 
 import { deepClone, EventSubscription } from "../../core";
 import { Actions } from "../actions";
 import { AppButton, MenuButton } from "../components";
-import { ContextedComponent } from "../context_component";
+import { ContextedComponent, MainContextInterface } from "../context_component";
 import {
   ModalView,
+  PopupAlignment,
   PopupContainer,
   PopupController,
   PopupView,
@@ -18,16 +29,35 @@ import {
 
 import { FileView, MainTabs } from "./file_view";
 import { AppStore } from "../stores";
-import { Button } from "./panels/widgets/controls";
-import { isInIFrame, readFileAsString, showOpenFileDialog } from "../utils";
-import { ChartTemplate, Specification } from "../../container";
+import { classNames, readFileAsString } from "../utils";
+import {
+  ChartTemplate,
+  primaryButtonStyles,
+  Specification,
+} from "../../container";
 import { TableType } from "../../core/dataset";
-import { FileViewImport } from "./file_view/import_view";
+import { FileViewImport, MappingMode } from "./file_view/import_view";
 import { strings } from "../../strings";
 import { PositionsLeftRight, UndoRedoLocation } from "../main_view";
+import { getConfig } from "../config";
+import { EditorType } from "../stores/app_store";
+import { DeleteDialog } from "./panels/delete_dialog";
 
-export class HelpButton extends React.Component<{}, {}> {
+export class HelpButton extends React.Component<
+  {
+    hideReportIssues: boolean;
+    handlers: MenuBarHandlers;
+  },
+  {}
+> {
   public render() {
+    const contactUsLinkProps: React.AnchorHTMLAttributes<HTMLAnchorElement> = {
+      onClick: this.props.handlers?.onContactUsLink,
+    };
+    if (!contactUsLinkProps.onClick) {
+      contactUsLinkProps.href =
+        getConfig().ContactUsHref || "mailto:charticulator@microsoft.com";
+    }
     return (
       <MenuButton
         url={R.getSVGIcon("toolbar/help")}
@@ -61,23 +91,23 @@ export class HelpButton extends React.Component<{}, {}> {
                         {strings.help.gallery}
                       </a>
                     </div>
-                    <div className="el-item">
-                      <a
-                        target="_blank"
-                        href="https://github.com/Microsoft/charticulator/issues/new"
-                      >
-                        {strings.help.issues}
-                      </a>
-                    </div>
+                    {this.props.hideReportIssues ? null : (
+                      <div className="el-item">
+                        <a
+                          target="_blank"
+                          href="https://github.com/Microsoft/charticulator/issues/new"
+                        >
+                          {strings.help.issues}
+                        </a>
+                      </div>
+                    )}
                     <div className="el-item">
                       <a target="_blank" href="https://charticulator.com/">
                         {strings.help.home}
                       </a>
                     </div>
                     <div className="el-item">
-                      <a href="mailto:charticulator@microsoft.com">
-                        {strings.help.contact}
-                      </a>
+                      <a {...contactUsLinkProps}>{strings.help.contact}</a>
                     </div>
                     <div className="el-item-version">
                       {strings.help.version(CHARTICULATOR_PACKAGE.version)}
@@ -88,7 +118,7 @@ export class HelpButton extends React.Component<{}, {}> {
             },
             {
               anchor: ReactDOM.findDOMNode(this.refs.helpButton) as Element,
-              alignX: "end-inner",
+              alignX: PopupAlignment.EndInner,
             }
           );
         }}
@@ -98,30 +128,61 @@ export class HelpButton extends React.Component<{}, {}> {
 }
 
 export interface MenuBarHandlers {
-  onImportTemplateClick: () => void;
+  onContactUsLink?: () => void;
+  onImportTemplateClick?: () => void;
+  onExportTemplateClick?: () => void;
+}
+
+export interface MenubarTabButton {
+  icon: string;
+  tooltip: string;
+  text: string;
+  active: boolean;
+  onClick: () => void;
 }
 
 export interface MenuBarProps {
   undoRedoLocation: UndoRedoLocation;
   alignButtons: PositionsLeftRight;
+  alignSaveButton: PositionsLeftRight;
   name?: string;
   handlers: MenuBarHandlers;
+  tabButtons?: MenubarTabButton[];
 }
 
-export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
-  protected subs: EventSubscription;
+export class MenuBar extends ContextedComponent<
+  MenuBarProps,
+  {
+    showSaveDialog: boolean;
+  }
+> {
+  protected editor: EventSubscription;
+  protected graphics: EventSubscription;
   private popupController: PopupController = new PopupController();
+
+  constructor(props: MenuBarProps, context: MainContextInterface) {
+    super(props, context);
+    this.state = {
+      showSaveDialog: false,
+    };
+  }
+
   public componentDidMount() {
     window.addEventListener("keydown", this.onKeyDown);
-    this.subs = this.context.store.addListener(
+    this.editor = this.context.store.addListener(
       AppStore.EVENT_IS_NESTED_EDITOR,
+      () => this.forceUpdate()
+    );
+    this.graphics = this.context.store.addListener(
+      AppStore.EVENT_GRAPHICS,
       () => this.forceUpdate()
     );
   }
 
   public componentWillUnmount() {
     window.removeEventListener("keydown", this.onKeyDown);
-    this.subs.remove();
+    this.editor.remove();
+    this.graphics.remove();
   }
 
   public keyboardMap: { [name: string]: string } = {
@@ -162,8 +223,9 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
           case "save":
             {
               if (
-                this.context.store.editorType == "nested" ||
-                this.context.store.editorType == "embedded"
+                this.context.store.editorType == EditorType.Nested ||
+                this.context.store.editorType == EditorType.Embedded ||
+                this.context.store.editorType == EditorType.NestedEmbedded
               ) {
                 this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
               } else {
@@ -232,18 +294,79 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
 
   public renderSaveNested() {
     return (
-      <MenuButton
-        url={R.getSVGIcon("toolbar/save")}
-        text={strings.menuBar.saveNested}
-        title={strings.menuBar.save}
-        onClick={() => {
-          this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
-        }}
-      />
+      <>
+        <Dialog
+          dialogContentProps={{
+            title: strings.dialogs.saveChanges.saveChangesTitle,
+            subText: strings.dialogs.saveChanges.saveChanges("chart"),
+          }}
+          hidden={!this.state.showSaveDialog}
+          minWidth="80%"
+          onDismiss={() => {
+            this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE);
+          }}
+        >
+          <DialogFooter>
+            <PrimaryButton
+              styles={primaryButtonStyles}
+              onClick={() => {
+                this.setState({
+                  showSaveDialog: false,
+                });
+                this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
+                setTimeout(() =>
+                  this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE)
+                );
+              }}
+              text={strings.menuBar.saveButton}
+            />
+            <DefaultButton
+              onClick={() => {
+                this.setState({
+                  showSaveDialog: false,
+                });
+                this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE);
+              }}
+              text={strings.menuBar.dontSaveButton}
+            />
+          </DialogFooter>
+        </Dialog>
+        <MenuButton
+          url={R.getSVGIcon("toolbar/save")}
+          text={strings.menuBar.saveNested}
+          title={strings.menuBar.save}
+          onClick={() => {
+            this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
+
+            this.setState({
+              showSaveDialog: false,
+            });
+          }}
+        />
+        <MenuButton
+          url={R.getSVGIcon("toolbar/cross")}
+          text={strings.menuBar.closeNested}
+          title={strings.menuBar.closeNested}
+          onClick={() => {
+            if (this.store.chartManager.hasUnsavedChanges()) {
+              this.setState({
+                showSaveDialog: true,
+              });
+            } else {
+              this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE);
+              this.setState({
+                showSaveDialog: false,
+              });
+            }
+          }}
+        />
+        <span className="charticulator__menu-bar-separator" />
+      </>
     );
   }
 
-  public renderExportImportButtons(props: MenuBarProps) {
+  // eslint-disable-next-line
+  public renderImportButton(props: MenuBarProps) {
     return (
       <>
         <MenuButton
@@ -252,210 +375,194 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
           title={strings.menuBar.importTemplate}
           onClick={
             props.handlers?.onImportTemplateClick ||
-            (async () => {
-              const file = await showOpenFileDialog(["tmplt"]);
-              const str = await readFileAsString(file);
-              const data = JSON.parse(
-                str
-              ) as Specification.Template.ChartTemplate;
+            // eslint-disable-next-line
+            (() => {
+              const inputElement = document.createElement("input");
+              inputElement.type = "file";
+              let file = null;
+              inputElement.accept = ["tmplt", "json"]
+                .map((x) => "." + x)
+                .join(",");
+              // eslint-disable-next-line
+              inputElement.onchange = () => {
+                if (inputElement.files.length == 1) {
+                  file = inputElement.files[0];
+                  if (file) {
+                    // eslint-disable-next-line
+                    readFileAsString(file).then((str) => {
+                      const data = JSON.parse(
+                        str
+                      ) as Specification.Template.ChartTemplate;
 
-              let unmappedColumns: Specification.Template.Column[] = [];
-              data.tables[0].columns.forEach((column) => {
-                unmappedColumns = unmappedColumns.concat(
-                  this.store.checkColumnsMapping(
-                    column,
-                    TableType.Main,
-                    this.store.dataset
-                  )
-                );
-              });
-              if (data.tables[1]) {
-                data.tables[1].columns.forEach((column) => {
-                  unmappedColumns = unmappedColumns.concat(
-                    this.store.checkColumnsMapping(
-                      column,
-                      TableType.Links,
-                      this.store.dataset
-                    )
-                  );
-                });
-              }
+                      let unmappedColumns: Specification.Template.Column[] = [];
+                      data.tables[0].columns.forEach((column) => {
+                        unmappedColumns = unmappedColumns.concat(
+                          this.store.checkColumnsMapping(
+                            column,
+                            TableType.Main,
+                            this.store.dataset
+                          )
+                        );
+                      });
+                      if (data.tables[1]) {
+                        data.tables[1].columns.forEach((column) => {
+                          unmappedColumns = unmappedColumns.concat(
+                            this.store.checkColumnsMapping(
+                              column,
+                              TableType.Links,
+                              this.store.dataset
+                            )
+                          );
+                        });
+                      }
 
-              const tableMapping = new Map<string, string>();
-              tableMapping.set(
-                data.tables[0].name,
-                this.store.dataset.tables[0].name
-              );
-              if (data.tables[1] && this.store.dataset.tables[1]) {
-                tableMapping.set(
-                  data.tables[1].name,
-                  this.store.dataset.tables[1].name
-                );
-              }
+                      const tableMapping = new Map<string, string>();
+                      tableMapping.set(
+                        data.tables[0].name,
+                        this.store.dataset.tables[0].name
+                      );
+                      if (data.tables[1] && this.store.dataset.tables[1]) {
+                        tableMapping.set(
+                          data.tables[1].name,
+                          this.store.dataset.tables[1].name
+                        );
+                      }
 
-              const loadTemplateIntoState = (
-                tableMapping: Map<string, string>,
-                columnMapping: Map<string, string>
-              ) => {
-                const template = new ChartTemplate(data);
+                      const loadTemplateIntoState = (
+                        tableMapping: Map<string, string>,
+                        columnMapping: Map<string, string>
+                      ) => {
+                        const template = new ChartTemplate(data);
 
-                for (const table of template.getDatasetSchema()) {
-                  template.assignTable(
-                    table.name,
-                    tableMapping.get(table.name) || table.name
-                  );
-                  for (const column of table.columns) {
-                    template.assignColumn(
-                      table.name,
-                      column.name,
-                      columnMapping.get(column.name) || column.name
-                    );
+                        for (const table of template.getDatasetSchema()) {
+                          template.assignTable(
+                            table.name,
+                            tableMapping.get(table.name) || table.name
+                          );
+                          for (const column of table.columns) {
+                            template.assignColumn(
+                              table.name,
+                              column.name,
+                              columnMapping.get(column.name) || column.name
+                            );
+                          }
+                        }
+                        const instance = template.instantiate(
+                          this.store.dataset,
+                          false // no scale inference
+                        );
+
+                        this.store.dispatcher.dispatch(
+                          new Actions.ImportChartAndDataset(
+                            instance.chart,
+                            this.store.dataset,
+                            {}
+                          )
+                        );
+                        this.store.dispatcher.dispatch(
+                          new Actions.ReplaceDataset(this.store.dataset)
+                        );
+                      };
+
+                      if (unmappedColumns.length > 0) {
+                        // mapping show dialog then call loadTemplateIntoState
+                        this.popupController.showModal(
+                          (context) => {
+                            return (
+                              <ModalView context={context}>
+                                <div onClick={(e) => e.stopPropagation()}>
+                                  <FileViewImport
+                                    mode={MappingMode.ImportTemplate}
+                                    tables={data.tables}
+                                    datasetTables={this.store.dataset.tables}
+                                    tableMapping={tableMapping}
+                                    unmappedColumns={unmappedColumns}
+                                    onSave={(mapping) => {
+                                      loadTemplateIntoState(
+                                        tableMapping,
+                                        mapping
+                                      );
+                                      context.close();
+                                    }}
+                                    onClose={() => {
+                                      context.close();
+                                    }}
+                                  />
+                                </div>
+                              </ModalView>
+                            );
+                          },
+                          { anchor: null }
+                        );
+                      } else {
+                        loadTemplateIntoState(tableMapping, new Map());
+                      }
+                    });
                   }
                 }
-                const instance = template.instantiate(
-                  this.store.dataset,
-                  false // no scale inference
-                );
-
-                this.store.dispatcher.dispatch(
-                  new Actions.ImportChartAndDataset(
-                    instance.chart,
-                    this.store.dataset,
-                    {}
-                  )
-                );
-                this.store.dispatcher.dispatch(
-                  new Actions.ReplaceDataset(this.store.dataset)
-                );
               };
-
-              if (unmappedColumns.length > 0) {
-                // mapping show dialog then call loadTemplateIntoState
-                this.popupController.showModal(
-                  (context) => {
-                    return (
-                      <ModalView context={context}>
-                        <div onClick={(e) => e.stopPropagation()}>
-                          <FileViewImport
-                            tables={data.tables}
-                            datasetTables={this.store.dataset.tables}
-                            tableMapping={tableMapping}
-                            unmappedColumns={unmappedColumns}
-                            onSave={(mapping) => {
-                              loadTemplateIntoState(tableMapping, mapping);
-                              context.close();
-                            }}
-                            onClose={() => {
-                              context.close();
-                            }}
-                          />
-                        </div>
-                      </ModalView>
-                    );
-                  },
-                  { anchor: null }
-                );
-              } else {
-                loadTemplateIntoState(tableMapping, new Map());
-              }
+              inputElement.click();
             })
           }
         />
+      </>
+    );
+  }
+
+  public renderExportButton(props: MenuBarProps) {
+    return (
+      <>
         <MenuButton
           url={R.getSVGIcon("toolbar/export-template")}
           text=""
           title={strings.menuBar.exportTemplate}
-          onClick={() => {
-            const template = deepClone(this.store.buildChartTemplate());
-            const target = this.store.createExportTemplateTarget(
-              strings.menuBar.defaultTemplateName,
-              template
-            );
-            const targetProperties: { [name: string]: string } = {};
-            for (const property of target.getProperties()) {
-              targetProperties[property.name] =
-                this.store.getPropertyExportName(property.name) ||
-                property.default;
-            }
+          onClick={
+            props.handlers?.onExportTemplateClick ||
+            (() => {
+              const template = deepClone(this.store.buildChartTemplate());
+              const target = this.store.createExportTemplateTarget(
+                strings.menuBar.defaultTemplateName,
+                template
+              );
+              const targetProperties: { [name: string]: string } = {};
+              for (const property of target.getProperties()) {
+                targetProperties[property.name] =
+                  this.store.getPropertyExportName(property.name) ||
+                  property.default;
+              }
 
-            this.dispatch(
-              new Actions.ExportTemplate("", target, targetProperties)
-            );
-          }}
+              this.dispatch(
+                new Actions.ExportTemplate("", target, targetProperties)
+              );
+            })
+          }
         />
       </>
     );
   }
 
   public renderSaveEmbedded() {
+    const hasUnsavedChanges = this.store.chartManager.hasUnsavedChanges();
+
     return (
       <MenuButton
         url={R.getSVGIcon("toolbar/save")}
         text={strings.menuBar.saveButton}
+        disabled={!hasUnsavedChanges}
         title={strings.menuBar.save}
         onClick={() => {
+          this.context.store.dispatcher.dispatch(
+            new Actions.UpdatePlotSegments()
+          );
+          this.context.store.dispatcher.dispatch(new Actions.UpdateDataAxis());
           this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
         }}
       />
     );
   }
 
-  public renderDelete(showLabel: boolean) {
-    return (
-      <MenuButton
-        url={R.getSVGIcon("toolbar/trash")}
-        title={strings.menuBar.reset}
-        text={strings.menuBar.reset}
-        onClick={() => {
-          if (isInIFrame()) {
-            globals.popupController.showModal(
-              (context) => {
-                return (
-                  <div
-                    onMouseDown={(e) => {
-                      e.stopPropagation();
-                    }}
-                    className={"charticulator__reset_chart_dialog"}
-                  >
-                    <div className={"charticulator__reset_chart_dialog-inner"}>
-                      <>
-                        <p>{strings.dialog.resetConfirm}</p>
-                        <div
-                          className={
-                            "charticulator__reset_chart_dialog-buttons"
-                          }
-                        >
-                          <Button
-                            text={strings.button.yes}
-                            onClick={() => {
-                              this.context.store.dispatcher.dispatch(
-                                new Actions.Reset()
-                              );
-                              context.close();
-                            }}
-                          />
-                          <Button
-                            text={strings.button.no}
-                            onClick={() => {
-                              context.close();
-                            }}
-                          />
-                        </div>
-                      </>
-                    </div>
-                  </div>
-                );
-              },
-              { anchor: null }
-            );
-          } else {
-            if (confirm(strings.dialog.resetConfirm)) {
-              new Actions.Reset().dispatch(this.context.store.dispatcher);
-            }
-          }
-        }}
-      />
-    );
+  public renderDelete() {
+    return <DeleteDialog context={this.context} />;
   }
 
   public renderNewOpenSave() {
@@ -487,6 +594,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
             }
           }}
         />
+        {this.renderImportButton(this.props)}
         <MenuButton
           url={R.getSVGIcon("toolbar/export")}
           title={strings.menuBar.export}
@@ -501,34 +609,43 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
   public toolbarButtons(props: MenuBarProps) {
     return (
       <>
-        {this.context.store.editorType === "nested"
+        {/* {this.context.store.editorType === EditorType.Nested || this.context.store.editorType === EditorType.NestedEmbedded
           ? this.renderSaveNested()
-          : null}
-        {this.context.store.editorType === "chart"
+          : null} */}
+        {this.context.store.editorType === EditorType.Chart
           ? this.renderNewOpenSave()
           : null}
-        {this.context.store.editorType === "embedded"
+        {this.context.store.editorType === EditorType.Embedded &&
+        props.alignSaveButton === props.alignButtons
           ? this.renderSaveEmbedded()
           : null}
-        {this.context.store.editorType === "embedded" ? (
+        {this.context.store.editorType === EditorType.Embedded ||
+        this.context.store.editorType === EditorType.NestedEmbedded ? (
           <>
             <span className="charticulator__menu-bar-separator" />
-            {this.renderExportImportButtons(props)}
+            {this.renderImportButton(props)}
+            {this.renderExportButton(props)}
           </>
         ) : null}
         <span className="charticulator__menu-bar-separator" />
-        {this.props.undoRedoLocation === "menubar" ? (
+        {this.props.undoRedoLocation === UndoRedoLocation.MenuBar ? (
           <>
             <MenuButton
-              url={R.getSVGIcon("toolbar/undo")}
+              url={R.getSVGIcon("Undo")}
               title={strings.menuBar.undo}
+              disabled={
+                this.context.store.historyManager.statesBefore.length === 0
+              }
               onClick={() =>
                 new Actions.Undo().dispatch(this.context.store.dispatcher)
               }
             />
             <MenuButton
-              url={R.getSVGIcon("toolbar/redo")}
+              url={R.getSVGIcon("Redo")}
               title={strings.menuBar.redo}
+              disabled={
+                this.context.store.historyManager.statesAfter.length === 0
+              }
               onClick={() =>
                 new Actions.Redo().dispatch(this.context.store.dispatcher)
               }
@@ -536,9 +653,28 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
           </>
         ) : null}
         <span className="charticulator__menu-bar-separator" />
-        {this.context.store.editorType === "embedded"
-          ? this.renderDelete(true)
-          : this.renderDelete(false)}
+        {this.renderDelete()}
+      </>
+    );
+  }
+
+  public toolbarTabButtons(props: MenuBarProps) {
+    return (
+      <>
+        {props.tabButtons?.map((button) => {
+          return (
+            <>
+              <span className="charticulator__menu-bar-separator" />
+              <MenuButton
+                url={R.getSVGIcon(button.icon)}
+                title={button.tooltip}
+                onClick={button.onClick}
+                text={button.text}
+                disabled={!button.active}
+              />
+            </>
+          );
+        })}
       </>
     );
   }
@@ -549,37 +685,67 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
         <PopupContainer controller={this.popupController} />
         <section className="charticulator__menu-bar">
           <div className="charticulator__menu-bar-left">
-            {this.context.store.editorType === "embedded" ? null : (
+            {this.context.store.editorType === EditorType.Embedded ||
+            this.context.store.editorType ===
+              EditorType.NestedEmbedded ? null : (
               <AppButton
                 name={this.props.name}
                 title={strings.menuBar.home}
                 onClick={() => this.showFileModalWindow(MainTabs.open)}
               />
             )}
-            {this.props.alignButtons === "left" ? (
+            {this.props.alignButtons === PositionsLeftRight.Left ? (
               <>
                 <span className="charticulator__menu-bar-separator" />
                 {this.toolbarButtons(this.props)}
               </>
             ) : null}
+            {this.context.store.editorType === EditorType.Embedded &&
+            this.props.alignSaveButton == PositionsLeftRight.Left &&
+            this.props.alignSaveButton !== this.props.alignButtons
+              ? this.renderSaveEmbedded()
+              : null}
+            {this.context.store.editorType === EditorType.Embedded &&
+            this.props.tabButtons
+              ? this.toolbarTabButtons(this.props)
+              : null}
+            {this.context.store.editorType === EditorType.Nested ||
+            this.context.store.editorType === EditorType.NestedEmbedded
+              ? this.renderSaveNested()
+              : null}
           </div>
           <div className="charticulator__menu-bar-center el-text">
-            <p>
+            <p
+              className={classNames("charticulator__menu-bar-center", [
+                "nested-chart",
+                this.context.store.editorType === EditorType.NestedEmbedded,
+              ])}
+            >
               {`${this.context.store.chart?.properties.name}${
-                this.context.store.editorType === "embedded"
-                  ? " - " + strings.app.name
+                this.context.store.editorType === EditorType.Embedded ||
+                this.context.store.editorType === EditorType.NestedEmbedded
+                  ? " - " + this.props.name || strings.app.name
                   : ""
               }`}
             </p>
           </div>
           <div className="charticulator__menu-bar-right">
-            {this.props.alignButtons === "right" ? (
+            {this.props.alignButtons === PositionsLeftRight.Right ? (
               <>
                 {this.toolbarButtons(this.props)}
                 <span className="charticulator__menu-bar-separator" />
               </>
             ) : null}
-            <HelpButton />
+            {(this.context.store.editorType === EditorType.Embedded ||
+              this.context.store.editorType === EditorType.NestedEmbedded) &&
+            this.props.alignSaveButton == PositionsLeftRight.Right &&
+            this.props.alignSaveButton !== this.props.alignButtons
+              ? this.renderSaveEmbedded()
+              : null}
+            <HelpButton
+              handlers={this.props.handlers}
+              hideReportIssues={false}
+            />
           </div>
         </section>
       </>

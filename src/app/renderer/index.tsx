@@ -18,6 +18,7 @@ import {
 import { ColorFilter, NumberModifier } from "../../core/graphics";
 
 // adapted from https://stackoverflow.com/a/20820649
+// eslint-disable-next-line
 function desaturate(color: Color, amount: number) {
   const { r, g, b } = color;
   const l = 0.3 * r + 0.6 * g + 0.1 * b;
@@ -139,7 +140,7 @@ const path_commands: { [name: string]: (args: number[]) => string } = {
   Z: () => `Z`,
 };
 
-export function renderSVGPath(cmds: Array<{ cmd: string; args: number[] }>) {
+export function renderSVGPath(cmds: { cmd: string; args: number[] }[]) {
   return cmds.map((x) => path_commands[x.cmd](x.args)).join(" ");
 }
 
@@ -225,6 +226,7 @@ class TextOnPath extends React.PureComponent<{
 }
 
 /** The method renders all chart elements in SVG document */
+// eslint-disable-next-line
 export function renderGraphicalElementSVG(
   element: Graphics.Element,
   options?: RenderGraphicalElementSVGOptions
@@ -247,6 +249,10 @@ export function renderGraphicalElementSVG(
     onMouseEnter?: (e: React.MouseEvent<Element>) => void;
     onMouseLeave?: (e: React.MouseEvent<Element>) => void;
     onContextMenu?: (e: React.MouseEvent<Element>) => void;
+    onMouseDown?: (e: React.MouseEvent<Element>) => void;
+    onMouseUp?: (e: React.MouseEvent<Element>) => void;
+    onWheel?: (e: React.MouseEvent<Element>) => void;
+    onMouseMove?: (e: React.MouseEvent<Element>) => void;
   } = {};
   if (element.selectable) {
     style.cursor = "pointer";
@@ -295,6 +301,24 @@ export function renderGraphicalElementSVG(
     }
   }
 
+  if (element.interactable) {
+    if (element.interactable.onClick) {
+      mouseEvents.onClick = element.interactable.onClick;
+    }
+    if (element.interactable.onMousedown) {
+      mouseEvents.onMouseDown = element.interactable.onMousedown;
+    }
+    if (element.interactable.onMouseup) {
+      mouseEvents.onMouseUp = element.interactable.onMouseup;
+    }
+    if (element.interactable.onMousewheel) {
+      mouseEvents.onWheel = element.interactable.onMousewheel;
+    }
+    if (element.interactable.onMousemove) {
+      mouseEvents.onMouseMove = element.interactable.onMousemove;
+    }
+  }
+
   switch (element.type) {
     case "rect": {
       const rect = element as Graphics.Rect;
@@ -308,6 +332,9 @@ export function renderGraphicalElementSVG(
           y={-Math.max(rect.y1, rect.y2)}
           width={Math.abs(rect.x1 - rect.x2)}
           height={Math.abs(rect.y1 - rect.y2)}
+          rx={rect.rx}
+          ry={rect.ry}
+          transform={`rotate(${rect.rotation ?? 0})`}
         />
       );
     }
@@ -379,6 +406,7 @@ export function renderGraphicalElementSVG(
           className={options.className || null}
           style={style}
           d={d}
+          transform={path.transform}
         />
       );
     }
@@ -576,7 +604,7 @@ export function renderGraphicalElementSVG(
 
 export class GraphicalElementDisplay extends React.PureComponent<
   { element: Graphics.Element },
-  {}
+  Record<string, never>
 > {
   public render() {
     return renderGraphicalElementSVG(this.props.element);

@@ -98,6 +98,22 @@ module.exports = (env, { mode }) => {
       entry: {
         container: "./dist/scripts/container/index.js"
       },
+      module: {
+        rules: [
+          {
+              test: /\.(woff|ttf|ico|woff2|jpg|jpeg|png|webp|svg)$/i,
+              use: [
+                  {
+                      loader: require.resolve('url-loader'),
+                      options: {
+                        esModule: false,
+                        limit: 65536
+                      }
+                  }
+              ]
+          }
+        ]
+      },
       output: {
         filename: "[name].bundle.js",
         path: __dirname + "/dist/scripts",

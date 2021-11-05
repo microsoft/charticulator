@@ -1,10 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 @import "common/common.scss";
+@import "common/colors.scss";
 @import "editor/index.scss";
 
 @import "components/components.scss";
 @import "theme.scss";
+
+@import "../src/fabric-icons/css/fabric-icons-inline";
 
 // Application Layout Rules
 
@@ -21,6 +24,20 @@ body {
 
   @include disable-user-select;
   @include font-main;
+}
+
+@font-face {
+  font-family: "Segoe UI Bold";
+  src: local("Segoe UI bold"), local("Segoe bold"), local("Segoe WP bold");
+  font-weight: normal;
+  font-style: normal;
+}
+
+li::marker {
+  list-style: none;
+  background-image: none;
+  background-repeat: none;
+  background-position: 0;
 }
 
 // CSS Rule format:
@@ -54,17 +71,31 @@ body {
     display: flex;
     flex-direction: row;
     color: $theme-header-foreground;
+    justify-content: space-between;
 
     &-left {
       display: flex;
       align-items: center;
-      flex: 1;
+      // flex: 1;
     }
     &-center {
       display: flex;
       align-self: center;
       justify-self: center;
-      flex: 1;
+      // flex: 1;
+
+      .nested-chart {
+        background-color: $nested-chart-header-color;
+        color: black;
+        height: 20px;
+        display: block;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        padding-top: 4px;
+        padding-left: 4px;
+        padding-right: 4px;
+        text-align: center;
+      }
     }
     &-right {
       display: flex;
@@ -80,6 +111,10 @@ body {
       vertical-align: top;
       width: 0px;
       border-left: 1px solid $gray-080;
+    }
+
+    .charticulator__button-menu-text {
+      flex-shrink: 0;
     }
   }
 
@@ -177,10 +212,10 @@ body {
       &-toolbar-horizontal {
         display: flex;
         flex-direction: row;
-        padding-top: 10px;
+        padding-top: 4px;
         padding-left: 10px;
         padding-right: 10px;
-        padding-bottom: 5px;
+        padding-bottom: 4px;
         background: $gray-230;
         border-bottom: $panel-border-width solid $panel-border-color;
         border-left: $panel-border-width solid $panel-border-color;

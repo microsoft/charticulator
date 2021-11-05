@@ -5,21 +5,29 @@ import { DataMappingHints } from ".";
 import { Point } from "../common";
 import * as Specification from "../specification";
 import * as Dataset from "../dataset";
+import { CSSProperties } from "react";
+import { ICheckboxStyles } from "@fluentui/react";
 
 export type Widget = any;
 
 export interface Property {
   property: string;
-  field?: string | number | Array<string | number>;
+  field?: string | number | (string | number)[];
   noUpdateState?: boolean;
   noComputeLayout?: boolean;
+}
+
+export interface InputComboboxOptions {
+  defaultRange: string[];
+  valuesOnly?: boolean;
+  label?: string;
 }
 
 export const enum LabelPosition {
   Right,
   Bottom,
   Left,
-  Top
+  Top,
 }
 
 export interface InputSelectOptions {
@@ -30,12 +38,35 @@ export interface InputSelectOptions {
   icons?: string[];
   labels?: string[];
   tooltip?: string;
+  label?: string;
+  hideBorder?: boolean;
+  shiftCallout?: number;
+}
+
+export interface InputFontComboboxOptions {
+  label?: string;
+}
+
+export interface InputTextOptions {
+  label?: string;
+  placeholder?: string;
+  tooltip?: string;
+  updateProperty?: boolean;
+  value?: string;
+  underline?: boolean;
+  borderless?: boolean;
+  styles?: CSSProperties;
+  emitMappingAction?: boolean;
+  disabled?: boolean;
 }
 
 export interface InputBooleanOptions {
   type: "checkbox" | "highlight" | "checkbox-fill-width";
   icon?: string;
+  headerLabel?: string;
   label?: string;
+  observerConfig?: ObserverConfig;
+  checkBoxStyles?: ICheckboxStyles;
 }
 
 export interface RowOptions {
@@ -43,6 +74,7 @@ export interface RowOptions {
     type: "axis-data-binding";
     prompt?: string;
     property?: string;
+    defineCategories?: boolean;
   };
 }
 
@@ -57,6 +89,7 @@ export interface OrderWidgetOptions {
   displayLabel?: boolean;
   labelPosition?: LabelPosition;
   tooltip?: string;
+  shiftCallout?: number;
 }
 
 export interface MappingEditorOptions {
@@ -77,12 +110,22 @@ export interface MappingEditorOptions {
   openMapping?: boolean;
   /** Enables value selector from mapping */
   allowSelectValue?: boolean;
+  /** Text lael of input */
+  label?: string;
+  stopPropagation?: boolean;
+}
+
+export interface ObserverConfig {
+  isObserver: boolean;
+  properties: Property | Property[];
+  value: Specification.AttributeValue;
 }
 
 export interface InputNumberOptions {
   digits?: number;
   minimum?: number;
   maximum?: number;
+  step?: number;
   percentage?: boolean;
 
   showSlider?: boolean;
@@ -93,19 +136,43 @@ export interface InputNumberOptions {
   updownTick?: number;
   updownRange?: [number, number];
   updownStyle?: "normal" | "font";
+  label?: string;
+  stopPropagation?: boolean;
+
+  observerConfig?: ObserverConfig;
 }
 
 export interface InputDateOptions {
   defaultValue?: number | Date;
   placeholder?: string;
+  label?: string;
   onEnter?: (value: number) => boolean;
 }
 
 export interface InputColorOptions {
   allowNull?: boolean;
+  label?: string;
+  noDefaultMargin?: boolean;
+  stopPropagation?: boolean;
+  labelKey: string;
+  width?: number;
+  underline?: boolean;
+  pickerBeforeTextField?: boolean;
 }
 
+// eslint-disable-next-line
 export interface TableOptions {}
+
+export interface VerticalGroupOptions {
+  isCollapsed?: boolean;
+  header: string;
+  alignVertically?: boolean;
+}
+
+export const enum PanelMode {
+  Button = "button",
+  Panel = "panel",
+}
 
 export interface FilterEditorOptions {
   table: string;
@@ -114,7 +181,7 @@ export interface FilterEditorOptions {
     property?: Property;
   };
   value: Specification.Types.Filter;
-  mode: "button" | "panel";
+  mode: PanelMode;
 }
 
 export interface GroupByEditorOptions {
@@ -124,7 +191,7 @@ export interface GroupByEditorOptions {
     property?: Property;
   };
   value: Specification.Types.GroupBy;
-  mode: "button" | "panel";
+  mode: PanelMode;
 }
 
 export interface NestedChartEditorOptions {
@@ -146,10 +213,60 @@ export interface ArrayWidgetOptions {
 export interface ScrollListOptions {
   height?: number;
   maxHeight?: number;
+  styles?: CSSProperties;
 }
 
 export interface InputExpressionOptions {
   table?: string;
+  label?: string;
+  dropzone?: {
+    type: "axis-data-binding";
+    prompt?: string;
+    property?: string;
+    defineCategories?: boolean;
+  };
+}
+
+export interface InputFormatOptions {
+  blank?: string;
+}
+
+export interface InputFormatOptions {
+  blank?: string;
+  label?: string;
+}
+
+export interface InputFormatOptions {
+  blank?: string;
+  isDateField?: boolean;
+  label?: string;
+}
+
+export interface ReOrderWidgetOptions {
+  allowReset?: boolean;
+  onConfirm?: (items: string[]) => void;
+  onReset?: () => string[];
+  items?: string[];
+}
+
+export interface InputFormatOptions {
+  blank?: string;
+  isDateField?: boolean;
+}
+
+export interface InputFormatOptions {
+  blank?: string;
+  isDateField?: boolean;
+}
+
+export interface InputFormatOptions {
+  blank?: string;
+  isDateField?: boolean;
+}
+
+export interface CustomCollapsiblePanelOptions {
+  header?: string;
+  styles?: CSSProperties;
 }
 
 export interface WidgetManager {
@@ -163,23 +280,26 @@ export interface WidgetManager {
   // Basic property widgets
   inputNumber(property: Property, options?: InputNumberOptions): Widget;
   inputDate(property: Property, options?: InputDateOptions): Widget;
-  inputText(property: Property, placeholder?: string): Widget;
-  inputComboBox(
+  inputText(property: Property, options: InputTextOptions): Widget;
+  inputComboBox(property: Property, options: InputComboboxOptions): Widget;
+  inputFontFamily(
     property: Property,
-    values: string[],
-    valuesOnly?: boolean
+    options: InputFontComboboxOptions
   ): Widget;
-  inputFontFamily(property: Property): Widget;
   inputSelect(property: Property, options: InputSelectOptions): Widget;
-  inputBoolean(property: Property, options: InputBooleanOptions): Widget;
+  inputBoolean(
+    property: Property | Property[],
+    options: InputBooleanOptions
+  ): Widget;
   inputExpression(property: Property, options?: InputExpressionOptions): Widget;
+  inputFormat(property: Property, options?: InputFormatOptions): Widget;
   inputImage(property: Property): Widget;
   inputImageProperty(property: Property): Widget;
   inputColor(property: Property, options?: InputColorOptions): Widget;
   inputColorGradient(property: Property, inline?: boolean): Widget;
 
   // A button, once clicked, set the property to null.
-  clearButton(property: Property, icon?: string): Widget;
+  clearButton(property: Property, icon?: string, isHeader?: boolean): Widget;
   setButton(
     property: Property,
     value: Specification.AttributeValue,
@@ -193,11 +313,11 @@ export interface WidgetManager {
   orderByWidget(property: Property, options: OrderWidgetOptions): Widget;
 
   // Reorder widget: allow user to reorder the items in a property
-  reorderWidget(property: Property, allowReset: boolean): Widget;
+  reorderWidget(property: Property, options: ReOrderWidgetOptions): Widget;
 
   arrayWidget(
     property: Property,
-    item: (item: Property) => Widget,
+    item: (item: Property, index?: number) => Widget,
     options?: ArrayWidgetOptions
   ): Widget;
 
@@ -205,7 +325,7 @@ export interface WidgetManager {
 
   // Label and text
   icon(icon: string): Widget;
-  label(title: string): Widget;
+  label(title: string, options?: { addMargins: boolean }): Widget;
   text(text: string, align?: "left" | "center" | "right"): Widget;
   // Inline separator
   sep(): Widget;
@@ -213,13 +333,16 @@ export interface WidgetManager {
   // Layout elements
   sectionHeader(title: string, widget?: Widget, options?: RowOptions): Widget;
   row(title?: string, widget?: Widget, options?: RowOptions): Widget;
-  detailsButton(...widgets: Widget[]): Widget;
 
   // Basic layout elements
   horizontal(cols: number[], ...widgets: Widget[]): Widget;
+  verticalGroup(options: VerticalGroupOptions, ...widgets: Widget[]): Widget;
   vertical(...widgets: Widget[]): Widget;
   table(rows: Widget[][], options?: TableOptions): Widget;
   scrollList(widgets: Widget[], options?: ScrollListOptions): Widget;
+
+  // Tooltip
+  tooltip(widget: Widget, tooltipContent: Widget): Widget;
 
   filterEditor(options: FilterEditorOptions): Widget;
   groupByEditor(options: GroupByEditorOptions): Widget;
@@ -227,6 +350,11 @@ export interface WidgetManager {
   nestedChartEditor(
     property: Property,
     options: NestedChartEditorOptions
+  ): Widget;
+
+  customCollapsiblePanel(
+    widgets: Widget[],
+    options: CustomCollapsiblePanelOptions
   ): Widget;
 }
 

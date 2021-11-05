@@ -11,6 +11,9 @@ import {
   EventSubscription,
   Prototypes,
   setFormatOptions,
+  defaultCurrency,
+  defaultDigitsGroup,
+  defaultNumberFormat,
 } from "../core";
 import { RenderEvents } from "../core/graphics";
 import {
@@ -36,10 +39,17 @@ export interface ChartContainerComponentProps {
   renderEvents?: RenderEvents;
 }
 
+export interface LocalizationConfig {
+  currency: string;
+  thousandsDelimiter: string;
+  decemalDelimiter: string;
+}
+
 export interface ChartContainerComponentState {
   width: number;
   height: number;
   selection: { table: string; indices: Set<number> } & DataSelection;
+  localization: LocalizationConfig;
 }
 
 export class ChartContainerComponent extends React.Component<
@@ -50,6 +60,7 @@ export class ChartContainerComponent extends React.Component<
     width: this.props.defaultWidth != null ? this.props.defaultWidth : 900,
     height: this.props.defaultHeight != null ? this.props.defaultHeight : 900,
     selection: null,
+    localization: null,
   };
 
   constructor(props: ChartContainerComponentProps) {
@@ -152,12 +163,14 @@ export class ChartContainerComponent extends React.Component<
     }
   };
 
+  // eslint-disable-next-line
   protected handleGlyphMouseEnter: GlyphEventHandler = (data, modifiers) => {
     if (this.props.onMouseEnterGlyph) {
       this.props.onMouseEnterGlyph(data);
     }
   };
 
+  // eslint-disable-next-line
   protected handleGlyphMouseLeave: GlyphEventHandler = (data, modifiers) => {
     if (this.props.onMouseLeaveGlyph) {
       this.props.onMouseLeaveGlyph(data);
@@ -202,11 +215,20 @@ export class ChartContainer extends EventEmitter {
   constructor(
     public readonly instance: TemplateInstance,
     public readonly dataset: Dataset.Dataset,
-    public renderEvents?: RenderEvents
+    public renderEvents?: RenderEvents,
+    public localizaiton?: LocalizationConfig
   ) {
     super();
     this.chart = instance.chart;
     this.defaultAttributes = instance.defaultAttributes;
+
+    setFormatOptions({
+      currency: [localizaiton?.currency, ""] ?? defaultCurrency,
+      grouping: defaultDigitsGroup,
+      decimal: localizaiton?.decemalDelimiter ?? defaultNumberFormat.decimal,
+      thousands:
+        localizaiton?.thousandsDelimiter ?? defaultNumberFormat.decimal,
+    });
   }
 
   private container: Element;
@@ -271,7 +293,9 @@ export class ChartContainer extends EventEmitter {
     return this.component.setProperty(objectID, property, value);
   }
 
-  /** Get a attribute mapping */
+  /**
+   * Get a attribute mapping
+   */
   public getAttributeMapping(
     objectID: string,
     attribute: string

@@ -6,25 +6,23 @@ import * as React from "react";
 import * as R from "../../resources";
 
 import { ItemDescription } from "../../backend/abstract";
-import {
-  ButtonFlat,
-  EditableTextView,
-  SVGImageIcon,
-  ButtonRaised,
-} from "../../components";
-import { ContextedComponent } from "../../context_component";
+import { ButtonFlat, EditableTextView, SVGImageIcon } from "../../components";
 import { Actions } from "../../actions";
 import { showOpenFileDialog, readFileAsString } from "../../utils";
 import { strings } from "../../../strings";
+import { AppStore } from "../../stores";
+import { DefaultButton } from "@fluentui/react";
+import { primaryButtonStyles } from "../../../core";
 
 export interface FileViewOpenState {
   chartList: ItemDescription[];
   chartCount: number;
 }
 
-export class FileViewOpen extends ContextedComponent<
+export class FileViewOpen extends React.Component<
   {
     onClose: () => void;
+    store: AppStore;
   },
   FileViewOpenState
 > {
@@ -38,7 +36,7 @@ export class FileViewOpen extends ContextedComponent<
   }
 
   public updateChartList() {
-    const store = this.store;
+    const store = this.props.store;
     store.backend.list("chart", "timeCreated", 0, 1000).then((result) => {
       this.setState({
         chartList: result.items,
@@ -47,8 +45,9 @@ export class FileViewOpen extends ContextedComponent<
     });
   }
 
+  // eslint-disable-next-line
   public renderChartList() {
-    const store = this.store;
+    const store = this.props.store;
     const backend = store.backend;
 
     if (this.state.chartList == null) {
@@ -63,12 +62,14 @@ export class FileViewOpen extends ContextedComponent<
       } else {
         return (
           <ul className="chart-list">
+            {/* eslint-disable-next-line */}
             {this.state.chartList.map((chart) => {
               return (
                 <li
                   key={chart.id}
+                  tabIndex={0}
                   onClick={() => {
-                    this.dispatch(
+                    this.props.store.dispatcher.dispatch(
                       new Actions.Open(chart.id, (error) => {
                         if (error) {
                           // TODO: add error reporting
@@ -77,6 +78,19 @@ export class FileViewOpen extends ContextedComponent<
                         }
                       })
                     );
+                  }}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      this.props.store.dispatcher.dispatch(
+                        new Actions.Open(chart.id, (error) => {
+                          if (error) {
+                            // TODO: add error reporting
+                          } else {
+                            this.props.onClose();
+                          }
+                        })
+                      );
+                    }
                   }}
                 >
                   <div className="thumbnail">
@@ -148,6 +162,7 @@ export class FileViewOpen extends ContextedComponent<
                               FileSaver.saveAs(
                                 blob,
                                 chart.metadata.name.replace(
+                                  // eslint-disable-next-line
                                   /[^0-9a-zA-Z\ \.\-\_]+/g,
                                   "_"
                                 ) + ".chart"
@@ -172,14 +187,19 @@ export class FileViewOpen extends ContextedComponent<
       <section className="charticulator__file-view-content is-fix-width">
         <h1>{strings.mainTabs.open}</h1>
         <div style={{ marginBottom: "12px" }}>
-          <ButtonRaised
-            url={R.getSVGIcon("toolbar/open")}
+          <DefaultButton
+            iconProps={{
+              iconName: "OpenFolderHorizontal",
+            }}
+            styles={primaryButtonStyles}
             text={strings.fileOpen.open}
             onClick={async () => {
               const file = await showOpenFileDialog(["chart"]);
               const str = await readFileAsString(file);
               const data = JSON.parse(str);
-              this.dispatch(new Actions.Load(data.state));
+              this.props.store.dispatcher.dispatch(
+                new Actions.Load(data.state)
+              );
               this.props.onClose();
             }}
           />

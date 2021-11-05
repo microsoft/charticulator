@@ -2,6 +2,13 @@
 // Licensed under the MIT license.
 
 import { Dataset, Specification, uniqueID } from "../../core";
+import {
+  GridDirection,
+  GridStartPosition,
+  Region2DSublayoutType,
+  SublayoutAlignment,
+} from "../../core/prototypes/plot_segments/region_2d/base";
+import { MappingType } from "../../core/specification";
 
 /** Create a default glyph */
 export function createDefaultGlyph(tableName: string) {
@@ -17,11 +24,11 @@ export function createDefaultGlyph(tableName: string) {
         properties: { name: "Anchor" },
         mappings: {
           x: {
-            type: "parent",
+            type: MappingType.parent,
             parentAttribute: "icx",
           } as Specification.ParentMapping,
           y: {
-            type: "parent",
+            type: MappingType.parent,
             parentAttribute: "icy",
           } as Specification.ParentMapping,
         },
@@ -45,19 +52,19 @@ export function createDefaultPlotSegment(
     filter: null,
     mappings: {
       x1: {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: "x1",
       } as Specification.ParentMapping,
       y1: {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: "y1",
       } as Specification.ParentMapping,
       x2: {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: "x2",
       } as Specification.ParentMapping,
       y2: {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: "y2",
       } as Specification.ParentMapping,
     },
@@ -69,22 +76,27 @@ export function createDefaultPlotSegment(
       marginX2: 0,
       marginY2: 0,
       sublayout: {
-        type: table.rows.length >= 100 ? "grid" : "dodge-x",
+        type: table.rows.length >= 100 ? "grid" : Region2DSublayoutType.DodgeX,
         order: null,
         ratioX: 0.1,
         ratioY: 0.1,
         align: {
-          x: "start",
-          y: "start",
+          x: SublayoutAlignment.Start,
+          y: SublayoutAlignment.Start,
         },
         grid: {
-          direction: "x",
+          direction: GridDirection.X,
           xCount: null,
           yCount: null,
+          gridStartPosition: GridStartPosition.LeftTop,
         },
         packing: {
           gravityX: 0.1,
           gravityY: 0.1,
+        },
+        jitter: {
+          vertical: true,
+          horizontal: true,
         },
       },
     },
@@ -104,23 +116,23 @@ export function createDefaultTitle(dataset: Dataset.Dataset) {
     },
     mappings: {
       x: {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: "cx",
       } as Specification.ParentMapping,
       y: {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: "oy2",
       } as Specification.ParentMapping,
       text: {
-        type: "value",
+        type: MappingType.value,
         value: dataset.name,
       } as Specification.ValueMapping,
       fontSize: {
-        type: "value",
+        type: MappingType.value,
         value: 24,
       } as Specification.ValueMapping,
       color: {
-        type: "value",
+        type: MappingType.value,
         value: { r: 0, g: 0, b: 0 },
       } as Specification.ValueMapping,
     },
@@ -128,7 +140,10 @@ export function createDefaultTitle(dataset: Dataset.Dataset) {
 }
 
 /** Create a default chart */
-export function createDefaultChart(dataset: Dataset.Dataset) {
+export function createDefaultChart(
+  dataset: Dataset.Dataset,
+  createTitle: boolean
+) {
   const table = dataset.tables[0];
   const glyph = createDefaultGlyph(table.name);
   return {
@@ -138,18 +153,29 @@ export function createDefaultChart(dataset: Dataset.Dataset) {
       name: "Chart",
       backgroundColor: null,
       backgroundOpacity: 1,
+      enableContextMenu: true,
+      exposed: true,
     },
     mappings: {
-      marginTop: { type: "value", value: 80 } as Specification.ValueMapping,
+      marginTop: {
+        type: MappingType.value,
+        value: 80,
+      } as Specification.ValueMapping,
     },
     glyphs: [glyph],
     elements: [
       createDefaultPlotSegment(table, glyph),
-      createDefaultTitle(dataset),
-    ],
+      createTitle ? createDefaultTitle(dataset) : null,
+    ].filter((elem) => elem != null),
     scales: [],
     scaleMappings: [],
     constraints: [],
     resources: [],
   } as Specification.Chart;
 }
+
+export const defaultFont = "Segoe UI";
+export const defaultFontSize = 12;
+export const defaultFontSizeLegend = 10;
+
+export const defaultVersionOfTemplate = "2.0.3";

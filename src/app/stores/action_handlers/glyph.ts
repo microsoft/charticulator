@@ -2,11 +2,16 @@
 // Licensed under the MIT license.
 
 import { Solver, Specification } from "../../../core";
+import {
+  MappingType,
+  SnappingElementMapping,
+} from "../../../core/specification";
 import { Actions } from "../../actions";
 import { AppStore } from "../app_store";
 import { GlyphSelection, MarkSelection } from "../selection";
 import { ActionHandlerRegistry } from "./registry";
 
+// eslint-disable-next-line
 export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   REG.add(Actions.AddGlyph, function (action) {
     this.saveHistory();
@@ -21,7 +26,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
 
   REG.add(Actions.RemoveGlyph, function (action) {
     this.saveHistory();
-    const glyph = this.chartManager.removeGlyph(action.glyph);
+    this.chartManager.removeGlyph(action.glyph);
     this.currentSelection = null;
     this.currentGlyph = null;
     this.solveConstraintsAndUpdateGraphics();
@@ -43,6 +48,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.saveHistory();
 
     for (const key in action.updates) {
+      // eslint-disable-next-line
       if (!action.updates.hasOwnProperty(key)) {
         continue;
       }
@@ -50,6 +56,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
     this.forAllGlyph(action.glyph, (glyphState) => {
       for (const key in action.updates) {
+        // eslint-disable-next-line
         if (!action.updates.hasOwnProperty(key)) {
           continue;
         }
@@ -66,6 +73,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
+  // eslint-disable-next-line
   REG.add(Actions.AddMarkToGlyph, function (action) {
     this.saveHistory();
 
@@ -84,23 +92,23 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       );
     }
 
-    const isFirstMark = action.glyph.marks.length == 1;
-
     this.chartManager.addMarkToGlyph(mark, action.glyph);
 
     let attributesSet = false;
     for (const attr in action.mappings) {
+      // eslint-disable-next-line
       if (action.mappings.hasOwnProperty(attr)) {
         const [value, mapping] = action.mappings[attr];
         if (mapping != null) {
-          if (mapping.type == "_element") {
+          if (mapping.type == MappingType._element) {
+            const elementMapping = mapping as SnappingElementMapping;
             action.glyph.constraints.push({
               type: "snap",
               attributes: {
                 element: mark._id,
                 attribute: attr,
-                targetElement: (mapping as any).element,
-                targetAttribute: (mapping as any).attribute,
+                targetElement: elementMapping.element,
+                targetAttribute: elementMapping.attribute,
                 gap: 0,
               },
             });
@@ -132,19 +140,19 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         case "mark.image":
           {
             mark.mappings.x1 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "ix1",
             } as Specification.ParentMapping;
             mark.mappings.y1 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "iy1",
             } as Specification.ParentMapping;
             mark.mappings.x2 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "ix2",
             } as Specification.ParentMapping;
             mark.mappings.y2 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "iy2",
             } as Specification.ParentMapping;
             // Move anchor to bottom
@@ -154,19 +162,19 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         case "mark.line":
           {
             mark.mappings.x1 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "ix1",
             } as Specification.ParentMapping;
             mark.mappings.y1 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "iy1",
             } as Specification.ParentMapping;
             mark.mappings.x2 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "ix2",
             } as Specification.ParentMapping;
             mark.mappings.y2 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "iy2",
             } as Specification.ParentMapping;
           }
@@ -176,11 +184,11 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         case "mark.icon":
           {
             mark.mappings.x = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "icx",
             } as Specification.ParentMapping;
             mark.mappings.y = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "icy",
             } as Specification.ParentMapping;
           }
@@ -188,19 +196,19 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         case "mark.data-axis":
           {
             mark.mappings.x1 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "ix1",
             } as Specification.ParentMapping;
             mark.mappings.y1 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "iy1",
             } as Specification.ParentMapping;
             mark.mappings.x2 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "ix1",
             } as Specification.ParentMapping;
             mark.mappings.y2 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "iy2",
             } as Specification.ParentMapping;
           }

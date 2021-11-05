@@ -55,7 +55,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.emit(AppStore.EVENT_SELECTION);
   });
 
-  REG.add(Actions.ClearSelection, function (action) {
+  REG.add(Actions.ClearSelection, function () {
     this.currentSelection = null;
     this.emit(AppStore.EVENT_SELECTION);
   });
@@ -68,6 +68,11 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
 
   REG.add(Actions.FocusToMarkAttribute, function (action) {
     this.currentAttributeFocus = action.attributeName;
+    this.emit(AppStore.EVENT_GRAPHICS);
+  });
+
+  REG.add(Actions.SetCurrentMappingAttribute, function (action) {
+    this.currentMappingAttributeFocus = action.attributeName;
     this.emit(AppStore.EVENT_GRAPHICS);
   });
 }

@@ -3,11 +3,13 @@
 import * as React from "react";
 
 import { classNames } from "../utils";
-import { DraggableElement, ClickableSVGElement } from "./draggable";
+import { DraggableElement } from "./draggable";
 import { SVGImageIcon } from "./icons";
 
 import * as R from "../resources";
 import { strings } from "../../strings";
+import { CommandBarButton } from "@fluentui/react";
+import { FluentButton } from "../views/panels/widgets/controls/fluentui_customized_components";
 
 export interface ToolButtonProps {
   icon?: string;
@@ -16,6 +18,7 @@ export interface ToolButtonProps {
   onClick?: () => void;
   dragData?: () => any;
   active?: boolean;
+  disabled?: boolean;
   compact?: boolean;
 }
 
@@ -51,10 +54,11 @@ export class ToolButton extends React.Component<
           }}
         >
           <span
-            className={classNames("charticulator__button-tool", [
-              "is-active",
-              this.props.active || this.state.dragging,
-            ])}
+            className={classNames(
+              "charticulator__button-tool",
+              ["is-active", this.props.active || this.state.dragging],
+              ["is-disabled", this.props.disabled]
+            )}
             title={this.props.title}
             onClick={onClick}
           >
@@ -82,10 +86,11 @@ export class ToolButton extends React.Component<
     } else {
       return (
         <span
-          className={classNames("charticulator__button-tool", [
-            "is-active",
-            this.props.active,
-          ])}
+          className={classNames(
+            "charticulator__button-tool",
+            ["is-active", this.props.active],
+            ["is-disabled", this.props.disabled]
+          )}
           title={this.props.title}
           onClick={onClick}
         >
@@ -99,6 +104,80 @@ export class ToolButton extends React.Component<
   }
 }
 
+export class FluentToolButton extends React.Component<
+  ToolButtonProps,
+  { dragging: boolean }
+> {
+  constructor(props: ToolButtonProps) {
+    super(props);
+    this.state = {
+      dragging: false,
+    };
+  }
+
+  public render() {
+    const onClick = () => {
+      if (this.props.onClick) {
+        this.props.onClick();
+      }
+    };
+
+    if (this.props.dragData) {
+      return (
+        <DraggableElement
+          dragData={this.props.dragData}
+          onDragStart={() => this.setState({ dragging: true })}
+          onDragEnd={() => this.setState({ dragging: false })}
+          renderDragElement={() => {
+            return [
+              <SVGImageIcon url={this.props.icon} width={32} height={32} />,
+              { x: -16, y: -16 },
+            ];
+          }}
+        >
+          <FluentButton marginTop={"0px"}>
+            <CommandBarButton
+              onClick={onClick}
+              checked={this.props.active || this.state.dragging}
+              disabled={this.props.disabled}
+              text={this.props.text}
+              title={this.props.title}
+              iconProps={{
+                iconName: this.props.icon,
+              }}
+              styles={{
+                root: {
+                  minWidth: "unset",
+                },
+              }}
+            />
+          </FluentButton>
+        </DraggableElement>
+      );
+    } else {
+      return (
+        <FluentButton marginTop={"0px"}>
+          <CommandBarButton
+            onClick={onClick}
+            checked={this.props.active}
+            disabled={this.props.disabled}
+            text={this.props.text}
+            title={this.props.title}
+            iconProps={{
+              iconName: this.props.icon,
+            }}
+            styles={{
+              root: {
+                minWidth: "unset",
+              },
+            }}
+          />
+        </FluentButton>
+      );
+    }
+  }
+}
+
 export interface ButtonProps {
   onClick?: () => void;
   stopPropagation?: boolean;
@@ -107,7 +186,7 @@ export interface ButtonProps {
 
 export abstract class BaseButton<
   Props extends ButtonProps
-> extends React.PureComponent<Props, {}> {
+> extends React.PureComponent<Props, Record<string, never>> {
   private doClick(e: React.MouseEvent<HTMLSpanElement>) {
     if (this.props.onClick) {
       this.props.onClick();
@@ -128,9 +207,15 @@ export class AppButton extends BaseButton<AppButtonProps> {
   public render() {
     return (
       <span
+        tabIndex={0}
         className="charticulator__button-menu-app charticulator-title__button"
         title={this.props.title}
         onClick={this._doClick}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            this._doClick();
+          }
+        }}
       >
         <SVGImageIcon url={R.getSVGIcon("app-icon")} />
         <span className="el-text">{this.props.name || strings.app.name}</span>
@@ -151,9 +236,18 @@ export class MenuButton extends BaseButton<IconButtonProps> {
     if (props.text) {
       return (
         <span
-          className="charticulator__button-menu-text"
+          tabIndex={0}
+          className={classNames("charticulator__button-menu-text", [
+            "is-disabled",
+            this.props.disabled,
+          ])}
           title={props.title}
           onClick={this._doClick}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              this._doClick();
+            }
+          }}
         >
           <SVGImageIcon url={props.url} />
           <span className="el-text">{props.text}</span>
@@ -162,9 +256,15 @@ export class MenuButton extends BaseButton<IconButtonProps> {
     } else {
       return (
         <span
+          tabIndex={0}
           className="charticulator__button-menu"
           title={props.title}
           onClick={this._doClick}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              this._doClick();
+            }
+          }}
         >
           <SVGImageIcon url={props.url} />
         </span>
@@ -179,35 +279,35 @@ export class ButtonFlat extends BaseButton<IconButtonProps> {
     if (props.url) {
       if (props.text) {
         return (
-          <span
+          <button
             className="charticulator__button-flat"
             title={props.title}
             onClick={this._doClick}
           >
             <SVGImageIcon url={props.url} />
             <span className="el-text">{props.text}</span>
-          </span>
+          </button>
         );
       } else {
         return (
-          <span
+          <button
             className="charticulator__button-flat"
             title={props.title}
             onClick={this._doClick}
           >
             <SVGImageIcon url={props.url} />
-          </span>
+          </button>
         );
       }
     } else {
       return (
-        <span
+        <button
           className="charticulator__button-flat"
           title={props.title}
           onClick={this._doClick}
         >
           <span className="el-text">{props.text}</span>
-        </span>
+        </button>
       );
     }
   }

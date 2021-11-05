@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+@use 'sass:math';
 @import "../theme.scss";
 
 .charticulator {
@@ -30,7 +31,6 @@
       max-width: 700px;
       overflow: scroll;
       padding: 10px;
-      background: $theme-dataset-background;
       color: $theme-primary-foreground;
       p {
         font-size: 12px;
@@ -157,12 +157,12 @@
     border: 1px solid $gray-180;
     padding: 4px 5px;
     min-width: 70px;
+    max-width: 400px;
+    overflow: hidden;
   }
   th {
     font-weight: 700;
     text-align: left;
-    background: $gray-140;
-    color: white;
   }
   td {
     @include font-mono();
@@ -200,7 +200,7 @@
       display: block;
       margin: 5px;
       line-height: 20px;
-      margin-top: $height / 2 - 10;
+      margin-top: math.div($height, 2) - 10;
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -208,7 +208,7 @@
     &-prompt {
       display: block;
       line-height: 20px;
-      margin-top: $height / 2 - 10;
+      margin-top: math.div($height, 2) - 10;
       .el-svg-icon {
         height: 20px;
         width: 20px;
@@ -269,9 +269,11 @@
   }
   .el-field-item {
     padding: 10px;
-    height: 24px;
-    line-height: 24px;
+    height: 14px;
+    line-height: 14px;
     cursor: not-allowed;
+    flex-direction: row;
+    align-items: center;
     &.is-selectable {
       cursor: pointer;
     }
@@ -282,10 +284,10 @@
       padding-right: 8px;
     }
     &:hover {
-      background: $gray-210;
+      background: $color-primary-light;
     }
     &.is-active {
-      background: $gray-080;
+      background: $color-active;
       color: $white;
       .el-svg-icon {
         filter: invert(100%);

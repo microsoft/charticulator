@@ -19,9 +19,9 @@
  * @param str the date string
  * @returns the parsed Date's unix timestamp (in milliseconds) or null if unable to parse
  */
+// eslint-disable-next-line
 export function parseDate(str: string) {
   str = str.trim();
-  let m;
   // ISO8601 full date: https://stackoverflow.com/a/37563868
   if (
     str.match(/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(([+-]\d\d:\d\d)|Z)?$/i)
@@ -34,7 +34,7 @@ export function parseDate(str: string) {
     }
   }
   // Overall pass
-  m = str.match(
+  const m = str.match(
     /^(((\d{4})-(\d{1,2})(-(\d{1,2}))?|(\d{1,2})(\/(\d{1,2}))?\/(\d{4}))( +((\d{2}):(\d{2})(:(\d{2}))?(am|pm)?)( +(([+-]\d{2}):(\d{2})))?)?|(\d{2}):(\d{2})(:(\d{2}))?(am|pm)?)$/i
   );
   if (m) {
@@ -129,6 +129,8 @@ export function parseDate(str: string) {
     return null;
   }
 }
+
+export const defaultDateTimeFormat = "%m/%d/%Y %H:%M:%S";
 
 /** Returns format for given string of date */
 export function getDateFormat(str: string) {

@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 import { Graphics } from "../..";
+import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
 
 // Licensed under the MIT license.
 export interface TextMeasurement {
@@ -30,8 +31,8 @@ export class TextMeasurer {
     if (typeof document != "undefined") {
       this.canvas = document.createElement("canvas");
       this.context = this.canvas.getContext("2d");
-      this.fontFamily = "Arial";
-      this.fontSize = 13;
+      this.fontFamily = defaultFont;
+      this.fontSize = defaultFontSize;
     }
   }
 

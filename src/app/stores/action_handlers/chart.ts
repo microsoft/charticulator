@@ -1,43 +1,43 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import {
-  deepClone,
-  Expression,
-  Prototypes,
-  Scale,
-  setField,
-  Solver,
-  Specification,
-  uniqueID,
-} from "../../../core";
+import { Expression, Prototypes, Solver, Specification } from "../../../core";
 import { Actions } from "../../actions";
 import { AppStore } from "../app_store";
 import { ChartElementSelection } from "../selection";
 import { ActionHandlerRegistry } from "./registry";
 import { BindDataToAxis } from "../../actions/actions";
+import {
+  MappingType,
+  SnappingElementMapping,
+} from "../../../core/specification";
+import { replaceUndefinedByNull } from "../../utils";
 
+// eslint-disable-next-line
 export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   REG.add(Actions.MapDataToChartElementAttribute, function (action) {
     const inferred =
       (action.hints && action.hints.scaleID) ||
       this.scaleInference(
         { chart: { table: action.table } },
-        action.expression,
-        action.valueType,
-        action.valueMetadata.kind,
-        action.attributeType,
-        action.hints
+        {
+          expression: action.expression,
+          valueType: action.valueType,
+          valueKind: action.valueMetadata.kind,
+          outputType: action.attributeType,
+          hints: action.hints,
+        }
       );
     if (inferred != null) {
       action.chartElement.mappings[action.attribute] = {
-        type: "scale",
+        type: MappingType.scale,
         table: action.table,
         expression: action.expression,
         valueType: action.valueType,
         scale: inferred,
         valueIndex:
-          action.hints && action.hints.allowSelectValue ? 0 : undefined,
+          action.hints && action.hints.allowSelectValue != undefined ? 0 : null,
       } as Specification.ScaleMapping;
     } else {
       if (
@@ -50,7 +50,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         const format =
           action.valueType == Specification.DataType.Number ? ".1f" : undefined;
         action.chartElement.mappings[action.attribute] = {
-          type: "text",
+          type: MappingType.text,
           table: action.table,
           textExpression: new Expression.TextExpression([
             { expression: Expression.parse(action.expression), format },
@@ -64,6 +64,10 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
 
   REG.add(Actions.AddChartElement, function (action) {
     this.saveHistory();
+
+    if (action.classID === "mark.nested-chart") {
+      return; // prevent to add nested chart into chart, nested chart can be created only in glyph
+    }
 
     let glyph = this.currentGlyph;
     if (!glyph || this.chart.glyphs.indexOf(glyph) < 0) {
@@ -91,17 +95,19 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     );
 
     for (const key in action.mappings) {
+      // eslint-disable-next-line
       if (action.mappings.hasOwnProperty(key)) {
         const [value, mapping] = action.mappings[key];
         if (mapping != null) {
-          if (mapping.type == "_element") {
+          if (mapping.type == MappingType._element) {
+            const elementMapping = mapping as SnappingElementMapping;
             this.chartManager.chart.constraints.push({
               type: "snap",
               attributes: {
                 element: newChartElement._id,
                 attribute: key,
-                targetElement: (mapping as any).element,
-                targetAttribute: (mapping as any).attribute,
+                targetElement: elementMapping.element,
+                targetAttribute: elementMapping.attribute,
                 gap: 0,
               },
             });
@@ -169,6 +175,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
     const layoutState = this.chartState.elements[idx];
     for (const key in action.updates) {
+      // eslint-disable-next-line
       if (!action.updates.hasOwnProperty(key)) {
         continue;
       }
@@ -264,7 +271,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
 
     if (
       action.scaleId == null ||
-      action.object.mappings[action.property].type != "scale"
+      action.object.mappings[action.property].type != MappingType.scale
     ) {
       return;
     } else {
@@ -290,6 +297,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.saveHistory();
 
     for (const key in action.updates) {
+      // eslint-disable-next-line
       if (!action.updates.hasOwnProperty(key)) {
         continue;
       }
@@ -306,7 +314,14 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   });
 
   REG.add(Actions.BindDataToAxis, function (action: BindDataToAxis) {
-    this.bindDataToAxis(action);
+    this.saveHistory();
+    this.bindDataToAxis({
+      ...action,
+      autoDomainMax: true,
+      autoDomainMin: true,
+      domainMax: null,
+      domainMin: null,
+    });
     this.solveConstraintsAndUpdateGraphics();
   });
 
@@ -328,11 +343,11 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.chartState.attributes.width = action.width;
     this.chartState.attributes.height = action.height;
     this.chart.mappings.width = {
-      type: "value",
+      type: MappingType.value,
       value: action.width,
     } as Specification.ValueMapping;
     this.chart.mappings.height = {
-      type: "value",
+      type: MappingType.value,
       value: action.height,
     } as Specification.ValueMapping;
 
@@ -340,23 +355,20 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   });
 
   REG.add(Actions.SetObjectProperty, function (action) {
-    if (
-      action.property === "name" &&
-      this.chartManager.isNameUsed(action.value as string)
-    ) {
+    this.setProperty(action);
+  });
+
+  REG.add(Actions.DeleteObjectProperty, function (action) {
+    if (action.property === "name") {
       return;
     }
     this.saveHistory();
 
     if (action.field == null) {
-      action.object.properties[action.property] = action.value;
+      delete action.object.properties[action.property];
     } else {
-      const obj = action.object.properties[action.property];
-      action.object.properties[action.property] = setField(
-        obj,
-        action.field,
-        action.value
-      );
+      const obj = action.object.properties[action.property] as any;
+      delete obj[action.field as any];
     }
 
     if (action.noUpdateState) {
@@ -378,6 +390,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     switch (action.extension) {
       case "cartesian-x": {
         newClassID = "plot-segment.cartesian";
+        break;
       }
       case "cartesian-y":
         {
@@ -414,15 +427,15 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       }
 
       plotSegment.properties = {
-        name: plotSegment.properties.name,
-        visible: plotSegment.properties.visible,
-        sublayout: plotSegment.properties.sublayout,
-        xData: plotSegment.properties.xData,
-        yData: plotSegment.properties.yData,
-        marginX1: plotSegment.properties.marginX1,
-        marginY1: plotSegment.properties.marginY1,
-        marginX2: plotSegment.properties.marginX2,
-        marginY2: plotSegment.properties.marginY2,
+        name: replaceUndefinedByNull(plotSegment.properties.name),
+        visible: replaceUndefinedByNull(plotSegment.properties.visible),
+        sublayout: replaceUndefinedByNull(plotSegment.properties.sublayout),
+        xData: replaceUndefinedByNull(plotSegment.properties.xData),
+        yData: replaceUndefinedByNull(plotSegment.properties.yData),
+        marginX1: replaceUndefinedByNull(plotSegment.properties.marginX1),
+        marginY1: replaceUndefinedByNull(plotSegment.properties.marginY1),
+        marginX2: replaceUndefinedByNull(plotSegment.properties.marginX2),
+        marginY2: replaceUndefinedByNull(plotSegment.properties.marginY2),
       };
 
       if (newClassID == "plot-segment.polar") {
@@ -435,7 +448,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         plotSegment.properties.outerRatio =
           Prototypes.PlotSegments.PolarPlotSegment.defaultProperties.outerRatio;
       }
-      if ((newClassID = "plot-segment.curve")) {
+      if (newClassID == "plot-segment.curve") {
         plotSegment.properties.curve =
           Prototypes.PlotSegments.CurvePlotSegment.defaultProperties.curve;
         plotSegment.properties.normalStart =
@@ -456,14 +469,10 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         action.extension == "polar" ||
         action.extension == "curve"
       ) {
-        // if (plotSegment.properties.xData == null) {
         plotSegment.properties.xData = { type: "default", gapRatio: 0.1 };
-        // }
       }
       if (action.extension == "cartesian-y") {
-        // if (plotSegment.properties.yData == null) {
         plotSegment.properties.yData = { type: "default", gapRatio: 0.1 };
-        // }
       }
     }
     this.solveConstraintsAndUpdateGraphics();
@@ -484,7 +493,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   REG.add(Actions.ToggleLegendForScale, function (action) {
     this.saveHistory();
 
-    this.toggleLegendForScale(action.scale, action.mapping);
+    this.toggleLegendForScale(action.scale, action.mapping, action.plotSegment);
 
     this.solveConstraintsAndUpdateGraphics();
   });

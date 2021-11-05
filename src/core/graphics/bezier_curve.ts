@@ -42,11 +42,11 @@ export function linearApproximation(
   points: ArrayLike<number>,
   t: number
 ): number {
-  let i1: number, i2: number, k: number;
+  let i1: number, i2: number;
   const w = t * (points.length - 1);
   i1 = Math.floor(w);
   i2 = i1 + 1;
-  k = w - i1;
+  const k = w - i1;
   if (i1 < 0) {
     i1 = 0;
     i2 = 0;
@@ -146,7 +146,7 @@ export class BezierCurveParameterization extends CurveParameterization {
     //       8.080527036296594  100
     //       8.084824756247663  10
     const steps = 100;
-    this.tToS = RK4((t, y) => this.getDsDtAtT(t), 0, 0, 1 / (steps - 1), steps);
+    this.tToS = RK4((t) => this.getDsDtAtT(t), 0, 0, 1 / (steps - 1), steps);
     this.len = this.tToS[steps - 1];
     this.sToT = linearInvert(this.tToS);
   }
@@ -210,6 +210,7 @@ export class LineSegmentParametrization extends CurveParameterization {
     };
   }
 
+  // eslint-disable-next-line
   public getTangentAtT(t: number) {
     return this.tangent;
   }

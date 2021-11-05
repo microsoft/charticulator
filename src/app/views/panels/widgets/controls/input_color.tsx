@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types */
+
 import * as React from "react";
 import * as globals from "../../../../globals";
 
@@ -18,6 +20,8 @@ import { PopupView } from "../../../../controllers/popup_controller";
 
 import { InputText } from "./input_text";
 import { AppStore } from "../../../../stores";
+import { strings } from "../../../../../strings";
+import { getAligntment } from "../../../../utils";
 
 export interface InputColorProps {
   defaultValue: Color;
@@ -40,6 +44,10 @@ export class InputColor extends React.Component<InputColorProps, {}> {
           style={{ backgroundColor: hex == "" ? "transparent" : hex }}
           ref={(e) => (colorButton = e)}
           onClick={() => {
+            const {
+              alignX,
+            }: { alignLeft: boolean; alignX: any } = getAligntment(colorButton);
+
             globals.popupController.popupAt(
               (context) => {
                 return (
@@ -59,13 +67,13 @@ export class InputColor extends React.Component<InputColorProps, {}> {
                   </PopupView>
                 );
               },
-              { anchor: colorButton }
+              { anchor: colorButton, alignX }
             );
           }}
         />
         <InputText
           defaultValue={hex}
-          placeholder={this.props.allowNull ? "(none)" : ""}
+          placeholder={this.props.allowNull ? strings.core.none : ""}
           onEnter={(newValue) => {
             newValue = newValue.trim();
             if (newValue == "") {

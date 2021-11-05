@@ -1,21 +1,41 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Color } from "../common";
-import { ColumnMetadata, DataKind } from "../dataset";
+import { DataKind } from "../dataset";
 import { StrokeStyle } from "../prototypes";
 import { AttributeMap, Expression, DataType } from "./index";
 
 export enum OrderMode {
   alphabetically = "alphabetically",
   occurrence = "occurrence",
-  order = "order"  
+  order = "order",
+}
+
+export type AxisSide = "default" | "opposite";
+
+export enum AxisDataBindingType {
+  Default = "default",
+  Numerical = "numerical",
+  Categorical = "categorical",
+}
+
+export enum NumericalMode {
+  Linear = "linear",
+  Logarithmic = "logarithmic",
+  Temporal = "temporal",
+}
+
+export enum TickFormatType {
+  None = "none",
+  Date = "date",
+  Number = "number",
 }
 
 /** Common parameter and mapping types */
 export interface AxisDataBinding extends AttributeMap {
-  type: "default" | "numerical" | "categorical";
+  type: AxisDataBindingType;
   visible: boolean;
-  side: "default" | "opposite";
+  side: AxisSide;
 
   /** Data mapping expression */
   expression?: Expression;
@@ -23,9 +43,14 @@ export interface AxisDataBinding extends AttributeMap {
   valueType?: DataType;
 
   /** Domain for linear/logarithm types */
-  numericalMode?: "linear" | "logarithmic" | "temporal";
+  numericalMode?: NumericalMode;
+  // current domain for scrolling
   domainMin?: number;
   domainMax?: number;
+
+  // origin domain from dataset
+  dataDomainMin?: number;
+  dataDomainMax?: number;
 
   /** Export properties of axis for auto scale ranges */
   autoDomainMin?: boolean;
@@ -39,11 +64,29 @@ export interface AxisDataBinding extends AttributeMap {
 
   tickDataExpression?: Expression;
   tickFormat?: string;
+  tickFormatType?: TickFormatType;
 
   style?: AxisRenderingStyle;
   dataKind?: DataKind;
   order?: string[];
   orderMode?: OrderMode;
+
+  /** scrolling options */
+  // allCategories contsins all data set and categories property uses to display current content
+  allowScrolling?: boolean;
+  allCategories?: string[];
+  scrollPosition?: number;
+  windowSize?: number;
+  barOffset?: number;
+
+  /** Offset options */
+  offset?: number;
+
+  /** render axis on top */
+  onTop?: boolean;
+
+  //axis tick selection
+  enableSelection?: boolean;
 }
 
 export interface AxisRenderingStyle extends AttributeMap {
@@ -56,17 +99,36 @@ export interface AxisRenderingStyle extends AttributeMap {
   gridlineStyle: StrokeStyle;
   gridlineColor: Color;
   gridlineWidth: number;
+  verticalText: boolean;
+  showTicks: boolean;
+}
+
+export enum TextAlignmentHorizontal {
+  Left = "left",
+  Middle = "middle",
+  Right = "right",
+}
+
+export enum TextAlignmentVertical {
+  Top = "top",
+  Middle = "middle",
+  Bottom = "bottom",
 }
 
 export interface TextAlignment extends AttributeMap {
-  x: "left" | "middle" | "right";
-  y: "top" | "middle" | "bottom";
+  x: TextAlignmentHorizontal;
+  y: TextAlignmentVertical;
   xMargin: number;
   yMargin: number;
 }
 
+export enum Colorspace {
+  Hcl = "hcl",
+  Lab = "lab",
+}
+
 export interface ColorGradient extends AttributeMap {
-  colorspace: "hcl" | "lab";
+  colorspace: Colorspace;
   colors: Color[];
 }
 

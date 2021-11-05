@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable no-prototype-builtins */
 
 import {
   Dataset,
   deepClone,
+  defineCategories,
   Expression,
   getById,
   makeRange,
@@ -22,7 +24,10 @@ import {
 import { CompiledGroupBy } from "../core/prototypes/group_by";
 import { OrderMode } from "../core/specification/types";
 import { DataAxisExpression } from "../core/prototypes/marks/data_axis.attrs";
-import { AttributeList, ScaleMapping } from "../core/specification";
+import { MappingType, ScaleMapping, ValueMapping } from "../core/specification";
+import { Region2DSublayoutOptions } from "../core/prototypes/plot_segments/region_2d/base";
+import { GuideAttributeNames } from "../core/prototypes/guides";
+import { scaleLinear } from "d3-scale";
 
 export interface TemplateInstance {
   chart: Specification.Chart;
@@ -117,7 +122,13 @@ export class ChartTemplate {
     }
   }
 
-  /** Creates instance of chart object from template. Chart objecty can be loaded into container to display it in canvas */
+  /**
+   * Creates instance of chart object from template. Chart objecty can be loaded into container to display it in canvas
+   * On editing this method ensure that you made correspond changes in template builder ({@link ChartTemplateBuilder}).
+   * Any exposed into template objects should be initialized here
+   */
+
+  // eslint-disable-next-line
   public instantiate(
     dataset: Dataset.Dataset,
     inference: boolean = true
@@ -137,6 +148,22 @@ export class ChartTemplate {
             scaleMapping.expression,
             scaleMapping.table
           );
+        }
+
+        // Guide
+        if (Prototypes.isType(item.chartElement.classID, "guide.guide")) {
+          const valueProp = this.template.properties.filter(
+            (p) =>
+              p.objectID === item.chartElement._id &&
+              p.target.attribute === GuideAttributeNames.value
+          )[0];
+          if (valueProp) {
+            const valueMapping: Specification.ValueMapping = {
+              type: MappingType.value,
+              value: valueProp.default as number,
+            };
+            item.chartElement.mappings.value = valueMapping;
+          }
         }
 
         // PlotSegment
@@ -175,6 +202,13 @@ export class ChartTemplate {
                 originalTable
               );
             }
+            if ((plotSegment.properties.xData as any).rawExpression) {
+              (plotSegment.properties
+                .xData as any).rawExpression = this.transformExpression(
+                (plotSegment.properties.xData as any).rawExpression,
+                originalTable
+              );
+            }
           }
           if (plotSegment.properties.yData) {
             if ((plotSegment.properties.yData as any).expression) {
@@ -184,12 +218,37 @@ export class ChartTemplate {
                 originalTable
               );
             }
+            if ((plotSegment.properties.yData as any).rawExpression) {
+              (plotSegment.properties
+                .yData as any).rawExpression = this.transformExpression(
+                (plotSegment.properties.yData as any).rawExpression,
+                originalTable
+              );
+            }
           }
           if (plotSegment.properties.axis) {
             if ((plotSegment.properties.axis as any).expression) {
               (plotSegment.properties
                 .axis as any).expression = this.transformExpression(
                 (plotSegment.properties.axis as any).expression,
+                originalTable
+              );
+            }
+            if ((plotSegment.properties.axis as any).rawExpression) {
+              (plotSegment.properties
+                .axis as any).rawExpression = this.transformExpression(
+                (plotSegment.properties.axis as any).rawExpression,
+                originalTable
+              );
+            }
+          }
+          if (plotSegment.properties.sublayout) {
+            const expression = (plotSegment.properties
+              .sublayout as Region2DSublayoutOptions).order?.expression;
+            if (expression) {
+              (plotSegment.properties
+                .sublayout as Region2DSublayoutOptions).order.expression = this.transformExpression(
+                expression,
                 originalTable
               );
             }
@@ -262,8 +321,9 @@ export class ChartTemplate {
 
       // Replace data-mapping expressions with assigned columns
       const mappings = item.object.mappings;
+      // eslint-disable-next-line
       for (const [attr, mapping] of forEachMapping(mappings)) {
-        if (mapping.type == "scale") {
+        if (mapping.type == MappingType.scale) {
           const scaleMapping = mapping as Specification.ScaleMapping;
           scaleMapping.expression = this.transformExpression(
             scaleMapping.expression,
@@ -271,7 +331,7 @@ export class ChartTemplate {
           );
           scaleMapping.table = this.tableAssignment[scaleMapping.table];
         }
-        if (mapping.type == "text") {
+        if (mapping.type == MappingType.text) {
           const textMapping = mapping as Specification.TextMapping;
           textMapping.textExpression = this.transformTextExpression(
             textMapping.textExpression,
@@ -328,9 +388,6 @@ export class ChartTemplate {
           axis.property
         ) as Specification.Types.AxisDataBinding;
         axisDataBinding.expression = expression;
-        if (axisDataBinding.tickDataExpression) {
-          axisDataBinding.tickDataExpression = null; // TODO: fixme
-        }
         if (inference.autoDomainMin || inference.autoDomainMax) {
           // disableAuto flag responsible for disabling/enabling configulration scale domains when new data is coming
           // If disableAuto is true, the same scales will be used for data
@@ -363,24 +420,109 @@ export class ChartTemplate {
           }
           if (axis.type == "categorical") {
             const scale = new Scale.CategoricalScale();
-            scale.inferParameters(vector, OrderMode.order);
+            scale.inferParameters(
+              vector,
+              inference.axis.orderMode || OrderMode.order
+            );
             axisDataBinding.categories = new Array<string>(scale.domain.size);
+            const newData = new Array<string>(scale.domain.size);
+
             scale.domain.forEach((index, key) => {
-              axisDataBinding.categories[index] = key;
+              newData[index] = key;
             });
+            // try to save given order from template
+            if (
+              axisDataBinding.order &&
+              axisDataBinding.orderMode === OrderMode.order
+            ) {
+              axisDataBinding.order = axisDataBinding.order.filter((value) =>
+                scale.domain.has(value)
+              );
+              const newItems = newData.filter(
+                (category) =>
+                  !axisDataBinding.order.find((order) => order === category)
+              );
+              axisDataBinding.categories = new Array<string>(
+                axisDataBinding.order.length
+              );
+              axisDataBinding.order.forEach((value, index) => {
+                axisDataBinding.categories[index] = value;
+              });
+              axisDataBinding.categories = axisDataBinding.categories.concat(
+                newItems
+              );
+              axisDataBinding.order = axisDataBinding.order.concat(newItems);
+            } else {
+              axisDataBinding.categories = new Array<string>(scale.domain.size);
+              scale.domain.forEach((index, key) => {
+                axisDataBinding.categories[index] = key;
+              });
+            }
+            axisDataBinding.allCategories = deepClone(
+              axisDataBinding.categories
+            );
+
+            if (axisDataBinding.allowScrolling) {
+              const start = Math.floor(
+                ((axisDataBinding.categories.length -
+                  axisDataBinding.windowSize) /
+                  100) *
+                  axisDataBinding.scrollPosition
+              );
+              axisDataBinding.categories = axisDataBinding.categories.slice(
+                start,
+                start + axisDataBinding.windowSize
+              );
+            }
           } else if (axis.type == "numerical") {
             const scale = new Scale.LinearScale();
             scale.inferParameters(vector);
             if (inference.autoDomainMin) {
-              axisDataBinding.domainMin = scale.domainMin;
+              axisDataBinding.dataDomainMin = scale.domainMin;
             }
             if (inference.autoDomainMax) {
-              axisDataBinding.domainMax = scale.domainMax;
+              axisDataBinding.dataDomainMax = scale.domainMax;
+            }
+            if (axisDataBinding.allowScrolling) {
+              const scrollScale = scaleLinear()
+                .domain([0, 100])
+                .range([
+                  axisDataBinding.dataDomainMin,
+                  axisDataBinding.dataDomainMax,
+                ]);
+              const start = scrollScale(axisDataBinding.scrollPosition);
+              axisDataBinding.domainMin = start;
+              axisDataBinding.domainMax = start + axisDataBinding.windowSize;
+            } else {
+              if (inference.autoDomainMin) {
+                axisDataBinding.dataDomainMin = scale.domainMin;
+              }
+              if (inference.autoDomainMax) {
+                axisDataBinding.dataDomainMax = scale.domainMax;
+              }
+            }
+            if (axis.defineCategories) {
+              axisDataBinding.categories = defineCategories(vector);
             }
           }
         }
       }
       if (inference.scale) {
+        // uses disableAutoMin disableAutoMax for handle old templates
+        // copy old parameters to new
+        if (
+          inference.autoDomainMin == null &&
+          inference.disableAutoMin != null
+        ) {
+          inference.autoDomainMin = !inference.disableAutoMin;
+        }
+        // copy old parameters to new
+        if (
+          inference.autoDomainMax == null &&
+          inference.disableAutoMax != null
+        ) {
+          inference.autoDomainMax = !inference.disableAutoMax;
+        }
         if (inference.autoDomainMin || inference.autoDomainMax) {
           const scale = inference.scale;
           const expressions = scale.expressions.map((x) =>
@@ -397,19 +539,40 @@ export class ChartTemplate {
             )
           );
 
-          if (inference.autoDomainMin) {
+          if (
+            inference.autoDomainMin &&
+            object.properties.domainMin !== undefined
+          ) {
             vectors.push([object.properties.domainMin]);
           }
-          if (inference.autoDomainMax) {
+          if (
+            inference.autoDomainMax &&
+            object.properties.domainMax != undefined
+          ) {
             vectors.push([object.properties.domainMax]);
           }
           const vector = vectors.reduce((a, b) => a.concat(b), []);
           const scaleClass = Prototypes.ObjectClasses.Create(null, object, {
             attributes: {},
           }) as Prototypes.Scales.ScaleClass;
-          scaleClass.inferParameters(vector, {
-            reuseRange: true,
-          });
+
+          if (object.classID === "scale.categorical<string,color>") {
+            scaleClass.inferParameters(vector, {
+              reuseRange: true,
+              extendScaleMin: true,
+              extendScaleMax: true,
+            });
+          } else {
+            scaleClass.inferParameters(vector, {
+              extendScaleMax: inference.autoDomainMax,
+              extendScaleMin: inference.autoDomainMin,
+              reuseRange: true,
+              rangeNumber: [
+                (object.mappings.rangeMin as ValueMapping)?.value as number,
+                (object.mappings.rangeMax as ValueMapping)?.value as number,
+              ],
+            });
+          }
         }
       }
       if (inference.nestedChart) {

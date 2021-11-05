@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 import { Geometry } from "./math";
+import { Colorspace } from "../../app/components/fluent_ui_gradient_picker";
 
 /** Color in RGB */
 export interface Color {
@@ -12,7 +13,7 @@ export interface Color {
 
 /** Color gradient */
 export interface ColorGradient {
-  colorspace: "hcl" | "lab";
+  colorspace: Colorspace;
   colors: Color[];
 }
 
@@ -20,25 +21,25 @@ export interface ColorGradient {
 export function colorFromHTMLColor(html: string): Color {
   let m: RegExpMatchArray;
   m = html.match(
-    /^ *rgb *\( *([0-9\.\-e]+) *, *([0-9\.\-e]+) *, *([0-9\.\-e]+) *\) *$/
+    /^ *rgb *\( *([0-9.\-e]+) *, *([0-9.\-e]+) *, *([0-9.\-e]+) *\) *$/
   );
   if (m) {
     return { r: +m[1], g: +m[2], b: +m[3] };
   }
   m = html.match(
-    /^ *rgba *\( *([0-9\.\-e]+) *, *([0-9\.\-e]+) *, *([0-9\.\-e]+) *, *([0-9\.\-e]+) *\) *$/
+    /^ *rgba *\( *([0-9.\-e]+) *, *([0-9.\-e]+) *, *([0-9.\-e]+) *, *([0-9.\-e]+) *\) *$/
   );
   if (m) {
     return { r: +m[1], g: +m[2], b: +m[3] };
   }
-  m = html.match(/^ *\#([0-9a-fA-F]{3}) *$/);
+  m = html.match(/^ *#([0-9a-fA-F]{3}) *$/);
   if (m) {
     const r = parseInt(m[1][0], 16) * 17;
     const g = parseInt(m[1][1], 16) * 17;
     const b = parseInt(m[1][2], 16) * 17;
     return { r, g, b };
   }
-  m = html.match(/^ *\#([0-9a-fA-F]{6}) *$/);
+  m = html.match(/^ *#([0-9a-fA-F]{6}) *$/);
   if (m) {
     const r = parseInt(m[1].slice(0, 2), 16);
     const g = parseInt(m[1].slice(2, 4), 16);
@@ -46,6 +47,37 @@ export function colorFromHTMLColor(html: string): Color {
     return { r, g, b };
   }
   return { r: 0, g: 0, b: 0 };
+}
+
+export function parseColorOrThrowException(html: string): Color {
+  let m: RegExpMatchArray;
+  m = html.match(
+    /^ *rgb *\( *([0-9.\-e]+) *, *([0-9.\-e]+) *, *([0-9.\-e]+) *\) *$/
+  );
+  if (m) {
+    return { r: +m[1], g: +m[2], b: +m[3] };
+  }
+  m = html.match(
+    /^ *rgba *\( *([0-9.\-e]+) *, *([0-9.\-e]+) *, *([0-9.\-e]+) *, *([0-9.\-e]+) *\) *$/
+  );
+  if (m) {
+    return { r: +m[1], g: +m[2], b: +m[3] };
+  }
+  m = html.match(/^ *#([0-9a-fA-F]{3}) *$/);
+  if (m) {
+    const r = parseInt(m[1][0], 16) * 17;
+    const g = parseInt(m[1][1], 16) * 17;
+    const b = parseInt(m[1][2], 16) * 17;
+    return { r, g, b };
+  }
+  m = html.match(/^ *#([0-9a-fA-F]{6}) *$/);
+  if (m) {
+    const r = parseInt(m[1].slice(0, 2), 16);
+    const g = parseInt(m[1].slice(2, 4), 16);
+    const b = parseInt(m[1].slice(4, 6), 16);
+    return { r, g, b };
+  }
+  throw new Error(`Cant recognize color: ${html}`);
 }
 
 export function colorToHTMLColor(color: Color): string {
@@ -352,7 +384,39 @@ const brewer12 = [
   "#b15928",
 ].map(colorFromHTMLColor);
 
+let defaultColorGeneratorFunction: (key: string) => Color = null;
+let defaultColorGeneratorResetFunction: () => void;
+
+export function setDefaultColorPaletteGenerator(
+  generatorFunction: (key: string) => Color
+) {
+  defaultColorGeneratorFunction = generatorFunction;
+}
+
+export function getDefaultColorPaletteGenerator() {
+  return defaultColorGeneratorFunction;
+}
+export function setDefaultColorGeneratorResetFunction(
+  resetFunction: () => void
+) {
+  defaultColorGeneratorResetFunction = resetFunction;
+}
+
+export function getDefaultColorGeneratorResetFunction() {
+  return defaultColorGeneratorResetFunction;
+}
+
+// eslint-disable-next-line
+export function getDefaultColorPaletteByValue(value: string, count: number) {
+  return defaultColorGeneratorFunction?.(value);
+}
+
 export function getDefaultColorPalette(count: number) {
+  if (defaultColorGeneratorFunction) {
+    return new Array(count)
+      .fill(null)
+      .map((v, index) => defaultColorGeneratorFunction(index.toString()));
+  }
   let r = brewer12;
   if (count <= 3) {
     r = brewer3;

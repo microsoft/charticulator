@@ -1,16 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { strings } from "../../../strings";
 import { Geometry, Point, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
+import { MappingType } from "../../specification";
 import {
   BoundingBox,
   Controls,
   DropZones,
   Handles,
   LinkAnchor,
+  ObjectClass,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters,
@@ -41,7 +44,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Image",
-    iconPath: "mark/image",
+    iconPath: "FileImage",
     creatingInteraction: {
       type: "rectangle",
       mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" },
@@ -49,6 +52,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultProperties: Partial<ImageElementProperties> = {
+    ...ObjectClass.defaultProperties,
     visible: true,
     imageMode: "letterbox",
     paddingX: 0,
@@ -87,69 +91,106 @@ export class ImageElementClass extends EmphasizableMarkClass<
     attrs.image = null;
   }
 
+  // eslint-disable-next-line
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     const parentWidgets = super.getAttributePanelWidgets(manager);
-    let widgets: Controls.Widget[] = [
-      manager.sectionHeader("Size"),
-      manager.mappingEditor("Width", "width", {
-        hints: { autoRange: true, startWithZero: "always" },
-        acceptKinds: [Specification.DataKind.Numerical],
-        defaultAuto: true,
-      }),
-      manager.mappingEditor("Height", "height", {
-        hints: { autoRange: true, startWithZero: "always" },
-        acceptKinds: [Specification.DataKind.Numerical],
-        defaultAuto: true,
-      }),
-      manager.sectionHeader("Image"),
-      manager.mappingEditor("Image", "image", {}),
-      manager.row(
-        "Resize Mode",
-        manager.inputSelect(
-          { property: "imageMode" },
-          {
-            type: "dropdown",
-            showLabel: true,
-            labels: ["Letterbox", "Stretch"],
-            options: ["letterbox", "stretch"],
-          }
-        )
+    const widgets: Controls.Widget[] = [
+      manager.verticalGroup(
+        {
+          header: strings.objects.general,
+        },
+        [
+          manager.mappingEditor(strings.objects.width, "width", {
+            hints: { autoRange: true, startWithZero: "always" },
+            acceptKinds: [Specification.DataKind.Numerical],
+            defaultAuto: true,
+          }),
+          manager.mappingEditor(strings.objects.height, "height", {
+            hints: { autoRange: true, startWithZero: "always" },
+            acceptKinds: [Specification.DataKind.Numerical],
+            defaultAuto: true,
+          }),
+          manager.mappingEditor(
+            strings.objects.visibleOn.visibility,
+            "visible",
+            {
+              defaultValue: true,
+            }
+          ),
+        ]
       ),
-      ...(this.object.properties.imageMode == "letterbox"
-        ? [
-            manager.row(
-              "Align",
-              manager.horizontal(
-                [0, 1],
-                manager.inputSelect(
-                  { property: "alignX" },
-                  {
-                    type: "radio",
-                    options: ["start", "middle", "end"],
-                    icons: ["align/left", "align/x-middle", "align/right"],
-                    labels: ["Left", "Middle", "Right"],
-                  }
+      // manager.sectionHeader(strings.objects.size),
+      manager.verticalGroup(
+        {
+          header: strings.toolbar.image,
+        },
+        [
+          manager.mappingEditor(strings.objects.icon.image, "image", {}),
+          manager.inputSelect(
+            { property: "imageMode" },
+            {
+              type: "dropdown",
+              showLabel: true,
+              labels: [
+                strings.objects.image.letterbox,
+                strings.objects.image.stretch,
+              ],
+              options: ["letterbox", "stretch"],
+              label: strings.objects.image.imageMode,
+            }
+          ),
+          ...(this.object.properties.imageMode == "letterbox"
+            ? [
+                manager.label(strings.alignment.align),
+                manager.horizontal(
+                  [0, 1],
+                  manager.inputSelect(
+                    { property: "alignX" },
+                    {
+                      type: "radio",
+                      options: ["start", "middle", "end"],
+                      icons: [
+                        "AlignHorizontalLeft",
+                        "AlignHorizontalCenter",
+                        "AlignHorizontalRight",
+                      ],
+                      labels: [
+                        strings.alignment.left,
+                        strings.alignment.middle,
+                        strings.alignment.right,
+                      ],
+                    }
+                  ),
+                  manager.inputSelect(
+                    { property: "alignY" },
+                    {
+                      type: "radio",
+                      options: ["start", "middle", "end"],
+                      icons: [
+                        "AlignVerticalBottom",
+                        "AlignVerticalCenter",
+                        "AlignVerticalTop",
+                      ],
+                      labels: [
+                        strings.alignment.bottom,
+                        strings.alignment.middle,
+                        strings.alignment.top,
+                      ],
+                    }
+                  )
                 ),
-                manager.inputSelect(
-                  { property: "alignY" },
-                  {
-                    type: "radio",
-                    options: ["start", "middle", "end"],
-                    icons: ["align/bottom", "align/y-middle", "align/top"],
-                    labels: ["Bottom", "Middle", "Top"],
-                  }
-                )
-              )
-            ),
-          ]
-        : []),
-      manager.row(
-        "Padding",
-        manager.horizontal(
-          [0, 2, 0, 2],
-          manager.label("x:"),
+              ]
+            : []),
+        ]
+      ),
+      manager.verticalGroup(
+        {
+          header: strings.alignment.padding,
+        },
+        [
+          manager.label(strings.coordinateSystem.x),
           manager.inputNumber(
             { property: "paddingX" },
             {
@@ -157,39 +198,51 @@ export class ImageElementClass extends EmphasizableMarkClass<
               showUpdown: true,
             }
           ),
-          manager.label("y:"),
+          manager.label(strings.coordinateSystem.y),
           manager.inputNumber(
             { property: "paddingY" },
             {
               updownTick: 1,
               showUpdown: true,
             }
-          )
-        )
+          ),
+        ]
       ),
-      manager.sectionHeader("Style"),
-      manager.mappingEditor("Fill", "fill", {}),
-      manager.mappingEditor("Stroke", "stroke", {}),
+      manager.verticalGroup(
+        {
+          header: strings.objects.style,
+        },
+        [
+          manager.mappingEditor(strings.objects.fill, "fill", {}),
+          manager.mappingEditor(strings.objects.stroke, "stroke", {}),
+          this.object.mappings.stroke != null
+            ? manager.mappingEditor(
+                strings.objects.strokeWidth,
+                "strokeWidth",
+                {
+                  hints: { rangeNumber: [0, 5] },
+                  defaultValue: 1,
+                  numberOptions: {
+                    showSlider: true,
+                    sliderRange: [0, 5],
+                    minimum: 0,
+                  },
+                }
+              )
+            : null,
+          manager.mappingEditor(strings.objects.opacity, "opacity", {
+            hints: { rangeNumber: [0, 1] },
+            defaultValue: 1,
+            numberOptions: {
+              showSlider: true,
+              minimum: 0,
+              maximum: 1,
+              step: 0.1,
+            },
+          }),
+        ]
+      ),
     ];
-    if (this.object.mappings.stroke != null) {
-      widgets.push(
-        manager.mappingEditor("Line Width", "strokeWidth", {
-          hints: { rangeNumber: [0, 5] },
-          defaultValue: 1,
-          numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
-        })
-      );
-    }
-    widgets = widgets.concat([
-      manager.mappingEditor("Opacity", "opacity", {
-        hints: { rangeNumber: [0, 1] },
-        defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
-      }),
-      manager.mappingEditor("Visibility", "visible", {
-        defaultValue: true,
-      }),
-    ]);
     return widgets.concat(parentWidgets);
   }
 
@@ -241,10 +294,13 @@ export class ImageElementClass extends EmphasizableMarkClass<
   }
 
   // Get the graphical element from the element
+  // eslint-disable-next-line
   public getGraphics(
     cs: Graphics.CoordinateSystem,
     offset: Point,
+    // eslint-disable-next-line
     glyphIndex: number,
+    // eslint-disable-next-line
     manager: ChartStateManager
   ): Graphics.Element {
     const attrs = this.state.attributes;
@@ -345,7 +401,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
 
     // Create the image element
     const gImage = Graphics.makeGroup([
-      {
+      <Graphics.Image>{
         type: "image",
         src: image.src,
         x: imgX,
@@ -353,7 +409,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
         width: imageWidth,
         height: imageHeight,
         mode: "stretch",
-      } as Graphics.Image,
+      },
     ]);
     gImage.transform = cs.getLocalTransform(px + offset.x, py + offset.y);
     g.elements.push(gImage);
@@ -384,6 +440,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
   }
 
   /** Get link anchors for this mark */
+  // eslint-disable-next-line
   public getLinkAnchors(): LinkAnchor.Description[] {
     const attrs = this.state.attributes;
     const element = this.object._id;
@@ -520,7 +577,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     return [
-      {
+      <DropZones.Line>{
         type: "line",
         p1: { x: x2, y: y1 },
         p2: { x: x1, y: y1 },
@@ -533,8 +590,8 @@ export class ImageElementClass extends EmphasizableMarkClass<
             hints: { autoRange: true, startWithZero: "always" },
           },
         },
-      } as DropZones.Line,
-      {
+      },
+      <DropZones.Line>{
         type: "line",
         p1: { x: x1, y: y1 },
         p2: { x: x1, y: y2 },
@@ -547,7 +604,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
             hints: { autoRange: true, startWithZero: "always" },
           },
         },
-      } as DropZones.Line,
+      },
     ];
   }
   // Get bounding rectangle given current state
@@ -555,35 +612,35 @@ export class ImageElementClass extends EmphasizableMarkClass<
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     return [
-      {
+      <Handles.Line>{
         type: "line",
         axis: "x",
         actions: [{ type: "attribute", attribute: "x1" }],
         value: x1,
         span: [y1, y2],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "x",
         actions: [{ type: "attribute", attribute: "x2" }],
         value: x2,
         span: [y1, y2],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "y1" }],
         value: y1,
         span: [x1, x2],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "y2" }],
         value: y2,
         span: [x1, x2],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y1,
@@ -591,8 +648,8 @@ export class ImageElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y2,
@@ -600,8 +657,8 @@ export class ImageElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y1,
@@ -609,8 +666,8 @@ export class ImageElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y2,
@@ -618,33 +675,33 @@ export class ImageElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
+      },
     ];
   }
 
   public getBoundingBox(): BoundingBox.Description {
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
-    return {
+    return <BoundingBox.Rectangle>{
       type: "rectangle",
       cx: (x1 + x2) / 2,
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
       rotation: 0,
-    } as BoundingBox.Rectangle;
+    };
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2, cx, cy } = attrs;
     return [
-      { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
-      { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
-      { type: "x", value: cx, attribute: "cx" } as SnappingGuides.Axis,
-      { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
-      { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
-      { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis,
+      <SnappingGuides.Axis>{ type: "x", value: x1, attribute: "x1" },
+      <SnappingGuides.Axis>{ type: "x", value: x2, attribute: "x2" },
+      <SnappingGuides.Axis>{ type: "x", value: cx, attribute: "cx" },
+      <SnappingGuides.Axis>{ type: "y", value: y1, attribute: "y1" },
+      <SnappingGuides.Axis>{ type: "y", value: y2, attribute: "y2" },
+      <SnappingGuides.Axis>{ type: "y", value: cy, attribute: "cy" },
     ];
   }
 
@@ -652,7 +709,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
     const properties = [];
     if (
       this.object.mappings.strokeWidth &&
-      this.object.mappings.strokeWidth.type === "value"
+      this.object.mappings.strokeWidth.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -665,7 +722,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.opacity &&
-      this.object.mappings.opacity.type === "value"
+      this.object.mappings.opacity.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -678,7 +735,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.visible &&
-      this.object.mappings.visible.type === "value"
+      this.object.mappings.visible.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -691,7 +748,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.image &&
-      this.object.mappings.image.type === "value"
+      this.object.mappings.image.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -704,7 +761,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.fill &&
-      this.object.mappings.fill.type === "value"
+      this.object.mappings.fill.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -717,7 +774,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.stroke &&
-      this.object.mappings.stroke.type === "value"
+      this.object.mappings.stroke.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,

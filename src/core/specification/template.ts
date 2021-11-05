@@ -3,6 +3,7 @@
 
 import { FieldType } from "../common";
 import * as Dataset from "../dataset";
+import { TableType } from "../dataset";
 import { DefaultAttributes } from "../prototypes";
 import { Chart, DataType, AttributeType } from "./index";
 import * as Types from "./types";
@@ -27,6 +28,9 @@ export interface ChartTemplate {
 
   /** Expose property editor */
   properties: Property[];
+
+  /**Template version */
+  version: string;
 }
 
 export interface Column {
@@ -39,6 +43,7 @@ export interface Column {
 export interface Table {
   name: string;
   columns: Column[];
+  type?: TableType;
 }
 
 export interface Property {
@@ -51,7 +56,7 @@ export interface Property {
   };
 
   type: AttributeType;
-  default?: string | number | boolean | object;
+  default?: string | number | boolean | Record<string, unknown>;
 }
 
 /** Infer values from data */
@@ -68,6 +73,15 @@ export interface Inference {
   autoDomainMin?: boolean;
   /** Disable any automatic domain/range/axis behavior for max of range */
   autoDomainMax?: boolean;
+
+  /**
+   * @deprecated Use autoDomainMin
+   */
+  disableAutoMin?: boolean;
+  /**
+   * @deprecated Use autoDomainMax
+   */
+  disableAutoMax?: boolean;
 
   axis?: AxisInference;
   scale?: ScaleInference;
@@ -86,6 +100,11 @@ export interface AxisInference {
   style?: AxisRenderingStyle;
   /** Infer axis data and assign to this property */
   property: PropertyField;
+
+  orderMode?: Types.OrderMode;
+  order?: string[];
+  rawExpression?: string;
+  defineCategories?: boolean;
 }
 
 /** Infer scale parameter, set to scale's domain property */

@@ -2,11 +2,9 @@
 // Licensed under the MIT license.
 import * as React from "react";
 
-import { classNames } from "../utils";
-
 export class SVGImageIcon extends React.PureComponent<
   { url: string; width?: number; height?: number },
-  {}
+  Record<string, never>
 > {
   public render() {
     const style: React.CSSProperties = {};
@@ -22,7 +20,7 @@ export class SVGImageIcon extends React.PureComponent<
         <span
           className="el-svg-icon svg-image-icon"
           style={style}
-          onDragStart={(e) => false}
+          onDragStart={() => false}
         />
       );
     } else {

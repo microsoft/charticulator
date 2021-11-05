@@ -7,7 +7,6 @@ import {
   Dataset,
   Prototypes,
   Graphics,
-  Solver,
   zip,
   deepClone,
 } from "../core";
@@ -18,6 +17,7 @@ import {
   GraphicalElementEventHandler,
 } from "../app/renderer";
 import { RenderEvents } from "../core/graphics";
+import { MappingType } from "../core/specification";
 
 export { DataSelection };
 
@@ -121,7 +121,7 @@ export class ChartComponent extends React.Component<
         if (newProps.renderEvents?.afterRendered) {
           newProps.renderEvents.afterRendered();
         }
-      });      
+      });
     }
   }
 
@@ -152,7 +152,7 @@ export class ChartComponent extends React.Component<
         (this.manager.chart.mappings.width as Specification.ValueMapping).value
     ) {
       this.manager.chart.mappings.width = {
-        type: "value",
+        type: MappingType.value,
         value: newProps.width,
       } as Specification.ValueMapping;
       changed = true;
@@ -163,7 +163,7 @@ export class ChartComponent extends React.Component<
         (this.manager.chart.mappings.height as Specification.ValueMapping).value
     ) {
       this.manager.chart.mappings.height = {
-        type: "value",
+        type: MappingType.value,
         value: newProps.height,
       } as Specification.ValueMapping;
       changed = true;
@@ -178,7 +178,17 @@ export class ChartComponent extends React.Component<
       null,
       props.defaultAttributes
     );
-    this.renderer = new Graphics.ChartRenderer(this.manager, props.renderEvents);
+    this.renderer = new Graphics.ChartRenderer(
+      this.manager,
+      props.renderEvents
+    );
+    this.manager.onUpdate(() => {
+      this.manager.solveConstraints();
+      this.setState({
+        graphics: this.renderer.render(),
+      });
+      this.scheduleUpdate();
+    });
   }
 
   protected timer: any;
@@ -267,7 +277,7 @@ export class ChartComponent extends React.Component<
         clientY: (event as any).clientY,
         event,
       };
-      handler({ table: element.plotSegment.table, rowIndices }, modifiers);
+      handler({ table: element.plotSegment?.table, rowIndices }, modifiers);
     };
   }
 
@@ -310,6 +320,15 @@ export class ChartComponent extends React.Component<
           />
         ) : null}
         {gfx}
+        {this.renderer.renderControls(
+          this.manager.chart,
+          this.manager.chartState,
+          {
+            centerX: 0,
+            centerY: 0,
+            scale: 1,
+          }
+        )}
         {this.state.working ? (
           <rect
             x={-this.props.width / 2}

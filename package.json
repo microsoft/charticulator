@@ -1,6 +1,6 @@
 {
   "name": "charticulator",
-  "version": "2.0.0",
+  "version": "2.1.1",
   "private": true,
   "author": {
     "name": "Donghao Ren",
@@ -20,9 +20,9 @@
     "ssl_watch": "node build.js ssl_watch",
     "start": "node build.js dev watch",
     "ssl_start": "node build.js dev ssl_watch",
-    "lint": "tslint 'src/**/*.{ts,tsx}'",
+    "lint": "npx eslint --fix ./src --ext .js,.jsx,.ts,.tsx",
     "prettify": "prettier \"./src/**/*.{ts,tsx}\" \"./sass/**/*.{scss,sass}\"",
-    "unit_test": "NODE_PATH=. mocha dist/scripts/tests/unit",
+    "unit_test": "mocha dist/scripts/tests/unit",
     "test": "yarn run lint && yarn run dev && yarn run unit_test",
     "add_licenses": "license-check-and-add",
     "create_cert": "openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes",
@@ -30,7 +30,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "tslint --fix",
+      "npx eslint --fix ./src --ext .js,.jsx,.ts,.tsx",
       "prettier --write",
       "license-check-and-add"
     ],
@@ -41,6 +41,9 @@
     "*.{js,jsx}": "license-check-and-add"
   },
   "dependencies": {
+    "@fluentui/react": "^8.8.0",
+    "@uifabric/icons": "7.5.22",
+    "@uifabric/styling": "7.18.1",
     "d3-color": "^1.4.1",
     "d3-dsv": "^1.0.8",
     "d3-force": "^1.1.0",
@@ -50,8 +53,9 @@
     "file-saver": "^1.3.8",
     "hammerjs": "^2.0.8",
     "lscg-solver": "^1.2.1",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3"
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
+    "styled-components": "5.2.0"
   },
   "license-check-and-add-config": {
     "folder": ".",
@@ -87,11 +91,17 @@
     "@types/node": "^13.13.4",
     "@types/react": "^16.3.14",
     "@types/react-dom": "^16.0.5",
+    "@types/styled-components": "5.1.7",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "chai": "^4.2.0",
     "dts-bundle": "^0.7.3",
+    "eslint": "^7.24.0",
+    "eslint-plugin-powerbi-visuals": "^0.8.1",
     "file-loader": "^2.0.0",
     "fs-extra": "^7.0.1",
-    "handlebars": "4.7.6",
+    "handlebars": "4.7.7",
     "http-server": "^0.12.0",
     "husky": "^4.3.0",
     "js-yaml": "^3.13.1",
@@ -103,12 +113,9 @@
     "preact": "^8.3.1",
     "preact-compat": "^3.18.3",
     "prettier": "2.1.2",
-    "sass": "^1.32.4",
-    "tslint": "6.1.3",
-    "tslint-config-prettier": "^1.12.0",
-    "tslint-react": "^3.6.0",
-    "typedoc": "~0.15.0",
-    "typedoc-plugin-external-module-name": "2.2.1",
+    "sass": "^1.37.5",
+    "typedoc": "^0.20.29",
+    "typedoc-plugin-external-module-name": "^4.0.6",
     "typescript": "3.9.7",
     "uglify-es": "^3.3.9",
     "url-loader": "^1.0.1",

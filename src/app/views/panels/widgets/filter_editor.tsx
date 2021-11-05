@@ -2,13 +2,14 @@
 // Licensed under the MIT license.
 import * as React from "react";
 import { Expression, Prototypes, Specification } from "../../../../core";
+import { strings } from "../../../../strings";
 import { Actions } from "../../../actions";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { Button, InputExpression, Select, CheckBox } from "./controls";
-import { WidgetManager } from "./manager";
+import { CharticulatorPropertyAccessors } from "./manager";
 
 export interface FilterEditorProps {
-  manager: WidgetManager;
+  manager: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
   options: Prototypes.Controls.FilterEditorOptions;
   value: Specification.Types.Filter;
 }
@@ -54,6 +55,7 @@ export class FilterEditor extends React.Component<
     this.setState(this.getDefaultState(newValue));
   }
 
+  // eslint-disable-next-line
   public render() {
     const { manager, options } = this.props;
     const value = this.state.currentValue;
@@ -89,6 +91,7 @@ export class FilterEditor extends React.Component<
           const keysSorted: string[] = [];
           if (value && value.categories) {
             for (const k in value.categories.values) {
+              // eslint-disable-next-line
               if (value.categories.values.hasOwnProperty(k)) {
                 keysSorted.push(k);
               }
@@ -139,6 +142,7 @@ export class FilterEditor extends React.Component<
                         text="Select All"
                         onClick={() => {
                           for (const key in value.categories.values) {
+                            // eslint-disable-next-line
                             if (value.categories.values.hasOwnProperty(key)) {
                               value.categories.values[key] = true;
                             }
@@ -155,6 +159,7 @@ export class FilterEditor extends React.Component<
                         text="Clear"
                         onClick={() => {
                           for (const key in value.categories.values) {
+                            // eslint-disable-next-line
                             if (value.categories.values.hasOwnProperty(key)) {
                               value.categories.values[key] = false;
                             }
@@ -198,10 +203,10 @@ export class FilterEditor extends React.Component<
     return (
       <div className="charticulator__filter-editor">
         <div className="attribute-editor">
-          <div className="header">Edit Filter</div>
+          <div className="header">{strings.filter.editFilter}</div>
           {manager.vertical(
             manager.row(
-              "Filter Type",
+              strings.filter.filterType,
               <Select
                 onChange={(newValue) => {
                   if (this.state.type != newValue) {

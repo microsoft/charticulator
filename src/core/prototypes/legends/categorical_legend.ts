@@ -1,17 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Color, indexOf } from "../../common";
+import { Color } from "../../common";
 import * as Graphics from "../../graphics";
 
 import { LegendClass, LegendProperties } from "./legend";
 import { Controls } from "..";
+import { strings } from "../../../strings";
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
 
 export interface CategoricalLegendItem {
   type: "number" | "color" | "boolean";
   label: string;
   value: number | Color | boolean;
 }
+
+export const ReservedMappingKeyNamePrefix = "reserved_";
 
 export class CategoricalLegendClass extends LegendClass {
   public static classID: string = "legend.categorical";
@@ -27,13 +31,19 @@ export class CategoricalLegendClass extends LegendClass {
   public getLegendItems(): CategoricalLegendItem[] {
     const scale = this.getScale();
     if (scale) {
-      const [scaleObject, scaleState] = scale;
-      const mapping = scaleObject.properties.mapping as {
-        [name: string]: Color;
-      };
+      const [scaleObject] = scale;
+      const mapping = <
+        {
+          [name: string]: Color;
+        }
+      >scaleObject.properties.mapping;
       const items: CategoricalLegendItem[] = [];
       for (const key in mapping) {
-        if (mapping.hasOwnProperty(key)) {
+        if (
+          // eslint-disable-next-line
+          mapping.hasOwnProperty(key) &&
+          !key.startsWith(ReservedMappingKeyNamePrefix)
+        ) {
           switch (scaleObject.classID) {
             case "scale.categorical<string,boolean>":
               {
@@ -57,8 +67,21 @@ export class CategoricalLegendClass extends LegendClass {
           }
         }
       }
-      items.sort((a, b) => (a.label < b.label ? -1 : 1));
-      return items;
+      if (this.object.properties.order) {
+        if (this.object.properties.order.length != items.length) {
+          return items;
+        } else {
+          return this.object.properties.order.map((orderItem) => {
+            return {
+              type: "color",
+              label: orderItem,
+              value: mapping[orderItem],
+            };
+          });
+        }
+      } else {
+        return items;
+      }
     } else {
       return [];
     }
@@ -109,6 +132,7 @@ export class CategoricalLegendClass extends LegendClass {
     }
   }
 
+  // eslint-disable-next-line
   public getGraphics(): Graphics.Element {
     const fontFamily = this.object.properties.fontFamily;
     const fontSize = this.object.properties.fontSize;
@@ -148,7 +172,7 @@ export class CategoricalLegendClass extends LegendClass {
               case "rectangle":
                 gItem.elements.push(
                   Graphics.makeRect(8, 4, lineHeight, lineHeight - 4, {
-                    fillColor: item.value as Color,
+                    fillColor: <Color>item.value,
                   })
                 );
                 break;
@@ -170,7 +194,7 @@ export class CategoricalLegendClass extends LegendClass {
                       },
                     ],
                     {
-                      fillColor: item.value as Color,
+                      fillColor: <Color>item.value,
                     }
                   )
                 );
@@ -184,7 +208,7 @@ export class CategoricalLegendClass extends LegendClass {
                     lineHeight / 2,
                     lineHeight / 3,
                     {
-                      fillColor: item.value as Color,
+                      fillColor: <Color>item.value,
                     }
                   )
                 );
@@ -256,29 +280,54 @@ export class CategoricalLegendClass extends LegendClass {
   }
 
   public getAttributePanelWidgets(
-    manager: Controls.WidgetManager
+    manager: Controls.WidgetManager & CharticulatorPropertyAccessors
   ): Controls.Widget[] {
     const widgets = super.getAttributePanelWidgets(manager);
 
     return [
       ...widgets,
-      manager.row(
-        "Orientation",
-        manager.horizontal(
-          [0, 0],
-          null,
+      manager.verticalGroup(
+        {
+          header: strings.objects.legend.categoricalLegend,
+        },
+        [
           manager.inputSelect(
             { property: "orientation" },
             {
               type: "radio",
               showLabel: false,
-              icons: ["sublayout/dodge-y", "sublayout/dodge-x"],
-              labels: ["Vertical", "Horizontal"],
+              icons: ["AlignHorizontalCenter", "AlignVerticalCenter"],
+              labels: [
+                strings.objects.legend.vertical,
+                strings.objects.legend.horizontal,
+              ],
               options: ["vertical", "horizontal"],
+              label: strings.objects.legend.orientation,
             }
-          )
-        )
+          ),
+        ]
       ),
     ];
   }
+
+  // private getScaleEditor(
+  //   manager: Controls.WidgetManager & CharticulatorPropertyAccessors
+  // ) {
+  //   const scale = this?.getScale();
+  //   if (scale) {
+  //     return manager.vertical(
+  //       manager.label(strings.objects.colors, {
+  //         addMargins: true,
+  //       }),
+  //       manager.horizontal(
+  //         [1],
+  //         manager.scaleEditor(
+  //           "mappingOptions",
+  //           strings.objects.legend.editColors
+  //         )
+  //       )
+  //     );
+  //   }
+  //   return null;
+  // }
 }

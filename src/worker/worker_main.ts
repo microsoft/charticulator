@@ -1,9 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { CharticulatorWorkerInterface } from ".";
 import * as Core from "../core";
 import { WorkerHostProcess } from "./communication";
 
-class CharticulatorWorkerProcess extends WorkerHostProcess {
+export class CharticulatorWorkerProcess
+  extends WorkerHostProcess
+  implements CharticulatorWorkerInterface {
   constructor() {
     super();
     this.registerRPC("initialize", this.initialize.bind(this));
@@ -21,14 +24,12 @@ class CharticulatorWorkerProcess extends WorkerHostProcess {
     chart: Core.Specification.Chart,
     chartState: Core.Specification.ChartState,
     dataset: Core.Dataset.Dataset,
-    preSolveValues: Array<
-      [
-        Core.Solver.ConstraintStrength,
-        Core.Specification.AttributeMap,
-        string,
-        number
-      ]
-    > = null,
+    preSolveValues: [
+      Core.Solver.ConstraintStrength,
+      Core.Specification.AttributeMap,
+      string,
+      number
+    ][] = null,
     mappingOnly: boolean = false
   ) {
     if (preSolveValues != null && preSolveValues.length > 0) {
@@ -73,4 +74,4 @@ class CharticulatorWorkerProcess extends WorkerHostProcess {
   }
 }
 
-const worker = new CharticulatorWorkerProcess();
+new CharticulatorWorkerProcess();

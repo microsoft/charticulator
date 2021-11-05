@@ -1,17 +1,19 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 import { Point, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
-import { DataKind, AttributeType } from "../../specification";
 import * as Specification from "../../specification";
+import { AttributeType, DataKind, MappingType } from "../../specification";
 import {
   BoundingBox,
   Controls,
   DropZones,
   Handles,
   LinkAnchor,
+  ObjectClass,
   ObjectClassMetadata,
   SnappingGuides,
   strokeStyleToDashArray,
@@ -24,8 +26,15 @@ import {
   RectElementAttributes,
   RectElementProperties,
 } from "./rect.attrs";
+import { strings } from "../../../strings";
 
 export { RectElementAttributes, RectElementProperties };
+
+export enum ShapeType {
+  Rectangle = "rectangle",
+  Triangle = "triangle",
+  Ellips = "ellipse",
+}
 
 export class RectElementClass extends EmphasizableMarkClass<
   RectElementProperties,
@@ -36,21 +45,25 @@ export class RectElementClass extends EmphasizableMarkClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Shape",
-    iconPath: "mark/rect",
+    iconPath: "RectangleShape",
     creatingInteraction: {
-      type: "rectangle",
+      type: ShapeType.Rectangle,
       mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" },
     },
   };
 
   public static defaultProperties: Partial<RectElementProperties> = {
+    ...ObjectClass.defaultProperties,
     visible: true,
     strokeStyle: "solid",
-    shape: "rectangle",
+    shape: ShapeType.Rectangle,
+    allowFlipping: true,
+    rx: 0,
+    ry: 0,
   };
 
   public static defaultMappingValues: Partial<RectElementAttributes> = {
-    fill: { r: 217, g: 217, b: 217 },
+    fill: { r: 17, g: 141, b: 255 },
     strokeWidth: 1,
     opacity: 1,
     visible: true,
@@ -86,7 +99,7 @@ export class RectElementClass extends EmphasizableMarkClass<
 
     if (
       this.object.mappings.fill &&
-      this.object.mappings.fill.type === "value"
+      this.object.mappings.fill.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -99,7 +112,7 @@ export class RectElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.visible &&
-      this.object.mappings.visible.type === "value"
+      this.object.mappings.visible.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -112,7 +125,7 @@ export class RectElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.stroke &&
-      this.object.mappings.stroke.type === "value"
+      this.object.mappings.stroke.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -125,7 +138,7 @@ export class RectElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.strokeWidth &&
-      this.object.mappings.strokeWidth.type === "value"
+      this.object.mappings.strokeWidth.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -146,7 +159,7 @@ export class RectElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.opacity &&
-      this.object.mappings.opacity.type === "value"
+      this.object.mappings.opacity.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -157,6 +170,23 @@ export class RectElementClass extends EmphasizableMarkClass<
         default: this.state.attributes.opacity,
       });
     }
+    properties.push({
+      objectID: this.object._id,
+      target: {
+        property: "rx",
+      },
+      type: Specification.AttributeType.Number,
+      default: 0,
+    });
+
+    properties.push({
+      objectID: this.object._id,
+      target: {
+        property: "ry",
+      },
+      type: Specification.AttributeType.Number,
+      default: 0,
+    });
 
     return {
       properties,
@@ -169,69 +199,134 @@ export class RectElementClass extends EmphasizableMarkClass<
     const parentWidgets = super.getAttributePanelWidgets(manager);
 
     let widgets: Controls.Widget[] = [
-      manager.sectionHeader("Size & Shape"),
-      manager.mappingEditor("Width", "width", {
-        hints: { autoRange: true, startWithZero: "always" },
-        acceptKinds: [DataKind.Numerical],
-        defaultAuto: true,
-      }),
-      manager.mappingEditor("Height", "height", {
-        hints: { autoRange: true, startWithZero: "always" },
-        acceptKinds: [DataKind.Numerical],
-        defaultAuto: true,
-      }),
-      manager.row(
-        "Shape",
-        manager.inputSelect(
-          { property: "shape" },
-          {
-            type: "dropdown",
-            showLabel: true,
-            icons: ["mark/rect", "mark/triangle", "mark/ellipse"],
-            labels: ["Rectangle", "Triangle", "Ellipse"],
-            options: ["rectangle", "triangle", "ellipse"],
-          }
-        )
-      ),
-      manager.sectionHeader("Style"),
-      manager.mappingEditor("Fill", "fill", {}),
-      manager.mappingEditor("Stroke", "stroke", {}),
-    ];
-    if (this.object.mappings.stroke != null) {
-      widgets.push(
-        manager.mappingEditor("Line Width", "strokeWidth", {
-          hints: { rangeNumber: [0, 5] },
-          defaultValue: 1,
-          numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
-        })
-      );
-      widgets.push(
-        manager.row(
-          "Line Style",
+      manager.verticalGroup(
+        {
+          header: strings.objects.general,
+        },
+        [
+          manager.mappingEditor(strings.objects.width, "width", {
+            hints: { autoRange: true, startWithZero: "always" },
+            acceptKinds: [DataKind.Numerical],
+            defaultAuto: true,
+          }),
+          manager.mappingEditor(strings.objects.height, "height", {
+            hints: { autoRange: true, startWithZero: "always" },
+            acceptKinds: [DataKind.Numerical],
+            defaultAuto: true,
+          }),
           manager.inputSelect(
-            { property: "strokeStyle" },
+            { property: "shape" },
             {
               type: "dropdown",
               showLabel: true,
-              icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
-              labels: ["Solid", "Dashed", "Dotted"],
-              options: ["solid", "dashed", "dotted"],
+              label: strings.objects.rect.shape,
+              icons: ["RectangleShape", "TriangleShape", "Ellipse"],
+              labels: [
+                strings.objects.rect.shapes.rectangle,
+                strings.objects.rect.shapes.triangle,
+                strings.objects.rect.shapes.ellipse,
+              ],
+              options: [
+                ShapeType.Rectangle,
+                ShapeType.Triangle,
+                ShapeType.Ellips,
+              ],
             }
-          )
-        )
-      );
-    }
-
-    widgets = widgets.concat([
-      manager.mappingEditor("Opacity", "opacity", {
-        hints: { rangeNumber: [0, 1] },
-        defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
-      }),
-      manager.mappingEditor("Visibility", "visible", {
-        defaultValue: true,
-      }),
-    ]);
+          ),
+          manager.inputBoolean(
+            { property: "allowFlipping" },
+            {
+              type: "checkbox",
+              label: strings.objects.rect.flipping,
+            }
+          ),
+          manager.mappingEditor(
+            strings.objects.visibleOn.visibility,
+            "visible",
+            {
+              defaultValue: true,
+            }
+          ),
+        ]
+      ),
+      manager.verticalGroup(
+        {
+          header: strings.objects.style,
+        },
+        [
+          manager.mappingEditor(strings.objects.fill, "fill", {}),
+          manager.mappingEditor(strings.objects.stroke, "stroke", {}),
+          this.object.mappings.stroke != null
+            ? manager.mappingEditor(
+                strings.objects.strokeWidth,
+                "strokeWidth",
+                {
+                  hints: { rangeNumber: [0, 5] },
+                  defaultValue: 1,
+                  numberOptions: {
+                    showSlider: true,
+                    sliderRange: [0, 5],
+                    minimum: 0,
+                  },
+                }
+              )
+            : null,
+          this.object.mappings.stroke != null
+            ? manager.inputSelect(
+                { property: "strokeStyle" },
+                {
+                  type: "dropdown",
+                  showLabel: true,
+                  label: "Line Style",
+                  icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
+                  labels: [
+                    strings.objects.links.solid,
+                    strings.objects.links.dashed,
+                    strings.objects.links.dotted,
+                  ],
+                  options: ["solid", "dashed", "dotted"],
+                }
+              )
+            : null,
+          manager.mappingEditor(strings.objects.opacity, "opacity", {
+            hints: { rangeNumber: [0, 1] },
+            defaultValue: 1,
+            numberOptions: {
+              showSlider: true,
+              minimum: 0,
+              maximum: 1,
+              step: 0.1,
+            },
+          }),
+          this.object.properties.shape === ShapeType.Rectangle
+            ? manager.inputNumber(
+                {
+                  property: "rx",
+                },
+                {
+                  label: strings.objects.roundX,
+                  showUpdown: true,
+                  updownTick: 1,
+                  minimum: 0,
+                }
+              )
+            : null,
+          this.object.properties.shape === ShapeType.Rectangle
+            ? manager.inputNumber(
+                {
+                  property: "ry",
+                },
+                {
+                  label: strings.objects.roundY,
+                  showUpdown: true,
+                  updownTick: 1,
+                  minimum: 0,
+                }
+              )
+            : null,
+        ]
+      ),
+    ];
 
     widgets = widgets.concat(parentWidgets);
     return widgets;
@@ -294,23 +389,48 @@ export class RectElementClass extends EmphasizableMarkClass<
         [1, y2],
       ]
     );
+
+    if (
+      !this.object.properties.allowFlipping &&
+      this.object.properties.allowFlipping !== undefined
+    ) {
+      // Additional constraint to prevent flipping mark objects
+      // add constraint x2 >= x1
+      solver.addSoftInequality(
+        ConstraintStrength.WEAKER,
+        0,
+        [[1, x2]],
+        [[1, x1]]
+      );
+
+      // add constraint y2 >= y1
+      solver.addSoftInequality(
+        ConstraintStrength.WEAKER,
+        0,
+        [[1, y2]],
+        [[1, y1]]
+      );
+    }
   }
 
   // Get the graphical element from the element
   public getGraphics(
     cs: Graphics.CoordinateSystem,
     offset: Point,
+    // eslint-disable-next-line
     glyphIndex = 0,
+    // eslint-disable-next-line
     manager: ChartStateManager,
     empasized?: boolean
   ): Graphics.Element {
     const attrs = this.state.attributes;
+    const properties = this.object.properties;
     if (!attrs.visible || !this.object.properties.visible) {
       return null;
     }
     const helper = new Graphics.CoordinateSystemHelper(cs);
     switch (this.object.properties.shape) {
-      case "ellipse": {
+      case ShapeType.Ellips: {
         return helper.ellipse(
           attrs.x1 + offset.x,
           attrs.y1 + offset.y,
@@ -329,7 +449,7 @@ export class RectElementClass extends EmphasizableMarkClass<
           }
         );
       }
-      case "triangle": {
+      case ShapeType.Triangle: {
         const pathMaker = new Graphics.PathMaker();
         helper.lineTo(
           pathMaker,
@@ -362,7 +482,7 @@ export class RectElementClass extends EmphasizableMarkClass<
         };
         return path;
       }
-      case "rectangle":
+      case ShapeType.Rectangle:
       default: {
         return helper.rect(
           attrs.x1 + offset.x,
@@ -379,13 +499,16 @@ export class RectElementClass extends EmphasizableMarkClass<
             fillColor: attrs.fill,
             opacity: attrs.opacity,
             ...this.generateEmphasisStyle(empasized),
-          }
+          },
+          properties.rx,
+          properties.ry
         );
       }
     }
   }
 
   /** Get link anchors for this mark */
+  // eslint-disable-next-line
   public getLinkAnchors(): LinkAnchor.Description[] {
     const attrs = this.state.attributes;
     const element = this.object._id;
@@ -522,7 +645,7 @@ export class RectElementClass extends EmphasizableMarkClass<
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     return [
-      {
+      <DropZones.Line>{
         type: "line",
         p1: { x: x2, y: y1 },
         p2: { x: x1, y: y1 },
@@ -535,8 +658,8 @@ export class RectElementClass extends EmphasizableMarkClass<
             hints: { autoRange: true, startWithZero: "always" },
           },
         },
-      } as DropZones.Line,
-      {
+      },
+      <DropZones.Line>{
         type: "line",
         p1: { x: x1, y: y1 },
         p2: { x: x1, y: y2 },
@@ -549,7 +672,7 @@ export class RectElementClass extends EmphasizableMarkClass<
             hints: { autoRange: true, startWithZero: "always" },
           },
         },
-      } as DropZones.Line,
+      },
     ];
   }
   // Get bounding rectangle given current state
@@ -557,35 +680,47 @@ export class RectElementClass extends EmphasizableMarkClass<
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     return [
-      {
+      <Handles.Line>{
         type: "line",
         axis: "x",
         actions: [{ type: "attribute", attribute: "x1" }],
         value: x1,
         span: [y1, y2],
-      } as Handles.Line,
-      {
+        options: {
+          snapToClosestPoint: true,
+        },
+      },
+      <Handles.Line>{
         type: "line",
         axis: "x",
         actions: [{ type: "attribute", attribute: "x2" }],
         value: x2,
         span: [y1, y2],
-      } as Handles.Line,
-      {
+        options: {
+          snapToClosestPoint: true,
+        },
+      },
+      <Handles.Line>{
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "y1" }],
         value: y1,
         span: [x1, x2],
-      } as Handles.Line,
-      {
+        options: {
+          snapToClosestPoint: true,
+        },
+      },
+      <Handles.Line>{
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "y2" }],
         value: y2,
         span: [x1, x2],
-      } as Handles.Line,
-      {
+        options: {
+          snapToClosestPoint: true,
+        },
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y1,
@@ -593,8 +728,8 @@ export class RectElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y2,
@@ -602,8 +737,8 @@ export class RectElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y1,
@@ -611,8 +746,8 @@ export class RectElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y2,
@@ -620,33 +755,33 @@ export class RectElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
+      },
     ];
   }
 
   public getBoundingBox(): BoundingBox.Description {
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
-    return {
+    return <BoundingBox.Rectangle>{
       type: "rectangle",
       cx: (x1 + x2) / 2,
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
       rotation: 0,
-    } as BoundingBox.Rectangle;
+    };
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2, cx, cy } = attrs;
     return [
-      { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
-      { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
-      { type: "x", value: cx, attribute: "cx" } as SnappingGuides.Axis,
-      { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
-      { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
-      { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis,
+      <SnappingGuides.Axis>{ type: "x", value: x1, attribute: "x1" },
+      <SnappingGuides.Axis>{ type: "x", value: x2, attribute: "x2" },
+      <SnappingGuides.Axis>{ type: "x", value: cx, attribute: "cx" },
+      <SnappingGuides.Axis>{ type: "y", value: y1, attribute: "y1" },
+      <SnappingGuides.Axis>{ type: "y", value: y2, attribute: "y2" },
+      <SnappingGuides.Axis>{ type: "y", value: cy, attribute: "cy" },
     ];
   }
 }

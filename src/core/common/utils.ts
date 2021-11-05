@@ -1,7 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
 import { Color } from "./color";
 import { utcFormat } from "d3-time-format";
 
 import { formatLocale, FormatLocaleDefinition } from "d3-format";
+import { Scale } from ".";
+import { OrderMode } from "../specification/types";
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -13,11 +18,11 @@ export function* zip<T1, T2>(a: T1[], b: T2[]): IterableIterator<[T1, T2]> {
 }
 
 /** zip two arrays, return a new array */
-export function zipArray<T1, T2>(a: T1[], b: T2[]): Array<[T1, T2]> {
+export function zipArray<T1, T2>(a: T1[], b: T2[]): [T1, T2][] {
   if (a.length < b.length) {
-    return a.map((elem, idx) => [elem, b[idx]] as [T1, T2]);
+    return a.map((elem, idx) => <[T1, T2]>[elem, b[idx]]);
   } else {
-    return b.map((elem, idx) => [a[idx], elem] as [T1, T2]);
+    return b.map((elem, idx) => <[T1, T2]>[a[idx], elem]);
   }
 }
 
@@ -56,8 +61,9 @@ export function deepClone<T>(obj: T): T {
 }
 
 export function shallowClone<T>(obj: T): T {
-  const r = {} as T;
+  const r = <T>{};
   for (const key in obj) {
+    // eslint-disable-next-line
     if (obj.hasOwnProperty(key)) {
       r[key] = obj[key];
     }
@@ -157,14 +163,14 @@ export function argMin<T>(
   return argmin;
 }
 
-export type FieldType = string | number | Array<string | number>;
+export type FieldType = string | number | (string | number)[];
 
 export function setField<ObjectType, ValueType>(
   obj: ObjectType,
   field: FieldType,
   value: ValueType
 ): ObjectType {
-  let p = obj as any;
+  let p = <any>obj;
   if (typeof field == "string" || typeof field == "number") {
     p[field] = value;
   } else {
@@ -179,11 +185,11 @@ export function setField<ObjectType, ValueType>(
   return obj;
 }
 
-export function getField<ObjectType, ValueType>(
+export function getField<ObjectType>(
   obj: ObjectType,
   field: FieldType
 ): ObjectType {
-  let p = obj as any;
+  let p = <any>obj;
   if (typeof field == "string" || typeof field == "number") {
     return p[field];
   } else {
@@ -199,18 +205,23 @@ export function getField<ObjectType, ValueType>(
 }
 
 /** Fill default values into an object */
-export function fillDefaults<T extends {}>(obj: Partial<T>, defaults: T): T {
+export function fillDefaults<T extends Record<string, unknown>>(
+  obj: Partial<T>,
+  defaults: T
+): T {
   if (obj == null) {
-    obj = {} as T;
+    obj = <T>{};
   }
   for (const key in defaults) {
+    // eslint-disable-next-line
     if (defaults.hasOwnProperty(key)) {
+      // eslint-disable-next-line
       if (!obj.hasOwnProperty(key)) {
         obj[key] = defaults[key];
       }
     }
   }
-  return obj as T;
+  return <T>obj;
 }
 
 /** Find the index of the first element that satisfies the predicate, return -1 if not found */
@@ -306,7 +317,7 @@ export function stableSort<T>(
   return (
     array
       // Convert to [ item, index ]
-      .map((x, index) => [x, index] as [T, number])
+      .map((x, index) => <[T, number]>[x, index])
       // Sort by compare then by index to stabilize
       .sort((a, b) => {
         const c = compare(a[0], b[0]);
@@ -400,6 +411,7 @@ export class KeyNameMap<KeyType, ValueType> {
   /** Determine if the map has an entry */
   public has(key: KeyType, name: string) {
     if (this.mapping.has(key)) {
+      // eslint-disable-next-line
       return this.mapping.get(key).hasOwnProperty(name);
     }
     return false;
@@ -409,6 +421,7 @@ export class KeyNameMap<KeyType, ValueType> {
   public get(key: KeyType, name: string) {
     if (this.mapping.has(key)) {
       const m = this.mapping.get(key);
+      // eslint-disable-next-line
       if (m.hasOwnProperty(name)) {
         return m[name];
       }
@@ -422,6 +435,7 @@ export class KeyNameMap<KeyType, ValueType> {
   ) {
     this.mapping.forEach((v, key) => {
       for (const p in v) {
+        // eslint-disable-next-line
         if (v.hasOwnProperty(p)) {
           callback(v[p], key, p);
         }
@@ -464,7 +478,8 @@ export abstract class HashMap<KeyType, ValueType> {
 export class MultistringHashMap<ValueType> extends HashMap<
   string[],
   ValueType
-  > {
+> {
+  // eslint-disable-next-line
   protected separator: string = Math.random().toString(36).substr(2);
   protected hash(key: string[]): string {
     return key.join(this.separator);
@@ -508,7 +523,7 @@ export function compareVersion(version1: string, version2: string) {
 }
 
 function componentToHex(c: number) {
-  const hex = c.toString(16);
+  const hex = Math.round(c).toString(16);
   return hex.length == 1 ? "0" + hex : hex;
 }
 
@@ -538,10 +553,10 @@ export function hexToRgb(hex: string): Color {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16),
-    }
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
     : null;
 }
 
@@ -552,28 +567,30 @@ export function hexToRgb(hex: string): Color {
  */
 export function getSortFunctionByData(values: string[]) {
   const testToRange = (value: string) => {
-    const reg = /(\d\-)|(\d+\-\d+)|(\d+\+)/;
+    const reg = /(\d-)|(\d+-\d+)|(\d+\+)/;
     const match = value.match(reg);
     if (match && match.length) {
       return true;
     }
     return false;
   };
-  const testResult = values
-    .map((val) => testToRange(val))
-    .reduceRight((a, b) => a && b);
-  if (testResult) {
-    return (a: any, b: any) => {
-      if (a && b) {
-        const aNum = a.match(/\d+/)[0];
-        const bNum = b.match(/\d+/)[0];
-        return +aNum < +bNum
-          ? 1
-          : +a.split("-").pop() < +b.split("-").pop()
+  if (values.length > 0){
+    const testResult = values
+      .map((val) => testToRange(val))
+      .reduceRight((a, b) => a && b);
+    if (testResult) {
+      return (a: any, b: any) => {
+        if (a && b) {
+          const aNum = a.match(/\d+/)[0];
+          const bNum = b.match(/\d+/)[0];
+          return +aNum < +bNum
             ? 1
-            : -1;
-      }
-    };
+            : +a.split("-").pop() < +b.split("-").pop()
+              ? 1
+              : -1;
+        }
+      };
+    }
   }
 
   return (a: any, b: any) => (a < b ? -1 : 1);
@@ -583,9 +600,9 @@ export function getSortFunctionByData(values: string[]) {
  */
 export function getSortDirection(values: string[]): string {
   let direction = "ascending";
-  if (values && values[0] && values[(values as any[]).length - 1]) {
+  if (values && values[0] && values[(<any[]>values).length - 1]) {
     const a = values[0].toString();
-    const b = values[(values as any[]).length - 1].toString();
+    const b = values[(<any[]>values).length - 1].toString();
     if (b && a && b.localeCompare(a) > -1) {
       direction = "ascending";
     } else {
@@ -621,7 +638,7 @@ export function compareMarkAttributeNames(a: string, b: string) {
 }
 
 export function refineColumnName(name: string) {
-  return name.replace(/[^0-9a-zA-Z\_]/g, "_");
+  return name.replace(/[^0-9a-zA-Z_]/g, "_");
 }
 
 export function getTimeZoneOffset(date: number) {
@@ -648,24 +665,27 @@ export function replaceSymbolByTab(str: string) {
   return str?.replace(/\t/g, "\\t");
 }
 
-let formatOptions: FormatLocaleDefinition = {
+// eslint-disable-next-line no-var
+var formatOptions: FormatLocaleDefinition = {
   decimal: ".",
   thousands: ",",
   grouping: [3],
-  currency: ["$", ""]
+  currency: ["$", ""],
 };
 
 export function getFormatOptions(): FormatLocaleDefinition {
   return {
-    ...formatOptions
+    ...formatOptions,
   };
 }
 
 export function setFormatOptions(options: FormatLocaleDefinition) {
   formatOptions = {
-    ...options
+    ...options,
   };
 }
+
+export const tickFormatParserExpression = () => /\{([^}]+)\}/g;
 
 export function getFormat() {
   return formatLocale(formatOptions).format;
@@ -673,8 +693,24 @@ export function getFormat() {
 
 export function parseSafe(value: string, defaultValue: any = null) {
   try {
-    return JSON.parse(value);
-  } catch(ex) {
+    return JSON.parse(value) || defaultValue;
+  } catch (ex) {
     return defaultValue;
   }
+}
+
+export function getRandom(startRange: number, endRange: number) {
+  // eslint-disable-next-line
+  return startRange + Math.random() * (endRange - startRange);
+}
+
+export function defineCategories(vector: any[]) {
+  const scale = new Scale.CategoricalScale();
+  vector = (vector as number[]).sort((a, b) => a - b);
+  scale.inferParameters(vector as string[], OrderMode.order);
+  const categories = new Array<string>(scale.length);
+  scale.domain.forEach(
+    (index: any, x: any) => (categories[index] = x.toString())
+  );
+  return categories;
 }

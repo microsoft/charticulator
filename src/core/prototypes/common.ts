@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/no-namespace */
+
 import { Point, getById, setField, getField } from "../common";
 import * as Graphics from "../graphics";
 import * as Specification from "../specification";
 import * as Controls from "./controls";
-import { isType } from "./object";
-import { ObjectProperties } from "../specification";
 export * from "./chart_element";
 export * from "./object";
 
@@ -68,7 +68,7 @@ export namespace DropZones {
       appendToProperty?: string;
     };
     /** Extend a plot segment */
-    extendPlotSegment?: {};
+    extendPlotSegment?: Record<string, unknown>;
   }
 
   export interface Line extends Description {
@@ -115,6 +115,12 @@ export namespace Handles {
 
   export interface HandleOptions {
     snapToClosestPoint: boolean;
+  }
+
+  export enum HandleActionType {
+    Property = "property",
+    Attribute = "attribute",
+    AttributeValueMapping = "attribute-value-mapping",
   }
 
   export interface HandleAction {
@@ -261,10 +267,18 @@ export namespace BoundingBox {
   }
 }
 
+export enum SnappingGuidesVisualTypes {
+  Guide,
+  Coordinator,
+  Point,
+}
+
 export namespace SnappingGuides {
   export interface Description {
     type: string;
     visible: boolean;
+    visualType?: SnappingGuidesVisualTypes;
+    priority?: number;
   }
 
   export interface Axis extends Description {
@@ -296,7 +310,7 @@ export namespace SnappingGuides {
 export namespace LinkAnchor {
   export interface Description {
     element: string;
-    points: Array<{
+    points: {
       x: number;
       y: number;
       xAttribute: string;
@@ -305,7 +319,7 @@ export namespace LinkAnchor {
         x: number;
         y: number;
       };
-    }>;
+    }[];
   }
 }
 
@@ -356,8 +370,8 @@ export namespace CreatingInteraction {
 export namespace TemplateMetadata {
   export interface ChartMetadata {
     dataSlots: DataSlot[];
-    inference: Array<{ id: string; infer: Inference }>;
-    mappings: Array<{ id: string; attribute: string; slot: string }>;
+    inference: { id: string; infer: Inference }[];
+    mappings: { id: string; attribute: string; slot: string }[];
   }
 
   export interface DataSlot {
@@ -427,9 +441,17 @@ export function findObjectById(
   return null;
 }
 
+export enum ObjectItemKind {
+  Chart = "chart",
+  ChartElement = "chart-element",
+  Glyph = "glyph",
+  Mark = "mark",
+  Scale = "scale",
+}
+
 export interface ObjectItem {
-  kind: "chart" | "chart-element" | "glyph" | "mark" | "scale";
   object: Specification.Object;
+  kind: ObjectItemKind;
 
   chartElement?: Specification.ChartElement;
   glyph?: Specification.Glyph;
@@ -440,18 +462,22 @@ export interface ObjectItem {
 export function* forEachObject(
   chart: Specification.Chart
 ): Iterable<ObjectItem> {
-  yield { kind: "chart", object: chart };
+  yield { kind: ObjectItemKind.Chart, object: chart };
   for (const chartElement of chart.elements) {
-    yield { kind: "chart-element", object: chartElement, chartElement };
+    yield {
+      kind: ObjectItemKind.ChartElement,
+      object: chartElement,
+      chartElement,
+    };
   }
   for (const glyph of chart.glyphs) {
-    yield { kind: "glyph", object: glyph, glyph };
+    yield { kind: ObjectItemKind.Glyph, object: glyph, glyph };
     for (const mark of glyph.marks) {
-      yield { kind: "mark", object: mark, glyph, mark };
+      yield { kind: ObjectItemKind.Mark, object: mark, glyph, mark };
     }
   }
   for (const scale of chart.scales) {
-    yield { kind: "scale", object: scale, scale };
+    yield { kind: ObjectItemKind.Scale, object: scale, scale };
   }
 }
 
@@ -472,7 +498,7 @@ export function setProperty(
     object.properties[property] = value;
   } else if (property.subfield) {
     setField(
-      (object.properties[property.property] as any)[property.field as string],
+      (<any>object.properties[property.property])[<string>property.field],
       property.subfield,
       value
     );
@@ -490,7 +516,7 @@ export function getProperty(
   } else {
     if (property.subfield) {
       return getField(
-        (object.properties[property.property] as any)[property.field as string],
+        (<any>object.properties[property.property])[<string>property.field],
         property.subfield
       );
     } else {

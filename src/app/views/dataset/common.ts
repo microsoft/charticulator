@@ -47,6 +47,7 @@ export function isKindAcceptable(
 
 export interface DerivedColumnDescription {
   name: string;
+  displayName?: string;
   type: Dataset.DataType;
   function: string;
   metadata: Dataset.ColumnMetadata;
@@ -67,12 +68,14 @@ function makeTwoDigitRange(start: number, end: number): string[] {
 export const type2DerivedColumns: {
   [name in Dataset.DataType]: DerivedColumnDescription[];
 } = {
+  image: null,
   string: null,
   number: null,
   boolean: null,
   date: [
     {
       name: "year",
+      displayName: strings.objects.derivedColumns.year,
       type: Dataset.DataType.String,
       function: "date.year",
       metadata: {
@@ -82,6 +85,7 @@ export const type2DerivedColumns: {
     },
     {
       name: "month",
+      displayName: strings.objects.derivedColumns.month,
       type: Dataset.DataType.String,
       function: "date.month",
       metadata: {
@@ -91,6 +95,7 @@ export const type2DerivedColumns: {
     },
     {
       name: "monthnumber",
+      displayName: strings.objects.derivedColumns.monthNumber,
       type: Dataset.DataType.String,
       function: "date.monthnumber",
       metadata: {
@@ -100,6 +105,7 @@ export const type2DerivedColumns: {
     },
     {
       name: "day",
+      displayName: strings.objects.derivedColumns.day,
       type: Dataset.DataType.String,
       function: "date.day",
       metadata: {
@@ -109,6 +115,7 @@ export const type2DerivedColumns: {
     },
     {
       name: "weekOfYear",
+      displayName: strings.objects.derivedColumns.weekOfYear,
       type: Dataset.DataType.String,
       function: "date.weekOfYear",
       metadata: {
@@ -118,6 +125,7 @@ export const type2DerivedColumns: {
     },
     {
       name: "dayOfYear",
+      displayName: strings.objects.derivedColumns.dayOfYear,
       type: Dataset.DataType.String,
       function: "date.dayOfYear",
       metadata: {
@@ -127,6 +135,7 @@ export const type2DerivedColumns: {
     },
     {
       name: "weekday",
+      displayName: strings.objects.derivedColumns.weekday,
       type: Dataset.DataType.String,
       function: "date.weekday",
       metadata: {
@@ -136,6 +145,7 @@ export const type2DerivedColumns: {
     },
     {
       name: "hour",
+      displayName: strings.objects.derivedColumns.hour,
       type: Dataset.DataType.String,
       function: "date.hour",
       metadata: {
@@ -145,6 +155,7 @@ export const type2DerivedColumns: {
     },
     {
       name: "minute",
+      displayName: strings.objects.derivedColumns.minute,
       type: Dataset.DataType.String,
       function: "date.minute",
       metadata: {
@@ -154,6 +165,7 @@ export const type2DerivedColumns: {
     },
     {
       name: "second",
+      displayName: strings.objects.derivedColumns.second,
       type: Dataset.DataType.String,
       function: "date.second",
       metadata: {

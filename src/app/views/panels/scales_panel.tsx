@@ -3,12 +3,7 @@
 import * as React from "react";
 import * as R from "../../resources";
 
-import {
-  EventSubscription,
-  Prototypes,
-  Action,
-  Expression,
-} from "../../../core";
+import { EventSubscription, Prototypes, Expression } from "../../../core";
 import { SVGImageIcon, DraggableElement } from "../../components";
 
 import { AppStore } from "../../stores";
@@ -21,14 +16,14 @@ import {
   ObjectProperties,
   Element,
   Scale,
-  Chart,
-  DataType,
+  MappingType,
 } from "../../../core/specification";
 import { Actions, DragData } from "../..";
 import { classNames } from "../../utils";
 import { FunctionCall, Variable } from "../../../core/expression";
 import { ColumnMetadata } from "../../../core/dataset";
 
+// eslint-disable-next-line
 function getObjectIcon(classID: string) {
   return R.getSVGIcon(
     Prototypes.ObjectClasses.GetMetadata(classID).iconPath || "object"
@@ -82,6 +77,7 @@ export class ScalesPanel extends ContextedComponent<
     return name[0].toUpperCase() + name.slice(1);
   }
 
+  // eslint-disable-next-line
   public render(): any {
     const store = this.props.store;
     let scales = store.chart.scales;
@@ -93,7 +89,8 @@ export class ScalesPanel extends ContextedComponent<
         Object.keys(element.mappings).find((key) => {
           const mapping = element.mappings[key];
           return (
-            mapping.type === "scale" &&
+            (mapping.type === MappingType.scale ||
+              mapping.type === MappingType.expressionScale) &&
             (mapping as ScaleMapping).scale === scaleID
           );
         }) != undefined
@@ -104,15 +101,18 @@ export class ScalesPanel extends ContextedComponent<
       return Object.keys(element.mappings).filter((key) => {
         const mapping = element.mappings[key];
         return (
-          mapping.type === "scale" &&
+          (mapping.type === MappingType.scale ||
+            mapping.type === MappingType.expressionScale) &&
           (mapping as ScaleMapping).scale === scaleID
         );
       });
     };
 
+    // eslint-disable-next-line
     const mapToUI = (scale: Scale<ObjectProperties>) => (
       glyph: Glyph,
       element: ChartElement<ObjectProperties>
+      // eslint-disable-next-line
     ) => (key: string) => {
       if (!element) {
         return (
@@ -155,20 +155,18 @@ export class ScalesPanel extends ContextedComponent<
                 const allowSelectValue = (element.mappings[key] as any)
                   .allowSelectValue;
                 const aggregation = Expression.getDefaultAggregationFunction(
-                  type
+                  type,
+                  null
                 );
-
-                const applyAggregation = (expr: string, type: string) => {
+                const applyAggregation = (expr: string) => {
                   return Expression.functionCall(
                     aggregation,
                     Expression.parse(expr)
                   ).toString();
                 };
-
                 const table = this.store.dataset.tables.find(
                   (table) => table.name === (element.mappings[key] as any).table
                 );
-
                 const parsedExpression = Expression.parse(expr);
                 let metadata: ColumnMetadata = {};
                 if (
@@ -176,17 +174,14 @@ export class ScalesPanel extends ContextedComponent<
                   parsedExpression.args[0] instanceof Variable
                 ) {
                   const firstArgument = parsedExpression.args[0] as Variable;
-
                   const column = table.columns.find(
                     (col) => col.name === firstArgument.name
                   );
                   metadata = column.metadata;
-
                   rawColumnExpr =
                     metadata.rawColumnName &&
-                    applyAggregation(metadata.rawColumnName, DataType.String);
+                    applyAggregation(metadata.rawColumnName);
                 }
-
                 this.setState({ isSelected: expr });
                 const r = new DragData.DataExpression(
                   table,
@@ -219,7 +214,6 @@ export class ScalesPanel extends ContextedComponent<
         );
       }
     };
-
     scales = scales.sort(
       (a: Scale<ObjectProperties>, b: Scale<ObjectProperties>) => {
         if (a.properties.name < b.properties.name) {
@@ -231,7 +225,6 @@ export class ScalesPanel extends ContextedComponent<
         return 0;
       }
     );
-
     // Collect all used scales and object with properties into one list
     const propertyList = scales.flatMap((scale) => {
       return [0]
@@ -265,16 +258,16 @@ export class ScalesPanel extends ContextedComponent<
         .concat(
           store.chart.glyphs
             // map all glyphs into {glyph & marks} group
-            .flatMap(
-              (
-                glyph: Glyph
-              ): Array<{ glyph: Glyph; mark: Element<ObjectProperties> }> =>
-                glyph.marks.map((mark) => {
-                  return {
-                    glyph,
-                    mark,
-                  };
-                })
+            .flatMap((glyph: Glyph): {
+              glyph: Glyph;
+              mark: Element<ObjectProperties>;
+            }[] =>
+              glyph.marks.map((mark) => {
+                return {
+                  glyph,
+                  mark,
+                };
+              })
             )
             // filter elements by scale
             .filter(
@@ -311,9 +304,6 @@ export class ScalesPanel extends ContextedComponent<
           restrict={true}
           enabled={true}
           onReorder={(IndexA, IndexB) => {
-            console.log(propertyList[IndexA]);
-            console.log(propertyList[IndexB]);
-
             // Drag properties item only
             if (!propertyList[IndexA].property || IndexA === IndexB) {
               return;

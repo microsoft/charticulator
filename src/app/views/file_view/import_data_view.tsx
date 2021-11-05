@@ -7,18 +7,19 @@ import { getConfig } from "../../config";
 import {
   Dataset,
   deepClone,
+  ImageKeyColumn,
+  KeyColumn,
   LinkSourceKeyColumn,
   LinkTargetKeyColumn,
-  KeyColumn,
-  defaultCurrency,
-  defaultDigitsGroup,
+  primaryButtonStyles,
 } from "../../../core";
 import {
   classNames,
-  getExtensionFromFileName,
-  readFileAsString,
-  getFileNameWithoutExtension,
   convertColumns,
+  getExtensionFromFileName,
+  getFileNameWithoutExtension,
+  getPreferredDataKind,
+  readFileAsString,
 } from "../../utils";
 import { ButtonRaised } from "../../components/index";
 import { SVGImageIcon } from "../../components/icons";
@@ -28,6 +29,7 @@ import { TableType } from "../../../core/dataset";
 import { AppStore } from "../../stores";
 import { AddMessage, RemoveMessage } from "../../actions/actions";
 import { strings } from "../../../strings";
+import { DefaultButton } from "@fluentui/react";
 
 export interface FileUploaderProps {
   onChange: (file: File) => void;
@@ -106,12 +108,18 @@ export class FileUploader extends React.Component<
   public render() {
     return (
       <div
+        tabIndex={0}
         className={classNames(
           "charticulator__file-uploader",
           ["is-dragging-over", this.state.draggingOver],
           ["is-active", this.state.filename != null]
         )}
         onClick={() => this.showOpenFile()}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            this.showOpenFile();
+          }
+        }}
         onDragOver={(e) => {
           e.preventDefault();
           if (this.isDataTransferValid(e.dataTransfer)) {
@@ -120,12 +128,12 @@ export class FileUploader extends React.Component<
             });
           }
         }}
-        onDragLeave={(e) => {
+        onDragLeave={() => {
           this.setState({
             draggingOver: false,
           });
         }}
-        onDragExit={(e) => {
+        onDragExit={() => {
           this.setState({
             draggingOver: false,
           });
@@ -178,6 +186,7 @@ export interface ImportDataViewProps {
 export interface ImportDataViewState {
   dataTable: Dataset.Table;
   dataTableOrigin: Dataset.Table;
+  imagesTable: Dataset.Table;
   linkTable: Dataset.Table;
   linkTableOrigin: Dataset.Table;
 }
@@ -188,18 +197,33 @@ export class ImportDataView extends React.Component<
 > {
   public state = {
     dataTable: null as Dataset.Table,
+    imagesTable: null as Dataset.Table,
     linkTable: null as Dataset.Table,
     dataTableOrigin: null as Dataset.Table,
     linkTableOrigin: null as Dataset.Table,
   };
+  private isComponentMounted: boolean;
 
   constructor(props: ImportDataViewProps) {
     super(props);
-    this.props.store.addListener(AppStore.EVENT_GRAPHICS, () =>
-      this.forceUpdate()
-    );
+    this.props.store.addListener(AppStore.EVENT_GRAPHICS, () => {
+      if (this.isComponentMounted) {
+        this.forceUpdate();
+      }
+    });
   }
-  private loadFileAsTable(file: File): Promise<Dataset.Table> {
+
+  componentDidMount() {
+    this.isComponentMounted = true;
+  }
+
+  componentWillUnmount() {
+    this.isComponentMounted = false;
+  }
+
+  private loadFileAsTable(
+    file: File
+  ): Promise<[Dataset.Table, Dataset.Table | null]> {
     return readFileAsString(file).then((contents) => {
       const localeFileFormat = this.props.store.getLocaleFileFormat();
       const ext = getExtensionFromFileName(file.name);
@@ -207,19 +231,60 @@ export class ImportDataView extends React.Component<
       const loader = new Dataset.DatasetLoader();
       switch (ext) {
         case "csv": {
-          return loader.loadDSVFromContents(
+          const table = loader.loadDSVFromContents(
             filename,
             contents,
             localeFileFormat
           );
+          // if table contains images split to separate table
+          const keyAndImageColumns = table.columns.filter(
+            (column) =>
+              column.name === ImageKeyColumn ||
+              column.type === Dataset.DataType.Image
+          );
+          if (keyAndImageColumns.length === 2) {
+            const imagesIds = table.rows.map((row) => row?.[ImageKeyColumn]);
+            const uniqueIds = [...new Set(imagesIds)];
+
+            const rows = uniqueIds.map((imageId) => {
+              return table.rows.find((row) => row[ImageKeyColumn] === imageId);
+            });
+            const imageTable: Dataset.Table = {
+              ...table,
+              name: table.name + "Images",
+              displayName: table.displayName + "Images",
+              columns: keyAndImageColumns,
+              rows: rows.map((row) => {
+                const imageRow: Dataset.Row = {
+                  _id: row["_id"],
+                };
+                keyAndImageColumns.forEach((column) => {
+                  imageRow[column.name] = row[column.name];
+                });
+                return imageRow;
+              }),
+            };
+
+            table.columns = table.columns.filter(
+              (column) =>
+                column.type !== Dataset.DataType.Image &&
+                column.displayName !== ImageKeyColumn
+            );
+
+            return [table, imageTable];
+          }
+          return [table, null];
         }
         case "tsv": {
-          return loader.loadDSVFromContents(filename, contents, {
-            delimiter: "\t",
-            numberFormat: localeFileFormat.numberFormat,
-            currency: null,
-            group: null,
-          });
+          return [
+            loader.loadDSVFromContents(filename, contents, {
+              delimiter: "\t",
+              numberFormat: localeFileFormat.numberFormat,
+              currency: null,
+              group: null,
+            }),
+            null,
+          ];
         }
       }
     });
@@ -227,7 +292,7 @@ export class ImportDataView extends React.Component<
 
   public renderTable(
     table: Dataset.Table,
-    onTypeChange: (column: string, type: string) => void
+    onTypeChange: (column: string, type: Dataset.DataType) => void
   ) {
     return (
       <div className="wide-content">
@@ -236,6 +301,7 @@ export class ImportDataView extends React.Component<
     );
   }
 
+  // eslint-disable-next-line
   public render() {
     let sampleDatasetDiv: HTMLDivElement;
     const sampleDatasets = getConfig().SampleDatasets;
@@ -307,55 +373,98 @@ export class ImportDataView extends React.Component<
           {this.state.dataTable ? ": " + this.state.dataTable.name : null}
         </h2>
         {this.state.dataTable ? (
-          <div className="charticulator__import-data-view-table">
-            {this.renderTable(
-              this.state.dataTable,
-              (column: string, type: string) => {
-                const dataColumn = this.state.dataTable.columns.find(
-                  (col) => col.name === column
-                );
-                const dataTableError = convertColumns(
-                  this.state.dataTable,
-                  dataColumn,
-                  this.state.dataTableOrigin,
-                  type as Dataset.DataType
-                );
-                if (dataTableError) {
-                  this.props.store.dispatcher.dispatch(
-                    new AddMessage("parsingDataError", {
-                      text: dataTableError as string,
-                    })
+          <>
+            <div className="charticulator__import-data-view-table">
+              {this.renderTable(
+                this.state.dataTable,
+                (column: string, type: Dataset.DataType) => {
+                  const dataColumn = this.state.dataTable.columns.find(
+                    (col) => col.name === column
                   );
+                  const dataTableError = convertColumns(
+                    this.state.dataTable,
+                    dataColumn,
+                    this.state.dataTableOrigin,
+                    type as Dataset.DataType
+                  );
+                  if (dataTableError) {
+                    this.props.store.dispatcher.dispatch(
+                      new AddMessage("parsingDataError", {
+                        text: dataTableError as string,
+                      })
+                    );
+                  } else {
+                    this.setState({
+                      dataTable: this.state.dataTable,
+                    });
+                    dataColumn.type = type;
+                    dataColumn.metadata.kind = getPreferredDataKind(type);
+                  }
                 }
-                this.setState({
-                  dataTable: this.state.dataTable,
-                });
-              }
-            )}
-            <ButtonRaised
-              text={strings.fileImport.removeButtonText}
-              url={R.getSVGIcon("general/cross")}
-              title={strings.fileImport.removeButtonTitle}
-              onClick={() => {
-                this.setState({
-                  dataTable: null,
-                  dataTableOrigin: null,
-                });
-              }}
-            />
-          </div>
+              )}
+              <DefaultButton
+                text={strings.fileImport.removeButtonText}
+                iconProps={{
+                  iconName: "ChromeClose",
+                }}
+                styles={primaryButtonStyles}
+                title={strings.fileImport.removeButtonTitle}
+                onClick={() => {
+                  this.setState({
+                    dataTable: null,
+                    dataTableOrigin: null,
+                  });
+                }}
+              />
+            </div>
+            {this.state.imagesTable ? (
+              <div className="charticulator__import-data-view-table">
+                {this.renderTable(
+                  this.state.imagesTable,
+                  (column: string, type: Dataset.DataType) => {
+                    const dataColumn = this.state.imagesTable.columns.find(
+                      (col) => col.name === column
+                    );
+                    const dataTableError = convertColumns(
+                      this.state.imagesTable,
+                      dataColumn,
+                      this.state.dataTableOrigin,
+                      type as Dataset.DataType
+                    );
+                    if (dataTableError) {
+                      this.props.store.dispatcher.dispatch(
+                        new AddMessage("parsingDataError", {
+                          text: dataTableError as string,
+                        })
+                      );
+                    } else {
+                      this.setState({
+                        imagesTable: this.state.imagesTable,
+                      });
+                      dataColumn.type = type;
+                      dataColumn.metadata.kind = getPreferredDataKind(type);
+                    }
+                  }
+                )}
+              </div>
+            ) : null}
+          </>
         ) : (
           <FileUploader
             extensions={["csv", "tsv"]}
             onChange={(file) => {
-              this.loadFileAsTable(file).then((table) => {
+              this.loadFileAsTable(file).then(([table, imageTable]) => {
                 table.type = TableType.Main;
+                if (imageTable) {
+                  imageTable.type = TableType.Image;
+                }
 
                 this.checkKeyColumn(table, this.state.linkTable);
 
                 this.setState({
                   dataTable: table,
                   dataTableOrigin: deepClone(table),
+                  imagesTable: imageTable,
                 });
               });
             }}
@@ -394,10 +503,13 @@ export class ImportDataView extends React.Component<
                 });
               }
             )}
-            <ButtonRaised
+            <DefaultButton
               text={strings.fileImport.removeButtonText}
-              url={R.getSVGIcon("general/cross")}
+              iconProps={{
+                iconName: "ChromeClose",
+              }}
               title={strings.fileImport.removeButtonTitle}
+              styles={primaryButtonStyles}
               onClick={() => {
                 this.setState({
                   linkTable: null,
@@ -412,7 +524,7 @@ export class ImportDataView extends React.Component<
           <FileUploader
             extensions={["csv", "tsv"]}
             onChange={(file) => {
-              this.loadFileAsTable(file).then((table) => {
+              this.loadFileAsTable(file).then(([table]) => {
                 table.type = TableType.Links;
                 this.checkSourceAndTargetColumns(table);
                 this.checkKeyColumn(this.state.dataTable, table);
@@ -425,9 +537,12 @@ export class ImportDataView extends React.Component<
           />
         )}
         <div className="el-actions">
-          <ButtonRaised
+          <DefaultButton
             text={strings.fileImport.doneButtonText}
-            url={R.getSVGIcon("general/confirm")}
+            iconProps={{
+              iconName: "CheckMark",
+            }}
+            styles={primaryButtonStyles}
             title={strings.fileImport.doneButtonTitle}
             disabled={
               this.state.dataTable == null ||
@@ -444,7 +559,9 @@ export class ImportDataView extends React.Component<
               ) {
                 const dataset: Dataset.Dataset = {
                   name: this.state.dataTable.name,
-                  tables: [this.state.dataTable],
+                  tables: [this.state.dataTable, this.state.imagesTable].filter(
+                    (table) => table != null
+                  ),
                 };
                 if (this.state.linkTable != null) {
                   dataset.tables.push(this.state.linkTable);

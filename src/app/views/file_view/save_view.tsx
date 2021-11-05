@@ -5,20 +5,23 @@ import * as React from "react";
 import * as R from "../../resources";
 
 import { CurrentChartView } from ".";
-import { ButtonRaised, SVGImageIcon } from "../../components";
-import { ContextedComponent } from "../../context_component";
+import { SVGImageIcon } from "../../components";
 import { Actions } from "../../actions";
 import { strings } from "../../../strings";
+import { AppStore } from "../../stores";
+import { DefaultButton } from "@fluentui/react";
+import { primaryButtonStyles } from "../../../container";
 
 export interface FileViewSaveAsProps {
   onClose: () => void;
+  store: AppStore;
 }
 export interface FileViewSaveAsState {
   saving?: boolean;
   error?: string;
 }
 
-export class FileViewSaveAs extends ContextedComponent<
+export class FileViewSaveAs extends React.Component<
   FileViewSaveAsProps,
   FileViewSaveAsState
 > {
@@ -31,13 +34,13 @@ export class FileViewSaveAs extends ContextedComponent<
       <section className="charticulator__file-view-content is-fix-width">
         <h1>{strings.mainTabs.save}</h1>
         <section>
-          <CurrentChartView store={this.store} />
+          <CurrentChartView store={this.props.store} />
           <div className="form-group">
             <input
               ref={(e) => (inputSaveChartName = e)}
               type="text"
               required={true}
-              defaultValue={this.store.dataset.name}
+              defaultValue={this.props.store.dataset.name}
             />
             <label>{strings.fileSave.chartName}</label>
             <i className="bar" />
@@ -48,8 +51,11 @@ export class FileViewSaveAs extends ContextedComponent<
                 <SVGImageIcon url={R.getSVGIcon("loading")} />
               ) : null}
             </span>
-            <ButtonRaised
-              url={R.getSVGIcon("toolbar/save")}
+            <DefaultButton
+              iconProps={{
+                iconName: "Save",
+              }}
+              styles={primaryButtonStyles}
               text={strings.fileSave.saveButton}
               onClick={() => {
                 const name = inputSaveChartName.value.trim();
@@ -58,7 +64,7 @@ export class FileViewSaveAs extends ContextedComponent<
                     saving: true,
                   },
                   () => {
-                    this.dispatch(
+                    this.props.store.dispatcher.dispatch(
                       new Actions.SaveAs(name, (error) => {
                         if (error) {
                           this.setState({

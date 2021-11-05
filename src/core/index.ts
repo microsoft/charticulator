@@ -85,6 +85,7 @@ import * as Prototypes from "./prototypes";
 import * as Solver from "./solver";
 import * as Specification from "./specification";
 import * as Utils from "./common/utils";
+import * as ColorUtils from "./common/color";
 export * from "./actions";
 
 export {
@@ -95,6 +96,7 @@ export {
   Graphics,
   Dataset,
   Utils,
+  ColorUtils,
 };
 
 import { CharticulatorCoreConfig, setConfig } from "./config";

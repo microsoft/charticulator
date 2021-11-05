@@ -1,6 +1,14 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import {
+  defaultFont,
+  defaultFontSizeLegend,
+} from "../../../app/stores/defaults";
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
+import { Prototypes } from "../../../container";
+import { strings } from "../../../strings";
 import { Color, indexOf, rgbToHex } from "../../common";
 import * as Specification from "../../specification";
 import { ChartElementClass } from "../chart_element";
@@ -25,6 +33,7 @@ export interface LegendProperties extends Specification.AttributeMap {
   fontFamily: string;
   fontSize: number;
   textColor: Color;
+  order: string[];
   markerShape: "rectangle" | "circle" | "triangle";
 }
 
@@ -42,7 +51,7 @@ export abstract class LegendClass extends ChartElementClass {
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Legend",
-    iconPath: "legend/legend",
+    iconPath: "CharticulatorLegend",
   };
 
   public static defaultProperties: LegendProperties = {
@@ -50,12 +59,13 @@ export abstract class LegendClass extends ChartElementClass {
     visible: true,
     alignX: "start",
     alignY: "end",
-    fontFamily: "Arial",
-    fontSize: 10,
+    fontFamily: defaultFont,
+    fontSize: defaultFontSizeLegend,
     textColor: { r: 0, g: 0, b: 0 },
     dataSource: "columnValues",
     dataExpressions: [],
     markerShape: "circle",
+    order: null,
   };
 
   public attributeNames: string[] = ["x", "y"];
@@ -112,23 +122,22 @@ export abstract class LegendClass extends ChartElementClass {
   }
 
   public getBoundingBox(): BoundingBox.Description {
-    const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = this.getLayoutBox();
-    return {
+    return <BoundingBox.Rectangle>{
       type: "rectangle",
       cx: (x1 + x2) / 2,
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
       rotation: 0,
-    } as BoundingBox.Rectangle;
+    };
   }
 
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes;
     const { x, y } = attrs;
     return [
-      {
+      <Handles.Point>{
         type: "point",
         x,
         y,
@@ -139,7 +148,7 @@ export abstract class LegendClass extends ChartElementClass {
         options: {
           snapToClosestPoint: true,
         },
-      } as Handles.Point,
+      },
     ];
   }
 
@@ -163,60 +172,135 @@ export abstract class LegendClass extends ChartElementClass {
     return [10, 10];
   }
 
+  private getOrderingObjects(): string[] {
+    const scale = this.getScale();
+    if (scale) {
+      const [scaleObject] = scale;
+      const mapping = <
+        {
+          [name: string]: Color;
+        }
+      >scaleObject.properties.mapping;
+      return Object.keys(mapping);
+    }
+    return [];
+  }
+
   public getAttributePanelWidgets(
-    manager: Controls.WidgetManager
+    manager: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors
   ): Controls.Widget[] {
-    const props = this.object.properties;
     const widget = [
-      manager.sectionHeader("Labels"),
-      manager.row("Font", manager.inputFontFamily({ property: "fontFamily" })),
-      manager.row(
-        "Size",
-        manager.inputNumber(
-          { property: "fontSize" },
-          { showUpdown: true, updownStyle: "font", updownTick: 2 }
-        )
-      ),
-      manager.row("Color", manager.inputColor({ property: "textColor" })),
-      manager.row(
-        "Shape",
-        manager.inputSelect(
-          { property: "markerShape" },
-          {
-            type: "dropdown",
-            showLabel: true,
-            icons: ["mark/rect", "mark/triangle", "mark/ellipse"],
-            labels: ["Rectangle", "Triangle", "Circle"],
-            options: ["rectangle", "triangle", "circle"],
-          }
-        )
-      ),
-      manager.sectionHeader("Layout"),
-      manager.row(
-        "Alignment",
-        manager.horizontal(
-          [0, 0],
-          null,
-          manager.inputSelect(
-            { property: "alignX" },
+      manager.verticalGroup(
+        {
+          header: strings.objects.legend.labels,
+        },
+        [
+          manager.inputFontFamily(
+            { property: "fontFamily" },
+            { label: strings.objects.font }
+          ),
+          manager.inputNumber(
+            { property: "fontSize" },
             {
-              type: "radio",
-              icons: ["align/left", "align/x-middle", "align/right"],
-              labels: ["Left", "Middle", "Right"],
-              options: ["start", "middle", "end"],
+              showUpdown: true,
+              updownStyle: "font",
+              updownTick: 2,
+              label: strings.objects.size,
+            }
+          ),
+          manager.inputColor(
+            { property: "textColor" },
+            {
+              label: strings.objects.color,
+              labelKey: strings.objects.color,
             }
           ),
           manager.inputSelect(
-            { property: "alignY" },
+            { property: "markerShape" },
             {
-              type: "radio",
-              options: ["start", "middle", "end"],
-              icons: ["align/bottom", "align/y-middle", "align/top"],
-              labels: ["Bottom", "Middle", "Top"],
+              type: "dropdown",
+              showLabel: true,
+              icons: ["RectangleShape", "TriangleShape", "Ellipse"],
+              labels: [
+                strings.toolbar.rectangle,
+                strings.toolbar.triangle,
+                strings.toolbar.ellipse,
+              ],
+              options: ["rectangle", "triangle", "circle"],
+              label: strings.objects.legend.markerShape,
             }
           ),
-          null
-        )
+          this.object.classID === "legend.categorical"
+            ? manager.label(strings.objects.legend.ordering)
+            : null,
+          this.object.classID === "legend.categorical"
+            ? manager.reorderWidget(
+                {
+                  property: "order",
+                },
+                {
+                  items: this.getOrderingObjects(),
+                  onConfirm: (items: string[]) => {
+                    manager.emitSetProperty(
+                      {
+                        property: "order",
+                        field: null,
+                      },
+                      items
+                    );
+                  },
+                }
+              )
+            : null,
+        ]
+      ),
+      manager.verticalGroup(
+        {
+          header: strings.objects.legend.layout,
+        },
+        [
+          manager.vertical(
+            manager.label(strings.alignment.alignment),
+            manager.horizontal(
+              [0, 0],
+              manager.inputSelect(
+                { property: "alignX" },
+                {
+                  type: "radio",
+                  icons: [
+                    "AlignHorizontalLeft",
+                    "AlignHorizontalCenter",
+                    "AlignHorizontalRight",
+                  ],
+                  labels: [
+                    strings.alignment.left,
+                    strings.alignment.middle,
+                    strings.alignment.right,
+                  ],
+                  options: ["start", "middle", "end"],
+                }
+              ),
+              manager.inputSelect(
+                { property: "alignY" },
+                {
+                  type: "radio",
+                  options: ["start", "middle", "end"],
+                  icons: [
+                    "AlignVerticalBottom",
+                    "AlignVerticalCenter",
+                    "AlignVerticalTop",
+                  ],
+                  labels: [
+                    strings.alignment.bottom,
+                    strings.alignment.middle,
+                    strings.alignment.top,
+                  ],
+                }
+              ),
+              null
+            )
+          ),
+        ]
       ),
     ];
 

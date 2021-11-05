@@ -1,12 +1,23 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { gather, getById, uniqueID, zip, zipArray, makeRange } from "../common";
+import {
+  deepClone,
+  gather,
+  getById,
+  makeRange,
+  uniqueID,
+  zip,
+  zipArray,
+} from "../common";
 import * as Dataset from "../dataset";
 import * as Expression from "../expression";
 import * as Specification from "../specification";
+import { MappingType } from "../specification";
 import * as Charts from "./charts";
 import * as Glyphs from "./glyphs";
 import * as Prototypes from "./index";
+import { forEachObject, ObjectItemKind } from "./index";
 import * as Marks from "./marks";
 import * as PlotSegments from "./plot_segments";
 import * as Scales from "./scales";
@@ -18,6 +29,8 @@ import { CompiledFilter } from "./filter";
 import { ObjectClass, ObjectClasses } from "./object";
 import { ChartConstraintSolver } from "../solver";
 import { ValueType } from "../expression/classes";
+import { expect_deep_approximately_equals } from "../../app/utils";
+import { AxisDataBinding, AxisDataBindingType } from "../specification/types";
 
 /**
  * Represents a set of default attributes
@@ -34,11 +47,15 @@ export type ClassEnumerationCallback = (
   state: Specification.ObjectState
 ) => void;
 
+export const defaultDifferenceApproximation = 0.01;
+
 /** Handles the life cycle of states and the dataflow */
 export class ChartStateManager {
-  public readonly chart: Specification.Chart;
-  public chartState: Specification.ChartState;
+  private chartOrigin: Specification.Chart;
+
+  public chart: Specification.Chart;
   public dataset: Dataset.Dataset;
+  public chartState: Specification.ChartState;
   public dataflow: DataflowManager;
 
   public classCache = new ObjectClassCache();
@@ -46,6 +63,11 @@ export class ChartStateManager {
     string,
     [Specification.Object, Specification.ObjectState]
   >();
+  public options: {
+    [key: string]: any;
+  };
+
+  private onUpdateListeners: ((chart: Specification.Chart) => void)[] = [];
 
   constructor(
     chart: Specification.Chart,
@@ -54,17 +76,272 @@ export class ChartStateManager {
     defaultAttributes: DefaultAttributes = {},
     options: {
       [key: string]: any;
-    } = {}
+    } = {},
+    chartOrigin?: Specification.Chart
   ) {
     this.chart = chart;
+    this.chartOrigin = chartOrigin ? chartOrigin : deepClone(chart);
     this.dataset = dataset;
     this.dataflow = new DataflowManager(dataset);
+    this.options = options;
 
     if (state == null) {
       this.initialize(defaultAttributes);
     } else {
       this.setState(state);
     }
+  }
+
+  public getOriginChart() {
+    return this.chartOrigin;
+  }
+
+  public updateState(
+    chart: Specification.Chart,
+    dataset: Dataset.Dataset,
+    state: Specification.ChartState
+  ) {
+    this.chart = chart;
+    this.dataset = dataset;
+    this.chartState = state;
+    this.initialize({});
+  }
+
+  public resetDifference() {
+    this.chartOrigin = deepClone(this.chart);
+  }
+
+  public onUpdate(callback: (chart: Specification.Chart) => void) {
+    this.onUpdateListeners.push(callback);
+  }
+
+  public clearOnUpdateListener(callback: (chart: Specification.Chart) => void) {
+    const index = this.onUpdateListeners.findIndex((func) => func === callback);
+    if (index != -1) {
+      this.onUpdateListeners = [
+        ...this.onUpdateListeners.slice(0, index),
+        ...this.onUpdateListeners.slice(
+          index + 1,
+          this.onUpdateListeners.length
+        ),
+      ];
+    }
+  }
+
+  // eslint-disable-next-line max-lines-per-function
+  public hasUnsavedChanges() {
+    const origin = this.chartOrigin;
+    const chart = this.chart;
+
+    const currentProperties = chart.properties;
+    const originProperties = origin.properties;
+
+    try {
+      expect_deep_approximately_equals(
+        currentProperties,
+        originProperties,
+        defaultDifferenceApproximation,
+        true
+      );
+    } catch {
+      return true;
+    }
+
+    if (origin.constraints.length !== chart.constraints.length) {
+      return true;
+    } else {
+      for (let index = 0; index < origin.constraints.length; index++) {
+        const originConstringts = origin.constraints[index];
+        const current = chart.constraints[index];
+        expect_deep_approximately_equals(
+          originConstringts,
+          current,
+          defaultDifferenceApproximation,
+          true
+        );
+      }
+    }
+
+    const chartElements = [...forEachObject(chart)];
+    const originElements = [...forEachObject(origin)];
+
+    // forEachObject retuns all objects in the chart
+    // if any object was added or removed to the chart it means chart has changes
+    // don't need to compare in details
+    if (chartElements.length != originElements.length) {
+      return true;
+    } else {
+      for (let index = 0; index < chartElements.length; index++) {
+        const currentElement = chartElements[index];
+        const originElement = originElements[index];
+
+        if (currentElement.kind != originElement.kind) {
+          return true;
+        }
+        if (currentElement.glyph?.classID != originElement.glyph?.classID) {
+          return true;
+        }
+        if (currentElement.object?._id != originElement.object?._id) {
+          return true;
+        }
+        if (currentElement.scale?._id != originElement.scale?._id) {
+          return true;
+        }
+        if (
+          currentElement.kind == ObjectItemKind.ChartElement &&
+          currentElement.kind == ObjectItemKind.ChartElement
+        ) {
+          if (currentElement.chartElement && originElement.chartElement) {
+            if (
+              currentElement.chartElement._id != originElement.chartElement._id
+            ) {
+              return true;
+            }
+            if (
+              currentElement.chartElement.classID !=
+              originElement.chartElement.classID
+            ) {
+              return true;
+            }
+          }
+          if (
+            Prototypes.isType(
+              currentElement.chartElement.classID,
+              "plot-segment"
+            ) &&
+            Prototypes.isType(
+              originElement.chartElement.classID,
+              "plot-segment"
+            )
+          ) {
+            const currentPlotSegment = currentElement.chartElement as Specification.PlotSegment;
+            const originPlotSegment = originElement.chartElement as Specification.PlotSegment;
+
+            if (currentPlotSegment.glyph != originPlotSegment.glyph) {
+              return true;
+            }
+
+            if (currentPlotSegment.table != originPlotSegment.table) {
+              return true;
+            }
+
+            try {
+              expect_deep_approximately_equals(
+                currentPlotSegment.filter,
+                originPlotSegment.filter,
+                defaultDifferenceApproximation,
+                true
+              );
+              expect_deep_approximately_equals(
+                currentPlotSegment.groupBy,
+                originPlotSegment.groupBy,
+                defaultDifferenceApproximation,
+                true
+              );
+              expect_deep_approximately_equals(
+                currentPlotSegment.order,
+                originPlotSegment.order,
+                defaultDifferenceApproximation,
+                true
+              );
+              expect_deep_approximately_equals(
+                currentPlotSegment.mappings,
+                originPlotSegment.mappings,
+                defaultDifferenceApproximation,
+                true
+              );
+              expect_deep_approximately_equals(
+                currentPlotSegment.properties,
+                originPlotSegment.properties,
+                defaultDifferenceApproximation,
+                true
+              );
+            } catch (ex) {
+              console.log(ex);
+              return true;
+            }
+          }
+
+          try {
+            const currentProperties = currentElement.chartElement.properties;
+            const originProperties = originElement.chartElement.properties;
+
+            expect_deep_approximately_equals(
+              currentProperties,
+              originProperties,
+              defaultDifferenceApproximation,
+              true
+            );
+          } catch (ex) {
+            console.log(ex);
+            return true;
+          }
+        }
+
+        if (
+          currentElement.kind == ObjectItemKind.Glyph &&
+          originElement.kind == ObjectItemKind.Glyph
+        ) {
+          if (currentElement.glyph.table != originElement.glyph.table) {
+            return true;
+          }
+        }
+
+        if (
+          currentElement.kind == ObjectItemKind.Mark &&
+          originElement.kind == ObjectItemKind.Mark
+        ) {
+          if (currentElement.mark?.classID != originElement.mark?.classID) {
+            return true;
+          }
+          try {
+            const currentProperties = currentElement.mark.properties;
+            const originProperties = originElement.mark.properties;
+
+            expect_deep_approximately_equals(
+              currentProperties,
+              originProperties,
+              defaultDifferenceApproximation,
+              true
+            );
+          } catch (ex) {
+            console.log(ex);
+            return true;
+          }
+        }
+
+        try {
+          const currentMappings = currentElement.object.mappings;
+          const originMappings = originElement.object.mappings;
+          expect_deep_approximately_equals(
+            currentMappings,
+            originMappings,
+            defaultDifferenceApproximation,
+            true
+          );
+        } catch (ex) {
+          console.log(ex);
+          return true;
+        }
+
+        //scale mappings
+        try {
+          const currentProperties = currentElement.object?.properties;
+          const originProperties = originElement.object?.properties;
+          expect_deep_approximately_equals(
+            currentProperties,
+            originProperties,
+            defaultDifferenceApproximation,
+            true
+          );
+        } catch (ex) {
+          console.log(ex);
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   /** Set an existing state */
@@ -93,6 +370,7 @@ export class ChartStateManager {
 
   /** Get a chart-level element or scale by its id */
   public getClassById(id: string): ObjectClass {
+    // eslint-disable-next-line
     const [object, state] = this.idIndex.get(id);
     return this.classCache.getClass(state);
   }
@@ -100,6 +378,7 @@ export class ChartStateManager {
   /** Get classes for chart elements */
   public getElements(): ObjectClass[] {
     return zipArray(this.chart.elements, this.chartState.elements).map(
+      // eslint-disable-next-line
       ([element, elementState]) => {
         return this.classCache.getClass(elementState);
       }
@@ -119,17 +398,17 @@ export class ChartStateManager {
       // Special case for plot segment
       if (Prototypes.isType(element.classID, "plot-segment")) {
         this.mapPlotSegmentState(
-          element as Specification.PlotSegment,
-          elementState as Specification.PlotSegmentState
+          <Specification.PlotSegment>element,
+          <Specification.PlotSegmentState>elementState
         );
       }
       return elementState;
     });
 
-    const scaleStates = chart.scales.map((scale) => {
-      const state = {
+    const scaleStates = chart.scales.map(() => {
+      const state = <Specification.ScaleState>{
         attributes: {},
-      } as Specification.ScaleState;
+      };
       return state;
     });
 
@@ -157,18 +436,14 @@ export class ChartStateManager {
       this.chart.scales,
       this.chartState.scales
     )) {
-      const scaleClass = this.classCache.createScaleClass(
-        chartClass,
-        scale,
-        scaleState
-      );
+      this.classCache.createScaleClass(chartClass, scale, scaleState);
     }
 
     for (const [element, elementState] of zip(
       this.chart.elements,
       this.chartState.elements
     )) {
-      const elementClass = this.classCache.createChartElementClass(
+      this.classCache.createChartElementClass(
         chartClass,
         element,
         elementState
@@ -185,6 +460,7 @@ export class ChartStateManager {
     const chartClass = this.classCache.getChartClass(this.chartState);
     callback(chartClass, this.chartState);
 
+    // eslint-disable-next-line
     for (const [scale, scaleState] of zip(
       this.chart.scales,
       this.chartState.scales
@@ -201,14 +477,15 @@ export class ChartStateManager {
       callback(elementClass, elementState);
       // For plot segment, handle data mapping
       if (Prototypes.isType(element.classID, "plot-segment")) {
-        const plotSegment = element as Specification.PlotSegment;
-        const plotSegmentState = elementState as Specification.PlotSegmentState;
-        const glyph = this.getObjectById(
-          plotSegment.glyph
-        ) as Specification.Glyph;
+        const plotSegment = <Specification.PlotSegment>element;
+        const plotSegmentState = <Specification.PlotSegmentState>elementState;
+        const glyph = <Specification.Glyph>(
+          this.getObjectById(plotSegment.glyph)
+        );
         for (const glyphState of plotSegmentState.glyphs) {
           const glyphClass = this.classCache.getClass(glyphState);
           callback(glyphClass, glyphState);
+          // eslint-disable-next-line
           for (const [mark, markState] of zip(glyph.marks, glyphState.marks)) {
             const markClass = this.classCache.getClass(markState);
             callback(markClass, markState);
@@ -239,7 +516,7 @@ export class ChartStateManager {
     )) {
       const elementClass = this.classCache.getClass(elementState);
       if (Prototypes.isType(element.classID, "plot-segment")) {
-        callback(elementClass as PlotSegments.PlotSegmentClass);
+        callback(<PlotSegments.PlotSegmentClass>elementClass);
       }
     }
   }
@@ -348,14 +625,14 @@ export class ChartStateManager {
           classID: "mark.anchor",
           properties: { name: "Anchor" },
           mappings: {
-            x: {
-              type: "parent",
+            x: <Specification.ParentMapping>{
+              type: MappingType.parent,
               parentAttribute: "icx",
-            } as Specification.ParentMapping,
-            y: {
-              type: "parent",
+            },
+            y: <Specification.ParentMapping>{
+              type: MappingType.parent,
               parentAttribute: "icy",
-            } as Specification.ParentMapping,
+            },
           },
         },
       ],
@@ -383,7 +660,7 @@ export class ChartStateManager {
     const elementsToDelete: Specification.PlotSegment[] = [];
     for (const element of this.chart.elements) {
       if (Prototypes.isType(element.classID, "plot-segment")) {
-        const plotSegment = element as Specification.PlotSegment;
+        const plotSegment = <Specification.PlotSegment>element;
         if (plotSegment.glyph == glyph._id) {
           elementsToDelete.push(plotSegment);
         }
@@ -461,8 +738,8 @@ export class ChartStateManager {
     };
     if (Prototypes.isType(element.classID, "plot-segment")) {
       this.mapPlotSegmentState(
-        element as Specification.PlotSegment,
-        elementState as Specification.PlotSegmentState
+        <Specification.PlotSegment>element,
+        <Specification.PlotSegmentState>elementState
       );
     }
 
@@ -488,7 +765,7 @@ export class ChartStateManager {
 
     if (Prototypes.isType(element.classID, "plot-segment")) {
       this.initializePlotSegmentState(
-        elementClass as PlotSegments.PlotSegmentClass
+        <PlotSegments.PlotSegmentClass>elementClass
       );
     }
 
@@ -525,8 +802,8 @@ export class ChartStateManager {
       this.chartState.elements
     )) {
       if (Prototypes.isType(element.classID, "plot-segment")) {
-        const plotSegment = element as Specification.PlotSegment;
-        const plotSegmentState = elementState as Specification.PlotSegmentState;
+        const plotSegment = <Specification.PlotSegment>element;
+        const plotSegmentState = <Specification.PlotSegmentState>elementState;
         if (plotSegment.glyph == glyph._id) {
           for (const glyphState of plotSegmentState.glyphs) {
             this.reorderArray(glyphState.marks, fromIndex, toIndex);
@@ -535,6 +812,51 @@ export class ChartStateManager {
       }
     }
     this.reorderArray(glyph.marks, fromIndex, toIndex);
+  }
+
+  private applyScrollingFilter(data: AxisDataBinding, tableName: string) {
+    const filteredIndices: number[] = [];
+    // TODO fix expression (get column name from expression properly)
+    const table = this.getTable(tableName);
+
+    //in default we dont have expression, we should return all rows
+    if (data.type === AxisDataBindingType.Default) {
+      return table.rows.map((row, id) => id);
+    }
+    const parsed = (Expression.parse(
+      data?.expression
+    ) as Expression.FunctionCall)?.args[0];
+
+    if (data.type === AxisDataBindingType.Categorical) {
+      for (let i = 0; i < table.rows.length; i++) {
+        const rowContext = table.getRowContext(i);
+
+        if (
+          data.categories.find(
+            (category) => category === parsed.getStringValue(rowContext)
+          ) !== undefined ||
+          !data.allCategories
+        ) {
+          filteredIndices.push(i);
+        }
+      }
+    } else if (data.type === AxisDataBindingType.Numerical) {
+      for (let i = 0; i < table.rows.length; i++) {
+        const rowContext = table.getRowContext(i);
+        const value = parsed.getValue(rowContext);
+        if (data.domainMin < data.domainMax) {
+          if (value >= data.domainMin && value <= data.domainMax) {
+            filteredIndices.push(i);
+          }
+        } else {
+          if (value >= data.domainMax && value <= data.domainMin) {
+            filteredIndices.push(i);
+          }
+        }
+      }
+    }
+
+    return filteredIndices;
   }
 
   /**
@@ -546,10 +868,9 @@ export class ChartStateManager {
     plotSegment: Specification.PlotSegment,
     plotSegmentState: Specification.PlotSegmentState
   ) {
-    const glyphObject = getById(
-      this.chart.glyphs,
-      plotSegment.glyph
-    ) as Specification.Glyph;
+    const glyphObject = <Specification.Glyph>(
+      getById(this.chart.glyphs, plotSegment.glyph)
+    );
     const table = this.getTable(glyphObject.table);
     const index2ExistingGlyphState = new Map<
       string,
@@ -564,6 +885,40 @@ export class ChartStateManager {
       }
     }
     let filteredIndices = table.rows.map((r, i) => i);
+
+    // scrolling filters
+    if (plotSegment.properties.xData && plotSegment.properties.yData) {
+      const dataX = plotSegment.properties.xData as AxisDataBinding;
+      const filteredIndicesX = this.applyScrollingFilter(
+        dataX,
+        plotSegment.table
+      );
+
+      const dataY = plotSegment.properties.yData as AxisDataBinding;
+      const filteredIndicesY = this.applyScrollingFilter(
+        dataY,
+        plotSegment.table
+      );
+
+      filteredIndices = filteredIndicesX.filter((value) =>
+        filteredIndicesY.includes(value)
+      );
+    } else {
+      if (plotSegment.properties.xData) {
+        const data = plotSegment.properties.xData as AxisDataBinding;
+        filteredIndices = this.applyScrollingFilter(data, plotSegment.table);
+      }
+      if (plotSegment.properties.yData) {
+        const data = plotSegment.properties.yData as AxisDataBinding;
+        filteredIndices = this.applyScrollingFilter(data, plotSegment.table);
+      }
+    }
+    if (plotSegment.properties.axis) {
+      const data = plotSegment.properties.axis as AxisDataBinding;
+      filteredIndices = this.applyScrollingFilter(data, plotSegment.table);
+    }
+    plotSegmentState.dataRowIndices = filteredIndices.map((i) => [i]);
+
     if (plotSegment.filter) {
       const filter = new CompiledFilter(
         plotSegment.filter,
@@ -600,15 +955,15 @@ export class ChartStateManager {
         if (index2ExistingGlyphState.has(rowIndex.join(","))) {
           return index2ExistingGlyphState.get(rowIndex.join(","));
         } else {
-          const glyphState = {
+          const glyphState = <Specification.GlyphState>{
             marks: glyphObject.marks.map(() => {
-              const elementState = {
+              const elementState = <Specification.MarkState>{
                 attributes: {},
-              } as Specification.MarkState;
+              };
               return elementState;
             }),
             attributes: {},
-          } as Specification.GlyphState;
+          };
           return glyphState;
         }
       }
@@ -619,12 +974,12 @@ export class ChartStateManager {
     element: Specification.ChartElement,
     elementState: Specification.ChartElementState
   ) {
-    const plotSegment = element as Specification.PlotSegment;
-    const plotSegmentState = elementState as Specification.PlotSegmentState;
+    const plotSegment = <Specification.PlotSegment>element;
+    const plotSegmentState = <Specification.PlotSegmentState>elementState;
     const plotSegmentClass = this.classCache.getPlotSegmentClass(
       plotSegmentState
     );
-    const glyph = this.getObjectById(plotSegment.glyph) as Specification.Glyph;
+    const glyph = <Specification.Glyph>this.getObjectById(plotSegment.glyph);
     for (const glyphState of plotSegmentState.glyphs) {
       if (this.classCache.hasClass(glyphState)) {
         continue;
@@ -635,11 +990,7 @@ export class ChartStateManager {
         glyphState
       );
       for (const [mark, markState] of zip(glyph.marks, glyphState.marks)) {
-        const markClass = this.classCache.createMarkClass(
-          glyphClass,
-          mark,
-          markState
-        );
+        this.classCache.createMarkClass(glyphClass, mark, markState);
       }
     }
   }
@@ -647,12 +998,13 @@ export class ChartStateManager {
   private initializePlotSegmentState(
     plotSegmentClass: PlotSegments.PlotSegmentClass
   ) {
-    const glyph = this.getObjectById(
-      plotSegmentClass.object.glyph
-    ) as Specification.Glyph;
+    const glyph = <Specification.Glyph>(
+      this.getObjectById(plotSegmentClass.object.glyph)
+    );
     for (const glyphState of plotSegmentClass.state.glyphs) {
       const glyphClass = this.classCache.getGlyphClass(glyphState);
       glyphClass.initializeState();
+      // eslint-disable-next-line
       for (const [mark, markState] of zip(glyph.marks, glyphState.marks)) {
         const markClass = this.classCache.getMarkClass(markState);
         markClass.initializeState();
@@ -660,6 +1012,9 @@ export class ChartStateManager {
     }
   }
 
+  private triggerUpdateListeners() {
+    this.onUpdateListeners.forEach((listener) => listener(this.chart));
+  }
   /** Remove a chart element */
   public removeChartElement(element: Specification.ChartElement) {
     const idx = this.chart.elements.indexOf(element);
@@ -680,11 +1035,13 @@ export class ChartStateManager {
     if (idx < 0) {
       return;
     }
-    const plotSegmentState = this.chartState.elements[
-      idx
-    ] as Specification.PlotSegmentState;
+    const plotSegmentState = <Specification.PlotSegmentState>(
+      this.chartState.elements[idx]
+    );
     this.mapPlotSegmentState(plotSegment, plotSegmentState);
     this.initializePlotSegmentCache(plotSegment, plotSegmentState);
+    this.solveConstraints();
+    this.triggerUpdateListeners();
   }
 
   /** Add a new scale */
@@ -749,9 +1106,9 @@ export class ChartStateManager {
     if (glyphIndex == null) {
       glyphIndex = 0;
     }
-    const plotSegmentClass = this.getClassById(
-      plotSegment._id
-    ) as PlotSegments.PlotSegmentClass;
+    const plotSegmentClass = <PlotSegments.PlotSegmentClass>(
+      this.getClassById(plotSegment._id)
+    );
     return plotSegmentClass.state.glyphs[glyphIndex];
   }
 
@@ -778,8 +1135,8 @@ export class ChartStateManager {
       switch (constraint.type) {
         case "snap": {
           return (
-            elementIDs.has(constraint.attributes.element as string) &&
-            elementIDs.has(constraint.attributes.targetElement as string)
+            elementIDs.has(<string>constraint.attributes.element) &&
+            elementIDs.has(<string>constraint.attributes.targetElement)
           );
         }
         default:
@@ -789,7 +1146,7 @@ export class ChartStateManager {
   }
 
   public resolveResource(description: string) {
-    const m = description.match(/^resource\:([.*]+)$/);
+    const m = description.match(/^resource:([.*]+)$/);
     if (m && this.chart.resources) {
       const id = m[1];
       for (const item of this.chart.resources) {
@@ -817,9 +1174,9 @@ export class ChartStateManager {
     glyphIndex: number
   ): Expression.Context {
     const table = this.dataflow.getTable(plotSegment.table);
-    const plotSegmentClass = this.getClassById(
-      plotSegment._id
-    ) as PlotSegments.PlotSegmentClass;
+    const plotSegmentClass = <PlotSegments.PlotSegmentClass>(
+      this.getClassById(plotSegment._id)
+    );
     const indices = plotSegmentClass.state.dataRowIndices[glyphIndex];
     return table.getGroupedContext(indices);
   }
@@ -827,12 +1184,13 @@ export class ChartStateManager {
   /** Get all glyph-level data contexts for a given plot segment */
   public getGlpyhDataContexts(
     plotSegment: Specification.PlotSegment,
+    // eslint-disable-next-line
     glyphIndex: number
   ): Expression.Context[] {
     const table = this.dataflow.getTable(plotSegment.table);
-    const plotSegmentClass = this.getClassById(
-      plotSegment._id
-    ) as PlotSegments.PlotSegmentClass;
+    const plotSegmentClass = <PlotSegments.PlotSegmentClass>(
+      this.getClassById(plotSegment._id)
+    );
     return plotSegmentClass.state.dataRowIndices.map((indices) =>
       table.getGroupedContext(indices)
     );
@@ -873,7 +1231,7 @@ export class ChartStateManager {
       solver.destroy();
     } else {
       const iterations = additional != null ? 2 : 1;
-      const phases: Array<"chart" | "glyphs"> = ["chart", "glyphs"];
+      const phases: ("chart" | "glyphs")[] = ["chart", "glyphs"];
       for (let i = 0; i < iterations; i++) {
         for (const phase of phases) {
           const solver = new ChartConstraintSolver(phase);

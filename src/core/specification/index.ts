@@ -34,6 +34,8 @@ export enum DataType {
   Boolean = "boolean",
   /** Date data type, stored as unix timestamps (ms) */
   Date = "date",
+  /** Image data as base64 string */
+  Image = "image",
 }
 
 /** Abstract data kind */
@@ -84,6 +86,7 @@ export type AttributeValue =
   | Specification.Chart;
 
 /** Attribute value list */
+// eslint-disable-next-line
 export interface AttributeList extends ArrayLike<AttributeValue> {}
 
 /** Attribute value map */
@@ -100,10 +103,19 @@ export interface Mappings {
   [name: string]: Mapping;
 }
 
+export enum MappingType {
+  _element = "_element",
+  parent = "parent",
+  scale = "scale",
+  expressionScale = "expressionScale",
+  text = "text",
+  value = "value",
+}
+
 /** Attribute mapping */
 export interface Mapping {
   /** Mapping type */
-  type: string;
+  type: MappingType;
 }
 
 export type baselineH = "left" | "center" | "right";
@@ -112,7 +124,7 @@ export type baseline = baselineH | baselineV;
 
 /** Scale mapping: use a scale */
 export interface ScaleMapping extends Mapping {
-  type: "scale";
+  type: MappingType.scale;
   /** The table to draw data from */
   table: string;
   /** The data column */
@@ -127,9 +139,26 @@ export interface ScaleMapping extends Mapping {
   valueIndex?: number;
 }
 
+/** Scale mapping: map id column data to image */
+export interface ScaleValueExpressionMapping {
+  type: MappingType.expressionScale;
+  /** The table to draw data from */
+  table: string;
+  /** The id column */
+  expression: Expression;
+  /** The data column */
+  valueExpression: Expression;
+  /** Attribute of the mark */
+  attribute?: string;
+  /** Value type returned by the expression */
+  valueType: DataType;
+  /** The id of the scale to use. If null, use the expression directly */
+  scale?: string;
+}
+
 /** Text mapping: map data to text */
 export interface TextMapping extends Mapping {
-  type: "text";
+  type: MappingType.text;
   /** The table to draw data from */
   table: string;
   /** The text expression */
@@ -138,16 +167,23 @@ export interface TextMapping extends Mapping {
 
 /** Value mapping: a constant value */
 export interface ValueMapping extends Mapping {
-  type: "value";
+  type: MappingType.value;
   /** The constant value */
   value: AttributeValue;
 }
 
 /** Parent mapping: use an attribute of the item's parent item */
 export interface ParentMapping extends Mapping {
-  type: "parent";
+  type: MappingType.parent;
   /** The attribute of the parent item */
   parentAttribute: string;
+}
+
+/** Snapping element mapping: use an attribute of another element */
+export interface SnappingElementMapping extends Mapping {
+  type: MappingType._element;
+  element: string;
+  attribute: string;
 }
 
 // ===========================================================================
@@ -198,6 +234,7 @@ export interface ExposableObject extends Object {
 }
 
 /** Element: a single graphical mark, such as rect, circle, wedge; an element is driven by a group of data rows */
+// eslint-disable-next-line
 export interface Element<
   PropertiesType extends ObjectProperties = ObjectProperties
 > extends Object<PropertiesType> {}
@@ -239,21 +276,25 @@ export interface PlotSegment<
 }
 
 /** Guide */
+// eslint-disable-next-line
 export interface Guide<
   PropertiesType extends ObjectProperties = ObjectProperties
 > extends Object<PropertiesType> {}
 
 /** Guide Coordinator */
+// eslint-disable-next-line
 export interface GuideCoordinator<
   PropertiesType extends ObjectProperties = ObjectProperties
 > extends Object<PropertiesType> {}
 
 /** Links */
+// eslint-disable-next-line
 export interface Links<
   PropertiesType extends ObjectProperties = ObjectProperties
 > extends Object<PropertiesType> {}
 
 /** ChartElement is a PlotSegment or a Guide */
+// eslint-disable-next-line
 export type ChartElement<
   PropertiesType extends ObjectProperties = ObjectProperties
 > =
@@ -304,10 +345,12 @@ export interface ObjectState<
 }
 
 /** Element state */
+// eslint-disable-next-line
 export interface MarkState<AttributesType extends AttributeMap = AttributeMap>
   extends ObjectState<AttributesType> {}
 
 /** Scale state */
+// eslint-disable-next-line
 export interface ScaleState<AttributesType extends AttributeMap = AttributeMap>
   extends ObjectState<AttributesType> {}
 
@@ -332,6 +375,7 @@ export interface PlotSegmentState<
 }
 
 /** Guide state */
+// eslint-disable-next-line
 export interface GuideState<AttributesType extends AttributeMap = AttributeMap>
   extends ObjectState<AttributesType> {}
 

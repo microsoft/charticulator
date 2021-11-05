@@ -5,20 +5,24 @@ import {
   setField,
   Solver,
   zipArray,
-  Prototypes,
   Specification,
   Expression,
+  ImageKeyColumn,
 } from "../../../core";
+import { DataKind } from "../../../core/dataset";
+import { MappingType } from "../../../core/specification";
 import { Actions } from "../../actions";
 import { AppStore } from "../app_store";
 import { ActionHandlerRegistry } from "./registry";
 
+// eslint-disable-next-line
 export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   // Internal registry of mark-level action handlers
   const MR = new ActionHandlerRegistry<AppStore, Actions.MarkAction>();
 
   MR.add(Actions.UpdateMarkAttribute, function (action) {
     for (const key in action.updates) {
+      // eslint-disable-next-line
       if (!action.updates.hasOwnProperty(key)) {
         continue;
       }
@@ -44,6 +48,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       )) {
         if (mark == action.mark) {
           for (const key in action.updates) {
+            // eslint-disable-next-line
             if (!action.updates.hasOwnProperty(key)) {
               continue;
             }
@@ -175,31 +180,56 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   REG.add(Actions.MapDataToMarkAttribute, function (action) {
     this.saveHistory();
 
-    const attr = Prototypes.ObjectClasses.Create(null, action.mark, null)
-      .attributes[action.attribute];
-    const table = this.getTable(action.glyph.table);
     const inferred =
       (action.hints && action.hints.scaleID) ||
       this.scaleInference(
-        { glyph: action.glyph },
-        action.expression,
-        action.valueType,
-        action.valueMetadata.kind,
-        action.attributeType,
-        action.hints,
-        action.attribute
+        {
+          glyph: action.glyph,
+          chart: {
+            table: action.expressionTable,
+          },
+        },
+        {
+          expression: action.expression,
+          valueType: action.valueType,
+          valueKind: action.valueMetadata.kind,
+          outputType: action.attributeType,
+          hints: action.hints,
+          markAttribute: action.attribute,
+        }
       );
     if (inferred != null) {
-      action.mark.mappings[action.attribute] = {
-        type: "scale",
-        table: action.glyph.table,
-        expression: action.expression,
-        valueType: action.valueType,
-        scale: inferred,
-        attribute: action.attribute,
-        valueIndex:
-          action.hints && action.hints.allowSelectValue ? 0 : undefined,
-      } as Specification.ScaleMapping;
+      if (
+        action.valueType == Specification.DataType.Image &&
+        action.valueType === Specification.DataType.Image
+      ) {
+        action.mark.mappings[action.attribute] = {
+          type: MappingType.expressionScale,
+          table: action.expressionTable ?? action.glyph.table,
+          expression: `first(${ImageKeyColumn})`,
+          valueExpression: action.expression,
+          valueType: action.valueType,
+          scale: inferred,
+          attribute: action.attribute,
+          valueIndex:
+            action.hints && action.hints.allowSelectValue != undefined
+              ? 0
+              : null,
+        } as Specification.ScaleValueExpressionMapping;
+      } else {
+        action.mark.mappings[action.attribute] = {
+          type: MappingType.scale,
+          table: action.expressionTable ?? action.glyph.table,
+          expression: action.expression,
+          valueType: action.valueType,
+          scale: inferred,
+          attribute: action.attribute,
+          valueIndex:
+            action.hints && action.hints.allowSelectValue != undefined
+              ? 0
+              : null,
+        } as Specification.ScaleMapping;
+      }
       if (
         !this.chart.scaleMappings.find(
           (scaleMapping) => scaleMapping.scale === inferred
@@ -217,12 +247,20 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
           action.valueType == Specification.DataType.Number) &&
         action.attributeType == Specification.AttributeType.Text
       ) {
-        // If the valueType is a number, use a format
-        const format =
-          action.valueType == Specification.DataType.Number ? ".1f" : undefined;
+        let format: string;
+        // don't apply format to numbers if data kind is categorical to draw as are
+        if (action.valueMetadata.kind === DataKind.Categorical) {
+          format = undefined;
+        } else {
+          // If the valueType is a number and kind is not categorical, use a format
+          format =
+            action.valueType == Specification.DataType.Number
+              ? ".1f"
+              : undefined;
+        }
         action.mark.mappings[action.attribute] = {
-          type: "text",
-          table: action.glyph.table,
+          type: MappingType.text,
+          table: action.expressionTable ?? action.glyph.table,
           textExpression: new Expression.TextExpression([
             { expression: Expression.parse(action.expression), format },
           ]).toString(),
