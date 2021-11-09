@@ -135,11 +135,11 @@ export class AxisRenderer {
     this.scrollRequired = data.allowScrolling;
     this.shiftAxis =
       (data.barOffset == null || data.barOffset === 0) &&
-      ((data.allCategories && data.windowSize < data.allCategories.length) ||
+      ((data.allCategories && data.windowSize < data.allCategories?.length) ||
         Math.abs(data.dataDomainMax - data.dataDomainMin) > data.windowSize);
 
     this.dataType = data.type;
-    if (data.allCategories && data.windowSize < data.allCategories.length) {
+    if (data.allCategories && data.windowSize < data.allCategories?.length) {
       this.hiddenCategoriesRatio = data.windowSize / data.allCategories.length;
       this.handlerSize = rangeMax / this.hiddenCategoriesRatio;
       this.windowSize = data.windowSize;
