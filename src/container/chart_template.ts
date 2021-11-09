@@ -508,7 +508,6 @@ export class ChartTemplate {
             }
           }
         }
-        console.log(axisDataBinding);
       }
       if (inference.scale) {
         // uses disableAutoMin disableAutoMax for handle old templates
