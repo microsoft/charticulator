@@ -356,7 +356,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         attrs.x2 - attrs.x1,
         false,
         false,
-        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
+        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager),
+        this.object,
+        this.parent.dataflow
       );
       if (props.xData.tickDataExpression) {
         const tickFormatType = props.xData?.tickFormatType;
@@ -392,7 +394,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         attrs.y2 - attrs.y1,
         false,
         true,
-        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
+        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager),
+        this.object,
+        this.parent.dataflow
       );
       if (props.yData.tickDataExpression) {
         const tickFormatType = props.yData?.tickFormatType;

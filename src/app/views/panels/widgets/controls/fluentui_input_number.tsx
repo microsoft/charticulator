@@ -70,7 +70,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
 
   const parseNumber = (str: string) => {
     str = str.trim();
-    if (str == "") {
+    if (str == "" || isNaN(+str)) {
       return null;
     }
     if (props.percentage) {
@@ -222,7 +222,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
                 }
                 onChange={(event, str) => {
                   if (
-                    str.indexOf(".") === str.length - 1 ||
+                    (str != "" && str.indexOf(".") === str.length - 1) ||
                     (str.indexOf("-") === 0 && str.length === 1)
                   ) {
                     setValue(str);
