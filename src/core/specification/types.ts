@@ -84,6 +84,9 @@ export interface AxisDataBinding extends AttributeMap {
 
   /** render axis on top */
   onTop?: boolean;
+
+  //axis tick selection
+  enableSelection?: boolean;
 }
 
 export interface AxisRenderingStyle extends AttributeMap {
