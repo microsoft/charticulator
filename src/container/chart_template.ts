@@ -479,9 +479,11 @@ export class ChartTemplate {
             scale.inferParameters(vector);
             if (inference.autoDomainMin) {
               axisDataBinding.dataDomainMin = scale.domainMin;
+              axisDataBinding.domainMin = scale.domainMin;
             }
             if (inference.autoDomainMax) {
               axisDataBinding.dataDomainMax = scale.domainMax;
+              axisDataBinding.domainMax = scale.domainMax;
             }
             if (axisDataBinding.allowScrolling) {
               const scrollScale = scaleLinear()
