@@ -728,6 +728,9 @@ export class RectElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
+        options: {
+          snapToClosestPoint: true,
+        },
       },
       <Handles.Point>{
         type: "point",
@@ -737,6 +740,9 @@ export class RectElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
+        options: {
+          snapToClosestPoint: true,
+        },
       },
       <Handles.Point>{
         type: "point",
@@ -746,6 +752,9 @@ export class RectElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
+        options: {
+          snapToClosestPoint: true,
+        },
       },
       <Handles.Point>{
         type: "point",
@@ -755,6 +764,9 @@ export class RectElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
+        options: {
+          snapToClosestPoint: true,
+        },
       },
     ];
   }
