@@ -346,6 +346,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   });
 
   REG.add(Actions.Undo, function () {
+    console.log(this.historyManager.getState());
     const state = this.historyManager.undo(this.saveDecoupledState());
     if (state) {
       const ss = this.saveSelectionState();
