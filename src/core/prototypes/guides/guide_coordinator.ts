@@ -230,6 +230,7 @@ export class GuideCoordinatorClass extends ChartElementClass<
           attribute: name,
           visible: true,
           visualType: SnappingGuidesVisualTypes.Coordinator,
+          priority: 1,
         };
       });
   }
