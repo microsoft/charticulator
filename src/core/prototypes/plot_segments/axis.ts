@@ -1303,6 +1303,7 @@ export function getNumericalInterpolate(
 interface AxisAppearanceWidgets {
   isVisible: boolean;
   wordWrap: boolean;
+  isOffset: boolean;
 }
 
 export function buildAxisAppearanceWidgets(
@@ -1353,15 +1354,17 @@ export function buildAxisAppearanceWidgets(
                 labels: [strings.objects.default, strings.objects.opposite],
               }
             ),
-            manager.inputNumber(
-              {
-                property: axisProperty,
-                field: ["offset"],
-              },
-              {
-                label: strings.objects.axes.offSet,
-              }
-            ),
+            options.isOffset
+              ? manager.inputNumber(
+                  {
+                    property: axisProperty,
+                    field: ["offset"],
+                  },
+                  {
+                    label: strings.objects.axes.offSet,
+                  }
+                )
+              : null,
           ]
         ),
         manager.verticalGroup(
@@ -1496,7 +1499,8 @@ export function buildAxisWidgets(
   data: Specification.Types.AxisDataBinding,
   axisProperty: string,
   manager: Controls.WidgetManager,
-  axisName: string
+  axisName: string,
+  showOffset: boolean = true
 ): Controls.Widget[] {
   const widgets = [];
   const dropzoneOptions: Controls.RowOptions = {
@@ -1510,6 +1514,7 @@ export function buildAxisWidgets(
     return buildAxisAppearanceWidgets(axisProperty, manager, {
       isVisible: data.visible,
       wordWrap: data.style.wordWrap,
+      isOffset: showOffset,
     });
   };
   if (data != null) {

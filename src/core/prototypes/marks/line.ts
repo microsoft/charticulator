@@ -337,7 +337,7 @@ export class LineElementClass extends EmphasizableMarkClass<
             defaultValue: 1,
             numberOptions: {
               showSlider: true,
-              sliderRange: [0, 5],
+              sliderRange: [0, 10],
               minimum: 0,
             },
           }),
