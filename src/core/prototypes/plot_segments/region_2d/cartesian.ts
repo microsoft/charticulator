@@ -245,25 +245,25 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         type: "x",
         value: x1,
         attribute: "x1",
-        priority: 1,
+        priority: 2,
       },
       <SnappingGuides.Axis>{
         type: "x",
         value: x2,
         attribute: "x2",
-        priority: 1,
+        priority: 2,
       },
       <SnappingGuides.Axis>{
         type: "y",
         value: y1,
         attribute: "y1",
-        priority: 1,
+        priority: 2,
       },
       <SnappingGuides.Axis>{
         type: "y",
         value: y2,
         attribute: "y2",
-        priority: 1,
+        priority: 2,
       },
     ];
   }
