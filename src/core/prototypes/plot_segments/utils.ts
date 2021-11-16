@@ -2,9 +2,9 @@
 // Licensed under the MIT license.
 
 import { Controls } from "../common";
-import { CharticulatorPropertyAccessors } from "../../../../.tmp/tests/app/views/panels/widgets/manager";
 import { deepClone } from "../../common";
 import { Dataset, Expression } from "../../index";
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
 
 export function getTableColumns(
   manager: Controls.WidgetManager & CharticulatorPropertyAccessors

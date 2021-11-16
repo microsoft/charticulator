@@ -2136,10 +2136,10 @@ function getOrderByAnotherColumnWidgets(
   const columnsDisplayNames = tableColumns.map((column) => column.displayName);
   const columnsNames = tableColumns.map((column) => column.name);
 
-  const defaultValue = getColumnByExpression(
-    manager as Controls.WidgetManager & CharticulatorPropertyAccessors,
-    data.expression
-  );
+  // const defaultValue = getColumnByExpression(
+  //   manager as Controls.WidgetManager & CharticulatorPropertyAccessors,
+  //   data.expression
+  // );
 
   const table = (manager as Controls.WidgetManager &
     CharticulatorPropertyAccessors).store.getTables()[0].name;
