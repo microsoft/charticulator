@@ -44,12 +44,12 @@ import {
   TickFormatType,
 } from "../../specification/types";
 import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
-import { getColumnByExpression, getTableColumns } from "./utils";
-import { CharticulatorPropertyAccessors } from "../../../../.tmp/tests/app/views/panels/widgets/manager";
+import { getTableColumns } from "./utils";
 import { DataflowManager, DataflowTable } from "../dataflow";
 import * as Expression from "../../expression";
 import { CompiledGroupBy } from "../group_by";
 import React = require("react");
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
