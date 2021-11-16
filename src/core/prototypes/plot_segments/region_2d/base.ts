@@ -341,6 +341,7 @@ export class Region2DConstraintBuilder {
     const order = this.plotSegment.object.properties.sublayout.order;
     const dateRowIndices = this.plotSegment.state.dataRowIndices;
     const table = this.getTableContext();
+    // debugger
     // Sort results
     if (order != null && order.expression) {
       const orderExpression = this.getExpression(order.expression);

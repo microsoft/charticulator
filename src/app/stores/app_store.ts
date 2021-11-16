@@ -84,6 +84,7 @@ import {
 import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
 import { DataAxisProperties } from "../../core/prototypes/marks/data_axis.attrs";
 import { isBase64Image } from "../../core/dataset/data_types";
+import { getColumnNameByExpression } from "../../core/prototypes/plot_segments/utils";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -1485,6 +1486,10 @@ export class AppStore extends BaseStore {
               : null,
             order:
               xDataProperty.order !== undefined ? xDataProperty.order : null,
+            orderByExpression:
+              xDataProperty.orderByExpression !== undefined
+                ? xDataProperty.orderByExpression
+                : null,
           },
           xDataProperty.rawExpression as string
         );
@@ -1747,6 +1752,9 @@ export class AppStore extends BaseStore {
         ? ((propertyValue as any).expression as string)
         : groupExpression;
 
+    const column = getColumnNameByExpression(expression);
+
+    const orderByCategories: Array<string> = [];
     let dataBinding: Specification.Types.AxisDataBinding = {
       type: options.type || type,
       // Don't change current expression (use current expression), if user appends data expression ()
@@ -1853,6 +1861,12 @@ export class AppStore extends BaseStore {
         <boolean>objectProperties?.enableSelection !== undefined
           ? <boolean>objectProperties?.enableSelection
           : false,
+
+      orderByCategories:
+        <string[]>objectProperties?.orderByCategories !== undefined
+          ? <string[]>objectProperties?.orderByCategories
+          : orderByCategories,
+      orderByExpression: column,
     };
 
     let expressions = [groupExpression];
@@ -1905,6 +1919,7 @@ export class AppStore extends BaseStore {
       }
     }
 
+    //TODO: Update orderByCategories
     if (dataExpression.metadata) {
       switch (dataExpression.metadata.kind) {
         case Specification.DataKind.Categorical:
@@ -1912,13 +1927,28 @@ export class AppStore extends BaseStore {
           {
             dataBinding.type = AxisDataBindingType.Categorical;
             dataBinding.valueType = dataExpression.valueType;
+            const orderExpression = dataBinding.orderByExpression;
+
             const { categories, order } = this.getCategoriesForDataBinding(
               dataExpression.metadata,
               dataExpression.valueType,
               values
             );
+
+            const {
+              categories: c1,
+              order: o1,
+            } = this.getCategoriesForDataBindingFromAnotherColumn(
+              dataExpression.metadata,
+              dataExpression.valueType,
+              values,
+              orderExpression
+            );
+
+            dataBinding.orderByCategories = order != undefined ? order : null;
+
             dataBinding.order = order != undefined ? order : null;
-            dataBinding.allCategories = deepClone(categories);
+
             if (dataBinding.windowSize == null) {
               dataBinding.windowSize = Math.ceil(categories.length / 10);
             }
@@ -2089,6 +2119,55 @@ export class AppStore extends BaseStore {
     metadata: Dataset.ColumnMetadata,
     type: DataType,
     values: ValueType[]
+  ) {
+    let categories: string[];
+    let order: string[];
+    if (metadata.order && metadata.orderMode === OrderMode.order) {
+      categories = metadata.order.slice();
+      const scale = new Scale.CategoricalScale();
+      scale.inferParameters(values as string[], metadata.orderMode);
+      const newData = new Array<string>(scale.length);
+      scale.domain.forEach(
+        (index: any, x: any) => (newData[index] = x.toString())
+      );
+
+      metadata.order = metadata.order.filter((value) =>
+        scale.domain.has(value)
+      );
+      const newItems = newData.filter(
+        (category) => !metadata.order.find((order) => order === category)
+      );
+
+      categories = new Array<string>(metadata.order.length);
+      metadata.order.forEach((value, index) => {
+        categories[index] = value;
+      });
+      categories = categories.concat(newItems);
+      order = metadata.order.concat(newItems);
+    } else {
+      let orderMode: OrderMode = OrderMode.alphabetically;
+      const scale = new Scale.CategoricalScale();
+      if (metadata.orderMode) {
+        orderMode = metadata.orderMode;
+      }
+      if (type === "number") {
+        values = (values as number[]).sort((a, b) => a - b);
+        orderMode = OrderMode.order;
+      }
+      scale.inferParameters(values as string[], orderMode);
+      categories = new Array<string>(scale.length);
+      scale.domain.forEach(
+        (index: any, x: any) => (categories[index] = x.toString())
+      );
+    }
+    return { categories, order };
+  }
+
+  public getCategoriesForDataBindingFromAnotherColumn(
+    metadata: Dataset.ColumnMetadata,
+    type: DataType,
+    values: ValueType[],
+    orderExpression: string
   ) {
     let categories: string[];
     let order: string[];

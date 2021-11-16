@@ -37,7 +37,11 @@ import {
 } from "../../../utils/index";
 import { DataFieldSelectorValue } from "../../dataset/data_field_selector";
 import { ReorderListView } from "../object_list_editor";
-import { InputColorGradient, FluentComboBoxFontFamily } from "./controls";
+import {
+  InputColorGradient,
+  FluentComboBoxFontFamily,
+  Button,
+} from "./controls";
 import { GroupByEditor } from "./groupby_editor";
 import {
   ChartTemplate,
@@ -578,6 +582,7 @@ export class FluentUIWidgetManager
           })}
           onChange={(event, value) => {
             this.emitSetProperty(property, value.key);
+            this.defaultNotification(options.observerConfig);
             return true;
           }}
           styles={{
@@ -1637,6 +1642,112 @@ export class FluentUIWidgetManager
         styles={options.styles}
         header={options.header}
       />
+    );
+  }
+
+  public reorderByAnotherColumnWidget(
+    property: Prototypes.Controls.Property,
+    options: Prototypes.Controls.ReOrderWidgetOptions = {}
+  ): JSX.Element {
+    let container: HTMLSpanElement;
+    return (
+      <FluentButton
+        ref={(e) => (container = e)}
+        key={this.getKeyFromProperty(property)}
+        marginTop={"0px"}
+        paddingRight={"0px"}
+      >
+        <DefaultButton
+          styles={{
+            root: {
+              minWidth: "unset",
+              ...defultComponentsHeight,
+            },
+          }}
+          iconProps={{
+            iconName: "SortLines",
+          }}
+          onClick={() => {
+            globals.popupController.popupAt(
+              (context) => {
+                const items = options.items
+                  ? options.items
+                  : (this.getPropertyValue(property) as string[]);
+                return (
+                  <PopupView context={context}>
+                    <ReorderStringsValue
+                      items={items}
+                      onConfirm={(items, customOrder) => {
+                        this.emitSetProperty(property, items);
+                        if (customOrder) {
+                          this.emitSetProperty(
+                            {
+                              property: property.property,
+                              field: "orderMode",
+                            },
+                            OrderMode.order
+                          );
+                          this.emitSetProperty(
+                            {
+                              property: property.property,
+                              field: "order",
+                            },
+                            items
+                          );
+                        } else {
+                          this.emitSetProperty(
+                            {
+                              property: property.property,
+                              field: "orderMode",
+                            },
+                            OrderMode.alphabetically
+                          );
+                        }
+                        context.close();
+                      }}
+                      onReset={() => {
+                        const axisDataBinding = {
+                          ...(this.objectClass.object.properties[
+                            property.property
+                          ] as any),
+                        };
+
+                        axisDataBinding.table = this.store.chartManager.getTable(
+                          (this.objectClass.object as any).table
+                        );
+                        axisDataBinding.metadata = {
+                          kind: axisDataBinding.dataKind,
+                          orderMode: "order",
+                        };
+
+                        const groupBy: Specification.Types.GroupBy = this.store.getGroupingExpression(
+                          this.objectClass.object
+                        );
+                        const values = this.store.chartManager.getGroupedExpressionVector(
+                          (this.objectClass.object as any).table,
+                          groupBy,
+                          axisDataBinding.expression
+                        );
+
+                        const {
+                          categories,
+                        } = this.store.getCategoriesForDataBinding(
+                          axisDataBinding.metadata,
+                          axisDataBinding.type,
+                          values
+                        );
+                        return categories;
+                      }}
+                      {...options}
+                    />
+                  </PopupView>
+                );
+              },
+              { anchor: container }
+            );
+          }}
+        />
+      </FluentButton>
     );
   }
 }

@@ -41,6 +41,7 @@ export interface InputSelectOptions {
   label?: string;
   hideBorder?: boolean;
   shiftCallout?: number;
+  observerConfig?: ObserverConfig;
 }
 
 export interface InputFontComboboxOptions {
@@ -314,6 +315,12 @@ export interface WidgetManager {
 
   // Reorder widget: allow user to reorder the items in a property
   reorderWidget(property: Property, options: ReOrderWidgetOptions): Widget;
+
+  // Reorder widget: allow user to reorder the items in a property
+  reorderByAnotherColumnWidget(
+    property: Property,
+    options: ReOrderWidgetOptions
+  ): Widget;
 
   arrayWidget(
     property: Property,

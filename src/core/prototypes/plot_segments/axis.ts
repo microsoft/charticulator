@@ -9,6 +9,7 @@ import {
   fillDefaults,
   Geometry,
   getFormat,
+  makeRange,
   replaceSymbolByNewLine,
   replaceSymbolByTab,
   rgbToHex,
@@ -30,7 +31,7 @@ import {
   splitByWidth,
   TextMeasurer,
 } from "../../graphics/renderer/text_measurer";
-import { Graphics, Specification } from "../../index";
+import { Graphics, Prototypes, Specification } from "../../index";
 import { Controls, strokeStyleToDashArray } from "../common";
 import { AttributeMap, DataType } from "../../specification";
 import { strings } from "../../../strings";
@@ -42,8 +43,11 @@ import {
   TickFormatType,
 } from "../../specification/types";
 import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
+import { getColumnByExpression, getTableColumns } from "./utils";
+import { CharticulatorPropertyAccessors } from "../../../../.tmp/tests/app/views/panels/widgets/manager";
 import { DataflowManager, DataflowTable } from "../dataflow";
 import * as Expression from "../../expression";
+import { CompiledGroupBy } from "../group_by";
 import React = require("react");
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
@@ -1741,6 +1745,33 @@ export function buildAxisWidgets(
                     { allowReset: true }
                   )
                 ),
+
+                ...getOrderByAnotherColumnWidgets(
+                  data,
+                  axisProperty,
+                  manager,
+                  axisName
+                ),
+
+                // manager.horizontal(
+                //   [1, 0],
+                //   manager.sectionHeader(
+                //     null,
+                //     manager.inputExpression(
+                //       {
+                //         property: axisProperty,
+                //         field: "orderByExpression",
+                //       },
+                //       {}
+                //     ),
+                //     //dropzoneOptions
+                //   ),
+                //   manager.clearButton({ property: axisProperty, field: "orderByExpression" }, null, true),
+                //   manager.reorderWidget(
+                //     { property: axisProperty, field: "orderByCategories" },
+                //     { allowReset: true }
+                //   )
+                // ),
                 manager.inputNumber(
                   { property: axisProperty, field: "gapRatio" },
                   {
@@ -2093,4 +2124,115 @@ function applySelectionFilter(
     }
   }
   return filteredIndices;
+}
+
+function getOrderByAnotherColumnWidgets(
+  data: Specification.Types.AxisDataBinding,
+  axisProperty: string,
+  manager: Controls.WidgetManager,
+  axisName: string
+): JSX.Element[] {
+  const widgets = [];
+
+  const tableColumns = getTableColumns(
+    manager as Controls.WidgetManager & CharticulatorPropertyAccessors
+  );
+
+  const columnsDisplayNames = tableColumns.map((column) => column.displayName);
+  const columnsNames = tableColumns.map((column) => column.name);
+
+  const defaultValue = getColumnByExpression(
+    manager as Controls.WidgetManager & CharticulatorPropertyAccessors,
+    data.expression
+  );
+
+  const table = (manager as Controls.WidgetManager &
+    CharticulatorPropertyAccessors).store.getTables()[0].name;
+  const store = (manager as Controls.WidgetManager &
+    CharticulatorPropertyAccessors).store;
+
+  const df = new Prototypes.Dataflow.DataflowManager(store.dataset);
+  const getExpressionVector = (
+    expression: string,
+    table: string,
+    groupBy?: Specification.Types.GroupBy
+  ): any[] => {
+    const expr = Expression.parse(expression);
+    const tableContext = df.getTable(table);
+    const indices = groupBy
+      ? new CompiledGroupBy(groupBy, df.cache).groupBy(tableContext)
+      : makeRange(0, tableContext.rows.length).map((x) => [x]);
+    return indices.map((is) =>
+      expr.getValue(tableContext.getGroupedContext(is))
+    );
+  };
+
+  const parsed = Expression.parse(data.expression);
+  let groupByExpression: string = null;
+  if (parsed instanceof Expression.FunctionCall) {
+    groupByExpression = parsed.args[0].toString();
+    groupByExpression = groupByExpression?.split("`").join("");
+    //need to provide date.year() etc.
+    //todo
+  }
+
+  const vectorData = getExpressionVector(data.orderByExpression, table, {
+    expression: groupByExpression,
+  });
+  const items = vectorData.map((item) => [...new Set(item)]);
+
+  const items_idx = items.map((item, idx) => [item, idx]);
+  const axisData = getExpressionVector(
+    data.expression,
+    table
+  ).map((item, idx) => [item, idx]);
+
+  console.log(items_idx);
+  console.log(axisData);
+
+  const onConfirm = (items: string[]) => {
+    // console.log(items);
+    const data_arr = axisData;
+    const new_order = [];
+    for (let i = 0; i < items.length; i++) {
+      new_order.push(axisData.find((item) => item[0] === items[i]));
+    }
+    console.log(new_order);
+    data.order = new_order.map((item) => item[0]);
+    data.categories = new_order.map((item) => item[0]);
+  };
+
+  widgets.push(
+    manager.label("Order by"),
+
+    manager.horizontal(
+      [1, 0],
+      manager.inputSelect(
+        { property: axisProperty, field: "orderByExpression" },
+        {
+          type: "dropdown",
+          showLabel: true,
+          labels: columnsDisplayNames,
+          options: columnsNames,
+        }
+      ),
+      manager.reorderByAnotherColumnWidget(
+        { property: axisProperty, field: "orderByCategories" },
+        {
+          allowReset: true,
+          items: items.map((item) =>
+            Array.isArray(item) ? item.toString() : item
+          ),
+          onConfirm: onConfirm,
+        }
+      )
+    )
+  );
+  widgets.push(
+    manager.orderByWidget(
+      { property: axisProperty, field: "orderExpression" },
+      { table: table }
+    )
+  );
+  return widgets;
 }
