@@ -1935,6 +1935,7 @@ export class AppStore extends BaseStore {
               values
             );
 
+            // debugger
             const {
               categories: c1,
               order: o1,
@@ -1945,7 +1946,7 @@ export class AppStore extends BaseStore {
               orderExpression
             );
 
-            dataBinding.orderByCategories = order != undefined ? order : null;
+            dataBinding.orderByCategories = categories;
 
             dataBinding.order = order != undefined ? order : null;
 

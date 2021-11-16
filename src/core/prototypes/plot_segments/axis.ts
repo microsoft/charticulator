@@ -40,6 +40,7 @@ import {
   AxisDataBinding,
   AxisDataBindingType,
   NumericalMode,
+  OrderMode,
   TickFormatType,
 } from "../../specification/types";
 import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
@@ -2182,23 +2183,24 @@ function getOrderByAnotherColumnWidgets(
   const items = vectorData.map((item) => [...new Set(item)]);
 
   const items_idx = items.map((item, idx) => [item, idx]);
-  const axisData = getExpressionVector(
-    data.expression,
-    table
-  ).map((item, idx) => [item, idx]);
-
-  console.log(items_idx);
-  console.log(axisData);
+  const axisData = getExpressionVector(data.expression, table, {
+    expression: groupByExpression,
+  }).map((item, idx) => [item, idx]);
 
   const onConfirm = (items: string[]) => {
     // console.log(items);
-    const data_arr = axisData;
+    const newData = [...axisData];
     const new_order = [];
     for (let i = 0; i < items.length; i++) {
-      new_order.push(axisData.find((item) => item[0] === items[i]));
+      const currentItemIndex = items_idx.findIndex(
+        (item) => item[0].toString() == items[i]
+      );
+      items_idx.splice(currentItemIndex, 1);
+      const foundItem = newData.find((item) => item[1] === currentItemIndex);
+      new_order.push(foundItem);
     }
-    console.log(new_order);
     data.order = new_order.map((item) => item[0]);
+    data.orderMode = OrderMode.order;
     data.categories = new_order.map((item) => item[0]);
   };
 
@@ -2223,15 +2225,9 @@ function getOrderByAnotherColumnWidgets(
           items: items.map((item) =>
             Array.isArray(item) ? item.toString() : item
           ),
-          onConfirm: onConfirm,
+          onConfirmClick: onConfirm,
         }
       )
-    )
-  );
-  widgets.push(
-    manager.orderByWidget(
-      { property: axisProperty, field: "orderExpression" },
-      { table: table }
     )
   );
   return widgets;

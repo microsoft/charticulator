@@ -1679,6 +1679,9 @@ export class FluentUIWidgetManager
                       items={items}
                       onConfirm={(items, customOrder) => {
                         this.emitSetProperty(property, items);
+                        if (options.onConfirmClick) {
+                          options.onConfirmClick(items);
+                        }
                         if (customOrder) {
                           this.emitSetProperty(
                             {

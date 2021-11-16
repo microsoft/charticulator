@@ -248,6 +248,7 @@ export interface ReOrderWidgetOptions {
   onConfirm?: (items: string[]) => void;
   onReset?: () => string[];
   items?: string[];
+  onConfirmClick?: (items: string[]) => void;
 }
 
 export interface InputFormatOptions {
