@@ -1740,19 +1740,14 @@ export function buildAxisWidgets(
                     ),
                     dropzoneOptions
                   ),
-                  manager.clearButton({ property: axisProperty }, null, true),
-                  manager.reorderWidget(
-                    { property: axisProperty, field: "categories" },
-                    { allowReset: true }
-                  )
+                  manager.clearButton({ property: axisProperty }, null, true)
+                  // manager.reorderWidget(
+                  //   { property: axisProperty, field: "categories" },
+                  //   { allowReset: true }
+                  // )
                 ),
 
-                ...getOrderByAnotherColumnWidgets(
-                  data,
-                  axisProperty,
-                  manager,
-                  axisName
-                ),
+                ...getOrderByAnotherColumnWidgets(data, axisProperty, manager),
 
                 // manager.horizontal(
                 //   [1, 0],
@@ -2130,8 +2125,7 @@ function applySelectionFilter(
 function getOrderByAnotherColumnWidgets(
   data: Specification.Types.AxisDataBinding,
   axisProperty: string,
-  manager: Controls.WidgetManager,
-  axisName: string
+  manager: Controls.WidgetManager
 ): JSX.Element[] {
   const widgets = [];
 
@@ -2188,20 +2182,26 @@ function getOrderByAnotherColumnWidgets(
   }).map((item, idx) => [item, idx]);
 
   const onConfirm = (items: string[]) => {
-    // console.log(items);
-    const newData = [...axisData];
-    const new_order = [];
-    for (let i = 0; i < items.length; i++) {
-      const currentItemIndex = items_idx.findIndex(
-        (item) => item[0].toString() == items[i]
-      );
-      items_idx.splice(currentItemIndex, 1);
-      const foundItem = newData.find((item) => item[1] === currentItemIndex);
-      new_order.push(foundItem);
+    try {
+      // console.log(items);
+      const newData = [...axisData];
+      const new_order = [];
+      for (let i = 0; i < items.length; i++) {
+        const currentItemIndex = items_idx.findIndex(
+          (item) => item[0].toString() == items[i]
+        );
+        const foundItem = newData.find(
+          (item) => item[1] === items_idx[currentItemIndex]?.[1]
+        );
+        new_order.push(foundItem);
+        items_idx.splice(currentItemIndex, 1);
+      }
+      data.order = new_order.map((item) => item[0]);
+      data.orderMode = OrderMode.order;
+      data.categories = new_order.map((item) => item[0]);
+    } catch (e) {
+      console.log(e);
     }
-    data.order = new_order.map((item) => item[0]);
-    data.orderMode = OrderMode.order;
-    data.categories = new_order.map((item) => item[0]);
   };
 
   widgets.push(

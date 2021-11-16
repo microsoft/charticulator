@@ -1230,11 +1230,8 @@ export class WidgetManager
     throw new Error("Method not implemented.");
   }
 
-  reorderByAnotherColumnWidget(
-    property: Prototypes.Controls.Property,
-    options: Prototypes.Controls.ReOrderWidgetOptions = {}
-  ): JSX.Element {
-    return undefined;
+  reorderByAnotherColumnWidget(): JSX.Element {
+    throw new Error("Method not implemented.");
   }
 }
 

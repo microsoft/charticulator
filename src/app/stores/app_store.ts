@@ -1935,17 +1935,6 @@ export class AppStore extends BaseStore {
               values
             );
 
-            // debugger
-            const {
-              categories: c1,
-              order: o1,
-            } = this.getCategoriesForDataBindingFromAnotherColumn(
-              dataExpression.metadata,
-              dataExpression.valueType,
-              values,
-              orderExpression
-            );
-
             dataBinding.orderByCategories = categories;
 
             dataBinding.order = order != undefined ? order : null;
@@ -2120,55 +2109,6 @@ export class AppStore extends BaseStore {
     metadata: Dataset.ColumnMetadata,
     type: DataType,
     values: ValueType[]
-  ) {
-    let categories: string[];
-    let order: string[];
-    if (metadata.order && metadata.orderMode === OrderMode.order) {
-      categories = metadata.order.slice();
-      const scale = new Scale.CategoricalScale();
-      scale.inferParameters(values as string[], metadata.orderMode);
-      const newData = new Array<string>(scale.length);
-      scale.domain.forEach(
-        (index: any, x: any) => (newData[index] = x.toString())
-      );
-
-      metadata.order = metadata.order.filter((value) =>
-        scale.domain.has(value)
-      );
-      const newItems = newData.filter(
-        (category) => !metadata.order.find((order) => order === category)
-      );
-
-      categories = new Array<string>(metadata.order.length);
-      metadata.order.forEach((value, index) => {
-        categories[index] = value;
-      });
-      categories = categories.concat(newItems);
-      order = metadata.order.concat(newItems);
-    } else {
-      let orderMode: OrderMode = OrderMode.alphabetically;
-      const scale = new Scale.CategoricalScale();
-      if (metadata.orderMode) {
-        orderMode = metadata.orderMode;
-      }
-      if (type === "number") {
-        values = (values as number[]).sort((a, b) => a - b);
-        orderMode = OrderMode.order;
-      }
-      scale.inferParameters(values as string[], orderMode);
-      categories = new Array<string>(scale.length);
-      scale.domain.forEach(
-        (index: any, x: any) => (categories[index] = x.toString())
-      );
-    }
-    return { categories, order };
-  }
-
-  public getCategoriesForDataBindingFromAnotherColumn(
-    metadata: Dataset.ColumnMetadata,
-    type: DataType,
-    values: ValueType[],
-    orderExpression: string
   ) {
     let categories: string[];
     let order: string[];
