@@ -92,6 +92,7 @@ import { FluentInputNumber } from "./controls/fluentui_input_number";
 import {
   InputFontComboboxOptions,
   InputTextOptions,
+  LabelOptions,
   ObserverConfig,
   PanelMode,
 } from "../../../../core/prototypes/controls";
@@ -116,6 +117,7 @@ import { FluentUIGradientPicker } from "../../../components/fluent_ui_gradient_p
 import { OrderMode } from "../../../../core/specification/types";
 import { ReorderStringsValue } from "./controls/reorder_string_value";
 import { CustomCollapsiblePanel } from "./controls/custom_collapsible_panel";
+import { FluentUIReorderStringsValue } from "./controls/fluentui_reorder_string_value";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -579,6 +581,9 @@ export class FluentUIWidgetManager
           onChange={(event, value) => {
             this.emitSetProperty(property, value.key);
             this.defaultNotification(options.observerConfig);
+            if (options.onChange) {
+              options.onChange(value);
+            }
             return true;
           }}
           styles={{
@@ -1241,7 +1246,7 @@ export class FluentUIWidgetManager
     );
   }
 
-  public label(title: string, options?: { addMargins: boolean }) {
+  public label(title: string, options?: Prototypes.Controls.LabelOptions) {
     // return <span className="charticulator__widget-label">{title}</span>;
     return (
       <FluentLabelHeader
@@ -1394,6 +1399,7 @@ export class FluentUIWidgetManager
   ): JSX.Element {
     return (
       <FilterPanel
+        key={options.key}
         options={{
           ...options,
         }}
@@ -1671,7 +1677,7 @@ export class FluentUIWidgetManager
                   : (this.getPropertyValue(property) as string[]);
                 return (
                   <PopupView context={context}>
-                    <ReorderStringsValue
+                    <FluentUIReorderStringsValue
                       items={items}
                       onConfirm={(items, customOrder) => {
                         this.emitSetProperty(property, items);

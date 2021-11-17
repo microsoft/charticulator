@@ -6,7 +6,7 @@ import { Point } from "../common";
 import * as Specification from "../specification";
 import * as Dataset from "../dataset";
 import { CSSProperties } from "react";
-import { ICheckboxStyles } from "@fluentui/react";
+import { ICheckboxStyles, IDropdownOption } from "@fluentui/react";
 
 export type Widget = any;
 
@@ -42,6 +42,7 @@ export interface InputSelectOptions {
   hideBorder?: boolean;
   shiftCallout?: number;
   observerConfig?: ObserverConfig;
+  onChange?: (value: IDropdownOption) => void;
 }
 
 export interface InputFontComboboxOptions {
@@ -183,6 +184,7 @@ export interface FilterEditorOptions {
   };
   value: Specification.Types.Filter;
   mode: PanelMode;
+  key?: string;
 }
 
 export interface GroupByEditorOptions {
@@ -333,13 +335,17 @@ export interface WidgetManager {
 
   // Label and text
   icon(icon: string): Widget;
-  label(title: string, options?: { addMargins: boolean }): Widget;
+
+  label(title: string, options?: LabelOptions): Widget;
+
   text(text: string, align?: "left" | "center" | "right"): Widget;
+
   // Inline separator
   sep(): Widget;
 
   // Layout elements
   sectionHeader(title: string, widget?: Widget, options?: RowOptions): Widget;
+
   row(title?: string, widget?: Widget, options?: RowOptions): Widget;
 
   // Basic layout elements
@@ -369,4 +375,9 @@ export interface WidgetManager {
 export interface PopupEditor {
   anchor: Point;
   widgets: Widget[];
+}
+
+export interface LabelOptions {
+  addMargins: boolean;
+  key?: string;
 }

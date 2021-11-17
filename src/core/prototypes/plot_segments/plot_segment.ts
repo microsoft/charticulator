@@ -184,6 +184,7 @@ export abstract class PlotSegmentClass<
         [0, 1, 1],
         manager.label("Data", {
           addMargins: true,
+          key: "Data",
         }),
         manager.horizontal(
           [1],
@@ -193,6 +194,7 @@ export abstract class PlotSegmentClass<
               target: { plotSegment: this.object },
               value: this.object.filter,
               mode: PanelMode.Button,
+              key: "filterEditor",
             }),
             manager.groupByEditor({
               table: this.object.table,

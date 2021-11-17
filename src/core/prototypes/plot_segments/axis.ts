@@ -50,6 +50,8 @@ import * as Expression from "../../expression";
 import { CompiledGroupBy } from "../group_by";
 import React = require("react");
 import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
+import { type2DerivedColumns } from "../../../app/views/dataset/common";
+import { IDropdownOption } from "@fluentui/react";
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
@@ -2136,6 +2138,13 @@ function getOrderByAnotherColumnWidgets(
   const columnsDisplayNames = tableColumns.map((column) => column.displayName);
   const columnsNames = tableColumns.map((column) => column.name);
 
+  const derivedColumns = [];
+
+  for (let i = 0; i < tableColumns.length; i++) {
+    derivedColumns.push(type2DerivedColumns[tableColumns[i].type]);
+  }
+  console.log(derivedColumns);
+
   // const defaultValue = getColumnByExpression(
   //   manager as Controls.WidgetManager & CharticulatorPropertyAccessors,
   //   data.expression
@@ -2168,7 +2177,7 @@ function getOrderByAnotherColumnWidgets(
     groupByExpression = parsed.args[0].toString();
     groupByExpression = groupByExpression?.split("`").join("");
     //need to provide date.year() etc.
-    //todo
+    // groupByExpression = this.parseDerivedColumnsExpression(groupByExpression);
   }
 
   const vectorData = getExpressionVector(data.orderByExpression, table, {
@@ -2183,12 +2192,15 @@ function getOrderByAnotherColumnWidgets(
 
   const onConfirm = (items: string[]) => {
     try {
-      // console.log(items);
       const newData = [...axisData];
       const new_order = [];
+
       for (let i = 0; i < items.length; i++) {
         const currentItemIndex = items_idx.findIndex(
-          (item) => item[0].toString() == items[i]
+          (item) =>
+            (Array.isArray(item[0])
+              ? item[0].join(", ")
+              : item[0].toString()) == items[i]
         );
         const foundItem = newData.find(
           (item) => item[1] === items_idx[currentItemIndex]?.[1]
@@ -2196,12 +2208,24 @@ function getOrderByAnotherColumnWidgets(
         new_order.push(foundItem);
         items_idx.splice(currentItemIndex, 1);
       }
+
       data.order = new_order.map((item) => item[0]);
       data.orderMode = OrderMode.order;
       data.categories = new_order.map((item) => item[0]);
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const onChange = () => {
+    const vectorData = getExpressionVector(data.orderByExpression, table, {
+      expression: groupByExpression,
+    });
+    const items = vectorData.map((item) => [...new Set(item)]);
+    const newData = items.map((item) =>
+      Array.isArray(item) ? item.join(", ") : item
+    );
+    data.orderByCategories = newData;
   };
 
   widgets.push(
@@ -2216,15 +2240,16 @@ function getOrderByAnotherColumnWidgets(
           showLabel: true,
           labels: columnsDisplayNames,
           options: columnsNames,
+          onChange: onChange,
         }
       ),
       manager.reorderByAnotherColumnWidget(
         { property: axisProperty, field: "orderByCategories" },
         {
           allowReset: true,
-          items: items.map((item) =>
-            Array.isArray(item) ? item.toString() : item
-          ),
+          // items: items.map((item) =>
+          //   Array.isArray(item) ? item.toString() : item
+          // ),
           onConfirmClick: onConfirm,
         }
       )
