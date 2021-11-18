@@ -428,12 +428,6 @@ export class AxisRenderer {
     const g = makeGroup([]);
     const cos = Math.cos(Geometry.degreesToRadians(angle));
     const sin = Math.sin(Geometry.degreesToRadians(angle));
-    const rangeMin = this.rangeMin;
-    const rangeMax = this.rangeMax;
-    // const x1 = x + rangeMin * cos;
-    // const y1 = y + rangeMin * sin;
-    // const x2 = x + rangeMax * cos;
-    // const y2 = y + rangeMax * sin;
     const tickSize = size;
     const lineStyle: Style = {
       strokeLinecap: "round",
@@ -442,8 +436,7 @@ export class AxisRenderer {
       strokeWidth: style.gridlineWidth,
       strokeDasharray: strokeStyleToDashArray(style.gridlineStyle),
     };
-    // Base line
-    //g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
+
     // Ticks
     const ticksData = this.ticks.map((x) => x.position);
     for (const tickPosition of ticksData) {
