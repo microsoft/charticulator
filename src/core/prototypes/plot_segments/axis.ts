@@ -48,10 +48,9 @@ import { getTableColumns } from "./utils";
 import { DataflowManager, DataflowTable } from "../dataflow";
 import * as Expression from "../../expression";
 import { CompiledGroupBy } from "../group_by";
-import React = require("react");
 import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
 import { type2DerivedColumns } from "../../../app/views/dataset/common";
-import { IDropdownOption } from "@fluentui/react";
+import React = require("react");
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
@@ -2135,20 +2134,48 @@ function getOrderByAnotherColumnWidgets(
     manager as Controls.WidgetManager & CharticulatorPropertyAccessors
   );
 
-  const columnsDisplayNames = tableColumns.map((column) => column.displayName);
-  const columnsNames = tableColumns.map((column) => column.name);
+  const columnsDisplayNames = tableColumns
+    .filter((item) => !item.metadata?.isRaw)
+    .map((column) => column.displayName);
+  const columnsNames = tableColumns
+    .filter((item) => !item.metadata?.isRaw)
+    .map((column) => column.name);
 
   const derivedColumns = [];
-
+  const derivedColumnsNames = [];
   for (let i = 0; i < tableColumns.length; i++) {
-    derivedColumns.push(type2DerivedColumns[tableColumns[i].type]);
+    if (!tableColumns[i].metadata?.isRaw) {
+      derivedColumns.push(type2DerivedColumns[tableColumns[i].type]);
+      derivedColumnsNames.push(tableColumns[i].name);
+    }
   }
-  console.log(derivedColumns);
 
-  // const defaultValue = getColumnByExpression(
-  //   manager as Controls.WidgetManager & CharticulatorPropertyAccessors,
-  //   data.expression
-  // );
+  const removeIdx: number[] = [];
+
+  //remove empty
+  for (let i = 0; i < derivedColumns.length; i++) {
+    if (!Array.isArray(derivedColumns[i])) {
+      removeIdx.push(i);
+    }
+  }
+
+  const filteredDerivedColumns = derivedColumns.filter(
+    (item, idx) => !removeIdx.includes(idx)
+  );
+  const filteredDerivedColumnsNames = derivedColumnsNames.filter(
+    (item, idx) => !removeIdx.includes(idx)
+  );
+
+  //Date columns
+  for (let i = 0; i < filteredDerivedColumns.length; i++) {
+    const currentDerivedColumn = filteredDerivedColumns[i];
+    for (let j = 0; j < currentDerivedColumn?.length; j++) {
+      const currentColumn = currentDerivedColumn[j];
+      const currentColumnName = filteredDerivedColumnsNames[i];
+      columnsDisplayNames.push(currentColumn.displayName ?? currentColumn.name);
+      columnsNames.push(currentColumn.function + `(${currentColumnName})`);
+    }
+  }
 
   const table = (manager as Controls.WidgetManager &
     CharticulatorPropertyAccessors).store.getTables()[0].name;
@@ -2161,7 +2188,9 @@ function getOrderByAnotherColumnWidgets(
     table: string,
     groupBy?: Specification.Types.GroupBy
   ): any[] => {
-    const expr = Expression.parse(expression);
+    const newExpression =
+      expression.split(" ").length >= 2 ? "`" + expression + "`" : expression;
+    const expr = Expression.parse(newExpression);
     const tableContext = df.getTable(table);
     const indices = groupBy
       ? new CompiledGroupBy(groupBy, df.cache).groupBy(tableContext)
@@ -2177,7 +2206,6 @@ function getOrderByAnotherColumnWidgets(
     groupByExpression = parsed.args[0].toString();
     groupByExpression = groupByExpression?.split("`").join("");
     //need to provide date.year() etc.
-    // groupByExpression = this.parseDerivedColumnsExpression(groupByExpression);
   }
 
   const vectorData = getExpressionVector(data.orderByExpression, table, {
