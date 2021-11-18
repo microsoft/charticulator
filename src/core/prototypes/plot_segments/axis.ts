@@ -49,6 +49,7 @@ import React = require("react");
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
   showTicks: true,
+  showBaseline: true,
   lineColor: { r: 0, g: 0, b: 0 },
   fontFamily: defaultFont,
   fontSize: defaultFontSize,
@@ -442,7 +443,7 @@ export class AxisRenderer {
       strokeDasharray: strokeStyleToDashArray(style.gridlineStyle),
     };
     // Base line
-    g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
+    //g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
     // Ticks
     const ticksData = this.ticks.map((x) => x.position);
     for (const tickPosition of ticksData) {
@@ -510,8 +511,11 @@ export class AxisRenderer {
     const y1 = y + rangeMin * sin;
     const x2 = x + rangeMax * cos;
     const y2 = y + rangeMax * sin;
+
     // Base line
-    g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
+    if (style.showBaseline) {
+      g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
+    }
     // Ticks
     const ticksData = this.ticks.map((x) => x.position);
     const visibleTicks = ticksData.concat([rangeMin, rangeMax]);
@@ -1071,10 +1075,8 @@ export class AxisRenderer {
           lines.push(gt);
         }
 
-        const gt = makeGroup([
-          makeLine(0, 0, 0, style.tickSize * side, lineStyle),
-          ...lines,
-        ]);
+        const line = makeLine(0, 0, 0, style.tickSize * side, lineStyle);
+        const gt = makeGroup([style.showTicks ? line : null, ...lines]);
 
         gt.transform.angle = -angle;
         gt.transform.x = tx;
@@ -1090,8 +1092,9 @@ export class AxisRenderer {
           0,
           2
         );
+        const line = makeLine(0, 0, 0, style.tickSize * side, lineStyle);
         const gt = makeGroup([
-          makeLine(0, 0, 0, style.tickSize * side, lineStyle),
+          style.showTicks ? line : null,
           makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
             fillColor: style.tickColor,
           }),
@@ -1135,8 +1138,9 @@ export class AxisRenderer {
         0,
         2
       );
+      const line = makeLine(0, 0, 0, -style.tickSize * side, lineStyle);
       const gt = makeGroup([
-        makeLine(0, 0, 0, -style.tickSize * side, lineStyle),
+        style.showTicks ? line : null,
         makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
           fillColor: style.tickColor,
         }),
@@ -1387,6 +1391,18 @@ export function buildAxisAppearanceWidgets(
               {
                 type: "checkbox",
                 label: strings.objects.axes.showTickLine,
+                checkBoxStyles: {
+                  root: {
+                    marginTop: 5,
+                  },
+                },
+              }
+            ),
+            manager.inputBoolean(
+              { property: axisProperty, field: ["style", "showBaseline"] },
+              {
+                type: "checkbox",
+                label: strings.objects.axes.showBaseline,
                 checkBoxStyles: {
                   root: {
                     marginTop: 5,
