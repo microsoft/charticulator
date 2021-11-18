@@ -1919,7 +1919,6 @@ export class AppStore extends BaseStore {
       }
     }
 
-    //TODO: Update orderByCategories
     if (dataExpression.metadata) {
       switch (dataExpression.metadata.kind) {
         case Specification.DataKind.Categorical:
@@ -1927,7 +1926,6 @@ export class AppStore extends BaseStore {
           {
             dataBinding.type = AxisDataBindingType.Categorical;
             dataBinding.valueType = dataExpression.valueType;
-            const orderExpression = dataBinding.orderByExpression;
 
             const { categories, order } = this.getCategoriesForDataBinding(
               dataExpression.metadata,
@@ -1938,6 +1936,7 @@ export class AppStore extends BaseStore {
             dataBinding.orderByCategories = categories;
 
             dataBinding.order = order != undefined ? order : null;
+            dataBinding.allCategories = deepClone(categories);
 
             if (dataBinding.windowSize == null) {
               dataBinding.windowSize = Math.ceil(categories.length / 10);

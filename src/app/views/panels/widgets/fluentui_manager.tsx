@@ -1061,7 +1061,7 @@ export class FluentUIWidgetManager
                   : (this.getPropertyValue(property) as string[]);
                 return (
                   <PopupView context={context}>
-                    <ReorderStringsValue
+                    <FluentUIReorderStringsValue
                       items={items}
                       onConfirm={(items, customOrder) => {
                         this.emitSetProperty(property, items);

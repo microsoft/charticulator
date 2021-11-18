@@ -429,6 +429,7 @@ export const strings = {
       showTickLine: "Show Tick Line",
       verticalText: "Vertical text",
       offSet: "Offset",
+      orderBy: "Order by",
     },
     plotSegment: {
       subLayout: "Sub-layout",
