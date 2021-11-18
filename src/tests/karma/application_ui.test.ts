@@ -33,7 +33,7 @@ declare const viewport: any;
 const config = require("../../../config.test.yml");
 const workerBundle = require("raw-loader?esModule=false!../../../dist/scripts/worker.bundle.js");
 
-xdescribe("Charticulator", () => {
+describe("Charticulator", () => {
   use(matchSnapshot);
   let application: Application = null;
   // The directory containing test cases
@@ -73,7 +73,7 @@ xdescribe("Charticulator", () => {
     done();
   }).timeout(longTimeOut);
 
-  it("binds data to X axis", async () => {
+  xit("binds data to X axis", async () => {
     const store = application.appStore;
 
     const plotSegments = [
@@ -115,30 +115,30 @@ xdescribe("Charticulator", () => {
   }).timeout(longTimeOut);
 
   // test checks that charticulator opens saved chart correctly
-  it("open mushrooms chart", async () => {
+  xit("open mushrooms chart", async () => {
     const chartFilePath = `base/${pathPrefix}/mushrooms.chart`;
     await testOpenChart(application, await loadJSON(chartFilePath));
   }).timeout(longTimeOut);
 
   // test checks that charticulator opens saved chart correctly
-  it("open bump_chart chart", async () => {
+  xit("open bump_chart chart", async () => {
     const chartFilePath = `base/${pathPrefix}/bump_chart.chart`;
     await testOpenChart(application, await loadJSON(chartFilePath));
   }).timeout(longTimeOut);
 
   // test checks that charticulator opens saved chart correctly
-  it("open bubble_chart chart", async () => {
+  xit("open bubble_chart chart", async () => {
     const chartFilePath = `base/${pathPrefix}/bubble_chart.chart`;
     await testOpenChart(application, await loadJSON(chartFilePath));
   }).timeout(longTimeOut);
 
   // test checks that charticulator opens saved chart correctly
-  it("open nightingale chart", async () => {
+  xit("open nightingale chart", async () => {
     const chartFilePath = `base/${pathPrefix}/nightingale.chart`;
     await testOpenChart(application, await loadJSON(chartFilePath));
   }).timeout(longTimeOut);
 
-  it("creates column names legend", async () => {
+  xit("creates column names legend", async () => {
     await clickOnButtonByTitle("Legend");
     const panel = getLinkTypePanel();
 
