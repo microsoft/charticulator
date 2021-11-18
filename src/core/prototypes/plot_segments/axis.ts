@@ -918,8 +918,6 @@ export class AxisRenderer {
       return;
     }
     const g = makeGroup([]);
-    const rangeMin = this.rangeMin;
-    const rangeMax = this.rangeMax;
     const gridineArcRotate = 90;
     const lineStyle: Style = {
       strokeLinecap: "round",
@@ -927,9 +925,7 @@ export class AxisRenderer {
       strokeWidth: style.gridlineWidth,
       strokeDasharray: strokeStyleToDashArray(style.gridlineStyle),
     };
-    for (const tickPosition of this.ticks
-      .map((x) => x.position)
-      .concat([rangeMin, rangeMax])) {
+    for (const tickPosition of this.ticks.map((x) => x.position)) {
       const cos = Math.cos(
         Geometry.degreesToRadians(-tickPosition + gridineArcRotate)
       );
@@ -961,8 +957,6 @@ export class AxisRenderer {
     const g = makeGroup([]);
     const startCos = Math.cos(Geometry.degreesToRadians(startAngle));
     const startSin = Math.sin(Geometry.degreesToRadians(startAngle));
-    const rangeMin = this.rangeMin;
-    const rangeMax = this.rangeMax;
     const gridineArcRotate = 90;
     const lineStyle: Style = {
       strokeLinecap: "round",
@@ -971,9 +965,7 @@ export class AxisRenderer {
       strokeDasharray: strokeStyleToDashArray(style.gridlineStyle),
     };
     let radius = (outerRadius - innerRadius) / this.ticks.length;
-    for (const tickPosition of this.ticks
-      .map((x) => x.position)
-      .concat([rangeMin, rangeMax])) {
+    for (const tickPosition of this.ticks.map((x) => x.position)) {
       const tx1 = x + tickPosition * startCos;
       const ty1 = y + tickPosition * startSin;
       const arc = makePath(lineStyle);
