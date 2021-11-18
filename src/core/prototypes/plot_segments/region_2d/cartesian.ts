@@ -245,25 +245,25 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         type: "x",
         value: x1,
         attribute: "x1",
-        priority: 1,
+        priority: 2,
       },
       <SnappingGuides.Axis>{
         type: "x",
         value: x2,
         attribute: "x2",
-        priority: 1,
+        priority: 2,
       },
       <SnappingGuides.Axis>{
         type: "y",
         value: y1,
         attribute: "y1",
-        priority: 1,
+        priority: 2,
       },
       <SnappingGuides.Axis>{
         type: "y",
         value: y2,
         attribute: "y2",
-        priority: 1,
+        priority: 2,
       },
     ];
   }
@@ -356,7 +356,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         attrs.x2 - attrs.x1,
         false,
         false,
-        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
+        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager),
+        this.object,
+        this.parent.dataflow
       );
       if (props.xData.tickDataExpression) {
         const tickFormatType = props.xData?.tickFormatType;
@@ -392,7 +394,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         attrs.y2 - attrs.y1,
         false,
         true,
-        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
+        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager),
+        this.object,
+        this.parent.dataflow
       );
       if (props.yData.tickDataExpression) {
         const tickFormatType = props.yData?.tickFormatType;

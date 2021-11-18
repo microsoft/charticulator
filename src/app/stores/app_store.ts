@@ -1412,6 +1412,25 @@ export class AppStore extends BaseStore {
           })
         );
       });
+
+      const resetOfScales = this.chart.scales.filter(
+        (other) => !legendScales.find((l) => l === other._id)
+      );
+
+      resetOfScales.forEach((scale) => {
+        if (scale.properties.autoDomainMax || scale.properties.autoDomainMin) {
+          updateScalesInternal(scale._id, chartElements, {
+            chart: this.chart,
+            glyph: null,
+          });
+          this.chart.glyphs.forEach((gl) =>
+            updateScalesInternal(scale._id, gl.marks, {
+              chart: this.chart,
+              glyph: gl,
+            })
+          );
+        }
+      });
     } catch (ex) {
       console.error("Updating of scales failed with error", ex);
     }
@@ -1829,6 +1848,10 @@ export class AppStore extends BaseStore {
       onTop:
         <boolean>objectProperties?.onTop !== undefined
           ? <boolean>objectProperties?.onTop
+          : false,
+      enableSelection:
+        <boolean>objectProperties?.enableSelection !== undefined
+          ? <boolean>objectProperties?.enableSelection
           : false,
     };
 

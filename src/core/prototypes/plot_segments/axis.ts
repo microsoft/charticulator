@@ -35,8 +35,15 @@ import { Controls, strokeStyleToDashArray } from "../common";
 import { AttributeMap, DataType } from "../../specification";
 import { strings } from "../../../strings";
 import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
-import { NumericalMode, TickFormatType } from "../../specification/types";
+import {
+  AxisDataBinding,
+  AxisDataBindingType,
+  NumericalMode,
+  TickFormatType,
+} from "../../specification/types";
 import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
+import { DataflowManager, DataflowTable } from "../dataflow";
+import * as Expression from "../../expression";
 import React = require("react");
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
@@ -82,10 +89,19 @@ export class AxisRenderer {
   public oppositeSide: boolean = false;
   public static SCROLL_BAR_SIZE = 10;
 
+  //axis tick selection
+  private plotSegment: Specification.PlotSegment;
+  private dataFlow: DataflowManager;
+  private data: Specification.Types.AxisDataBinding;
+
   private static textMeasurer = new TextMeasurer();
 
   private scrollRequired: boolean = false;
   private shiftAxis: boolean = true;
+  private hiddenCategoriesRatio: number = 0;
+  private handlerSize: number = 0;
+  private dataType: AxisDataBindingType = AxisDataBindingType.Default;
+  private windowSize: number = 0;
 
   public setStyle(style?: Partial<Specification.Types.AxisRenderingStyle>) {
     if (!style) {
@@ -102,21 +118,33 @@ export class AxisRenderer {
     rangeMax: number,
     enablePrePostGap: boolean,
     reverse: boolean,
-    getTickFormat?: (value: any) => string
+    getTickFormat?: (value: any) => string,
+    plotSegment?: Specification.PlotSegment,
+    dataflow?: DataflowManager
   ) {
     this.rangeMin = rangeMin;
     this.rangeMax = rangeMax;
-
     if (!data) {
       return this;
     }
+    this.plotSegment = plotSegment;
+    this.dataFlow = dataflow;
+    this.data = data;
     this.setStyle(data.style);
     this.oppositeSide = data.side == "opposite";
     this.scrollRequired = data.allowScrolling;
     this.shiftAxis =
       (data.barOffset == null || data.barOffset === 0) &&
-      ((data.allCategories && data.windowSize < data.allCategories.length) ||
+      ((data.allCategories && data.windowSize < data.allCategories?.length) ||
         Math.abs(data.dataDomainMax - data.dataDomainMin) > data.windowSize);
+
+    this.dataType = data.type;
+    if (data.allCategories && data.windowSize < data.allCategories?.length) {
+      this.hiddenCategoriesRatio = data.windowSize / data.allCategories.length;
+      this.handlerSize = rangeMax / this.hiddenCategoriesRatio;
+      this.windowSize = data.windowSize;
+    }
+
     switch (data.type) {
       case "numerical":
         {
@@ -416,9 +444,8 @@ export class AxisRenderer {
     // Base line
     g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
     // Ticks
-    for (const tickPosition of this.ticks
-      .map((x) => x.position)
-      .concat([rangeMin, rangeMax])) {
+    const ticksData = this.ticks.map((x) => x.position);
+    for (const tickPosition of ticksData) {
       const tx = x + tickPosition * cos;
       const ty = y + tickPosition * sin;
       const dx = -side * tickSize * sin;
@@ -486,10 +513,11 @@ export class AxisRenderer {
     // Base line
     g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
     // Ticks
+    const ticksData = this.ticks.map((x) => x.position);
+    const visibleTicks = ticksData.concat([rangeMin, rangeMax]);
+
     if (style.showTicks) {
-      for (const tickPosition of this.ticks
-        .map((x) => x.position)
-        .concat([rangeMin, rangeMax])) {
+      for (const tickPosition of visibleTicks) {
         const tx = x + tickPosition * cos;
         const ty = y + tickPosition * sin;
         const dx = side * tickSize * sin;
@@ -587,9 +615,29 @@ export class AxisRenderer {
             0
           );
           const gText = makeGroup([
-            makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
-              fillColor: style.tickColor,
-            }),
+            makeText(
+              px,
+              py,
+              tick.label,
+              style.fontFamily,
+              style.fontSize,
+              {
+                fillColor: style.tickColor,
+              },
+              this.plotSegment && this.dataFlow
+                ? {
+                    enableSelection: this.data.enableSelection,
+                    glyphIndex: 1,
+                    rowIndices: applySelectionFilter(
+                      this.data,
+                      this.plotSegment.table,
+                      ticks.indexOf(tick),
+                      this.dataFlow
+                    ),
+                    plotSegment: this.plotSegment,
+                  }
+                : undefined
+            ),
           ]);
           gText.transform = {
             x: tx + dx,
@@ -608,9 +656,29 @@ export class AxisRenderer {
           0
         );
         const gText = makeGroup([
-          makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
-            fillColor: style.tickColor,
-          }),
+          makeText(
+            px,
+            py,
+            tick.label,
+            style.fontFamily,
+            style.fontSize,
+            {
+              fillColor: style.tickColor,
+            },
+            this.plotSegment && this.dataFlow
+              ? {
+                  enableSelection: this.data.enableSelection,
+                  glyphIndex: 1,
+                  rowIndices: applySelectionFilter(
+                    this.data,
+                    this.plotSegment.table,
+                    ticks.indexOf(tick),
+                    this.dataFlow
+                  ),
+                  plotSegment: this.plotSegment,
+                }
+              : undefined
+          ),
         ]);
         gText.transform = {
           x: tx + dx,
@@ -648,9 +716,29 @@ export class AxisRenderer {
             0
           );
           const gText = makeGroup([
-            makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
-              fillColor: style.tickColor,
-            }),
+            makeText(
+              px,
+              py,
+              tick.label,
+              style.fontFamily,
+              style.fontSize,
+              {
+                fillColor: style.tickColor,
+              },
+              this.plotSegment && this.dataFlow
+                ? {
+                    enableSelection: this.data.enableSelection,
+                    glyphIndex: 1,
+                    rowIndices: applySelectionFilter(
+                      this.data,
+                      this.plotSegment.table,
+                      ticks.indexOf(tick),
+                      this.dataFlow
+                    ),
+                    plotSegment: this.plotSegment,
+                  }
+                : undefined
+            ),
           ]);
           gText.transform = {
             x: tx + dx,
@@ -705,7 +793,20 @@ export class AxisRenderer {
                 style.fontSize,
                 {
                   fillColor: style.tickColor,
-                }
+                },
+                this.plotSegment && this.dataFlow
+                  ? {
+                      enableSelection: this.data.enableSelection,
+                      glyphIndex: 1,
+                      rowIndices: applySelectionFilter(
+                        this.data,
+                        this.plotSegment.table,
+                        ticks.indexOf(tick),
+                        this.dataFlow
+                      ),
+                      plotSegment: this.plotSegment,
+                    }
+                  : undefined
               );
               lines.push(text);
             }
@@ -741,9 +842,29 @@ export class AxisRenderer {
               0
             );
             const gText = makeGroup([
-              makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
-                fillColor: style.tickColor,
-              }),
+              makeText(
+                px,
+                py,
+                tick.label,
+                style.fontFamily,
+                style.fontSize,
+                {
+                  fillColor: style.tickColor,
+                },
+                this.plotSegment && this.dataFlow
+                  ? {
+                      enableSelection: this.data.enableSelection,
+                      glyphIndex: 1,
+                      rowIndices: applySelectionFilter(
+                        this.data,
+                        this.plotSegment.table,
+                        ticks.indexOf(tick),
+                        this.dataFlow
+                      ),
+                      plotSegment: this.plotSegment,
+                    }
+                  : undefined
+              ),
             ]);
             gText.transform = {
               x: tx + dx,
@@ -1093,7 +1214,6 @@ export class AxisRenderer {
 
     let width = 0;
     let height = 0;
-
     if (angle === 90) {
       height += Math.abs(y2 - y1);
       width = AxisRenderer.SCROLL_BAR_SIZE;
@@ -1113,6 +1233,9 @@ export class AxisRenderer {
       initialPosition: handlePosition,
       vertical: angle === 90,
       zoom,
+      scrollBarRatio: this.hiddenCategoriesRatio,
+      windowSize: this.windowSize,
+      dataType: this.dataType,
     });
   }
 }
@@ -1180,6 +1303,7 @@ export function getNumericalInterpolate(
 interface AxisAppearanceWidgets {
   isVisible: boolean;
   wordWrap: boolean;
+  isOffset: boolean;
 }
 
 export function buildAxisAppearanceWidgets(
@@ -1230,15 +1354,17 @@ export function buildAxisAppearanceWidgets(
                 labels: [strings.objects.default, strings.objects.opposite],
               }
             ),
-            manager.inputNumber(
-              {
-                property: axisProperty,
-                field: ["offset"],
-              },
-              {
-                label: strings.objects.axes.offSet,
-              }
-            ),
+            options.isOffset
+              ? manager.inputNumber(
+                  {
+                    property: axisProperty,
+                    field: ["offset"],
+                  },
+                  {
+                    label: strings.objects.axes.offSet,
+                  }
+                )
+              : null,
           ]
         ),
         manager.verticalGroup(
@@ -1348,12 +1474,33 @@ export function buildAxisAppearanceWidgets(
   }
 }
 
+function buildInteractivityGroup(
+  axisProperty: string,
+  manager: Controls.WidgetManager
+) {
+  return manager.verticalGroup(
+    {
+      header: "Interactivity",
+    },
+    [
+      manager.inputBoolean(
+        { property: axisProperty, field: "enableSelection" },
+        {
+          type: "checkbox",
+          label: "Selection",
+        }
+      ),
+    ]
+  );
+}
+
 // eslint-disable-next-line
 export function buildAxisWidgets(
   data: Specification.Types.AxisDataBinding,
   axisProperty: string,
   manager: Controls.WidgetManager,
-  axisName: string
+  axisName: string,
+  showOffset: boolean = true
 ): Controls.Widget[] {
   const widgets = [];
   const dropzoneOptions: Controls.RowOptions = {
@@ -1367,6 +1514,7 @@ export function buildAxisWidgets(
     return buildAxisAppearanceWidgets(axisProperty, manager, {
       isVisible: data.visible,
       wordWrap: data.style.wordWrap,
+      isOffset: showOffset,
     });
   };
   if (data != null) {
@@ -1678,6 +1826,7 @@ export function buildAxisWidgets(
               ]
             )
           );
+          widgets.push(buildInteractivityGroup(axisProperty, manager));
           widgets.push(makeAppearance());
         }
         break;
@@ -1909,4 +2058,39 @@ export function buildAxisProperties(
       default: 0,
     },
   ];
+}
+
+function getTable(dataflow: DataflowManager, name: string): DataflowTable {
+  return dataflow.getTable(name);
+}
+
+function applySelectionFilter(
+  data: AxisDataBinding,
+  tableName: string,
+  index: number,
+  dataflow: DataflowManager
+) {
+  const filteredIndices: number[] = [];
+
+  const table = getTable(dataflow, tableName);
+
+  if (
+    data.type === AxisDataBindingType.Default ||
+    data.type === AxisDataBindingType.Numerical
+  ) {
+    return table.rows.map((row, id) => id);
+  }
+  const parsed = (Expression.parse(data?.expression) as Expression.FunctionCall)
+    ?.args[0];
+
+  if (data.type === AxisDataBindingType.Categorical) {
+    for (let i = 0; i < table.rows.length; i++) {
+      const rowContext = table.getRowContext(i);
+
+      if (data.categories[index] == parsed.getStringValue(rowContext)) {
+        filteredIndices.push(i);
+      }
+    }
+  }
+  return filteredIndices;
 }

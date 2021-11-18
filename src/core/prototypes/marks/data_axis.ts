@@ -332,7 +332,8 @@ export class DataAxisClass extends MarkClass<
       props.axis,
       "axis",
       manager,
-      strings.toolbar.dataAxis
+      strings.toolbar.dataAxis,
+      false
     );
     const r = [
       manager.verticalGroup(
