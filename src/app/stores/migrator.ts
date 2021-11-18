@@ -658,25 +658,28 @@ export class Migrator {
             element.properties.xData = this.updateAxis(
               element.properties.xData
             );
-            if (element.properties.xData === undefined) {
-              element.properties.xData = null;
-            } else {
+            if (element.properties.xData?.style) {
               element.properties.xData.style.showTicks = true;
               element.properties.xData.style.showBaseline = true;
-              element.properties.xData.offset = 0;
             }
+            element.properties.xData.offset = 0;
           }
+          if (element.properties.xData === undefined) {
+            element.properties.xData = null;
+          }
+
           if (element.properties.yData) {
             element.properties.yData = this.updateAxis(
               element.properties.yData
             );
-            if (element.properties.yData === undefined) {
-              element.properties.yData = null;
-            } else {
+            if (element.properties.yData?.style) {
               element.properties.yData.style.showTicks = true;
               element.properties.yData.style.showBaseline = true;
-              element.properties.yData.offset = 0;
             }
+            element.properties.yData.offset = 0;
+          }
+          if (element.properties.yData === undefined) {
+            element.properties.yData = null;
           }
         }
         if (
@@ -687,33 +690,37 @@ export class Migrator {
             element.properties.xData = this.updateAxis(
               element.properties.xData
             );
+            if (element.properties.xData?.style) {
+              element.properties.xData.style.showTicks = true;
+              element.properties.xData.style.showBaseline = true;
+            }
+            element.properties.xData.offset = 0;
           }
           if (element.properties.xData === undefined) {
             element.properties.xData = null;
-          } else {
-            element.properties.xData.style.showTicks = true;
-            element.properties.xData.style.showBaseline = true;
-            element.properties.xData.offset = 0;
           }
           if (element.properties.yData) {
             element.properties.yData = this.updateAxis(
               element.properties.yData
             );
+            if (element.properties.yData?.style) {
+              element.properties.yData.style.showTicks = true;
+              element.properties.yData.style.showBaseline = true;
+            }
+            element.properties.yData.offset = 0;
           }
           if (element.properties.yData === undefined) {
             element.properties.yData = null;
-          } else {
-            element.properties.yData.style.showTicks = true;
-            element.properties.yData.style.showBaseline = true;
-            element.properties.yData.offset = 0;
           }
         }
         if (Prototypes.isType(item.chartElement.classID, "plot-segment.line")) {
           const element = item.chartElement as PlotSegment<LineGuideProperties>;
           if (element.properties.axis) {
             element.properties.axis = this.updateAxis(element.properties.axis);
-            element.properties.axis.style.showBaseline = true;
-            element.properties.axis.style.showTicks = true;
+            if (element.properties.axis?.style) {
+              element.properties.axis.style.showBaseline = true;
+              element.properties.axis.style.showTicks = true;
+            }
           }
         }
         if (
@@ -724,25 +731,27 @@ export class Migrator {
             element.properties.xData = this.updateAxis(
               element.properties.xData
             );
+            if (element.properties.xData?.style) {
+              element.properties.xData.style.showTicks = true;
+              element.properties.xData.style.showBaseline = true;
+            }
+            element.properties.xData.offset = 0;
           }
           if (element.properties.xData === undefined) {
             element.properties.xData = null;
-          } else {
-            element.properties.xData.style.showTicks = true;
-            element.properties.xData.style.showBaseline = true;
-            element.properties.xData.offset = 0;
           }
           if (element.properties.yData) {
             element.properties.yData = this.updateAxis(
               element.properties.yData
             );
+            if (element.properties.yData?.style) {
+              element.properties.yData.style.showTicks = true;
+              element.properties.yData.style.showBaseline = true;
+            }
+            element.properties.yData.offset = 0;
           }
           if (element.properties.yData === undefined) {
             element.properties.yData = null;
-          } else {
-            element.properties.yData.style.showTicks = true;
-            element.properties.yData.style.showBaseline = true;
-            element.properties.yData.offset = 0;
           }
         }
         if (Prototypes.isType(item.chartElement.classID, "mark.data-axis")) {
@@ -752,12 +761,13 @@ export class Migrator {
           >;
           if (element.properties.axis) {
             element.properties.axis = this.updateAxis(element.properties.axis);
+            if (element.properties.axis?.style) {
+              element.properties.axis.style.showBaseline = true;
+              element.properties.axis.style.showTicks = true;
+            }
           }
           if (element.properties.axis === undefined) {
             element.properties.axis = null;
-          } else {
-            element.properties.axis.style.showBaseline = true;
-            element.properties.axis.style.showTicks = true;
           }
         }
       }
@@ -767,12 +777,13 @@ export class Migrator {
           const element = (item.mark as unknown) as Object<DataAxisProperties>;
           if (element.properties.axis) {
             element.properties.axis = this.updateAxis(element.properties.axis);
+            if (element.properties.axis.style) {
+              element.properties.axis.style.showBaseline = true;
+              element.properties.axis.style.showTicks = true;
+            }
           }
           if (element.properties.axis === undefined) {
             element.properties.axis = null;
-          } else {
-            element.properties.axis.style.showBaseline = true;
-            element.properties.axis.style.showTicks = true;
           }
         }
       }
