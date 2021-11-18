@@ -430,10 +430,10 @@ export class AxisRenderer {
     const sin = Math.sin(Geometry.degreesToRadians(angle));
     const rangeMin = this.rangeMin;
     const rangeMax = this.rangeMax;
-    const x1 = x + rangeMin * cos;
-    const y1 = y + rangeMin * sin;
-    const x2 = x + rangeMax * cos;
-    const y2 = y + rangeMax * sin;
+    // const x1 = x + rangeMin * cos;
+    // const y1 = y + rangeMin * sin;
+    // const x2 = x + rangeMax * cos;
+    // const y2 = y + rangeMax * sin;
     const tickSize = size;
     const lineStyle: Style = {
       strokeLinecap: "round",
