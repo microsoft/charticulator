@@ -169,7 +169,7 @@ export class Migrator {
     }
 
     // After migration, set version to targetVersion
-    //state.version = targetVersion;
+    state.version = targetVersion;
 
     return state;
   }
