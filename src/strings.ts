@@ -500,6 +500,7 @@ export const strings = {
       dotted: "Dotted",
       linkMarkType: "Line mark type",
       curveness: "Curveness",
+      closeLink: "Close Link",
     },
     line: {
       lineStyle: "Line Style",

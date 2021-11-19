@@ -558,6 +558,7 @@ export class LinkCreationPanel extends ContextedComponent<
               facetExpressions: facetBy,
             },
             curveness: 30,
+            closeLink: false,
           } as Prototypes.Links.LinksProperties,
         };
 
@@ -602,6 +603,7 @@ export class LinkCreationPanel extends ContextedComponent<
               plotSegments: plotSegmentIDs,
             },
             curveness: 30,
+            closeLink: false,
           } as Prototypes.Links.LinksProperties,
         };
 
@@ -650,6 +652,7 @@ export class LinkCreationPanel extends ContextedComponent<
               ],
             },
             curveness: 30,
+            closeLink: false,
           } as Prototypes.Links.LinksProperties,
         };
 
