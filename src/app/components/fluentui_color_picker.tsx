@@ -23,6 +23,8 @@ import {
   PickersSection,
   PickersSectionWrapper,
 } from "./colors/styles";
+import { PatternList } from "./patterns/pattern_list";
+import { PatternEditor } from "./patterns/pattern_editor";
 
 export function colorToCSS(color: Color) {
   return `rgb(${color.r.toFixed(0)},${color.g.toFixed(0)},${color.b.toFixed(
@@ -43,6 +45,7 @@ export interface ColorPickerState {
   currentPalette?: ColorPalette;
   currentPicker?: string;
   currentColor?: Color;
+  currentPattern?: string;
 }
 
 export class ColorPicker extends React.Component<
@@ -104,6 +107,7 @@ export class ColorPicker extends React.Component<
     };
   }
 
+  // eslint-disable-next-line
   public render() {
     const editorType = this.props?.store?.editorType ?? EditorType.Chart;
 
@@ -142,6 +146,23 @@ export class ColorPicker extends React.Component<
                 })
               }
               type={PickerType.HSV}
+            />
+            <PaletteList
+              palettes={predefinedPalettes.filter((x) => x.type == "palette")}
+              selected={this.state.currentPalette}
+              onClick={(p) => {
+                this.setState({ currentPalette: p, currentPicker: null });
+                this.props.parent?.forceUpdate();
+              }}
+            />
+            <PatternList
+              onClick={(type: string) => {
+                this.setState({
+                  currentPalette: null,
+                  currentPicker: PickerType.SVGPattern,
+                  currentPattern: type,
+                });
+              }}
             />
           </PickersSection>
           <NullButton
@@ -184,6 +205,9 @@ export class ColorPicker extends React.Component<
               this.setState({ currentColor: c });
             }}
           />
+        ) : null}
+        {this.state.currentPicker == PickerType.SVGPattern ? (
+          <PatternEditor patternName={this.state.currentPattern} />
         ) : null}
       </ColorsSectionWrapper>
     );

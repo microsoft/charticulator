@@ -619,6 +619,12 @@ export const strings = {
       sizeAndShape: "Size & Shape",
     },
   },
+  patterns: {
+    patterns: "Patterns",
+    circles: "Circles",
+    rects: "Rectangles",
+    custom: "Custom patterns",
+  },
   reOrder: {
     reverse: "Reverse",
     sort: "Sort",

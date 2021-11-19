@@ -9,6 +9,7 @@ import { ColorPickerState } from "../fluentui_color_picker";
 export enum PickerType {
   HCL = "hcl",
   HSV = "hsv",
+  SVGPattern = "pattern",
 }
 
 interface ColorPickerButtonProps {
