@@ -60,9 +60,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
       return "N/A";
     }
     if (props.percentage) {
-      return (
-        prettyNumber(value * 100, props.digits != null ? props.digits : 2) + "%"
-      );
+      return prettyNumber(value * 100, props.digits != null ? props.digits : 2);
     } else {
       return prettyNumber(value, props.digits != null ? props.digits : 2);
     }
@@ -238,6 +236,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
                     e.stopPropagation();
                   }
                 }}
+                suffix={props.percentage ? "%" : null}
               />
             </PlaceholderStyle>
           )}
