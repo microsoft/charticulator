@@ -677,19 +677,24 @@ export abstract class LinksClass extends ChartElementClass {
           label: strings.objects.links.linkMarkType,
         }
       ),
-      manager.inputBoolean(
-        { property: "closeLink" },
-        {
-          type: "checkbox",
-          label: strings.objects.links.closeLink,
-          checkBoxStyles: {
-            root: {
-              marginTop: 5,
-            },
-          },
-        }
-      ),
     ];
+
+    if (!props.linkTable) {
+      widgets.push(
+        manager.inputBoolean(
+          { property: "closeLink" },
+          {
+            type: "checkbox",
+            label: strings.objects.links.closeLink,
+            checkBoxStyles: {
+              root: {
+                marginTop: 5,
+              },
+            },
+          }
+        )
+      );
+    }
     if (props.interpolationType == "bezier") {
       widgets.push(
         manager.inputNumber(
