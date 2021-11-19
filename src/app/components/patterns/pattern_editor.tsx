@@ -11,29 +11,26 @@ import {
 } from "@fluentui/react";
 import { defaultPaletteButtonsStyles } from "../colors/styles";
 import { PatternViewer, ViewerType } from "./pattern_viewer";
+import { strings } from "../../../strings";
+import { userDefinedPatterns } from "../../resources/patterns";
 
 export interface PatternEditorProps {
   patternName: string;
+  pattern?: string;
 }
 
 // eslint-disable-next-line
 export const PatternEditor: React.FC<PatternEditorProps> = ({
   patternName,
+  pattern,
 }) => {
-  const [pattern, setPattern] = React.useState(`
-    <pattern id="pattern1"
-            x="0" y="0" width="20" height="20"
-            patternUnits="userSpaceOnUse" >
-
-        <circle cx="10" cy="10" r="10" style="stroke: none; fill: #0000ff" />
-
-        </pattern>
-    `);
+  const [currentPattern, setPattern] = React.useState(pattern);
 
   const [patternID, setPatternID] = React.useState(`pattern1`);
 
   const textEditor = React.useRef<ITextField>();
   const textIdEditor = React.useRef<ITextField>();
+  const textSetIdEditor = React.useRef<ITextField>();
 
   return (
     <>
@@ -49,27 +46,76 @@ export const PatternEditor: React.FC<PatternEditorProps> = ({
             flexDirection: "column",
           }}
         >
-          <Label>Patterns {patternName}</Label>
-          <DefaultButton
-            text={"circle1"}
-            styles={defaultPaletteButtonsStyles}
-          />
-          <DefaultButton
-            text={"circle2"}
-            styles={defaultPaletteButtonsStyles}
-          />
+          <Label>
+            {strings.patterns.patterns} {patternName}
+          </Label>
+          {userDefinedPatterns.map((userPattern) => {
+            return (
+              <DefaultButton
+                text={userPattern.mainID}
+                styles={defaultPaletteButtonsStyles}
+                onClick={() => {
+                  setPatternID(userPattern.mainID);
+                  setPattern(userPattern.pattern);
+                }}
+              />
+            );
+          })}
           <div
             style={{
               display: "flex",
               flexDirection: "row",
             }}
           >
-            <PrimaryButton text={"Add"} styles={defaultPaletteButtonsStyles} />
+            <PrimaryButton
+              text={"Add"}
+              styles={{
+                ...defaultPaletteButtonsStyles,
+                root: {
+                  ...(defaultPaletteButtonsStyles.root as any),
+                  margin: 5,
+                },
+              }}
+              onClick={() => {
+                userDefinedPatterns.push({
+                  mainID: "pattern" + userDefinedPatterns.length,
+                  name: patternName,
+                  pattern: `<pattern id="${
+                    "pattern" + userDefinedPatterns.length
+                  }" width="20" height="20" patternUnits="userSpaceOnUse" >
+                  
+                  </pattern>`,
+                });
+              }}
+            />
             <PrimaryButton
               text={"Remove"}
-              styles={defaultPaletteButtonsStyles}
+              styles={{
+                ...defaultPaletteButtonsStyles,
+                root: {
+                  ...(defaultPaletteButtonsStyles.root as any),
+                  margin: 5,
+                  marginRight: 0,
+                },
+              }}
+              onClick={() => {
+                console.log("remove " + patternID + " " + patternName);
+              }}
             />
           </div>
+          {/* <PrimaryButton
+            text={"Remove pattern set"}
+            styles={{
+              ...defaultPaletteButtonsStyles,
+              root: {
+                ...(defaultPaletteButtonsStyles.root as any),
+                marginLeft: 5
+              }
+            }}
+            onClick={() => {
+              console.log('remove ' + patternName)
+            }}
+          /> */}
         </div>
         <div
           style={{
@@ -78,29 +124,44 @@ export const PatternEditor: React.FC<PatternEditorProps> = ({
             marginLeft: 10,
           }}
         >
-          <Label>Preview</Label>
+          <Label>{strings.patterns.patternsSetName}</Label>
+          <TextField
+            defaultValue={patternName}
+            componentRef={textSetIdEditor}
+            value={patternName}
+          />
+          <Label>{strings.patterns.preview}</Label>
           <PatternViewer
             width={400}
             height={200}
-            pattern={pattern}
+            pattern={currentPattern}
             type={ViewerType.Chart}
             patternName={patternID}
           />
-          <TextField defaultValue={patternID} componentRef={textIdEditor} />
+          <Label>{strings.patterns.patternID}</Label>
           <TextField
-            defaultValue={pattern}
+            defaultValue={patternID}
+            componentRef={textIdEditor}
+            value={patternID}
+          />
+          <Label>{strings.patterns.source}</Label>
+          <TextField
+            defaultValue={currentPattern}
+            value={currentPattern}
             multiline
             rows={10}
             componentRef={textEditor}
+            onChange={(e, newValue) => {
+              setPattern(newValue);
+            }}
           />
           <PrimaryButton
             onClick={() => {
               setPattern(textEditor.current.value);
               setPatternID(textIdEditor.current.value);
             }}
-            styles={defaultPaletteButtonsStyles}
           >
-            Save
+            {strings.patterns.save}
           </PrimaryButton>
         </div>
       </div>

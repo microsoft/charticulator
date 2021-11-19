@@ -9,7 +9,7 @@ import {
   predefinedPalettes,
 } from "../resources";
 import { AppStore } from "../stores";
-import { Label } from "@fluentui/react";
+import { DefaultButton, Label } from "@fluentui/react";
 import { ColorGrid } from "./colors/color_grid";
 import { NullButton } from "./colors/null_button";
 import { ColorPickerButton, PickerType } from "./colors/color_pickers";
@@ -20,12 +20,14 @@ import {
   ColorsPickerLeftSectionWrapper,
   ColorsPickerWrapper,
   ColorsSectionWrapper,
+  defaultPaletteButtonsStyles,
   PickersSection,
   PickersSectionWrapper,
 } from "./colors/styles";
 import { PatternList } from "./patterns/pattern_list";
 import { PatternEditor } from "./patterns/pattern_editor";
 import { PatternPicker } from "./patterns/pattern_picker";
+import { strings } from "../../strings";
 
 export function colorToCSS(color: Color) {
   return `rgb(${color.r.toFixed(0)},${color.g.toFixed(0)},${color.b.toFixed(
@@ -170,6 +172,16 @@ export class ColorPicker extends React.Component<
                   currentPicker: PickerType.SVGPatternEditor,
                   currentPattern: null,
                 });
+              }}
+            />
+            <DefaultButton
+              text={strings.patterns.addPatternSet}
+              styles={{
+                ...defaultPaletteButtonsStyles,
+                // root: {
+                //   ...(defaultPaletteButtonsStyles.root as any),
+                //   border: "1 px solid black",
+                // },
               }}
             />
           </PickersSection>

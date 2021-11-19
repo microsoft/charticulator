@@ -6,7 +6,20 @@ export interface PatternPalette {
   pattern: string;
 }
 
-export const predefinedPatterns: PatternPalette[] = [];
+export let predefinedPatterns: PatternPalette[] = [];
+
+export const userDefinedPatterns: PatternPalette[] = [
+  {
+    mainID: "Circle1",
+    name: "User circle",
+    pattern: "<pattern><pattern/>",
+  },
+  {
+    mainID: "Circle2",
+    name: "User circle 3",
+    pattern: "<pattern><pattern/>",
+  },
+];
 
 export function addPatternPalette(
   patternsSetName: string,
@@ -18,6 +31,12 @@ export function addPatternPalette(
     mainID: patternID,
     pattern,
   });
+}
+
+export function removePatternPalette(patternsName: string, patternID: string) {
+  predefinedPatterns = predefinedPatterns.filter(
+    (p) => p.mainID != patternID && p.name != patternsName
+  );
 }
 
 addPatternPalette(

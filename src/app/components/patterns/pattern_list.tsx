@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-import { DefaultButton, Label } from "@fluentui/react";
+import { DefaultButton, IconButton, Label } from "@fluentui/react";
 import { defaultPaletteButtonsStyles } from "../colors/styles";
 import { strings } from "../../../strings";
 import { predefinedPatterns } from "../../resources/patterns";
@@ -10,6 +10,7 @@ import { predefinedPatterns } from "../../resources/patterns";
 export interface PatternListProps {
   onSelectPattern?: (palette: string) => void;
   onEdit?: () => void;
+  onRemove?: () => void;
 }
 
 export class PatternList extends React.PureComponent<
@@ -41,11 +42,38 @@ export class PatternList extends React.PureComponent<
                     text={strings.patterns.primitives}
                     styles={defaultPaletteButtonsStyles}
                 /> */}
-        <DefaultButton
-          onClick={() => this.props.onEdit()}
-          text={strings.patterns.custom}
-          styles={defaultPaletteButtonsStyles}
-        />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+          }}
+        >
+          <DefaultButton
+            onClick={() => this.props.onEdit()}
+            text={strings.patterns.custom}
+            styles={defaultPaletteButtonsStyles}
+          />
+          <IconButton
+            onClick={() => this.props.onRemove()}
+            styles={{
+              ...defaultPaletteButtonsStyles,
+              root: {
+                ...(defaultPaletteButtonsStyles as any).root,
+                minWidth: "unset",
+                maxWidth: "unset",
+                width: 24,
+              },
+              flexContainer: {
+                minWidth: "unset",
+                maxWidth: "unset",
+                width: 24,
+              },
+            }}
+            iconProps={{
+              iconName: "ChromeClose",
+            }}
+          />
+        </div>
       </>
     );
   }
