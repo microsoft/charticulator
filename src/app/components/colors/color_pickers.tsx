@@ -10,6 +10,7 @@ export enum PickerType {
   HCL = "hcl",
   HSV = "hsv",
   SVGPattern = "pattern",
+  SVGPatternEditor = "patternEditor",
 }
 
 interface ColorPickerButtonProps {

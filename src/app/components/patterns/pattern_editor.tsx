@@ -10,6 +10,7 @@ import {
   TextField,
 } from "@fluentui/react";
 import { defaultPaletteButtonsStyles } from "../colors/styles";
+import { PatternViewer, ViewerType } from "./pattern_viewer";
 
 export interface PatternEditorProps {
   patternName: string;
@@ -29,12 +30,10 @@ export const PatternEditor: React.FC<PatternEditorProps> = ({
         </pattern>
     `);
 
-  const textEditor = React.useRef<ITextField>();
+  const [patternID, setPatternID] = React.useState(`pattern1`);
 
-  const previewStyle = {
-    stroke: "#000000",
-    fill: "url(#pattern1)",
-  };
+  const textEditor = React.useRef<ITextField>();
+  const textIdEditor = React.useRef<ITextField>();
 
   return (
     <>
@@ -80,29 +79,14 @@ export const PatternEditor: React.FC<PatternEditorProps> = ({
           }}
         >
           <Label>Preview</Label>
-          <svg width={400} height={200}>
-            <defs
-              dangerouslySetInnerHTML={{
-                __html: pattern,
-              }}
-            ></defs>
-            <rect style={previewStyle} x={0} width={20} height={30} />
-            <rect style={previewStyle} x={25} width={20} height={70} />
-            <rect style={previewStyle} x={50} width={20} height={170} />
-            <rect style={previewStyle} x={75} width={20} height={70} />
-            <rect style={previewStyle} x={100} width={20} height={10} />
-            <rect style={previewStyle} x={125} width={20} height={90} />
-            <rect style={previewStyle} x={150} width={20} height={50} />
-            <rect style={previewStyle} x={175} width={20} height={140} />
-            <rect style={previewStyle} x={200} width={20} height={120} />
-            <rect style={previewStyle} x={225} width={20} height={5} />
-            <rect style={previewStyle} x={250} width={20} height={70} />
-            <rect style={previewStyle} x={275} width={20} height={15} />
-            <rect style={previewStyle} x={300} width={20} height={75} />
-            <rect style={previewStyle} x={325} width={20} height={50} />
-            <rect style={previewStyle} x={350} width={20} height={150} />
-            <rect style={previewStyle} x={375} width={20} height={100} />
-          </svg>
+          <PatternViewer
+            width={400}
+            height={200}
+            pattern={pattern}
+            type={ViewerType.Chart}
+            patternName={patternID}
+          />
+          <TextField defaultValue={patternID} componentRef={textIdEditor} />
           <TextField
             defaultValue={pattern}
             multiline
@@ -112,6 +96,7 @@ export const PatternEditor: React.FC<PatternEditorProps> = ({
           <PrimaryButton
             onClick={() => {
               setPattern(textEditor.current.value);
+              setPatternID(textIdEditor.current.value);
             }}
             styles={defaultPaletteButtonsStyles}
           >

@@ -622,6 +622,7 @@ export const strings = {
   patterns: {
     patterns: "Patterns",
     circles: "Circles",
+    primitives: "Primitives",
     rects: "Rectangles",
     custom: "Custom patterns",
   },

@@ -25,6 +25,7 @@ import {
 } from "./colors/styles";
 import { PatternList } from "./patterns/pattern_list";
 import { PatternEditor } from "./patterns/pattern_editor";
+import { PatternPicker } from "./patterns/pattern_picker";
 
 export function colorToCSS(color: Color) {
   return `rgb(${color.r.toFixed(0)},${color.g.toFixed(0)},${color.b.toFixed(
@@ -156,11 +157,18 @@ export class ColorPicker extends React.Component<
               }}
             />
             <PatternList
-              onClick={(type: string) => {
+              onSelectPattern={(type: string) => {
                 this.setState({
                   currentPalette: null,
                   currentPicker: PickerType.SVGPattern,
                   currentPattern: type,
+                });
+              }}
+              onEdit={() => {
+                this.setState({
+                  currentPalette: null,
+                  currentPicker: PickerType.SVGPatternEditor,
+                  currentPattern: null,
                 });
               }}
             />
@@ -206,8 +214,11 @@ export class ColorPicker extends React.Component<
             }}
           />
         ) : null}
-        {this.state.currentPicker == PickerType.SVGPattern ? (
+        {this.state.currentPicker == PickerType.SVGPatternEditor ? (
           <PatternEditor patternName={this.state.currentPattern} />
+        ) : null}
+        {this.state.currentPicker == PickerType.SVGPattern ? (
+          <PatternPicker patternName={this.state.currentPattern} />
         ) : null}
       </ColorsSectionWrapper>
     );
