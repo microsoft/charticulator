@@ -97,7 +97,6 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       b: 0,
     };
     attrs.backgroundColor = null;
-    // eslint-disable-next-line
     attrs.backgroundColorFilterId = `text-color-filter-${getRandomNumber()}`;
     attrs.visible = true;
     attrs.outline = null;
@@ -350,7 +349,6 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       return Graphics.makeGroup([]);
     }
     if (!attrs.backgroundColorFilterId) {
-      // eslint-disable-next-line
       attrs.backgroundColorFilterId = `text-color-filter-${getRandomNumber()}`;
     }
     const metrics = Graphics.TextMeasurer.Measure(

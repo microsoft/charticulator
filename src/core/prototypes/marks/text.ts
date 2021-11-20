@@ -95,7 +95,6 @@ export class TextElementClass extends EmphasizableMarkClass<
       b: 0,
     };
     attrs.backgroundColor = null;
-    // eslint-disable-next-line
     attrs.backgroundColorFilterId = `text-color-filter-${getRandomNumber()}`;
     attrs.visible = true;
     attrs.outline = null;
@@ -122,7 +121,6 @@ export class TextElementClass extends EmphasizableMarkClass<
       return null;
     }
     if (!attrs.backgroundColorFilterId) {
-      // eslint-disable-next-line
       attrs.backgroundColorFilterId = `text-color-filter-${getRandomNumber()}`;
     }
     const metrics = Graphics.TextMeasurer.Measure(

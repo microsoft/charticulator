@@ -158,5 +158,7 @@ export function prettyNumber(x: number, digits: number = 8) {
 }
 
 export function getRandomNumber() {
-  window.crypto.getRandomValues(new Uint32Array(1))[0];
+  // crypto.getRandomValues(new Uint32Array(1))[0];
+  // eslint-disable-next-line
+  return +("" + Math.random()).slice(2);
 }

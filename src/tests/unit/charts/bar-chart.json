@@ -2302,6 +2302,8 @@
                 "g": 0,
                 "b": 0
               },
+              "backgroundColor": null,
+              "backgroundColorFilterId": null,
               "visible": true,
               "outline": null,
               "opacity": 1
