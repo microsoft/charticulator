@@ -9,6 +9,7 @@ import {
   fillDefaults,
   Geometry,
   getFormat,
+  getRandomNumber,
   replaceSymbolByNewLine,
   replaceSymbolByTab,
   rgbToHex,
@@ -48,6 +49,8 @@ import React = require("react");
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
+  tickTextBackgroudColor: null,
+  tickTextBackgroudColorId: null,
   showTicks: true,
   lineColor: { r: 0, g: 0, b: 0 },
   fontFamily: defaultFont,
@@ -109,6 +112,8 @@ export class AxisRenderer {
     } else {
       this.style = fillDefaultAxisStyle(deepClone(style));
     }
+    this.style.tickTextBackgroudColorId =
+      "axis-tick-filter-" + getRandomNumber();
     return this;
   }
 
@@ -593,6 +598,8 @@ export class AxisRenderer {
               style.fontSize,
               {
                 fillColor: style.tickColor,
+                backgroundColor: style.tickTextBackgroudColor,
+                backgroundColorId: style.tickTextBackgroudColorId,
               }
             );
             lines.push(text);
@@ -623,6 +630,8 @@ export class AxisRenderer {
               style.fontSize,
               {
                 fillColor: style.tickColor,
+                backgroundColor: style.tickTextBackgroudColor,
+                backgroundColorId: style.tickTextBackgroudColorId,
               },
               this.plotSegment && this.dataFlow
                 ? {
@@ -664,6 +673,8 @@ export class AxisRenderer {
             style.fontSize,
             {
               fillColor: style.tickColor,
+              backgroundColor: style.tickTextBackgroudColor,
+              backgroundColorId: style.tickTextBackgroudColorId,
             },
             this.plotSegment && this.dataFlow
               ? {
@@ -724,6 +735,8 @@ export class AxisRenderer {
               style.fontSize,
               {
                 fillColor: style.tickColor,
+                backgroundColor: style.tickTextBackgroudColor,
+                backgroundColorId: style.tickTextBackgroudColorId,
               },
               this.plotSegment && this.dataFlow
                 ? {
@@ -793,6 +806,8 @@ export class AxisRenderer {
                 style.fontSize,
                 {
                   fillColor: style.tickColor,
+                  backgroundColor: style.tickTextBackgroudColor,
+                  backgroundColorId: style.tickTextBackgroudColorId,
                 },
                 this.plotSegment && this.dataFlow
                   ? {
@@ -850,6 +865,8 @@ export class AxisRenderer {
                 style.fontSize,
                 {
                   fillColor: style.tickColor,
+                  backgroundColor: style.tickTextBackgroudColor,
+                  backgroundColorId: style.tickTextBackgroudColorId,
                 },
                 this.plotSegment && this.dataFlow
                   ? {
@@ -1066,6 +1083,8 @@ export class AxisRenderer {
             style.fontSize,
             {
               fillColor: style.tickColor,
+              backgroundColor: style.tickTextBackgroudColor,
+              backgroundColorId: style.tickTextBackgroudColorId,
             }
           );
           lines.push(gt);
@@ -1094,6 +1113,8 @@ export class AxisRenderer {
           makeLine(0, 0, 0, style.tickSize * side, lineStyle),
           makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
             fillColor: style.tickColor,
+            backgroundColor: style.tickTextBackgroudColor,
+            backgroundColorId: style.tickTextBackgroudColorId,
           }),
         ]);
 
@@ -1139,6 +1160,8 @@ export class AxisRenderer {
         makeLine(0, 0, 0, -style.tickSize * side, lineStyle),
         makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
           fillColor: style.tickColor,
+          backgroundColor: style.tickTextBackgroudColor,
+          backgroundColorId: style.tickTextBackgroudColorId,
         }),
       ]);
 
@@ -1402,6 +1425,16 @@ export function buildAxisAppearanceWidgets(
               {
                 label: strings.objects.axes.tickColor,
                 labelKey: strings.objects.axes.tickColor,
+              }
+            ),
+            manager.inputColor(
+              {
+                property: axisProperty,
+                field: ["style", "tickTextBackgroudColor"],
+              },
+              {
+                label: strings.objects.axes.tickTextBackgroudColor,
+                labelKey: strings.objects.axes.tickTextBackgroudColor,
               }
             ),
             manager.inputFormat(
