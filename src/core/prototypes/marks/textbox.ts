@@ -70,7 +70,6 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     fontFamily: defaultFont,
     fontSize: defaultFontSize,
     color: { r: 0, g: 0, b: 0 },
-    backgroundColor: { r: 0, g: 0, b: 0 },
     opacity: 1,
     visible: true,
   };
@@ -97,6 +96,10 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       b: 0,
     };
     attrs.backgroundColor = null;
+    // eslint-disable-next-line
+    attrs.backgroundColorFilterId = `text-color-filter-${(
+      "" + Math.random()
+    ).slice(2)}`;
     attrs.visible = true;
     attrs.outline = null;
     attrs.opacity = 1;
@@ -263,11 +266,9 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         },
         [
           manager.mappingEditor(strings.objects.color, "color", {}),
-          manager.mappingEditor(
-            strings.objects.background,
-            "backgroundColor",
-            {}
-          ),
+          manager.mappingEditor(strings.objects.background, "backgroundColor", {
+            defaultValue: null,
+          }),
           manager.mappingEditor(strings.objects.outline, "outline", {}),
           manager.mappingEditor(strings.objects.opacity, "opacity", {
             hints: { rangeNumber: [0, 1] },
@@ -348,6 +349,12 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       attrs.opacity == 0
     ) {
       return Graphics.makeGroup([]);
+    }
+    if (!attrs.backgroundColorFilterId) {
+      // eslint-disable-next-line
+      attrs.backgroundColorFilterId = `text-color-filter-${(
+        "" + Math.random()
+      ).slice(2)}`;
     }
     const metrics = Graphics.TextMeasurer.Measure(
       attrs.text,
@@ -813,6 +820,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     ];
   }
 
+  // eslint-disable-next-line
   public getTemplateParameters(): TemplateParameters {
     const properties = [];
     if (
@@ -865,6 +873,19 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         },
         type: Specification.AttributeType.Color,
         default: rgbToHex(this.state.attributes.color),
+      });
+    }
+    if (
+      this.object.mappings.backgroundColor &&
+      this.object.mappings.backgroundColor.type === MappingType.value
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "backgroundColor",
+        },
+        type: Specification.AttributeType.Color,
+        default: null,
       });
     }
     if (

@@ -61,7 +61,6 @@ export class TextElementClass extends EmphasizableMarkClass<
     fontFamily: defaultFont,
     fontSize: defaultFontSize,
     color: { r: 0, g: 0, b: 0 },
-    backgroundColor: { r: 0, g: 0, b: 0 },
     opacity: 1,
     visible: true,
   };
@@ -95,6 +94,10 @@ export class TextElementClass extends EmphasizableMarkClass<
       b: 0,
     };
     attrs.backgroundColor = null;
+    // eslint-disable-next-line
+    attrs.backgroundColorFilterId = `text-color-filter-${(
+      "" + Math.random()
+    ).slice(2)}`;
     attrs.visible = true;
     attrs.outline = null;
     attrs.opacity = 1;
@@ -119,12 +122,11 @@ export class TextElementClass extends EmphasizableMarkClass<
     if (!attrs.visible || !this.object.properties.visible) {
       return null;
     }
-    let backgroundColorFilterId: string = null;
-    if (attrs.backgroundColor) {
+    if (!attrs.backgroundColorFilterId) {
       // eslint-disable-next-line
-      backgroundColorFilterId = `text-color-filter-${("" + Math.random()).slice(
-        2
-      )}`;
+      attrs.backgroundColorFilterId = `text-color-filter-${(
+        "" + Math.random()
+      ).slice(2)}`;
     }
     const metrics = Graphics.TextMeasurer.Measure(
       attrs.text,
@@ -160,7 +162,7 @@ export class TextElementClass extends EmphasizableMarkClass<
               strokeColor: attrs.outline,
               fillColor: attrs.color,
               backgroundColor: attrs.backgroundColor,
-              backgroundColorId: backgroundColorFilterId,
+              backgroundColorId: attrs.backgroundColorFilterId,
               opacity: attrs.opacity,
               ...this.generateEmphasisStyle(empasized),
             }
@@ -179,7 +181,7 @@ export class TextElementClass extends EmphasizableMarkClass<
           strokeColor: attrs.outline,
           fillColor: attrs.color,
           backgroundColor: attrs.backgroundColor,
-          backgroundColorId: backgroundColorFilterId,
+          backgroundColorId: attrs.backgroundColorFilterId,
           opacity: attrs.opacity,
           ...this.generateEmphasisStyle(empasized),
         }
@@ -403,11 +405,9 @@ export class TextElementClass extends EmphasizableMarkClass<
         },
         [
           manager.mappingEditor(strings.objects.color, "color", {}),
-          manager.mappingEditor(
-            strings.objects.background,
-            "backgroundColor",
-            {}
-          ),
+          manager.mappingEditor(strings.objects.background, "backgroundColor", {
+            defaultValue: null,
+          }),
           manager.mappingEditor(strings.objects.outline, "outline", {}),
           manager.mappingEditor(strings.objects.opacity, "opacity", {
             hints: { rangeNumber: [0, 1] },
@@ -463,6 +463,19 @@ export class TextElementClass extends EmphasizableMarkClass<
         },
         type: Specification.AttributeType.Color,
         default: rgbToHex(this.state.attributes.color),
+      });
+    }
+    if (
+      this.object.mappings.backgroundColor &&
+      this.object.mappings.backgroundColor.type === MappingType.value
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "backgroundColor",
+        },
+        type: Specification.AttributeType.Color,
+        default: null,
       });
     }
     if (

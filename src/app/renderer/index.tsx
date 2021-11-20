@@ -473,7 +473,7 @@ export function renderGraphicalElementSVG(
       const text = element as Graphics.Text;
       style.fontFamily = text.fontFamily;
       style.fontSize = text.fontSize + "px";
-      const filter = text.style.backgroundColorId
+      const filter = text.style.backgroundColor
         ? `url(#${text.style.backgroundColorId})`
         : null;
       if (style.stroke != "none") {
