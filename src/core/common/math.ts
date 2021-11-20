@@ -156,3 +156,7 @@ export function prettyNumber(x: number, digits: number = 8) {
     ?.toFixed(digits)
     .replace(/^([+-]?[0-9]*(\.[0-9]*[1-9]+)?)\.?0+$/, "$1");
 }
+
+export function getRandomNumber() {
+  window.crypto.getRandomValues(new Uint32Array(1))[0];
+}

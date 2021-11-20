@@ -10,6 +10,7 @@ import {
   splitStringByNewLine,
   rgbToHex,
   Geometry,
+  getRandomNumber,
 } from "../../common";
 import * as Graphics from "../../graphics";
 import { ConstraintSolver } from "../../solver";
@@ -95,9 +96,7 @@ export class TextElementClass extends EmphasizableMarkClass<
     };
     attrs.backgroundColor = null;
     // eslint-disable-next-line
-    attrs.backgroundColorFilterId = `text-color-filter-${(
-      "" + Math.random()
-    ).slice(2)}`;
+    attrs.backgroundColorFilterId = `text-color-filter-${getRandomNumber()}`;
     attrs.visible = true;
     attrs.outline = null;
     attrs.opacity = 1;
@@ -124,9 +123,7 @@ export class TextElementClass extends EmphasizableMarkClass<
     }
     if (!attrs.backgroundColorFilterId) {
       // eslint-disable-next-line
-      attrs.backgroundColorFilterId = `text-color-filter-${(
-        "" + Math.random()
-      ).slice(2)}`;
+      attrs.backgroundColorFilterId = `text-color-filter-${getRandomNumber()}`;
     }
     const metrics = Graphics.TextMeasurer.Measure(
       attrs.text,
