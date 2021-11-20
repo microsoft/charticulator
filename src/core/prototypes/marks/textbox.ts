@@ -70,6 +70,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     fontFamily: defaultFont,
     fontSize: defaultFontSize,
     color: { r: 0, g: 0, b: 0 },
+    backgroundColor: { r: 0, g: 0, b: 0 },
     opacity: 1,
     visible: true,
   };
@@ -95,6 +96,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       g: 0,
       b: 0,
     };
+    attrs.backgroundColor = null;
     attrs.visible = true;
     attrs.outline = null;
     attrs.opacity = 1;
@@ -261,6 +263,11 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         },
         [
           manager.mappingEditor(strings.objects.color, "color", {}),
+          manager.mappingEditor(
+            strings.objects.background,
+            "backgroundColor",
+            {}
+          ),
           manager.mappingEditor(strings.objects.outline, "outline", {}),
           manager.mappingEditor(strings.objects.opacity, "opacity", {
             hints: { rangeNumber: [0, 1] },

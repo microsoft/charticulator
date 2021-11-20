@@ -61,6 +61,7 @@ export class TextElementClass extends EmphasizableMarkClass<
     fontFamily: defaultFont,
     fontSize: defaultFontSize,
     color: { r: 0, g: 0, b: 0 },
+    backgroundColor: { r: 0, g: 0, b: 0 },
     opacity: 1,
     visible: true,
   };
@@ -93,6 +94,7 @@ export class TextElementClass extends EmphasizableMarkClass<
       g: 0,
       b: 0,
     };
+    attrs.backgroundColor = null;
     attrs.visible = true;
     attrs.outline = null;
     attrs.opacity = 1;
@@ -116,6 +118,13 @@ export class TextElementClass extends EmphasizableMarkClass<
     const props = this.object.properties;
     if (!attrs.visible || !this.object.properties.visible) {
       return null;
+    }
+    let backgroundColorFilterId: string = null;
+    if (attrs.backgroundColor) {
+      // eslint-disable-next-line
+      backgroundColorFilterId = `text-color-filter-${("" + Math.random()).slice(
+        2
+      )}`;
     }
     const metrics = Graphics.TextMeasurer.Measure(
       attrs.text,
@@ -150,6 +159,8 @@ export class TextElementClass extends EmphasizableMarkClass<
             {
               strokeColor: attrs.outline,
               fillColor: attrs.color,
+              backgroundColor: attrs.backgroundColor,
+              backgroundColorId: backgroundColorFilterId,
               opacity: attrs.opacity,
               ...this.generateEmphasisStyle(empasized),
             }
@@ -167,6 +178,8 @@ export class TextElementClass extends EmphasizableMarkClass<
         {
           strokeColor: attrs.outline,
           fillColor: attrs.color,
+          backgroundColor: attrs.backgroundColor,
+          backgroundColorId: backgroundColorFilterId,
           opacity: attrs.opacity,
           ...this.generateEmphasisStyle(empasized),
         }
@@ -390,6 +403,11 @@ export class TextElementClass extends EmphasizableMarkClass<
         },
         [
           manager.mappingEditor(strings.objects.color, "color", {}),
+          manager.mappingEditor(
+            strings.objects.background,
+            "backgroundColor",
+            {}
+          ),
           manager.mappingEditor(strings.objects.outline, "outline", {}),
           manager.mappingEditor(strings.objects.opacity, "opacity", {
             hints: { rangeNumber: [0, 1] },

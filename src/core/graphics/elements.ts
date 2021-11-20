@@ -69,6 +69,8 @@ export interface Style {
   colorFilter?: ColorFilter;
 
   fillColor?: Color;
+  backgroundColor?: Color;
+  backgroundColorId?: string;
   fillOpacity?: number;
 
   /** The opacity of this element */
