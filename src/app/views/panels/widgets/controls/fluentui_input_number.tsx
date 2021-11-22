@@ -236,7 +236,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
                     e.stopPropagation();
                   }
                 }}
-                suffix={props.percentage ? "%" : null}
+                suffix={props.percentage ? "%" : undefined}
               />
             </PlaceholderStyle>
           )}
