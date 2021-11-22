@@ -21,6 +21,7 @@ import { PlotSegmentClass } from "../plot_segments";
 import { PointDirection } from "../../graphics";
 import { MappingType } from "../../specification";
 import { strings } from "../../../strings";
+import { shouldCloseLink, shouldShowCloseLink } from "./utils";
 
 export type LinkType = "line" | "band";
 export type InterpolationType = "line" | "bezier" | "circle";
@@ -679,7 +680,7 @@ export abstract class LinksClass extends ChartElementClass {
       ),
     ];
 
-    if (!props.linkTable) {
+    if (shouldShowCloseLink(this.parent, props)) {
       widgets.push(
         manager.inputBoolean(
           { property: "closeLink" },
@@ -891,7 +892,7 @@ export class SeriesLinksClass extends LinksClass {
     );
 
     try {
-      if (props.closeLink) {
+      if (shouldShowCloseLink(this.parent, props, true)) {
         for (let i = 0; i < anchors.length; i++) {
           const currentAnchor = anchors[i];
           currentAnchor.push([
