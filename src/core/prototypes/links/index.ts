@@ -21,7 +21,7 @@ import { PlotSegmentClass } from "../plot_segments";
 import { PointDirection } from "../../graphics";
 import { MappingType } from "../../specification";
 import { strings } from "../../../strings";
-import { shouldCloseLink, shouldShowCloseLink } from "./utils";
+import { shouldShowCloseLink } from "./utils";
 
 export type LinkType = "line" | "band";
 export type InterpolationType = "line" | "bezier" | "circle";
