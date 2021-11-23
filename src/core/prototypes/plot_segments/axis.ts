@@ -1392,6 +1392,7 @@ export function buildAxisAppearanceWidgets(
               {
                 label: strings.objects.axes.lineColor,
                 labelKey: strings.objects.axes.lineColor,
+                allowNull: true,
               }
             ),
             manager.inputBoolean(
@@ -1426,6 +1427,7 @@ export function buildAxisAppearanceWidgets(
               {
                 label: strings.objects.axes.tickColor,
                 labelKey: strings.objects.axes.tickColor,
+                allowNull: true,
               }
             ),
             manager.inputColor(
