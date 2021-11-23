@@ -111,7 +111,7 @@ export const EmptyColorButton = ({
     <FluentButton marginTop={styles?.marginTop}>
       <DefaultButton
         iconProps={{
-          iconName: "BucketColor",
+          iconName: "UnSetColor",
         }}
         styles={{
           root: {
