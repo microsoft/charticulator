@@ -161,6 +161,13 @@ export class Migrator {
       state = this.setMissedGlyphRectProperties(state);
     }
 
+    if (
+      compareVersion(state.version, "2.1.1") < 0 &&
+      compareVersion(targetVersion, "2.1.1") >= 0
+    ) {
+      state = this.setMissedSortProperties(state);
+    }
+
     // After migration, set version to targetVersion
     state.version = targetVersion;
 
@@ -634,6 +641,153 @@ export class Migrator {
       }
     }
 
+    return state;
+  }
+
+  public setMissedSortProperties(state: AppStoreState) {
+    for (const item of forEachObject(state.chart)) {
+      if (item.kind == ObjectItemKind.Chart) {
+        item.object.properties.exposed = true;
+      }
+      if (item.kind == ObjectItemKind.ChartElement) {
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.cartesian")
+        ) {
+          const element = item.chartElement as PlotSegment<CartesianProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+            if (element.properties.xData?.style) {
+              element.properties.xData.style.showTicks = true;
+              element.properties.xData.style.showBaseline = true;
+            }
+            element.properties.xData.offset = 0;
+          }
+          if (element.properties.xData === undefined) {
+            element.properties.xData = null;
+          }
+
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+            if (element.properties.yData?.style) {
+              element.properties.yData.style.showTicks = true;
+              element.properties.yData.style.showBaseline = true;
+            }
+            element.properties.yData.offset = 0;
+          }
+          if (element.properties.yData === undefined) {
+            element.properties.yData = null;
+          }
+        }
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.polar")
+        ) {
+          const element = item.chartElement as PlotSegment<PolarProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+            if (element.properties.xData?.style) {
+              element.properties.xData.style.showTicks = true;
+              element.properties.xData.style.showBaseline = true;
+            }
+            element.properties.xData.offset = 0;
+          }
+          if (element.properties.xData === undefined) {
+            element.properties.xData = null;
+          }
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+            if (element.properties.yData?.style) {
+              element.properties.yData.style.showTicks = true;
+              element.properties.yData.style.showBaseline = true;
+            }
+            element.properties.yData.offset = 0;
+          }
+          if (element.properties.yData === undefined) {
+            element.properties.yData = null;
+          }
+        }
+        if (Prototypes.isType(item.chartElement.classID, "plot-segment.line")) {
+          const element = item.chartElement as PlotSegment<LineGuideProperties>;
+          if (element.properties.axis) {
+            element.properties.axis = this.updateAxis(element.properties.axis);
+            if (element.properties.axis?.style) {
+              element.properties.axis.style.showBaseline = true;
+              element.properties.axis.style.showTicks = true;
+            }
+          }
+        }
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.curve")
+        ) {
+          const element = item.chartElement as PlotSegment<CurveProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+            if (element.properties.xData?.style) {
+              element.properties.xData.style.showTicks = true;
+              element.properties.xData.style.showBaseline = true;
+            }
+            element.properties.xData.offset = 0;
+          }
+          if (element.properties.xData === undefined) {
+            element.properties.xData = null;
+          }
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+            if (element.properties.yData?.style) {
+              element.properties.yData.style.showTicks = true;
+              element.properties.yData.style.showBaseline = true;
+            }
+            element.properties.yData.offset = 0;
+          }
+          if (element.properties.yData === undefined) {
+            element.properties.yData = null;
+          }
+        }
+        if (Prototypes.isType(item.chartElement.classID, "mark.data-axis")) {
+          // eslint-disable-next-line @typescript-eslint/ban-types
+          const element = (item.chartElement as unknown) as Object<
+            DataAxisProperties
+          >;
+          if (element.properties.axis) {
+            element.properties.axis = this.updateAxis(element.properties.axis);
+            if (element.properties.axis?.style) {
+              element.properties.axis.style.showBaseline = true;
+              element.properties.axis.style.showTicks = true;
+            }
+          }
+          if (element.properties.axis === undefined) {
+            element.properties.axis = null;
+          }
+        }
+      }
+      if (item.kind == ObjectItemKind.Mark) {
+        if (Prototypes.isType(item.mark.classID, "mark.data-axis")) {
+          // eslint-disable-next-line @typescript-eslint/ban-types
+          const element = (item.mark as unknown) as Object<DataAxisProperties>;
+          if (element.properties.axis) {
+            element.properties.axis = this.updateAxis(element.properties.axis);
+            if (element.properties.axis.style) {
+              element.properties.axis.style.showBaseline = true;
+              element.properties.axis.style.showTicks = true;
+            }
+          }
+          if (element.properties.axis === undefined) {
+            element.properties.axis = null;
+          }
+        }
+      }
+    }
     return state;
   }
 }
