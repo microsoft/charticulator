@@ -40,6 +40,9 @@ export interface InputColorProps {
   underline?: boolean;
   stopPropagation?: boolean;
   pickerBeforeTextField?: boolean;
+  styles?: {
+    marginTop?: string;
+  };
 }
 
 const ID_PREFIX = "id_";
@@ -105,6 +108,7 @@ export class FluentInputColor extends React.Component<
           onClick={() => {
             this.setState({ open: !this.state.open });
           }}
+          styles={this.props.styles}
         />
       </span>
     );

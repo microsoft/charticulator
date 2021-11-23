@@ -98,13 +98,17 @@ const EmptyColorInput = ({
 
 interface EmptyColorButtonProps {
   onClick: () => void;
+  styles?: {
+    marginTop?: string;
+  };
 }
 
 export const EmptyColorButton = ({
   onClick,
+  styles,
 }: EmptyColorButtonProps): JSX.Element => {
   return (
-    <FluentButton>
+    <FluentButton marginTop={styles?.marginTop}>
       <DefaultButton
         iconProps={{
           iconName: "BucketColor",
