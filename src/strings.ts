@@ -429,6 +429,7 @@ export const strings = {
       tickColor: "Tick Label Color",
       tickTextBackgroudColor: "Tick background color",
       showTickLine: "Show Tick Line",
+      showBaseline: "Show Baseline",
       verticalText: "Vertical text",
       offSet: "Offset",
     },
