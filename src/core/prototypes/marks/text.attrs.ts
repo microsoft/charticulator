@@ -34,6 +34,18 @@ export const textAttributes: AttributeDescriptions = {
     solverExclude: true,
     defaultValue: null,
   },
+  backgroundColor: {
+    name: "backgroundColor",
+    type: AttributeType.Color,
+    solverExclude: true,
+    defaultValue: null,
+  },
+  backgroundColorFilterId: {
+    name: "backgroundColorFilterId",
+    type: AttributeType.Text,
+    solverExclude: true,
+    defaultValue: null,
+  },
   outline: {
     name: "outline",
     type: AttributeType.Color,
@@ -51,6 +63,8 @@ export interface TextElementAttributes extends AttributeMap {
   fontFamily: string;
   fontSize: number;
   color: Color;
+  backgroundColor: Color;
+  backgroundColorFilterId: string;
   outline: Color;
   opacity: number;
   visible: boolean;
