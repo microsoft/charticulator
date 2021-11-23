@@ -100,7 +100,9 @@ interface EmptyColorButtonProps {
   onClick: () => void;
 }
 
-const EmptyColorButton = ({ onClick }: EmptyColorButtonProps): JSX.Element => {
+export const EmptyColorButton = ({
+  onClick,
+}: EmptyColorButtonProps): JSX.Element => {
   return (
     <FluentButton>
       <DefaultButton

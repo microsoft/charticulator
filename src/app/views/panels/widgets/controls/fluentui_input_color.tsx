@@ -26,6 +26,7 @@ import {
 } from "./fluentui_customized_components";
 import { strings } from "../../../../../strings";
 import { FluentUIGradientPicker } from "../../../../components/fluent_ui_gradient_picker";
+import { EmptyColorButton } from "./fluentui_empty_mapping";
 
 export interface InputColorProps {
   defaultValue: Color;
@@ -74,13 +75,13 @@ export class FluentInputColor extends React.Component<
     }
   }
 
-  public render() {
+  private renderPicker(): JSX.Element {
     let hex: string = "";
     if (this.props.defaultValue) {
       hex = colorToHTMLColorHEX(this.props.defaultValue);
     }
     const pickerId = this.props.labelKey.replace(/\W/g, "_");
-    const picker: JSX.Element = (
+    return (
       <span
         className="el-color-display"
         style={{
@@ -94,9 +95,32 @@ export class FluentInputColor extends React.Component<
         }}
       />
     );
+  }
+
+  private renderEmptyColorPicker(): JSX.Element {
+    const pickerId = this.props.labelKey.replace(/\W/g, "_");
+    return (
+      <span id={ID_PREFIX + pickerId}>
+        <EmptyColorButton
+          onClick={() => {
+            this.setState({ open: !this.state.open });
+          }}
+        />
+      </span>
+    );
+  }
+
+  public render() {
+    let hex: string = "";
+    if (this.props.defaultValue) {
+      hex = colorToHTMLColorHEX(this.props.defaultValue);
+    }
+    const pickerId = this.props.labelKey.replace(/\W/g, "_");
+    const picker: JSX.Element = this.renderPicker();
+    const emptyPicker: JSX.Element = this.renderEmptyColorPicker();
     return (
       <span className="charticulator__widget-control-input-color">
-        {this.props.pickerBeforeTextField && picker}
+        {this.props.pickerBeforeTextField && (hex == "" ? emptyPicker : picker)}
         <FluentTextField>
           <TextField
             label={this.props.label}
@@ -149,7 +173,8 @@ export class FluentInputColor extends React.Component<
             underlined={this.props.underline ?? false}
           />
         </FluentTextField>
-        {!this.props.pickerBeforeTextField && picker}
+        {!this.props.pickerBeforeTextField &&
+          (hex == "" ? emptyPicker : picker)}
         {this.state.open && (
           <Callout
             target={`#${ID_PREFIX}${pickerId}`}
