@@ -15,6 +15,7 @@ import {
   RenderGraphicalElementSVGOptions,
   DataSelection,
   GraphicalElementEventHandler,
+  renderSVGDefs,
 } from "../app/renderer";
 import { RenderEvents } from "../core/graphics";
 import { MappingType } from "../core/specification";
@@ -298,50 +299,53 @@ export class ChartComponent extends React.Component<
     renderOptions.selection = this.props.selection;
     const gfx = renderGraphicalElementSVG(this.state.graphics, renderOptions);
     const inner = (
-      <g
-        transform={`translate(${this.props.width / 2}, ${
-          this.props.height / 2
-        })`}
-      >
-        {this.props.onGlyphClick ? (
-          <rect
-            x={-this.props.width / 2}
-            y={-this.props.height / 2}
-            width={this.props.width}
-            height={this.props.height}
-            style={{
-              fill: "none",
-              pointerEvents: "all",
-              stroke: "none",
-            }}
-            onClick={() => {
-              this.props.onGlyphClick(null, null);
-            }}
-          />
-        ) : null}
-        {gfx}
-        {this.renderer.renderControls(
-          this.manager.chart,
-          this.manager.chartState,
-          {
-            centerX: 0,
-            centerY: 0,
-            scale: 1,
-          }
-        )}
-        {this.state.working ? (
-          <rect
-            x={-this.props.width / 2}
-            y={-this.props.height / 2}
-            width={this.props.width}
-            height={this.props.height}
-            style={{
-              fill: "rgba(0, 0, 0, 0.1)",
-              stroke: "none",
-            }}
-          />
-        ) : null}
-      </g>
+      <>
+        <defs>{renderSVGDefs(this.state.graphics)}</defs>
+        <g
+          transform={`translate(${this.props.width / 2}, ${
+            this.props.height / 2
+          })`}
+        >
+          {this.props.onGlyphClick ? (
+            <rect
+              x={-this.props.width / 2}
+              y={-this.props.height / 2}
+              width={this.props.width}
+              height={this.props.height}
+              style={{
+                fill: "none",
+                pointerEvents: "all",
+                stroke: "none",
+              }}
+              onClick={() => {
+                this.props.onGlyphClick(null, null);
+              }}
+            />
+          ) : null}
+          {gfx}
+          {this.renderer.renderControls(
+            this.manager.chart,
+            this.manager.chartState,
+            {
+              centerX: 0,
+              centerY: 0,
+              scale: 1,
+            }
+          )}
+          {this.state.working ? (
+            <rect
+              x={-this.props.width / 2}
+              y={-this.props.height / 2}
+              width={this.props.width}
+              height={this.props.height}
+              style={{
+                fill: "rgba(0, 0, 0, 0.1)",
+                stroke: "none",
+              }}
+            />
+          ) : null}
+        </g>
+      </>
     );
     switch (this.props.rootElement) {
       case "svg": {
