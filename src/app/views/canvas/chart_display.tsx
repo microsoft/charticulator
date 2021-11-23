@@ -11,6 +11,7 @@ import { strings } from "../../../strings";
 import {
   GraphicalElementDisplay,
   renderGraphicalElementSVG,
+  renderSVGDefs,
 } from "../../renderer";
 
 export interface ChartDisplayViewProps {
@@ -120,6 +121,7 @@ export function renderChartToLocalString(
         xmlnsXlink="http://www.w3.org/1999/xlink"
         xmlSpace="preserve"
       >
+        <defs>{renderSVGDefs(graphics)}</defs>
         <g
           transform={`translate(${(width / 2).toFixed(6)},${(
             height / 2

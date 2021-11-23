@@ -19,7 +19,7 @@ import {
 import { Actions, DragData } from "../../actions";
 import { ZoomableCanvas } from "../../components";
 import { DragContext, DragModifiers, Droppable } from "../../controllers";
-import { renderGraphicalElementSVG } from "../../renderer";
+import { renderGraphicalElementSVG, renderSVGDefs } from "../../renderer";
 import { AppStore, MarkSelection } from "../../stores";
 import { classNames } from "../../utils";
 import { Button } from "../panels/widgets/controls";
@@ -691,6 +691,24 @@ export class SingleMarkView
     globals.dragController.unregisterDroppable(this);
     this.tokens.forEach((token) => token.remove());
     this.tokens = [];
+  }
+
+  public renderElementDefs(
+    element: Specification.Element,
+    elementState: Specification.MarkState
+  ) {
+    const chartStore = this.store;
+    const elementClass = chartStore.chartManager.getMarkClass(elementState);
+    const graphics = elementClass.getGraphics(
+      new Graphics.CartesianCoordinates(),
+      { x: 0, y: 0 },
+      0,
+      chartStore.chartManager
+    );
+    if (!graphics) {
+      return null;
+    }
+    return renderSVGDefs(graphics);
   }
 
   public renderElement(
@@ -1620,6 +1638,7 @@ export class SingleMarkView
     }
   }
 
+  // eslint-disable-next-line
   public render() {
     const { glyph, glyphState } = this.props;
     const transform = `translate(${this.state.zoom.centerX},${this.state.zoom.centerY}) scale(${this.state.zoom.scale})`;
@@ -1669,6 +1688,13 @@ export class SingleMarkView
             width={this.props.width - 4}
             height={this.props.height}
           >
+            <defs>
+              {zipArray(glyph.marks, glyphState.marks).map(
+                ([elements, elementState]) => {
+                  return this.renderElementDefs(elements, elementState);
+                }
+              )}
+            </defs>
             <rect
               ref="canvasInteraction"
               className="interaction-handler"
