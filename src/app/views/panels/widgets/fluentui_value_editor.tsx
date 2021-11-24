@@ -80,7 +80,10 @@ export class FluentValueEditor extends ContextedComponent<
   }
   public state: ValueEditorState = {
     open: false,
-    value: "",
+    value:
+      this.props.type === Specification.AttributeType.Color
+        ? colorToHTMLColorHEX(this.props.value as Color)
+        : "",
   };
 
   public emitSetValue(value: Specification.AttributeValue) {

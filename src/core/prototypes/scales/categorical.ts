@@ -342,6 +342,9 @@ export class CategoricalScaleColor extends ScaleClass<
                 width: 100,
                 underline: true,
                 pickerBeforeTextField: true,
+                styles: {
+                  marginTop: "0px",
+                },
               }
             )
           )
