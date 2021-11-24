@@ -8,7 +8,7 @@ import { PolarPlotSegment } from "../plot_segments";
 export function shouldShowCloseLink(
   parent: ChartClass,
   linkProperties: LinksProperties,
-  close?: boolean
+  userClose?: boolean
 ): boolean {
   if (linkProperties.linkTable) {
     return false;
@@ -28,7 +28,7 @@ export function shouldShowCloseLink(
     );
 
     if (plotSegment?.classID == PolarPlotSegment.classID) {
-      if (close) {
+      if (userClose) {
         return linkProperties.closeLink;
       }
       return true;
