@@ -3,7 +3,6 @@
 
 import * as React from "react";
 import { ReorderListView } from "../../object_list_editor";
-import { Button } from "./button";
 import { ButtonRaised } from "../../../../components";
 import { strings } from "../../../../../strings";
 import { DefaultButton } from "@fluentui/react";
@@ -36,9 +35,9 @@ export class FluentUIReorderStringsValue extends React.Component<
     sortOrder: false,
   };
 
+  // eslint-disable-next-line max-lines-per-function
   public render() {
     const items = this.state.items;
-    console.log(items);
     return (
       <div className="charticulator__widget-popup-reorder-widget">
         <div className="el-row el-list-view">

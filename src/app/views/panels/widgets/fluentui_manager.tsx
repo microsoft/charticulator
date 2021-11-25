@@ -92,7 +92,6 @@ import { FluentInputNumber } from "./controls/fluentui_input_number";
 import {
   InputFontComboboxOptions,
   InputTextOptions,
-  LabelOptions,
   ObserverConfig,
   PanelMode,
 } from "../../../../core/prototypes/controls";
