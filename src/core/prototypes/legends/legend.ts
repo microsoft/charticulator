@@ -213,6 +213,7 @@ export abstract class LegendClass extends ChartElementClass {
             {
               label: strings.objects.color,
               labelKey: strings.objects.color,
+              allowNull: true,
             }
           ),
           manager.inputSelect(

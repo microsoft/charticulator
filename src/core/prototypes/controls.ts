@@ -160,6 +160,9 @@ export interface InputColorOptions {
   width?: number;
   underline?: boolean;
   pickerBeforeTextField?: boolean;
+  styles?: {
+    marginTop?: string;
+  };
 }
 
 // eslint-disable-next-line

@@ -19,7 +19,7 @@ import {
 } from "../../../core";
 import { Actions, DragData } from "../../actions";
 import { DragContext, Droppable } from "../../controllers";
-import { GraphicalElementDisplay } from "../../renderer";
+import { GraphicalElementDisplay, renderSVGDefs } from "../../renderer";
 import {
   ChartElementSelection,
   AppStore,
@@ -1430,6 +1430,7 @@ export class ChartEditorView
             width={width}
             height={height}
           >
+            <defs>{renderSVGDefs(this.state.graphics)}</defs>
             <rect
               className="interaction-handler"
               ref="canvasInteraction"

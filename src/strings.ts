@@ -151,6 +151,7 @@ export const strings = {
     keyColumnExpression: "Key column expression",
     bindDataValue: "Bind data value",
     remove: "Remove",
+    chooseColor: "Choose color",
   },
   error: {
     imageLoad: (url: string) => `failed to retrieve map image at url ${url}`,
@@ -426,7 +427,9 @@ export const strings = {
       dataExpressions: "Data Expressions",
       lineColor: "Line Color",
       tickColor: "Tick Label Color",
+      tickTextBackgroudColor: "Tick background color",
       showTickLine: "Show Tick Line",
+      showBaseline: "Show Baseline",
       verticalText: "Vertical text",
       offSet: "Offset",
     },

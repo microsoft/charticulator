@@ -819,6 +819,7 @@ export class FluentUIWidgetManager
         width={options.width}
         underline={options.underline}
         pickerBeforeTextField={options.pickerBeforeTextField}
+        styles={options.styles}
       />
     );
   }
