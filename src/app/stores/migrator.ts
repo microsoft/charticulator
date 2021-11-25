@@ -687,11 +687,15 @@ export class Migrator {
               element.properties.xData.style.showBaseline = true;
             }
             element.properties.xData.offset = 0;
-            element.properties.xData.orderByCategories =
-              element.properties.xData.categories;
-            element.properties.xData.orderByExpression = this.parseExpression(
-              element.properties.xData.expression
-            );
+            if (element.properties.xData.orderByCategories == undefined) {
+              element.properties.xData.orderByCategories =
+                element.properties.xData.categories;
+            }
+            if (element.properties.xData.orderByExpression == undefined) {
+              element.properties.xData.orderByExpression = this.parseExpression(
+                element.properties.xData.expression
+              );
+            }
             element.properties.xData.enableSelection = true;
           }
           if (element.properties.xData === undefined) {
@@ -707,11 +711,15 @@ export class Migrator {
               element.properties.yData.style.showBaseline = true;
             }
             element.properties.yData.offset = 0;
-            element.properties.yData.orderByCategories =
-              element.properties.yData.categories;
-            element.properties.yData.orderByExpression = this.parseExpression(
-              element.properties.yData.expression
-            );
+            if (element.properties.yData.orderByCategories == undefined) {
+              element.properties.yData.orderByCategories =
+                element.properties.yData.categories;
+            }
+            if (element.properties.yData.orderByExpression == undefined) {
+              element.properties.yData.orderByExpression = this.parseExpression(
+                element.properties.yData.expression
+              );
+            }
             element.properties.yData.enableSelection = true;
           }
           if (element.properties.yData === undefined) {
@@ -731,11 +739,15 @@ export class Migrator {
               element.properties.xData.style.showBaseline = true;
             }
             element.properties.xData.offset = 0;
-            element.properties.xData.orderByCategories =
-              element.properties.xData.categories;
-            element.properties.xData.orderByExpression = this.parseExpression(
-              element.properties.xData.expression
-            );
+            if (element.properties.xData.orderByCategories == undefined) {
+              element.properties.xData.orderByCategories =
+                element.properties.xData.categories;
+            }
+            if (element.properties.xData.orderByExpression == undefined) {
+              element.properties.xData.orderByExpression = this.parseExpression(
+                element.properties.xData.expression
+              );
+            }
             element.properties.xData.enableSelection = true;
           }
           if (element.properties.xData === undefined) {
@@ -749,11 +761,15 @@ export class Migrator {
               element.properties.yData.style.showTicks = true;
               element.properties.yData.style.showBaseline = true;
             }
-            element.properties.yData.orderByCategories =
-              element.properties.yData.categories;
-            element.properties.yData.orderByExpression = this.parseExpression(
-              element.properties.yData.expression
-            );
+            if (element.properties.yData.orderByCategories == undefined) {
+              element.properties.yData.orderByCategories =
+                element.properties.yData.categories;
+            }
+            if (element.properties.yData.orderByExpression == undefined) {
+              element.properties.yData.orderByExpression = this.parseExpression(
+                element.properties.yData.expression
+              );
+            }
             element.properties.yData.offset = 0;
             element.properties.yData.enableSelection = true;
           }
@@ -769,11 +785,15 @@ export class Migrator {
               element.properties.axis.style.showBaseline = true;
               element.properties.axis.style.showTicks = true;
             }
-            element.properties.axis.orderByExpression = this.parseExpression(
-              element.properties.axis.expression
-            );
-            element.properties.axis.orderByCategories =
-              element.properties.axis.categories;
+            if (element.properties.axis.orderByCategories == undefined) {
+              element.properties.axis.orderByCategories =
+                element.properties.axis.categories;
+            }
+            if (element.properties.axis.orderByExpression == undefined) {
+              element.properties.axis.orderByExpression = this.parseExpression(
+                element.properties.axis.expression
+              );
+            }
             element.properties.axis.enableSelection = true;
           }
         }
@@ -790,11 +810,15 @@ export class Migrator {
               element.properties.xData.style.showBaseline = true;
             }
             element.properties.xData.offset = 0;
-            element.properties.xData.orderByCategories =
-              element.properties.xData.categories;
-            element.properties.xData.orderByExpression = this.parseExpression(
-              element.properties.xData.expression
-            );
+            if (element.properties.xData.orderByCategories == undefined) {
+              element.properties.xData.orderByCategories =
+                element.properties.xData.categories;
+            }
+            if (element.properties.xData.orderByExpression == undefined) {
+              element.properties.xData.orderByExpression = this.parseExpression(
+                element.properties.xData.expression
+              );
+            }
             element.properties.xData.enableSelection = true;
           }
           if (element.properties.xData === undefined) {
@@ -808,11 +832,15 @@ export class Migrator {
               element.properties.yData.style.showTicks = true;
               element.properties.yData.style.showBaseline = true;
             }
-            element.properties.yData.orderByCategories =
-              element.properties.yData.categories;
-            element.properties.yData.orderByExpression = this.parseExpression(
-              element.properties.yData.expression
-            );
+            if (element.properties.yData.orderByCategories == undefined) {
+              element.properties.yData.orderByCategories =
+                element.properties.yData.categories;
+            }
+            if (element.properties.yData.orderByExpression == undefined) {
+              element.properties.yData.orderByExpression = this.parseExpression(
+                element.properties.yData.expression
+              );
+            }
             element.properties.yData.offset = 0;
             element.properties.yData.enableSelection = true;
           }
@@ -827,11 +855,15 @@ export class Migrator {
           >;
           if (element.properties.axis) {
             element.properties.axis = this.updateAxis(element.properties.axis);
-            element.properties.axis.orderByExpression = this.parseExpression(
-              element.properties.axis.expression
-            );
-            element.properties.axis.orderByCategories =
-              element.properties.axis.categories;
+            if (element.properties.axis.orderByCategories == undefined) {
+              element.properties.axis.orderByCategories =
+                element.properties.axis.categories;
+            }
+            if (element.properties.axis.orderByExpression == undefined) {
+              element.properties.axis.orderByExpression = this.parseExpression(
+                element.properties.axis.expression
+              );
+            }
             element.properties.axis.enableSelection = true;
 
             if (element.properties.axis?.style) {
