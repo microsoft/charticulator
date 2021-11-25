@@ -2042,7 +2042,9 @@ export class AppStore extends BaseStore {
         props.yData &&
         props.yData.type == AxisDataBindingType.Categorical
       ) {
-        props.sublayout.type = Region2DSublayoutType.Grid;
+        if (props.sublayout.type == Region2DSublayoutType.Overlap) {
+          props.sublayout.type = Region2DSublayoutType.Grid;
+        }
       }
     }
   }
