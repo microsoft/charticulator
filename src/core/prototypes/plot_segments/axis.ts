@@ -1778,33 +1778,10 @@ export function buildAxisWidgets(
                     dropzoneOptions
                   ),
                   manager.clearButton({ property: axisProperty }, null, true)
-                  // manager.reorderWidget(
-                  //   { property: axisProperty, field: "categories" },
-                  //   { allowReset: true }
-                  // )
                 ),
 
                 ...getOrderByAnotherColumnWidgets(data, axisProperty, manager),
 
-                // manager.horizontal(
-                //   [1, 0],
-                //   manager.sectionHeader(
-                //     null,
-                //     manager.inputExpression(
-                //       {
-                //         property: axisProperty,
-                //         field: "orderByExpression",
-                //       },
-                //       {}
-                //     ),
-                //     //dropzoneOptions
-                //   ),
-                //   manager.clearButton({ property: axisProperty, field: "orderByExpression" }, null, true),
-                //   manager.reorderWidget(
-                //     { property: axisProperty, field: "orderByCategories" },
-                //     { allowReset: true }
-                //   )
-                // ),
                 manager.inputNumber(
                   { property: axisProperty, field: "gapRatio" },
                   {
