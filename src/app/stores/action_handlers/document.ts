@@ -272,6 +272,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
 
   REG.add(Actions.UpdateDataAxis, function () {
     this.updateDataAxes();
+    this.updateScales();
     this.solveConstraintsAndUpdateGraphics();
     this.emit(AppStore.EVENT_DATASET);
     this.emit(AppStore.EVENT_SELECTION);

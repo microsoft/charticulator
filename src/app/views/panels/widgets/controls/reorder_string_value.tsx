@@ -9,7 +9,11 @@ import { strings } from "../../../../../strings";
 
 interface ReorderStringsValueProps {
   items: string[];
-  onConfirm: (items: string[], customOrder: boolean) => void;
+  onConfirm: (
+    items: string[],
+    customOrder: boolean,
+    sortOrder: boolean
+  ) => void;
   allowReset?: boolean;
   onReset?: () => string[];
 }
@@ -17,6 +21,7 @@ interface ReorderStringsValueProps {
 interface ReorderStringsValueState {
   items: string[];
   customOrder: boolean;
+  sortOrder: boolean;
 }
 
 export class ReorderStringsValue extends React.Component<
@@ -26,6 +31,7 @@ export class ReorderStringsValue extends React.Component<
   public state: ReorderStringsValueState = {
     items: this.props.items.slice(),
     customOrder: false,
+    sortOrder: false,
   };
 
   public render() {
@@ -64,6 +70,7 @@ export class ReorderStringsValue extends React.Component<
             onClick={() => {
               this.setState({
                 items: this.state.items.sort(),
+                sortOrder: true,
                 customOrder: false,
               });
             }}
@@ -77,7 +84,11 @@ export class ReorderStringsValue extends React.Component<
                 onClick={() => {
                   if (this.props.onReset) {
                     const items = this.props.onReset();
-                    this.setState({ items, customOrder: false });
+                    this.setState({
+                      items,
+                      customOrder: false,
+                      sortOrder: false,
+                    });
                   }
                 }}
               />
@@ -88,7 +99,11 @@ export class ReorderStringsValue extends React.Component<
           <ButtonRaised
             text="OK"
             onClick={() => {
-              this.props.onConfirm(this.state.items, this.state.customOrder);
+              this.props.onConfirm(
+                this.state.items,
+                this.state.customOrder,
+                this.state.sortOrder
+              );
             }}
           />
         </div>
