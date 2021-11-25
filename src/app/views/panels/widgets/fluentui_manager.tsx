@@ -115,7 +115,6 @@ import { FilterPanel } from "./fluentui_filter";
 import { EventManager, EventType, UIManagerListener } from "./observer";
 import { FluentUIGradientPicker } from "../../../components/fluent_ui_gradient_picker";
 import { OrderMode } from "../../../../core/specification/types";
-import { ReorderStringsValue } from "./controls/reorder_string_value";
 import { CustomCollapsiblePanel } from "./controls/custom_collapsible_panel";
 import { FluentUIReorderStringsValue } from "./controls/fluentui_reorder_string_value";
 
@@ -1697,7 +1696,7 @@ export class FluentUIWidgetManager
                   <PopupView context={context}>
                     <FluentUIReorderStringsValue
                       items={items}
-                      onConfirm={(items, customOrder) => {
+                      onConfirm={(items, customOrder, sortOrder) => {
                         this.emitSetProperty(property, items);
                         if (options.onConfirmClick) {
                           options.onConfirmClick(items);
@@ -1718,17 +1717,37 @@ export class FluentUIWidgetManager
                             items
                           );
                         } else {
-                          this.emitSetProperty(
-                            {
-                              property: property.property,
-                              field: "orderMode",
-                            },
-                            OrderMode.alphabetically
-                          );
+                          if (sortOrder) {
+                            this.emitSetProperty(
+                              {
+                                property: property.property,
+                                field: "orderMode",
+                              },
+                              OrderMode.alphabetically
+                            );
+                          } else {
+                            this.emitSetProperty(
+                              {
+                                property: property.property,
+                                field: "orderMode",
+                              },
+                              OrderMode.order
+                            );
+                            this.emitSetProperty(
+                              {
+                                property: property.property,
+                                field: "order",
+                              },
+                              items
+                            );
+                          }
                         }
                         context.close();
                       }}
                       onReset={() => {
+                        if (options.onResetCategories) {
+                          return options.onResetCategories;
+                        }
                         const axisDataBinding = {
                           ...(this.objectClass.object.properties[
                             property.property

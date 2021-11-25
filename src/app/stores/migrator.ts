@@ -33,6 +33,7 @@ import { replaceUndefinedByNull } from "../utils";
 import { TickFormatType } from "../../core/specification/types";
 import { SymbolElementProperties } from "../../core/prototypes/marks/symbol.attrs";
 import { LinearBooleanScaleMode } from "../../core/prototypes/scales/linear";
+import { parseDerivedColumnsExpression } from "../../core/prototypes/plot_segments/utils";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -164,6 +165,13 @@ export class Migrator {
     if (
       compareVersion(state.version, "2.1.1") < 0 &&
       compareVersion(targetVersion, "2.1.1") >= 0
+    ) {
+      state = this.setMissedSortProperties(state);
+    }
+
+    if (
+      compareVersion(state.version, "2.1.2") < 0 &&
+      compareVersion(targetVersion, "2.1.2") >= 0
     ) {
       state = this.setMissedSortProperties(state);
     }
@@ -644,6 +652,22 @@ export class Migrator {
     return state;
   }
 
+  private parseExpression(axisExpression: string) {
+    try {
+      let expression;
+      const parsed = Expression.parse(axisExpression);
+      if (parsed instanceof Expression.FunctionCall) {
+        expression = parsed.args[0].toString();
+        expression = expression?.split("`").join("");
+        //need to provide date.year() etc.
+        expression = parseDerivedColumnsExpression(expression);
+      }
+      return expression;
+    } catch (e) {
+      return axisExpression;
+    }
+  }
+
   public setMissedSortProperties(state: AppStoreState) {
     for (const item of forEachObject(state.chart)) {
       if (item.kind == ObjectItemKind.Chart) {
@@ -665,8 +689,9 @@ export class Migrator {
             element.properties.xData.offset = 0;
             element.properties.xData.orderByCategories =
               element.properties.xData.categories;
-            element.properties.xData.orderByExpression =
-              element.properties.xData.expression;
+            element.properties.xData.orderByExpression = this.parseExpression(
+              element.properties.xData.expression
+            );
             element.properties.xData.enableSelection = true;
           }
           if (element.properties.xData === undefined) {
@@ -684,8 +709,9 @@ export class Migrator {
             element.properties.yData.offset = 0;
             element.properties.yData.orderByCategories =
               element.properties.yData.categories;
-            element.properties.yData.orderByExpression =
-              element.properties.yData.expression;
+            element.properties.yData.orderByExpression = this.parseExpression(
+              element.properties.yData.expression
+            );
             element.properties.yData.enableSelection = true;
           }
           if (element.properties.yData === undefined) {
@@ -707,8 +733,9 @@ export class Migrator {
             element.properties.xData.offset = 0;
             element.properties.xData.orderByCategories =
               element.properties.xData.categories;
-            element.properties.xData.orderByExpression =
-              element.properties.xData.expression;
+            element.properties.xData.orderByExpression = this.parseExpression(
+              element.properties.xData.expression
+            );
             element.properties.xData.enableSelection = true;
           }
           if (element.properties.xData === undefined) {
@@ -724,8 +751,9 @@ export class Migrator {
             }
             element.properties.yData.orderByCategories =
               element.properties.yData.categories;
-            element.properties.yData.orderByExpression =
-              element.properties.yData.expression;
+            element.properties.yData.orderByExpression = this.parseExpression(
+              element.properties.yData.expression
+            );
             element.properties.yData.offset = 0;
             element.properties.yData.enableSelection = true;
           }
@@ -741,8 +769,9 @@ export class Migrator {
               element.properties.axis.style.showBaseline = true;
               element.properties.axis.style.showTicks = true;
             }
-            element.properties.axis.orderByExpression =
-              element.properties.axis.expression;
+            element.properties.axis.orderByExpression = this.parseExpression(
+              element.properties.axis.expression
+            );
             element.properties.axis.orderByCategories =
               element.properties.axis.categories;
             element.properties.axis.enableSelection = true;
@@ -763,8 +792,9 @@ export class Migrator {
             element.properties.xData.offset = 0;
             element.properties.xData.orderByCategories =
               element.properties.xData.categories;
-            element.properties.xData.orderByExpression =
-              element.properties.xData.expression;
+            element.properties.xData.orderByExpression = this.parseExpression(
+              element.properties.xData.expression
+            );
             element.properties.xData.enableSelection = true;
           }
           if (element.properties.xData === undefined) {
@@ -780,8 +810,9 @@ export class Migrator {
             }
             element.properties.yData.orderByCategories =
               element.properties.yData.categories;
-            element.properties.yData.orderByExpression =
-              element.properties.yData.expression;
+            element.properties.yData.orderByExpression = this.parseExpression(
+              element.properties.yData.expression
+            );
             element.properties.yData.offset = 0;
             element.properties.yData.enableSelection = true;
           }
@@ -796,8 +827,9 @@ export class Migrator {
           >;
           if (element.properties.axis) {
             element.properties.axis = this.updateAxis(element.properties.axis);
-            element.properties.axis.orderByExpression =
-              element.properties.axis.expression;
+            element.properties.axis.orderByExpression = this.parseExpression(
+              element.properties.axis.expression
+            );
             element.properties.axis.orderByCategories =
               element.properties.axis.categories;
             element.properties.axis.enableSelection = true;
@@ -818,8 +850,9 @@ export class Migrator {
           const element = (item.mark as unknown) as Object<DataAxisProperties>;
           if (element.properties.axis) {
             element.properties.axis = this.updateAxis(element.properties.axis);
-            element.properties.axis.orderByExpression =
-              element.properties.axis.expression;
+            element.properties.axis.orderByExpression = this.parseExpression(
+              element.properties.axis.expression
+            );
             element.properties.axis.orderByCategories =
               element.properties.axis.categories;
             element.properties.axis.enableSelection = true;

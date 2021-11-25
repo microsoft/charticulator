@@ -45,7 +45,7 @@ import {
   TickFormatType,
 } from "../../specification/types";
 import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
-import { getTableColumns } from "./utils";
+import { getTableColumns, parseDerivedColumnsExpression } from "./utils";
 import { DataflowManager, DataflowTable } from "../dataflow";
 import * as Expression from "../../expression";
 import { CompiledGroupBy } from "../group_by";
@@ -2242,6 +2242,7 @@ function getOrderByAnotherColumnWidgets(
     groupByExpression = parsed.args[0].toString();
     groupByExpression = groupByExpression?.split("`").join("");
     //need to provide date.year() etc.
+    groupByExpression = parseDerivedColumnsExpression(groupByExpression);
   }
 
   const vectorData = getExpressionVector(data.orderByExpression, table, {
@@ -2253,6 +2254,10 @@ function getOrderByAnotherColumnWidgets(
   const axisData = getExpressionVector(data.expression, table, {
     expression: groupByExpression,
   }).map((item, idx) => [item, idx]);
+
+  const rawAxisData = items_idx.map((item) =>
+    Array.isArray(item[0]) ? item[0].join(", ") : item[0].toString()
+  );
 
   const onConfirm = (items: string[]) => {
     try {
@@ -2307,11 +2312,12 @@ function getOrderByAnotherColumnWidgets(
           onChange: onChange,
         }
       ),
-      manager.reorderWidget(
+      manager.reorderByAnotherColumnWidget(
         { property: axisProperty, field: "orderByCategories" },
         {
           allowReset: true,
           onConfirmClick: onConfirm,
+          onResetCategories: rawAxisData,
         }
       )
     )

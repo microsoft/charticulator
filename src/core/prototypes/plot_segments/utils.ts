@@ -50,3 +50,12 @@ export function getColumnNameByExpression(expression: string) {
   }
   return columnName;
 }
+
+export function parseDerivedColumnsExpression(expression: string): string {
+  const DATE_DERIVED_PREDIX: string = "date.";
+  if (expression.startsWith(DATE_DERIVED_PREDIX)) {
+    //data.year(DATE) -> DATE
+    return expression.match(/\(([^)]+)\)/)[1];
+  }
+  return expression;
+}

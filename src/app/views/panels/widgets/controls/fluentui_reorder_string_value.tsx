@@ -11,7 +11,11 @@ import { defultComponentsHeight } from "./fluentui_customized_components";
 
 interface ReorderStringsValueProps {
   items: string[];
-  onConfirm: (items: string[], customOrder: boolean) => void;
+  onConfirm: (
+    items: string[],
+    customOrder: boolean,
+    sortOrder: boolean
+  ) => void;
   allowReset?: boolean;
   onReset?: () => string[];
 }
@@ -19,6 +23,7 @@ interface ReorderStringsValueProps {
 interface ReorderStringsValueState {
   items: string[];
   customOrder: boolean;
+  sortOrder: boolean;
 }
 
 export class FluentUIReorderStringsValue extends React.Component<
@@ -28,10 +33,12 @@ export class FluentUIReorderStringsValue extends React.Component<
   public state: ReorderStringsValueState = {
     items: this.props.items.slice(),
     customOrder: false,
+    sortOrder: false,
   };
 
   public render() {
-    const items = this.state.items.slice();
+    const items = this.state.items;
+    console.log(items);
     return (
       <div className="charticulator__widget-popup-reorder-widget">
         <div className="el-row el-list-view">
@@ -39,7 +46,7 @@ export class FluentUIReorderStringsValue extends React.Component<
             enabled={true}
             onReorder={(a, b) => {
               ReorderListView.ReorderArray(items, a, b);
-              this.setState({ items, customOrder: true });
+              this.setState({ items, customOrder: true, sortOrder: false });
             }}
           >
             {items.map((x) => (
@@ -79,6 +86,7 @@ export class FluentUIReorderStringsValue extends React.Component<
               this.setState({
                 items: this.state.items.sort(),
                 customOrder: false,
+                sortOrder: true,
               });
             }}
             styles={{
@@ -107,7 +115,11 @@ export class FluentUIReorderStringsValue extends React.Component<
                 onClick={() => {
                   if (this.props.onReset) {
                     const items = this.props.onReset();
-                    this.setState({ items, customOrder: false });
+                    this.setState({
+                      items,
+                      customOrder: false,
+                      sortOrder: false,
+                    });
                   }
                 }}
               />
@@ -118,7 +130,11 @@ export class FluentUIReorderStringsValue extends React.Component<
           <ButtonRaised
             text="OK"
             onClick={() => {
-              this.props.onConfirm(this.state.items, this.state.customOrder);
+              this.props.onConfirm(
+                this.state.items,
+                this.state.customOrder,
+                this.state.sortOrder
+              );
             }}
           />
         </div>
