@@ -2293,7 +2293,7 @@ function getOrderByAnotherColumnWidgets(
   };
 
   widgets.push(
-    manager.label("Order by"),
+    manager.label(strings.objects.axes.orderBy),
 
     manager.horizontal(
       [1, 0],
@@ -2307,13 +2307,10 @@ function getOrderByAnotherColumnWidgets(
           onChange: onChange,
         }
       ),
-      manager.reorderByAnotherColumnWidget(
+      manager.reorderWidget(
         { property: axisProperty, field: "orderByCategories" },
         {
           allowReset: true,
-          // items: items.map((item) =>
-          //   Array.isArray(item) ? item.toString() : item
-          // ),
           onConfirmClick: onConfirm,
         }
       )

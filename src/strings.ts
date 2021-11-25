@@ -432,6 +432,7 @@ export const strings = {
       showBaseline: "Show Baseline",
       verticalText: "Vertical text",
       offSet: "Offset",
+      orderBy: "Order by",
     },
     plotSegment: {
       subLayout: "Sub-layout",
