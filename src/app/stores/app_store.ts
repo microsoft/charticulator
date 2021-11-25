@@ -2034,6 +2034,18 @@ export class AppStore extends BaseStore {
           props.sublayout.type = Region2DSublayoutType.Overlap;
         }
       }
+
+      //set default sublayout type for Categorical - Categorical data
+      if (
+        props.xData &&
+        props.xData.type == AxisDataBindingType.Categorical &&
+        props.yData &&
+        props.yData.type == AxisDataBindingType.Categorical
+      ) {
+        if (props.sublayout.type == Region2DSublayoutType.Overlap) {
+          props.sublayout.type = Region2DSublayoutType.Grid;
+        }
+      }
     }
   }
 
