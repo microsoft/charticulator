@@ -663,6 +663,11 @@ export class Migrator {
               element.properties.xData.style.showBaseline = true;
             }
             element.properties.xData.offset = 0;
+            element.properties.xData.orderByCategories =
+              element.properties.xData.categories;
+            element.properties.xData.orderByExpression =
+              element.properties.xData.expression;
+            element.properties.xData.enableSelection = true;
           }
           if (element.properties.xData === undefined) {
             element.properties.xData = null;
@@ -677,6 +682,11 @@ export class Migrator {
               element.properties.yData.style.showBaseline = true;
             }
             element.properties.yData.offset = 0;
+            element.properties.yData.orderByCategories =
+              element.properties.yData.categories;
+            element.properties.yData.orderByExpression =
+              element.properties.yData.expression;
+            element.properties.yData.enableSelection = true;
           }
           if (element.properties.yData === undefined) {
             element.properties.yData = null;
@@ -695,6 +705,11 @@ export class Migrator {
               element.properties.xData.style.showBaseline = true;
             }
             element.properties.xData.offset = 0;
+            element.properties.xData.orderByCategories =
+              element.properties.xData.categories;
+            element.properties.xData.orderByExpression =
+              element.properties.xData.expression;
+            element.properties.xData.enableSelection = true;
           }
           if (element.properties.xData === undefined) {
             element.properties.xData = null;
@@ -707,7 +722,12 @@ export class Migrator {
               element.properties.yData.style.showTicks = true;
               element.properties.yData.style.showBaseline = true;
             }
+            element.properties.yData.orderByCategories =
+              element.properties.yData.categories;
+            element.properties.yData.orderByExpression =
+              element.properties.yData.expression;
             element.properties.yData.offset = 0;
+            element.properties.yData.enableSelection = true;
           }
           if (element.properties.yData === undefined) {
             element.properties.yData = null;
@@ -721,6 +741,11 @@ export class Migrator {
               element.properties.axis.style.showBaseline = true;
               element.properties.axis.style.showTicks = true;
             }
+            element.properties.axis.orderByExpression =
+              element.properties.axis.expression;
+            element.properties.axis.orderByCategories =
+              element.properties.axis.categories;
+            element.properties.axis.enableSelection = true;
           }
         }
         if (
@@ -736,6 +761,11 @@ export class Migrator {
               element.properties.xData.style.showBaseline = true;
             }
             element.properties.xData.offset = 0;
+            element.properties.xData.orderByCategories =
+              element.properties.xData.categories;
+            element.properties.xData.orderByExpression =
+              element.properties.xData.expression;
+            element.properties.xData.enableSelection = true;
           }
           if (element.properties.xData === undefined) {
             element.properties.xData = null;
@@ -748,7 +778,12 @@ export class Migrator {
               element.properties.yData.style.showTicks = true;
               element.properties.yData.style.showBaseline = true;
             }
+            element.properties.yData.orderByCategories =
+              element.properties.yData.categories;
+            element.properties.yData.orderByExpression =
+              element.properties.yData.expression;
             element.properties.yData.offset = 0;
+            element.properties.yData.enableSelection = true;
           }
           if (element.properties.yData === undefined) {
             element.properties.yData = null;
@@ -761,6 +796,12 @@ export class Migrator {
           >;
           if (element.properties.axis) {
             element.properties.axis = this.updateAxis(element.properties.axis);
+            element.properties.axis.orderByExpression =
+              element.properties.axis.expression;
+            element.properties.axis.orderByCategories =
+              element.properties.axis.categories;
+            element.properties.axis.enableSelection = true;
+
             if (element.properties.axis?.style) {
               element.properties.axis.style.showBaseline = true;
               element.properties.axis.style.showTicks = true;
@@ -777,6 +818,12 @@ export class Migrator {
           const element = (item.mark as unknown) as Object<DataAxisProperties>;
           if (element.properties.axis) {
             element.properties.axis = this.updateAxis(element.properties.axis);
+            element.properties.axis.orderByExpression =
+              element.properties.axis.expression;
+            element.properties.axis.orderByCategories =
+              element.properties.axis.categories;
+            element.properties.axis.enableSelection = true;
+
             if (element.properties.axis.style) {
               element.properties.axis.style.showBaseline = true;
               element.properties.axis.style.showTicks = true;
