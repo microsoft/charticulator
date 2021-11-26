@@ -360,28 +360,28 @@ export function interpolateColors(
   };
 }
 
-const brewer3 = ["#74c476", "#9e9ac8", "#fdd0a2"].map(colorFromHTMLColor);
+const brewer3 = ["#7fc97f", "#beaed4", "#fdc086"].map(colorFromHTMLColor);
 const brewer6 = [
-  "#9ecae1",
-  "#2171b5",
-  "#a1d99b",
-  "#238b45",
-  "#ffc0c0",
-  "#ef3b2c",
+  "#a6cee3",
+  "#1f78b4",
+  "#b2df8a",
+  "#33a02c",
+  "#fb9a99",
+  "#e31a1c",
 ].map(colorFromHTMLColor);
 const brewer12 = [
-  "#9ecae1",
-  "#2171b5",
-  "#a1d99b",
-  "#238b45",
-  "#ffc0c0",
-  "#ef3b2c",
-  "#fdd0a2",
-  "#f16913",
-  "#9e9ac8",
-  "#6a51a3",
-  "#fff59d",
-  "#7f4200",
+  "#a6cee3",
+  "#1f78b4",
+  "#b2df8a",
+  "#33a02c",
+  "#fb9a99",
+  "#e31a1c",
+  "#fdbf6f",
+  "#ff7f00",
+  "#cab2d6",
+  "#6a3d9a",
+  "#ffff99",
+  "#b15928",
 ].map(colorFromHTMLColor);
 
 let defaultColorGeneratorFunction: (key: string) => Color = null;
