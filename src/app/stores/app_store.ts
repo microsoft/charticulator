@@ -1976,9 +1976,9 @@ export class AppStore extends BaseStore {
             if (dataBinding.windowSize == null) {
               dataBinding.windowSize =
                 (dataBinding.domainMax - dataBinding.domainMin) / 10;
-              dataBinding.dataDomainMin = dataBinding.domainMin;
-              dataBinding.dataDomainMax = dataBinding.domainMax;
             }
+            dataBinding.dataDomainMin = dataBinding.domainMin;
+            dataBinding.dataDomainMax = dataBinding.domainMax;
           }
           break;
         case Specification.DataKind.Temporal:
