@@ -91,6 +91,15 @@ export class ColorPicker extends React.Component<
         currentPicker: null,
       };
     }
+
+    //REMOVE TO OPEN COLOR PALETTE BY DEFAULT VALUE
+    //OPEN DEFAULT COLOR PALETTE
+    this.state = {
+      currentPalette: predefinedPalettes.filter(
+        (x) => x.name == "Palette/ColorBrewer"
+      )[0],
+      currentPicker: null,
+    };
   }
 
   public render() {
@@ -103,6 +112,14 @@ export class ColorPicker extends React.Component<
       <>
         <PickersSectionWrapper>
           <PickersSection>
+            <PaletteList
+              palettes={predefinedPalettes.filter((x) => x.type == "palette")}
+              selected={this.state.currentPalette}
+              onClick={(p) => {
+                this.setState({ currentPalette: p, currentPicker: null });
+                this.props.parent?.forceUpdate();
+              }}
+            />
             <Label>Color Picker</Label>
             <ColorPickerButton
               state={this.state}
@@ -123,14 +140,6 @@ export class ColorPicker extends React.Component<
                 })
               }
               type={PickerType.HSV}
-            />
-            <PaletteList
-              palettes={predefinedPalettes.filter((x) => x.type == "palette")}
-              selected={this.state.currentPalette}
-              onClick={(p) => {
-                this.setState({ currentPalette: p, currentPicker: null });
-                this.props.parent?.forceUpdate();
-              }}
             />
           </PickersSection>
           <NullButton
