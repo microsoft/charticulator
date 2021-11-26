@@ -99,6 +99,7 @@ export class ColorPicker extends React.Component<
         (x) => x.name == "Palette/ColorBrewer"
       )[0],
       currentPicker: null,
+      currentColor: this.props.defaultValue,
     };
   }
 
