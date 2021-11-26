@@ -184,6 +184,6 @@ export function createDefaultChart(
 
 export const defaultFont = "Segoe UI";
 export const defaultFontSize = 12;
-export const defaultFontSizeLegend = 10;
+export const defaultFontSizeLegend = 12;
 
 export const defaultVersionOfTemplate = "2.0.3";
