@@ -91,6 +91,15 @@ export class ColorPicker extends React.Component<
         currentPicker: null,
       };
     }
+
+    //REMOVE TO OPEN COLOR PALETTE BY DEFAULT VALUE
+    //OPEN DEFAULT COLOR PALETTE
+    this.state = {
+      currentPalette: predefinedPalettes.filter(
+        (x) => x.name == "Palette/ColorBrewer"
+      )[0],
+      currentPicker: null,
+    };
   }
 
   public render() {
