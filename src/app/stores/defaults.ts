@@ -161,6 +161,14 @@ export function createDefaultChart(
         type: MappingType.value,
         value: 80,
       } as Specification.ValueMapping,
+      width: {
+        type: MappingType.value,
+        value: 900,
+      } as Specification.ValueMapping,
+      height: {
+        type: MappingType.value,
+        value: 600,
+      } as Specification.ValueMapping,
     },
     glyphs: [glyph],
     elements: [
