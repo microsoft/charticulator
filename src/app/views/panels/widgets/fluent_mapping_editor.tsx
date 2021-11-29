@@ -30,18 +30,14 @@ import {
   Label,
   IContextualMenuItem,
   Callout,
-  Dropdown,
-  ContextualMenu,
 } from "@fluentui/react";
 import {
   defaultLabelStyle,
-  defaultStyle,
   defultBindButtonSize,
   defultComponentsHeight,
   FluentActionButton,
   FluentButton,
   FluentRowLayout,
-  labelRender,
 } from "./controls/fluentui_customized_components";
 import { ObjectClass } from "../../../../core/prototypes";
 import {

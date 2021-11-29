@@ -40,7 +40,7 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
   const [errorMessage, setErrorMessage] = React.useState(null);
 
   React.useEffect(() => {
-    if (props.value) {
+    if (props.value || props.value == "") {
       setValue(props.value);
     }
   }, [props.value]);
