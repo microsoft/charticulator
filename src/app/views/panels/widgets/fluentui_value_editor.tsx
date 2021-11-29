@@ -246,6 +246,9 @@ export class FluentValueEditor extends ContextedComponent<
               defaultValue={new Expression.TextExpression([
                 { string: str },
               ]).toString()}
+              value={new Expression.TextExpression([
+                { string: str },
+              ]).toString()}
               placeholder={placeholderText}
               allowNull={true}
               onEnter={(newValue) => {
