@@ -115,7 +115,7 @@ describe("Charticulator", () => {
   }).timeout(longTimeOut);
 
   // test checks that charticulator opens saved chart correctly
-  it("open mushrooms chart", async () => {
+  xit("open mushrooms chart", async () => {
     const chartFilePath = `base/${pathPrefix}/mushrooms.chart`;
     await testOpenChart(application, await loadJSON(chartFilePath));
   }).timeout(longTimeOut);
