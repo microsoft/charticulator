@@ -73,7 +73,7 @@ describe("Charticulator", () => {
     done();
   }).timeout(longTimeOut);
 
-  xit("binds data to X axis", async () => {
+  it("binds data to X axis", async () => {
     const store = application.appStore;
 
     const plotSegments = [
@@ -115,7 +115,7 @@ describe("Charticulator", () => {
   }).timeout(longTimeOut);
 
   // test checks that charticulator opens saved chart correctly
-  xit("open mushrooms chart", async () => {
+  it("open mushrooms chart", async () => {
     const chartFilePath = `base/${pathPrefix}/mushrooms.chart`;
     await testOpenChart(application, await loadJSON(chartFilePath));
   }).timeout(longTimeOut);
