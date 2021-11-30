@@ -813,6 +813,7 @@ export class FluentUIWidgetManager
         width={options.width}
         underline={options.underline}
         pickerBeforeTextField={options.pickerBeforeTextField}
+        styles={options.styles}
       />
     );
   }
@@ -1057,7 +1058,7 @@ export class FluentUIWidgetManager
                   <PopupView context={context}>
                     <ReorderStringsValue
                       items={items}
-                      onConfirm={(items, customOrder) => {
+                      onConfirm={(items, customOrder, sortOrder) => {
                         this.emitSetProperty(property, items);
                         if (customOrder) {
                           this.emitSetProperty(
@@ -1075,13 +1076,30 @@ export class FluentUIWidgetManager
                             items
                           );
                         } else {
-                          this.emitSetProperty(
-                            {
-                              property: property.property,
-                              field: "orderMode",
-                            },
-                            OrderMode.alphabetically
-                          );
+                          if (sortOrder) {
+                            this.emitSetProperty(
+                              {
+                                property: property.property,
+                                field: "orderMode",
+                              },
+                              OrderMode.alphabetically
+                            );
+                          } else {
+                            this.emitSetProperty(
+                              {
+                                property: property.property,
+                                field: "orderMode",
+                              },
+                              OrderMode.order
+                            );
+                            this.emitSetProperty(
+                              {
+                                property: property.property,
+                                field: "order",
+                              },
+                              items
+                            );
+                          }
                         }
                         context.close();
                       }}

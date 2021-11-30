@@ -95,12 +95,15 @@ export interface AxisRenderingStyle extends AttributeMap {
   fontFamily: string;
   fontSize: number;
   tickSize: number;
+  tickTextBackgroudColor: Color;
+  tickTextBackgroudColorId: string;
   wordWrap: boolean;
   gridlineStyle: StrokeStyle;
   gridlineColor: Color;
   gridlineWidth: number;
   verticalText: boolean;
   showTicks: boolean;
+  showBaseline: boolean;
 }
 
 export enum TextAlignmentHorizontal {

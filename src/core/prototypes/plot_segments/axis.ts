@@ -9,6 +9,7 @@ import {
   fillDefaults,
   Geometry,
   getFormat,
+  getRandomNumber,
   replaceSymbolByNewLine,
   replaceSymbolByTab,
   rgbToHex,
@@ -48,7 +49,10 @@ import React = require("react");
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
+  tickTextBackgroudColor: null,
+  tickTextBackgroudColorId: null,
   showTicks: true,
+  showBaseline: true,
   lineColor: { r: 0, g: 0, b: 0 },
   fontFamily: defaultFont,
   fontSize: defaultFontSize,
@@ -109,6 +113,8 @@ export class AxisRenderer {
     } else {
       this.style = fillDefaultAxisStyle(deepClone(style));
     }
+    this.style.tickTextBackgroudColorId =
+      "axis-tick-filter-" + getRandomNumber();
     return this;
   }
 
@@ -427,12 +433,6 @@ export class AxisRenderer {
     const g = makeGroup([]);
     const cos = Math.cos(Geometry.degreesToRadians(angle));
     const sin = Math.sin(Geometry.degreesToRadians(angle));
-    const rangeMin = this.rangeMin;
-    const rangeMax = this.rangeMax;
-    const x1 = x + rangeMin * cos;
-    const y1 = y + rangeMin * sin;
-    const x2 = x + rangeMax * cos;
-    const y2 = y + rangeMax * sin;
     const tickSize = size;
     const lineStyle: Style = {
       strokeLinecap: "round",
@@ -441,8 +441,7 @@ export class AxisRenderer {
       strokeWidth: style.gridlineWidth,
       strokeDasharray: strokeStyleToDashArray(style.gridlineStyle),
     };
-    // Base line
-    g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
+
     // Ticks
     const ticksData = this.ticks.map((x) => x.position);
     for (const tickPosition of ticksData) {
@@ -510,8 +509,11 @@ export class AxisRenderer {
     const y1 = y + rangeMin * sin;
     const x2 = x + rangeMax * cos;
     const y2 = y + rangeMax * sin;
+
     // Base line
-    g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
+    if (style.showBaseline) {
+      g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
+    }
     // Ticks
     const ticksData = this.ticks.map((x) => x.position);
     const visibleTicks = ticksData.concat([rangeMin, rangeMax]);
@@ -593,6 +595,8 @@ export class AxisRenderer {
               style.fontSize,
               {
                 fillColor: style.tickColor,
+                backgroundColor: style.tickTextBackgroudColor,
+                backgroundColorId: style.tickTextBackgroudColorId,
               }
             );
             lines.push(text);
@@ -623,6 +627,8 @@ export class AxisRenderer {
               style.fontSize,
               {
                 fillColor: style.tickColor,
+                backgroundColor: style.tickTextBackgroudColor,
+                backgroundColorId: style.tickTextBackgroudColorId,
               },
               this.plotSegment && this.dataFlow
                 ? {
@@ -664,6 +670,8 @@ export class AxisRenderer {
             style.fontSize,
             {
               fillColor: style.tickColor,
+              backgroundColor: style.tickTextBackgroudColor,
+              backgroundColorId: style.tickTextBackgroudColorId,
             },
             this.plotSegment && this.dataFlow
               ? {
@@ -724,6 +732,8 @@ export class AxisRenderer {
               style.fontSize,
               {
                 fillColor: style.tickColor,
+                backgroundColor: style.tickTextBackgroudColor,
+                backgroundColorId: style.tickTextBackgroudColorId,
               },
               this.plotSegment && this.dataFlow
                 ? {
@@ -793,6 +803,8 @@ export class AxisRenderer {
                 style.fontSize,
                 {
                   fillColor: style.tickColor,
+                  backgroundColor: style.tickTextBackgroudColor,
+                  backgroundColorId: style.tickTextBackgroudColorId,
                 },
                 this.plotSegment && this.dataFlow
                   ? {
@@ -850,6 +862,8 @@ export class AxisRenderer {
                 style.fontSize,
                 {
                   fillColor: style.tickColor,
+                  backgroundColor: style.tickTextBackgroudColor,
+                  backgroundColorId: style.tickTextBackgroudColorId,
                 },
                 this.plotSegment && this.dataFlow
                   ? {
@@ -914,8 +928,6 @@ export class AxisRenderer {
       return;
     }
     const g = makeGroup([]);
-    const rangeMin = this.rangeMin;
-    const rangeMax = this.rangeMax;
     const gridineArcRotate = 90;
     const lineStyle: Style = {
       strokeLinecap: "round",
@@ -923,9 +935,7 @@ export class AxisRenderer {
       strokeWidth: style.gridlineWidth,
       strokeDasharray: strokeStyleToDashArray(style.gridlineStyle),
     };
-    for (const tickPosition of this.ticks
-      .map((x) => x.position)
-      .concat([rangeMin, rangeMax])) {
+    for (const tickPosition of this.ticks.map((x) => x.position)) {
       const cos = Math.cos(
         Geometry.degreesToRadians(-tickPosition + gridineArcRotate)
       );
@@ -957,8 +967,6 @@ export class AxisRenderer {
     const g = makeGroup([]);
     const startCos = Math.cos(Geometry.degreesToRadians(startAngle));
     const startSin = Math.sin(Geometry.degreesToRadians(startAngle));
-    const rangeMin = this.rangeMin;
-    const rangeMax = this.rangeMax;
     const gridineArcRotate = 90;
     const lineStyle: Style = {
       strokeLinecap: "round",
@@ -967,9 +975,7 @@ export class AxisRenderer {
       strokeDasharray: strokeStyleToDashArray(style.gridlineStyle),
     };
     let radius = (outerRadius - innerRadius) / this.ticks.length;
-    for (const tickPosition of this.ticks
-      .map((x) => x.position)
-      .concat([rangeMin, rangeMax])) {
+    for (const tickPosition of this.ticks.map((x) => x.position)) {
       const tx1 = x + tickPosition * startCos;
       const ty1 = y + tickPosition * startSin;
       const arc = makePath(lineStyle);
@@ -1066,15 +1072,15 @@ export class AxisRenderer {
             style.fontSize,
             {
               fillColor: style.tickColor,
+              backgroundColor: style.tickTextBackgroudColor,
+              backgroundColorId: style.tickTextBackgroudColorId,
             }
           );
           lines.push(gt);
         }
 
-        const gt = makeGroup([
-          makeLine(0, 0, 0, style.tickSize * side, lineStyle),
-          ...lines,
-        ]);
+        const line = makeLine(0, 0, 0, style.tickSize * side, lineStyle);
+        const gt = makeGroup([style.showTicks ? line : null, ...lines]);
 
         gt.transform.angle = -angle;
         gt.transform.x = tx;
@@ -1090,10 +1096,13 @@ export class AxisRenderer {
           0,
           2
         );
+        const line = makeLine(0, 0, 0, style.tickSize * side, lineStyle);
         const gt = makeGroup([
-          makeLine(0, 0, 0, style.tickSize * side, lineStyle),
+          style.showTicks ? line : null,
           makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
             fillColor: style.tickColor,
+            backgroundColor: style.tickTextBackgroudColor,
+            backgroundColorId: style.tickTextBackgroudColorId,
           }),
         ]);
 
@@ -1135,10 +1144,13 @@ export class AxisRenderer {
         0,
         2
       );
+      const line = makeLine(0, 0, 0, -style.tickSize * side, lineStyle);
       const gt = makeGroup([
-        makeLine(0, 0, 0, -style.tickSize * side, lineStyle),
+        style.showTicks ? line : null,
         makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
           fillColor: style.tickColor,
+          backgroundColor: style.tickTextBackgroudColor,
+          backgroundColorId: style.tickTextBackgroudColorId,
         }),
       ]);
 
@@ -1380,6 +1392,7 @@ export function buildAxisAppearanceWidgets(
               {
                 label: strings.objects.axes.lineColor,
                 labelKey: strings.objects.axes.lineColor,
+                allowNull: true,
               }
             ),
             manager.inputBoolean(
@@ -1387,6 +1400,18 @@ export function buildAxisAppearanceWidgets(
               {
                 type: "checkbox",
                 label: strings.objects.axes.showTickLine,
+                checkBoxStyles: {
+                  root: {
+                    marginTop: 5,
+                  },
+                },
+              }
+            ),
+            manager.inputBoolean(
+              { property: axisProperty, field: ["style", "showBaseline"] },
+              {
+                type: "checkbox",
+                label: strings.objects.axes.showBaseline,
                 checkBoxStyles: {
                   root: {
                     marginTop: 5,
@@ -1402,6 +1427,17 @@ export function buildAxisAppearanceWidgets(
               {
                 label: strings.objects.axes.tickColor,
                 labelKey: strings.objects.axes.tickColor,
+                allowNull: true,
+              }
+            ),
+            manager.inputColor(
+              {
+                property: axisProperty,
+                field: ["style", "tickTextBackgroudColor"],
+              },
+              {
+                label: strings.objects.axes.tickTextBackgroudColor,
+                labelKey: strings.objects.axes.tickTextBackgroudColor,
               }
             ),
             manager.inputFormat(

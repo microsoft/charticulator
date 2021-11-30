@@ -1976,9 +1976,9 @@ export class AppStore extends BaseStore {
             if (dataBinding.windowSize == null) {
               dataBinding.windowSize =
                 (dataBinding.domainMax - dataBinding.domainMin) / 10;
-              dataBinding.dataDomainMin = dataBinding.domainMin;
-              dataBinding.dataDomainMax = dataBinding.domainMax;
             }
+            dataBinding.dataDomainMin = dataBinding.domainMin;
+            dataBinding.dataDomainMax = dataBinding.domainMax;
           }
           break;
         case Specification.DataKind.Temporal:
@@ -2032,6 +2032,18 @@ export class AppStore extends BaseStore {
         }
         if (props.yData && props.yData.type == "numerical") {
           props.sublayout.type = Region2DSublayoutType.Overlap;
+        }
+      }
+
+      //set default sublayout type for Categorical - Categorical data
+      if (
+        props.xData &&
+        props.xData.type == AxisDataBindingType.Categorical &&
+        props.yData &&
+        props.yData.type == AxisDataBindingType.Categorical
+      ) {
+        if (props.sublayout.type == Region2DSublayoutType.Overlap) {
+          props.sublayout.type = Region2DSublayoutType.Grid;
         }
       }
     }

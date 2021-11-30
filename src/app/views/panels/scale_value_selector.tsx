@@ -128,6 +128,9 @@ export class ScaleValueSelector extends React.Component<
                               labelKey: key,
                               noDefaultMargin: true,
                               stopPropagation: true,
+                              styles: {
+                                marginTop: "0px",
+                              },
                             }
                           )
                         )}
