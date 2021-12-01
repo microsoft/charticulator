@@ -1045,7 +1045,7 @@ export class ChartEditorView
                   return null;
                 }
                 return (
-                  <>
+                  <React.Fragment key={`canvas`}>
                     <div
                       className="charticulator__canvas-popup"
                       key={`m${index}`}
@@ -1078,7 +1078,7 @@ export class ChartEditorView
                         ...controls.widgets
                       )}
                     </Callout>
-                  </>
+                  </React.Fragment>
                 );
               }
             }

@@ -9,6 +9,7 @@ import {
   fillDefaults,
   Geometry,
   getFormat,
+  makeRange,
   getRandomNumber,
   replaceSymbolByNewLine,
   replaceSymbolByTab,
@@ -31,7 +32,7 @@ import {
   splitByWidth,
   TextMeasurer,
 } from "../../graphics/renderer/text_measurer";
-import { Graphics, Specification } from "../../index";
+import { Graphics, Prototypes, Specification } from "../../index";
 import { Controls, strokeStyleToDashArray } from "../common";
 import { AttributeMap, DataType } from "../../specification";
 import { strings } from "../../../strings";
@@ -40,11 +41,16 @@ import {
   AxisDataBinding,
   AxisDataBindingType,
   NumericalMode,
+  OrderMode,
   TickFormatType,
 } from "../../specification/types";
 import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
+import { getTableColumns, parseDerivedColumnsExpression } from "./utils";
 import { DataflowManager, DataflowTable } from "../dataflow";
 import * as Expression from "../../expression";
+import { CompiledGroupBy } from "../group_by";
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
+import { type2DerivedColumns } from "../../../app/views/dataset/common";
 import React = require("react");
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
@@ -1771,12 +1777,11 @@ export function buildAxisWidgets(
                     ),
                     dropzoneOptions
                   ),
-                  manager.clearButton({ property: axisProperty }, null, true),
-                  manager.reorderWidget(
-                    { property: axisProperty, field: "categories" },
-                    { allowReset: true }
-                  )
+                  manager.clearButton({ property: axisProperty }, null, true)
                 ),
+
+                ...getOrderByAnotherColumnWidgets(data, axisProperty, manager),
+
                 manager.inputNumber(
                   { property: axisProperty, field: "gapRatio" },
                   {
@@ -2129,4 +2134,170 @@ function applySelectionFilter(
     }
   }
   return filteredIndices;
+}
+
+function getOrderByAnotherColumnWidgets(
+  data: Specification.Types.AxisDataBinding,
+  axisProperty: string,
+  manager: Controls.WidgetManager
+): JSX.Element[] {
+  const widgets = [];
+
+  const tableColumns = getTableColumns(
+    manager as Controls.WidgetManager & CharticulatorPropertyAccessors
+  );
+
+  const columnsDisplayNames = tableColumns
+    .filter((item) => !item.metadata?.isRaw)
+    .map((column) => column.displayName);
+  const columnsNames = tableColumns
+    .filter((item) => !item.metadata?.isRaw)
+    .map((column) => column.name);
+
+  const derivedColumns = [];
+  const derivedColumnsNames = [];
+  for (let i = 0; i < tableColumns.length; i++) {
+    if (!tableColumns[i].metadata?.isRaw) {
+      derivedColumns.push(type2DerivedColumns[tableColumns[i].type]);
+      derivedColumnsNames.push(tableColumns[i].name);
+    }
+  }
+
+  const removeIdx: number[] = [];
+
+  //remove empty
+  for (let i = 0; i < derivedColumns.length; i++) {
+    if (!Array.isArray(derivedColumns[i])) {
+      removeIdx.push(i);
+    }
+  }
+
+  const filteredDerivedColumns = derivedColumns.filter(
+    (item, idx) => !removeIdx.includes(idx)
+  );
+  const filteredDerivedColumnsNames = derivedColumnsNames.filter(
+    (item, idx) => !removeIdx.includes(idx)
+  );
+
+  //Date columns
+  for (let i = 0; i < filteredDerivedColumns.length; i++) {
+    const currentDerivedColumn = filteredDerivedColumns[i];
+    for (let j = 0; j < currentDerivedColumn?.length; j++) {
+      const currentColumn = currentDerivedColumn[j];
+      const currentColumnName = filteredDerivedColumnsNames[i];
+      columnsDisplayNames.push(currentColumn.displayName ?? currentColumn.name);
+      columnsNames.push(currentColumn.function + `(${currentColumnName})`);
+    }
+  }
+
+  const table = (manager as Controls.WidgetManager &
+    CharticulatorPropertyAccessors).store.getTables()[0].name;
+  const store = (manager as Controls.WidgetManager &
+    CharticulatorPropertyAccessors).store;
+
+  const df = new Prototypes.Dataflow.DataflowManager(store.dataset);
+  const getExpressionVector = (
+    expression: string,
+    table: string,
+    groupBy?: Specification.Types.GroupBy
+  ): any[] => {
+    const newExpression =
+      expression.split(" ").length >= 2 ? "`" + expression + "`" : expression;
+    const expr = Expression.parse(newExpression);
+    const tableContext = df.getTable(table);
+    const indices = groupBy
+      ? new CompiledGroupBy(groupBy, df.cache).groupBy(tableContext)
+      : makeRange(0, tableContext.rows.length).map((x) => [x]);
+    return indices.map((is) =>
+      expr.getValue(tableContext.getGroupedContext(is))
+    );
+  };
+
+  const parsed = Expression.parse(data.expression);
+  let groupByExpression: string = null;
+  if (parsed instanceof Expression.FunctionCall) {
+    groupByExpression = parsed.args[0].toString();
+    groupByExpression = groupByExpression?.split("`").join("");
+    //need to provide date.year() etc.
+    groupByExpression = parseDerivedColumnsExpression(groupByExpression);
+  }
+
+  const vectorData = getExpressionVector(data.orderByExpression, table, {
+    expression: groupByExpression,
+  });
+  const items = vectorData.map((item) => [...new Set(item)]);
+
+  const items_idx = items.map((item, idx) => [item, idx]);
+  const axisData = getExpressionVector(data.expression, table, {
+    expression: groupByExpression,
+  }).map((item, idx) => [item, idx]);
+
+  const rawAxisData = items_idx.map((item) =>
+    Array.isArray(item[0]) ? item[0].join(", ") : item[0].toString()
+  );
+
+  const onConfirm = (items: string[]) => {
+    try {
+      const newData = [...axisData];
+      const new_order = [];
+
+      for (let i = 0; i < items.length; i++) {
+        const currentItemIndex = items_idx.findIndex(
+          (item) =>
+            (Array.isArray(item[0])
+              ? item[0].join(", ")
+              : item[0].toString()) == items[i]
+        );
+        const foundItem = newData.find(
+          (item) => item[1] === items_idx[currentItemIndex]?.[1]
+        );
+        new_order.push(foundItem);
+        items_idx.splice(currentItemIndex, 1);
+      }
+
+      data.order = new_order.map((item) => item[0]);
+      data.orderMode = OrderMode.order;
+      data.categories = new_order.map((item) => item[0]);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onChange = () => {
+    const vectorData = getExpressionVector(data.orderByExpression, table, {
+      expression: groupByExpression,
+    });
+    const items = vectorData.map((item) => [...new Set(item)]);
+    const newData = items.map((item) =>
+      Array.isArray(item) ? item.join(", ") : item
+    );
+    data.orderByCategories = newData;
+  };
+
+  widgets.push(
+    manager.label(strings.objects.axes.orderBy),
+
+    manager.horizontal(
+      [1, 0],
+      manager.inputSelect(
+        { property: axisProperty, field: "orderByExpression" },
+        {
+          type: "dropdown",
+          showLabel: true,
+          labels: columnsDisplayNames,
+          options: columnsNames,
+          onChange: onChange,
+        }
+      ),
+      manager.reorderByAnotherColumnWidget(
+        { property: axisProperty, field: "orderByCategories" },
+        {
+          allowReset: true,
+          onConfirmClick: onConfirm,
+          onResetCategories: rawAxisData,
+        }
+      )
+    )
+  );
+  return widgets;
 }

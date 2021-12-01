@@ -114,8 +114,8 @@ import { FilterPanel } from "./fluentui_filter";
 import { EventManager, EventType, UIManagerListener } from "./observer";
 import { FluentUIGradientPicker } from "../../../components/fluent_ui_gradient_picker";
 import { OrderMode } from "../../../../core/specification/types";
-import { ReorderStringsValue } from "./controls/reorder_string_value";
 import { CustomCollapsiblePanel } from "./controls/custom_collapsible_panel";
+import { FluentUIReorderStringsValue } from "./controls/fluentui_reorder_string_value";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -578,6 +578,10 @@ export class FluentUIWidgetManager
           })}
           onChange={(event, value) => {
             this.emitSetProperty(property, value.key);
+            this.defaultNotification(options.observerConfig);
+            if (options.onChange) {
+              options.onChange(value);
+            }
             return true;
           }}
           styles={{
@@ -1056,7 +1060,7 @@ export class FluentUIWidgetManager
                   : (this.getPropertyValue(property) as string[]);
                 return (
                   <PopupView context={context}>
-                    <ReorderStringsValue
+                    <FluentUIReorderStringsValue
                       items={items}
                       onConfirm={(items, customOrder, sortOrder) => {
                         this.emitSetProperty(property, items);
@@ -1258,7 +1262,7 @@ export class FluentUIWidgetManager
     );
   }
 
-  public label(title: string, options?: { addMargins: boolean }) {
+  public label(title: string, options?: Prototypes.Controls.LabelOptions) {
     // return <span className="charticulator__widget-label">{title}</span>;
     return (
       <FluentLabelHeader
@@ -1411,6 +1415,7 @@ export class FluentUIWidgetManager
   ): JSX.Element {
     return (
       <FilterPanel
+        key={options.key}
         options={{
           ...options,
         }}
@@ -1655,6 +1660,135 @@ export class FluentUIWidgetManager
         styles={options.styles}
         header={options.header}
       />
+    );
+  }
+
+  public reorderByAnotherColumnWidget(
+    property: Prototypes.Controls.Property,
+    options: Prototypes.Controls.ReOrderWidgetOptions = {}
+  ): JSX.Element {
+    let container: HTMLSpanElement;
+    return (
+      <FluentButton
+        ref={(e) => (container = e)}
+        key={this.getKeyFromProperty(property)}
+        marginTop={"0px"}
+        paddingRight={"0px"}
+      >
+        <DefaultButton
+          styles={{
+            root: {
+              minWidth: "unset",
+              ...defultComponentsHeight,
+            },
+          }}
+          iconProps={{
+            iconName: "SortLines",
+          }}
+          onClick={() => {
+            globals.popupController.popupAt(
+              (context) => {
+                const items = options.items
+                  ? options.items
+                  : (this.getPropertyValue(property) as string[]);
+                return (
+                  <PopupView context={context}>
+                    <FluentUIReorderStringsValue
+                      items={items}
+                      onConfirm={(items, customOrder, sortOrder) => {
+                        this.emitSetProperty(property, items);
+                        if (options.onConfirmClick) {
+                          options.onConfirmClick(items);
+                        }
+                        if (customOrder) {
+                          this.emitSetProperty(
+                            {
+                              property: property.property,
+                              field: "orderMode",
+                            },
+                            OrderMode.order
+                          );
+                          this.emitSetProperty(
+                            {
+                              property: property.property,
+                              field: "order",
+                            },
+                            items
+                          );
+                        } else {
+                          if (sortOrder) {
+                            this.emitSetProperty(
+                              {
+                                property: property.property,
+                                field: "orderMode",
+                              },
+                              OrderMode.alphabetically
+                            );
+                          } else {
+                            this.emitSetProperty(
+                              {
+                                property: property.property,
+                                field: "orderMode",
+                              },
+                              OrderMode.order
+                            );
+                            this.emitSetProperty(
+                              {
+                                property: property.property,
+                                field: "order",
+                              },
+                              items
+                            );
+                          }
+                        }
+                        context.close();
+                      }}
+                      onReset={() => {
+                        if (options.onResetCategories) {
+                          return options.onResetCategories;
+                        }
+                        const axisDataBinding = {
+                          ...(this.objectClass.object.properties[
+                            property.property
+                          ] as any),
+                        };
+
+                        axisDataBinding.table = this.store.chartManager.getTable(
+                          (this.objectClass.object as any).table
+                        );
+                        axisDataBinding.metadata = {
+                          kind: axisDataBinding.dataKind,
+                          orderMode: "order",
+                        };
+
+                        const groupBy: Specification.Types.GroupBy = this.store.getGroupingExpression(
+                          this.objectClass.object
+                        );
+                        const values = this.store.chartManager.getGroupedExpressionVector(
+                          (this.objectClass.object as any).table,
+                          groupBy,
+                          axisDataBinding.expression
+                        );
+
+                        const {
+                          categories,
+                        } = this.store.getCategoriesForDataBinding(
+                          axisDataBinding.metadata,
+                          axisDataBinding.type,
+                          values
+                        );
+                        return categories;
+                      }}
+                      {...options}
+                    />
+                  </PopupView>
+                );
+              },
+              { anchor: container }
+            );
+          }}
+        />
+      </FluentButton>
     );
   }
 }

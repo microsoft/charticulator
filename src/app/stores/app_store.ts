@@ -84,6 +84,7 @@ import {
 import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
 import { DataAxisProperties } from "../../core/prototypes/marks/data_axis.attrs";
 import { isBase64Image } from "../../core/dataset/data_types";
+import { getColumnNameByExpression } from "../../core/prototypes/plot_segments/utils";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -1485,6 +1486,10 @@ export class AppStore extends BaseStore {
               : null,
             order:
               xDataProperty.order !== undefined ? xDataProperty.order : null,
+            orderByExpression:
+              xDataProperty.orderByExpression !== undefined
+                ? xDataProperty.orderByExpression
+                : null,
           },
           xDataProperty.rawExpression as string
         );
@@ -1747,6 +1752,9 @@ export class AppStore extends BaseStore {
         ? ((propertyValue as any).expression as string)
         : groupExpression;
 
+    const column = getColumnNameByExpression(expression);
+
+    const orderByCategories: Array<string> = [];
     let dataBinding: Specification.Types.AxisDataBinding = {
       type: options.type || type,
       // Don't change current expression (use current expression), if user appends data expression ()
@@ -1853,6 +1861,12 @@ export class AppStore extends BaseStore {
         <boolean>objectProperties?.enableSelection !== undefined
           ? <boolean>objectProperties?.enableSelection
           : false,
+
+      orderByCategories:
+        <string[]>objectProperties?.orderByCategories !== undefined
+          ? <string[]>objectProperties?.orderByCategories
+          : orderByCategories,
+      orderByExpression: column,
     };
 
     let expressions = [groupExpression];
@@ -1912,13 +1926,18 @@ export class AppStore extends BaseStore {
           {
             dataBinding.type = AxisDataBindingType.Categorical;
             dataBinding.valueType = dataExpression.valueType;
+
             const { categories, order } = this.getCategoriesForDataBinding(
               dataExpression.metadata,
               dataExpression.valueType,
               values
             );
+
+            dataBinding.orderByCategories = categories;
+
             dataBinding.order = order != undefined ? order : null;
             dataBinding.allCategories = deepClone(categories);
+
             if (dataBinding.windowSize == null) {
               dataBinding.windowSize = Math.ceil(categories.length / 10);
             }

@@ -1229,6 +1229,10 @@ export class WidgetManager
   customCollapsiblePanel(): JSX.Element {
     throw new Error("Method not implemented.");
   }
+
+  reorderByAnotherColumnWidget(): JSX.Element {
+    throw new Error("Method not implemented.");
+  }
 }
 
 export interface DropZoneViewProps {
