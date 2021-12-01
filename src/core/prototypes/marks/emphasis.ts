@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Style, ColorFilter } from "../../graphics";
+import { Style } from "../../graphics";
 import { MarkClass } from "./mark";
 import { ObjectClass } from "../object";
 import { ObjectState, EmphasisMethod, AttributeMap } from "../../specification";
@@ -43,7 +43,7 @@ export abstract class EmphasizableMarkClass<
     if (method === EmphasisMethod.Saturation && emphasize === false) {
       const opacity = this.state.attributes?.opacity;
       if (opacity > DEFAULT_POWER_BI_OPACITY || !opacity) {
-        style.opacity = 0.4;
+        style.opacity = DEFAULT_POWER_BI_OPACITY;
       }
     }
 
