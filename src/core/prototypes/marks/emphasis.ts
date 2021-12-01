@@ -8,7 +8,7 @@ import { Specification } from "../../../container";
 
 const DEFAULT_EMPHASIS_STROKE_COLOR = { r: 255, g: 0, b: 0 };
 const DEFAULT_EMPHASIS_STROKE_WIDTH = 1;
-
+const DEFAULT_POWER_BI_OPACITY = 0.4;
 /**
  * Represents a mark class that is emphasizable
  */
@@ -41,7 +41,10 @@ export abstract class EmphasizableMarkClass<
     // only if emphasize is explicitly false to we use saturation of .7
     const method = this.object.properties.emphasisMethod || this.defaultMethod;
     if (method === EmphasisMethod.Saturation && emphasize === false) {
-      style.opacity = 0.4;
+      const opacity = this.state.attributes?.opacity;
+      if (opacity > DEFAULT_POWER_BI_OPACITY || !opacity) {
+        style.opacity = 0.4;
+      }
     }
 
     if (method === EmphasisMethod.Outline && emphasize) {
