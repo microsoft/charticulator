@@ -52,6 +52,7 @@ import { CompiledGroupBy } from "../group_by";
 import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
 import { type2DerivedColumns } from "../../../app/views/dataset/common";
 import React = require("react");
+import { ChartStateManager } from "../state";
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
@@ -159,7 +160,16 @@ export class AxisRenderer {
           ? data.allCategories.length
           : Math.abs(data.dataDomainMax - data.dataDomainMin));
       this.handlerSize = rangeMax / this.hiddenCategoriesRatio;
-      this.windowSize = data.windowSize;
+      if (
+        data.windowSize > data.allCategories?.length ||
+        data.windowSize > Math.abs(data.dataDomainMax - data.dataDomainMin)
+      ) {
+        this.windowSize = data.allCategories
+          ? data.allCategories.length
+          : Math.abs(data.dataDomainMax - data.dataDomainMin);
+      } else {
+        this.windowSize = data.windowSize;
+      }
     }
 
     switch (data.type) {
