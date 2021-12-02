@@ -7,6 +7,7 @@ import { ButtonRaised } from "../../../../components";
 import { strings } from "../../../../../strings";
 import { DefaultButton } from "@fluentui/react";
 import { defultComponentsHeight } from "./fluentui_customized_components";
+import { getRandomNumber } from "../../../../../core";
 
 interface ReorderStringsValueProps {
   items: string[];
@@ -49,7 +50,7 @@ export class FluentUIReorderStringsValue extends React.Component<
             }}
           >
             {items.map((x) => (
-              <div key={x} className="el-item">
+              <div key={x + getRandomNumber()} className="el-item">
                 {x}
               </div>
             ))}
