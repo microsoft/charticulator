@@ -146,13 +146,18 @@ export class AxisRenderer {
     this.oppositeSide = data.side == "opposite";
     this.scrollRequired = data.allowScrolling;
     this.shiftAxis =
+      data.allowScrolling &&
       (data.barOffset == null || data.barOffset === 0) &&
       ((data.allCategories && data.windowSize < data.allCategories?.length) ||
         Math.abs(data.dataDomainMax - data.dataDomainMin) > data.windowSize);
 
     this.dataType = data.type;
-    if (data.allCategories && data.windowSize < data.allCategories?.length) {
-      this.hiddenCategoriesRatio = data.windowSize / data.allCategories.length;
+    if (this.shiftAxis) {
+      this.hiddenCategoriesRatio =
+        data.windowSize /
+        (data.allCategories
+          ? data.allCategories.length
+          : Math.abs(data.dataDomainMax - data.dataDomainMin));
       this.handlerSize = rangeMax / this.hiddenCategoriesRatio;
       this.windowSize = data.windowSize;
     }
@@ -499,6 +504,7 @@ export class AxisRenderer {
     if (this.oppositeSide) {
       side = -side;
     }
+    console.log(this.scrollRequired && this.shiftAxis);
     //shift axis for scrollbar space
     if (this.scrollRequired && this.shiftAxis) {
       if (angle === 90) {
@@ -1444,6 +1450,7 @@ export function buildAxisAppearanceWidgets(
               {
                 label: strings.objects.axes.tickTextBackgroudColor,
                 labelKey: strings.objects.axes.tickTextBackgroudColor,
+                allowNull: true,
               }
             ),
             manager.inputFormat(
