@@ -1695,52 +1695,18 @@ export class FluentUIWidgetManager
                   <PopupView context={context}>
                     <FluentUIReorderStringsValue
                       items={items}
-                      onConfirm={(items, customOrder, sortOrder) => {
+                      onConfirm={(items) => {
                         this.emitSetProperty(property, items);
                         if (options.onConfirmClick) {
                           options.onConfirmClick(items);
                         }
-                        if (customOrder) {
-                          this.emitSetProperty(
-                            {
-                              property: property.property,
-                              field: "orderMode",
-                            },
-                            OrderMode.order
-                          );
-                          this.emitSetProperty(
-                            {
-                              property: property.property,
-                              field: "order",
-                            },
-                            items
-                          );
-                        } else {
-                          if (sortOrder) {
-                            this.emitSetProperty(
-                              {
-                                property: property.property,
-                                field: "orderMode",
-                              },
-                              OrderMode.alphabetically
-                            );
-                          } else {
-                            this.emitSetProperty(
-                              {
-                                property: property.property,
-                                field: "orderMode",
-                              },
-                              OrderMode.order
-                            );
-                            this.emitSetProperty(
-                              {
-                                property: property.property,
-                                field: "order",
-                              },
-                              items
-                            );
-                          }
-                        }
+                        this.emitSetProperty(
+                          {
+                            property: property.property,
+                            field: "orderMode",
+                          },
+                          OrderMode.order
+                        );
                         context.close();
                       }}
                       onReset={() => {
