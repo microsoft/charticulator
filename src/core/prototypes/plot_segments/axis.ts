@@ -504,7 +504,7 @@ export class AxisRenderer {
     if (this.oppositeSide) {
       side = -side;
     }
-    console.log(this.scrollRequired && this.shiftAxis);
+
     //shift axis for scrollbar space
     if (this.scrollRequired && this.shiftAxis) {
       if (angle === 90) {
