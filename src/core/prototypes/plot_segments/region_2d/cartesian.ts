@@ -541,8 +541,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
                 .range([props.xData.dataDomainMin, props.xData.dataDomainMax]);
               props.xData.scrollPosition = position;
               const start = scale(position);
-              props.xData.domainMin = start;
-              props.xData.domainMax = start + props.xData.windowSize;
+              props.xData.domainMin = start - props.xData.windowSize;
+              props.xData.domainMax = start;
             }
             manager.remapPlotSegmentGlyphs(this.object);
             manager.solveConstraints();
