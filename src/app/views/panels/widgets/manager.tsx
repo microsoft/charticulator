@@ -1233,6 +1233,10 @@ export class WidgetManager
   reorderByAnotherColumnWidget(): JSX.Element {
     throw new Error("Method not implemented.");
   }
+
+  styledHorizontal(): JSX.Element {
+    throw new Error("Method not implemented.");
+  }
 }
 
 export interface DropZoneViewProps {

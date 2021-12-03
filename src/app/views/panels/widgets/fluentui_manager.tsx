@@ -882,12 +882,14 @@ export class FluentUIWidgetManager
   public clearButton(
     property: Prototypes.Controls.Property,
     icon?: string,
-    isHeader?: boolean
+    isHeader?: boolean,
+    styles?: CSSProperties
   ) {
     return (
       <FluentButton
         key={this.getKeyFromProperty(property)}
         marginTop={isHeader ? "0px" : null}
+        style={styles}
       >
         <DefaultButton
           styles={{
@@ -1336,6 +1338,9 @@ export class FluentUIWidgetManager
       );
       const menuRender = this.director.getMenuRender();
 
+      const className = options.noLineHeight
+        ? "charticulator__widget-section-header-no-height charticulator__widget-section-header-dropzone"
+        : "charticulator__widget-section-header charticulator__widget-section-header-dropzone";
       return (
         <DropZoneView
           key={title}
@@ -1349,7 +1354,8 @@ export class FluentUIWidgetManager
               true
             ).dispatch(this.store.dispatcher);
           }}
-          className="charticulator__widget-section-header charticulator__widget-section-header-dropzone"
+          //fix
+          className={className}
           draggingHint={() => (
             <span className="el-dropzone-hint">{options.dropzone.prompt}</span>
           )}
@@ -1398,6 +1404,25 @@ export class FluentUIWidgetManager
   public horizontal(cols: number[], ...widgets: JSX.Element[]) {
     return (
       <div className="charticulator__widget-horizontal">
+        {widgets.map((x, id) => (
+          <span
+            className={`el-layout-item el-layout-item-col-${cols[id]}`}
+            key={id}
+          >
+            {x}
+          </span>
+        ))}
+      </div>
+    );
+  }
+
+  public styledHorizontal(
+    styles: CSSProperties,
+    cols: number[],
+    ...widgets: JSX.Element[]
+  ) {
+    return (
+      <div className="charticulator__widget-horizontal" style={styles}>
         {widgets.map((x, id) => (
           <span
             className={`el-layout-item el-layout-item-col-${cols[id]}`}

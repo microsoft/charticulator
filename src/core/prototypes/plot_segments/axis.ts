@@ -1568,6 +1568,7 @@ export function buildAxisWidgets(
       property: axisProperty,
       prompt: axisName + ": " + strings.objects.dropData,
     },
+    noLineHeight: true,
   };
   const makeAppearance = () => {
     return buildAxisAppearanceWidgets(axisProperty, manager, {
@@ -1592,7 +1593,10 @@ export function buildAxisWidgets(
                 //   dropzoneOptions
                 // ),
                 manager.label(strings.objects.axes.data),
-                manager.horizontal(
+                manager.styledHorizontal(
+                  {
+                    alignItems: "start",
+                  },
                   [1, 0],
                   manager.sectionHeader(
                     null,
@@ -1605,7 +1609,9 @@ export function buildAxisWidgets(
                     ),
                     dropzoneOptions
                   ),
-                  manager.clearButton({ property: axisProperty }, null, true)
+                  manager.clearButton({ property: axisProperty }, null, true, {
+                    marginTop: "1px",
+                  })
                 ),
                 data.valueType === "date"
                   ? manager.label(strings.objects.dataAxis.range)
@@ -1781,7 +1787,10 @@ export function buildAxisWidgets(
                 // ),
                 // manager.vertical(
                 manager.label(strings.objects.axes.data),
-                manager.horizontal(
+                manager.styledHorizontal(
+                  {
+                    alignItems: "start",
+                  },
                   [1, 0],
                   manager.sectionHeader(
                     null,
@@ -1794,7 +1803,9 @@ export function buildAxisWidgets(
                     ),
                     dropzoneOptions
                   ),
-                  manager.clearButton({ property: axisProperty }, null, true)
+                  manager.clearButton({ property: axisProperty }, null, true, {
+                    marginTop: "1px",
+                  })
                 ),
 
                 ...getOrderByAnotherColumnWidgets(data, axisProperty, manager),

@@ -437,7 +437,7 @@
 
         &.is-top {
           top: -1px;
-          bottom: none;
+          bottom: unset;
         }
       }
     }
@@ -761,6 +761,14 @@
 
       &-title {
         flex: 1 1;
+      }
+
+      &-no-height {
+        height: unset;
+        line-height: unset;
+        display: flex;
+        flex-direction: row;
+        margin: 2px 0;
       }
 
       &-dropzone {
@@ -1148,7 +1156,7 @@
       &-updown-button {
         display: inline-block;
         vertical-align: top;
-        width: calc($line-height / 2 + 4px);
+        width: calc(24 / 2 + 4px);
         height: $line-height;
         display: flex;
         flex-direction: column;
