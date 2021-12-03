@@ -1041,7 +1041,7 @@ export class FluentUIWidgetManager
       <FluentButton
         ref={(e) => (container = e)}
         key={this.getKeyFromProperty(property)}
-        marginTop={"0px"}
+        marginTop={"1px"}
         paddingRight={"0px"}
       >
         <DefaultButton

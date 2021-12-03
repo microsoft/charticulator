@@ -9,8 +9,8 @@ import {
   fillDefaults,
   Geometry,
   getFormat,
-  makeRange,
   getRandomNumber,
+  makeRange,
   replaceSymbolByNewLine,
   replaceSymbolByTab,
   rgbToHex,
@@ -52,7 +52,6 @@ import { CompiledGroupBy } from "../group_by";
 import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
 import { type2DerivedColumns } from "../../../app/views/dataset/common";
 import React = require("react");
-import { ChartStateManager } from "../state";
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
@@ -1578,6 +1577,7 @@ export function buildAxisWidgets(
     });
   };
   if (data != null) {
+    const isDateExpression = data.expression.includes("date.");
     switch (data.type) {
       case "numerical":
         {
@@ -1803,12 +1803,20 @@ export function buildAxisWidgets(
                     ),
                     dropzoneOptions
                   ),
+                  isDateExpression
+                    ? manager.reorderWidget(
+                        { property: axisProperty, field: "categories" },
+                        { allowReset: true }
+                      )
+                    : null,
                   manager.clearButton({ property: axisProperty }, null, true, {
                     marginTop: "1px",
                   })
                 ),
 
-                ...getOrderByAnotherColumnWidgets(data, axisProperty, manager),
+                !isDateExpression
+                  ? getOrderByAnotherColumnWidgets(data, axisProperty, manager)
+                  : null,
 
                 manager.inputNumber(
                   { property: axisProperty, field: "gapRatio" },
