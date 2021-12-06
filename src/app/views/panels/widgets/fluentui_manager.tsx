@@ -675,6 +675,9 @@ export class FluentUIWidgetManager
                     this.emitSetProperty(property, v);
                   }
                   this.defaultNotification(options.observerConfig);
+                  if (options.onChange && !v) {
+                    options.onChange(v);
+                  }
                 }}
               />
             </FluentCheckbox>

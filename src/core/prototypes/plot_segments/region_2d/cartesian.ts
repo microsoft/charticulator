@@ -140,6 +140,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
 
   public readonly state: CartesianState;
 
+  public chartManager: ChartStateManager;
+
   public attributeNames: string[] = [
     "x1",
     "x2",
@@ -203,6 +205,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     solver?: ConstraintSolver,
     context?: BuildConstraintsContext
   ) {
+    console.log(this.chartManager);
     const builder = new Region2DConstraintBuilder(
       this,
       config,
@@ -211,7 +214,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       "y1",
       "y2",
       solver,
-      context
+      context,
+      this.chartManager
     );
     return builder;
   }
@@ -309,6 +313,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
   }
 
   public getGraphics(manager: ChartStateManager): Graphics.Group {
+    this.chartManager = manager;
     const g = Graphics.makeGroup([]);
     const props = this.object.properties;
     if (props.xData && props.xData.visible) {
@@ -328,6 +333,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     axis: Specification.Types.AxisDataBinding,
     manager: ChartStateManager
   ) => {
+    this.chartManager = manager;
     const table = manager.getTable(this.object.table);
     const axisExpression = manager.dataflow.cache.parse(axis.expression);
     const tickDataExpression = manager.dataflow.cache.parse(
@@ -346,6 +352,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
   private getPlotSegmentAxisXDataGraphics(
     manager: ChartStateManager
   ): Graphics.Group {
+    this.chartManager = manager;
     const g = Graphics.makeGroup([]);
     const attrs = this.state.attributes;
     const props = this.object.properties;
@@ -383,6 +390,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
   private getPlotSegmentAxisYDataGraphics(
     manager: ChartStateManager
   ): Graphics.Group {
+    this.chartManager = manager;
     const g = Graphics.makeGroup([]);
     const attrs = this.state.attributes;
     const props = this.object.properties;
@@ -422,6 +430,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
   public getPlotSegmentBackgroundGraphics(
     manager: ChartStateManager
   ): Graphics.Group {
+    this.chartManager = manager;
     const g = Graphics.makeGroup([]);
     const attrs = this.state.attributes;
     const props = this.object.properties;
@@ -481,6 +490,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     manager: ChartStateManager,
     zoom: ZoomInfo
   ): React.ReactElement<any>[] {
+    this.chartManager = manager;
     const attrs = this.state.attributes;
     const props = this.object.properties;
     const g = [];

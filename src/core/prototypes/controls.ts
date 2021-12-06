@@ -69,6 +69,7 @@ export interface InputBooleanOptions {
   label?: string;
   observerConfig?: ObserverConfig;
   checkBoxStyles?: ICheckboxStyles;
+  onChange?: (value: boolean) => void;
 }
 
 export interface RowOptions {

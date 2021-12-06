@@ -1558,7 +1558,8 @@ export function buildAxisWidgets(
   axisProperty: string,
   manager: Controls.WidgetManager,
   axisName: string,
-  showOffset: boolean = true
+  showOffset: boolean = true,
+  onChange?: () => void
 ): Controls.Widget[] {
   const widgets = [];
   const dropzoneOptions: Controls.RowOptions = {
@@ -1738,6 +1739,7 @@ export function buildAxisWidgets(
                       },
                       value: 10,
                     },
+                    onChange: onChange,
                   }
                 ),
                 data.allowScrolling
@@ -1871,6 +1873,7 @@ export function buildAxisWidgets(
                       },
                       value: 10,
                     },
+                    onChange: onChange,
                   }
                 ),
                 data.allowScrolling
