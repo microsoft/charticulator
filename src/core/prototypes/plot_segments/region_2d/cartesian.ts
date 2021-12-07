@@ -205,7 +205,6 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     solver?: ConstraintSolver,
     context?: BuildConstraintsContext
   ) {
-    console.log(this.chartManager);
     const builder = new Region2DConstraintBuilder(
       this,
       config,
