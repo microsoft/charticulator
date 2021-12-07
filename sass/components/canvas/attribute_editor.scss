@@ -1153,44 +1153,6 @@
         // border: 1px solid $gray-200;
       }
 
-      &-updown-button {
-        .el-part {
-          display: block;
-          width: math.div($line-height, 2);
-          height: math.div($line-height, 2);
-          padding: 0 2px;
-
-          .el-svg-icon {
-            width: math.div($line-height, 2);
-            height: math.div($line-height, 2);
-            filter: invert(40%);
-          }
-
-          &:first-child {
-            .el-svg-icon {
-              margin-top: 2px;
-            }
-          }
-
-          &:last-child {
-            .el-svg-icon {
-              margin-top: -2px;
-            }
-          }
-
-          cursor: pointer;
-          border-radius: 2px;
-
-          &:hover {
-            background: $color-primary;
-
-            .el-svg-icon {
-              filter: invert(100%);
-            }
-          }
-        }
-      }
-
       &-button {
         display: inline-block;
         vertical-align: top;
