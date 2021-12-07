@@ -1154,13 +1154,6 @@
       }
 
       &-updown-button {
-        display: inline-block;
-        vertical-align: top;
-        width: calc(24 / 2 + 4px);
-        height: $line-height;
-        display: flex;
-        flex-direction: column;
-
         .el-part {
           display: block;
           width: math.div($line-height, 2);
