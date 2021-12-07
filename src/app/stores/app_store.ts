@@ -1938,8 +1938,13 @@ export class AppStore extends BaseStore {
             dataBinding.order = order != undefined ? order : null;
             dataBinding.allCategories = deepClone(categories);
 
-            if (dataBinding.windowSize == null) {
-              dataBinding.windowSize = Math.ceil(categories.length / 10);
+            if (
+              dataBinding.windowSize == null ||
+              dataBinding.windowSize > dataBinding.allCategories.length
+            ) {
+              dataBinding.windowSize =
+                dataBinding.allCategories?.length ??
+                Math.ceil(categories.length / 10);
             }
             dataBinding.categories = categories;
             if (dataBinding.allowScrolling) {

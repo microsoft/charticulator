@@ -69,6 +69,7 @@ export interface InputBooleanOptions {
   label?: string;
   observerConfig?: ObserverConfig;
   checkBoxStyles?: ICheckboxStyles;
+  onChange?: (value: boolean) => void;
 }
 
 export interface RowOptions {
@@ -78,6 +79,7 @@ export interface RowOptions {
     property?: string;
     defineCategories?: boolean;
   };
+  noLineHeight?: boolean;
 }
 
 export interface DropTargetOptions {
@@ -307,7 +309,12 @@ export interface WidgetManager {
   inputColorGradient(property: Property, inline?: boolean): Widget;
 
   // A button, once clicked, set the property to null.
-  clearButton(property: Property, icon?: string, isHeader?: boolean): Widget;
+  clearButton(
+    property: Property,
+    icon?: string,
+    isHeader?: boolean,
+    styles?: CSSProperties
+  ): Widget;
   setButton(
     property: Property,
     value: Specification.AttributeValue,
@@ -354,6 +361,12 @@ export interface WidgetManager {
 
   // Basic layout elements
   horizontal(cols: number[], ...widgets: Widget[]): Widget;
+
+  styledHorizontal(
+    styles: CSSProperties,
+    cols: number[],
+    ...widgets: Widget[]
+  ): Widget;
   verticalGroup(options: VerticalGroupOptions, ...widgets: Widget[]): Widget;
   vertical(...widgets: Widget[]): Widget;
   table(rows: Widget[][], options?: TableOptions): Widget;

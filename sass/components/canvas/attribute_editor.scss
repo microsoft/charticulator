@@ -437,7 +437,7 @@
 
         &.is-top {
           top: -1px;
-          bottom: none;
+          bottom: unset;
         }
       }
     }
@@ -761,6 +761,14 @@
 
       &-title {
         flex: 1 1;
+      }
+
+      &-no-height {
+        height: unset;
+        line-height: unset;
+        display: flex;
+        flex-direction: row;
+        margin: 2px 0;
       }
 
       &-dropzone {
@@ -1143,51 +1151,6 @@
         display: block;
         border-radius: 2px;
         // border: 1px solid $gray-200;
-      }
-
-      &-updown-button {
-        display: inline-block;
-        vertical-align: top;
-        width: calc($line-height / 2 + 4px);
-        height: $line-height;
-        display: flex;
-        flex-direction: column;
-
-        .el-part {
-          display: block;
-          width: math.div($line-height, 2);
-          height: math.div($line-height, 2);
-          padding: 0 2px;
-
-          .el-svg-icon {
-            width: math.div($line-height, 2);
-            height: math.div($line-height, 2);
-            filter: invert(40%);
-          }
-
-          &:first-child {
-            .el-svg-icon {
-              margin-top: 2px;
-            }
-          }
-
-          &:last-child {
-            .el-svg-icon {
-              margin-top: -2px;
-            }
-          }
-
-          cursor: pointer;
-          border-radius: 2px;
-
-          &:hover {
-            background: $color-primary;
-
-            .el-svg-icon {
-              filter: invert(100%);
-            }
-          }
-        }
       }
 
       &-button {

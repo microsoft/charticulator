@@ -9,8 +9,8 @@ import {
   fillDefaults,
   Geometry,
   getFormat,
-  makeRange,
   getRandomNumber,
+  makeRange,
   replaceSymbolByNewLine,
   replaceSymbolByTab,
   rgbToHex,
@@ -146,15 +146,29 @@ export class AxisRenderer {
     this.oppositeSide = data.side == "opposite";
     this.scrollRequired = data.allowScrolling;
     this.shiftAxis =
+      data.allowScrolling &&
       (data.barOffset == null || data.barOffset === 0) &&
       ((data.allCategories && data.windowSize < data.allCategories?.length) ||
         Math.abs(data.dataDomainMax - data.dataDomainMin) > data.windowSize);
 
     this.dataType = data.type;
-    if (data.allCategories && data.windowSize < data.allCategories?.length) {
-      this.hiddenCategoriesRatio = data.windowSize / data.allCategories.length;
+    if (this.shiftAxis) {
+      this.hiddenCategoriesRatio =
+        data.windowSize /
+        (data.allCategories
+          ? data.allCategories.length
+          : Math.abs(data.dataDomainMax - data.dataDomainMin));
       this.handlerSize = rangeMax / this.hiddenCategoriesRatio;
-      this.windowSize = data.windowSize;
+      if (
+        data.windowSize > data.allCategories?.length ||
+        data.windowSize > Math.abs(data.dataDomainMax - data.dataDomainMin)
+      ) {
+        this.windowSize = data.allCategories
+          ? data.allCategories.length
+          : Math.abs(data.dataDomainMax - data.dataDomainMin);
+      } else {
+        this.windowSize = data.windowSize;
+      }
     }
 
     switch (data.type) {
@@ -499,6 +513,7 @@ export class AxisRenderer {
     if (this.oppositeSide) {
       side = -side;
     }
+
     //shift axis for scrollbar space
     if (this.scrollRequired && this.shiftAxis) {
       if (angle === 90) {
@@ -1444,6 +1459,7 @@ export function buildAxisAppearanceWidgets(
               {
                 label: strings.objects.axes.tickTextBackgroudColor,
                 labelKey: strings.objects.axes.tickTextBackgroudColor,
+                allowNull: true,
               }
             ),
             manager.inputFormat(
@@ -1542,7 +1558,8 @@ export function buildAxisWidgets(
   axisProperty: string,
   manager: Controls.WidgetManager,
   axisName: string,
-  showOffset: boolean = true
+  showOffset: boolean = true,
+  onChange?: () => void
 ): Controls.Widget[] {
   const widgets = [];
   const dropzoneOptions: Controls.RowOptions = {
@@ -1551,6 +1568,7 @@ export function buildAxisWidgets(
       property: axisProperty,
       prompt: axisName + ": " + strings.objects.dropData,
     },
+    noLineHeight: true,
   };
   const makeAppearance = () => {
     return buildAxisAppearanceWidgets(axisProperty, manager, {
@@ -1560,6 +1578,7 @@ export function buildAxisWidgets(
     });
   };
   if (data != null) {
+    const isDateExpression = data.expression.includes("date.");
     switch (data.type) {
       case "numerical":
         {
@@ -1575,7 +1594,10 @@ export function buildAxisWidgets(
                 //   dropzoneOptions
                 // ),
                 manager.label(strings.objects.axes.data),
-                manager.horizontal(
+                manager.styledHorizontal(
+                  {
+                    alignItems: "start",
+                  },
                   [1, 0],
                   manager.sectionHeader(
                     null,
@@ -1588,7 +1610,9 @@ export function buildAxisWidgets(
                     ),
                     dropzoneOptions
                   ),
-                  manager.clearButton({ property: axisProperty }, null, true)
+                  manager.clearButton({ property: axisProperty }, null, true, {
+                    marginTop: "1px",
+                  })
                 ),
                 data.valueType === "date"
                   ? manager.label(strings.objects.dataAxis.range)
@@ -1715,6 +1739,7 @@ export function buildAxisWidgets(
                       },
                       value: 10,
                     },
+                    onChange: onChange,
                   }
                 ),
                 data.allowScrolling
@@ -1764,7 +1789,10 @@ export function buildAxisWidgets(
                 // ),
                 // manager.vertical(
                 manager.label(strings.objects.axes.data),
-                manager.horizontal(
+                manager.styledHorizontal(
+                  {
+                    alignItems: "start",
+                  },
                   [1, 0],
                   manager.sectionHeader(
                     null,
@@ -1777,10 +1805,20 @@ export function buildAxisWidgets(
                     ),
                     dropzoneOptions
                   ),
-                  manager.clearButton({ property: axisProperty }, null, true)
+                  isDateExpression
+                    ? manager.reorderWidget(
+                        { property: axisProperty, field: "categories" },
+                        { allowReset: true }
+                      )
+                    : null,
+                  manager.clearButton({ property: axisProperty }, null, true, {
+                    marginTop: "1px",
+                  })
                 ),
 
-                ...getOrderByAnotherColumnWidgets(data, axisProperty, manager),
+                !isDateExpression
+                  ? getOrderByAnotherColumnWidgets(data, axisProperty, manager)
+                  : null,
 
                 manager.inputNumber(
                   { property: axisProperty, field: "gapRatio" },
@@ -1835,6 +1873,7 @@ export function buildAxisWidgets(
                       },
                       value: 10,
                     },
+                    onChange: onChange,
                   }
                 ),
                 data.allowScrolling
