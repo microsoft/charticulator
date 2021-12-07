@@ -1942,7 +1942,6 @@ export class AppStore extends BaseStore {
               dataBinding.windowSize == null ||
               dataBinding.windowSize > dataBinding.allCategories.length
             ) {
-              // dataBinding.windowSize = Math.ceil(categories.length / 10);
               dataBinding.windowSize =
                 dataBinding.allCategories?.length ??
                 Math.ceil(categories.length / 10);

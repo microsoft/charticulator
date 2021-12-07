@@ -1357,7 +1357,6 @@ export class FluentUIWidgetManager
               true
             ).dispatch(this.store.dispatcher);
           }}
-          //fix
           className={className}
           draggingHint={() => (
             <span className="el-dropzone-hint">{options.dropzone.prompt}</span>
