@@ -73,7 +73,7 @@ describe("Charticulator", () => {
     done();
   }).timeout(longTimeOut);
 
-  xit("binds data to X axis", async () => {
+  it("binds data to X axis", async () => {
     const store = application.appStore;
 
     const plotSegments = [
@@ -115,30 +115,30 @@ describe("Charticulator", () => {
   }).timeout(longTimeOut);
 
   // test checks that charticulator opens saved chart correctly
-  xit("open mushrooms chart", async () => {
+  it("open mushrooms chart", async () => {
     const chartFilePath = `base/${pathPrefix}/mushrooms.chart`;
     await testOpenChart(application, await loadJSON(chartFilePath));
   }).timeout(longTimeOut);
 
   // test checks that charticulator opens saved chart correctly
-  xit("open bump_chart chart", async () => {
+  it("open bump_chart chart", async () => {
     const chartFilePath = `base/${pathPrefix}/bump_chart.chart`;
     await testOpenChart(application, await loadJSON(chartFilePath));
   }).timeout(longTimeOut);
 
   // test checks that charticulator opens saved chart correctly
-  xit("open bubble_chart chart", async () => {
+  it("open bubble_chart chart", async () => {
     const chartFilePath = `base/${pathPrefix}/bubble_chart.chart`;
     await testOpenChart(application, await loadJSON(chartFilePath));
   }).timeout(longTimeOut);
 
   // test checks that charticulator opens saved chart correctly
-  xit("open nightingale chart", async () => {
+  it("open nightingale chart", async () => {
     const chartFilePath = `base/${pathPrefix}/nightingale.chart`;
     await testOpenChart(application, await loadJSON(chartFilePath));
   }).timeout(longTimeOut);
 
-  xit("creates column names legend", async () => {
+  it("creates column names legend", async () => {
     await clickOnButtonByTitle("Legend");
     const panel = getLinkTypePanel();
 
