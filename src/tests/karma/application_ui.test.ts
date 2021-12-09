@@ -133,6 +133,18 @@ describe("Charticulator", () => {
   }).timeout(longTimeOut);
 
   // test checks that charticulator opens saved chart correctly
+  it("open 200_Mushrooms chart", async () => {
+    const chartFilePath = `base/${pathPrefix}/200_Mushrooms.chart`;
+    await testOpenChart(application, await loadJSON(chartFilePath));
+  }).timeout(longTimeOut);
+
+  // test checks that charticulator opens saved chart correctly
+  it("open World_Population_2017 chart", async () => {
+    const chartFilePath = `base/${pathPrefix}/World_Population_2017.chart`;
+    await testOpenChart(application, await loadJSON(chartFilePath));
+  }).timeout(longTimeOut);
+
+  // test checks that charticulator opens saved chart correctly
   it("open nightingale chart", async () => {
     const chartFilePath = `base/${pathPrefix}/nightingale.chart`;
     await testOpenChart(application, await loadJSON(chartFilePath));

@@ -10,6 +10,7 @@ const testRecursivePath = "./tests/karma/**/*.ts";
 const coreTestsRecursivePath = "./tests/unit/**/*.ts";
 
 const browser = "ChromeHeadless";
+const devBrowser = "ChromeHeadless";
 const karmaSnapshotsDirectory = `tests/karma/${browser}/__snapshots__/**/*.md`;
 const styles = ["../dist/styles/app.css", "../dist/styles/page.css"];
 
