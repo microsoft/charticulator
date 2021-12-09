@@ -1,18 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Style, ColorFilter } from "../../graphics";
+import { Style } from "../../graphics";
 import { MarkClass } from "./mark";
 import { ObjectClass } from "../object";
 import { ObjectState, EmphasisMethod, AttributeMap } from "../../specification";
 import { Specification } from "../../../container";
 
-const DEFAULT_EMPHASIS_DESATURATION: ColorFilter = {
-  saturation: { multiply: 0.2 },
-  lightness: { add: 0.01, pow: 0.2 },
-};
 const DEFAULT_EMPHASIS_STROKE_COLOR = { r: 255, g: 0, b: 0 };
 const DEFAULT_EMPHASIS_STROKE_WIDTH = 1;
-
+const DEFAULT_POWER_BI_OPACITY = 0.4;
 /**
  * Represents a mark class that is emphasizable
  */
@@ -45,7 +41,10 @@ export abstract class EmphasizableMarkClass<
     // only if emphasize is explicitly false to we use saturation of .7
     const method = this.object.properties.emphasisMethod || this.defaultMethod;
     if (method === EmphasisMethod.Saturation && emphasize === false) {
-      style.colorFilter = DEFAULT_EMPHASIS_DESATURATION;
+      const opacity = this.state.attributes?.opacity;
+      if (opacity > DEFAULT_POWER_BI_OPACITY || !opacity) {
+        style.opacity = DEFAULT_POWER_BI_OPACITY;
+      }
     }
 
     if (method === EmphasisMethod.Outline && emphasize) {

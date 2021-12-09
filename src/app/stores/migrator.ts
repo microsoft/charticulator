@@ -33,6 +33,7 @@ import { replaceUndefinedByNull } from "../utils";
 import { TickFormatType } from "../../core/specification/types";
 import { SymbolElementProperties } from "../../core/prototypes/marks/symbol.attrs";
 import { LinearBooleanScaleMode } from "../../core/prototypes/scales/linear";
+import { parseDerivedColumnsExpression } from "../../core/prototypes/plot_segments/utils";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -164,6 +165,13 @@ export class Migrator {
     if (
       compareVersion(state.version, "2.1.1") < 0 &&
       compareVersion(targetVersion, "2.1.1") >= 0
+    ) {
+      state = this.setMissedSortProperties(state);
+    }
+
+    if (
+      compareVersion(state.version, "2.1.2") < 0 &&
+      compareVersion(targetVersion, "2.1.2") >= 0
     ) {
       state = this.setMissedSortProperties(state);
     }
@@ -644,6 +652,22 @@ export class Migrator {
     return state;
   }
 
+  private parseExpression(axisExpression: string) {
+    try {
+      let expression;
+      const parsed = Expression.parse(axisExpression);
+      if (parsed instanceof Expression.FunctionCall) {
+        expression = parsed.args[0].toString();
+        expression = expression?.split("`").join("");
+        //need to provide date.year() etc.
+        expression = parseDerivedColumnsExpression(expression);
+      }
+      return expression;
+    } catch (e) {
+      return axisExpression;
+    }
+  }
+
   public setMissedSortProperties(state: AppStoreState) {
     for (const item of forEachObject(state.chart)) {
       if (item.kind == ObjectItemKind.Chart) {
@@ -663,6 +687,17 @@ export class Migrator {
               element.properties.xData.style.showBaseline = true;
             }
             element.properties.xData.offset = 0;
+            element.properties.xData.barOffset = 0;
+            if (element.properties.xData.orderByCategories == undefined) {
+              element.properties.xData.orderByCategories =
+                element.properties.xData.categories;
+            }
+            if (element.properties.xData.orderByExpression == undefined) {
+              element.properties.xData.orderByExpression = this.parseExpression(
+                element.properties.xData.expression
+              );
+            }
+            element.properties.xData.enableSelection = true;
           }
           if (element.properties.xData === undefined) {
             element.properties.xData = null;
@@ -677,6 +712,17 @@ export class Migrator {
               element.properties.yData.style.showBaseline = true;
             }
             element.properties.yData.offset = 0;
+            element.properties.yData.barOffset = 0;
+            if (element.properties.yData.orderByCategories == undefined) {
+              element.properties.yData.orderByCategories =
+                element.properties.yData.categories;
+            }
+            if (element.properties.yData.orderByExpression == undefined) {
+              element.properties.yData.orderByExpression = this.parseExpression(
+                element.properties.yData.expression
+              );
+            }
+            element.properties.yData.enableSelection = true;
           }
           if (element.properties.yData === undefined) {
             element.properties.yData = null;
@@ -695,6 +741,17 @@ export class Migrator {
               element.properties.xData.style.showBaseline = true;
             }
             element.properties.xData.offset = 0;
+            element.properties.xData.barOffset = 0;
+            if (element.properties.xData.orderByCategories == undefined) {
+              element.properties.xData.orderByCategories =
+                element.properties.xData.categories;
+            }
+            if (element.properties.xData.orderByExpression == undefined) {
+              element.properties.xData.orderByExpression = this.parseExpression(
+                element.properties.xData.expression
+              );
+            }
+            element.properties.xData.enableSelection = true;
           }
           if (element.properties.xData === undefined) {
             element.properties.xData = null;
@@ -707,7 +764,18 @@ export class Migrator {
               element.properties.yData.style.showTicks = true;
               element.properties.yData.style.showBaseline = true;
             }
+            if (element.properties.yData.orderByCategories == undefined) {
+              element.properties.yData.orderByCategories =
+                element.properties.yData.categories;
+            }
+            if (element.properties.yData.orderByExpression == undefined) {
+              element.properties.yData.orderByExpression = this.parseExpression(
+                element.properties.yData.expression
+              );
+            }
             element.properties.yData.offset = 0;
+            element.properties.yData.barOffset = 0;
+            element.properties.yData.enableSelection = true;
           }
           if (element.properties.yData === undefined) {
             element.properties.yData = null;
@@ -721,6 +789,17 @@ export class Migrator {
               element.properties.axis.style.showBaseline = true;
               element.properties.axis.style.showTicks = true;
             }
+            if (element.properties.axis.orderByCategories == undefined) {
+              element.properties.axis.orderByCategories =
+                element.properties.axis.categories;
+            }
+            if (element.properties.axis.orderByExpression == undefined) {
+              element.properties.axis.orderByExpression = this.parseExpression(
+                element.properties.axis.expression
+              );
+            }
+            element.properties.axis.enableSelection = true;
+            element.properties.axis.barOffset = 0;
           }
         }
         if (
@@ -736,6 +815,17 @@ export class Migrator {
               element.properties.xData.style.showBaseline = true;
             }
             element.properties.xData.offset = 0;
+            element.properties.xData.barOffset = 0;
+            if (element.properties.xData.orderByCategories == undefined) {
+              element.properties.xData.orderByCategories =
+                element.properties.xData.categories;
+            }
+            if (element.properties.xData.orderByExpression == undefined) {
+              element.properties.xData.orderByExpression = this.parseExpression(
+                element.properties.xData.expression
+              );
+            }
+            element.properties.xData.enableSelection = true;
           }
           if (element.properties.xData === undefined) {
             element.properties.xData = null;
@@ -748,7 +838,18 @@ export class Migrator {
               element.properties.yData.style.showTicks = true;
               element.properties.yData.style.showBaseline = true;
             }
+            if (element.properties.yData.orderByCategories == undefined) {
+              element.properties.yData.orderByCategories =
+                element.properties.yData.categories;
+            }
+            if (element.properties.yData.orderByExpression == undefined) {
+              element.properties.yData.orderByExpression = this.parseExpression(
+                element.properties.yData.expression
+              );
+            }
             element.properties.yData.offset = 0;
+            element.properties.yData.barOffset = 0;
+            element.properties.yData.enableSelection = true;
           }
           if (element.properties.yData === undefined) {
             element.properties.yData = null;
@@ -761,6 +862,18 @@ export class Migrator {
           >;
           if (element.properties.axis) {
             element.properties.axis = this.updateAxis(element.properties.axis);
+            if (element.properties.axis.orderByCategories == undefined) {
+              element.properties.axis.orderByCategories =
+                element.properties.axis.categories;
+            }
+            if (element.properties.axis.orderByExpression == undefined) {
+              element.properties.axis.orderByExpression = this.parseExpression(
+                element.properties.axis.expression
+              );
+            }
+            element.properties.axis.enableSelection = true;
+            element.properties.axis.barOffset = 0;
+
             if (element.properties.axis?.style) {
               element.properties.axis.style.showBaseline = true;
               element.properties.axis.style.showTicks = true;
@@ -777,6 +890,13 @@ export class Migrator {
           const element = (item.mark as unknown) as Object<DataAxisProperties>;
           if (element.properties.axis) {
             element.properties.axis = this.updateAxis(element.properties.axis);
+            element.properties.axis.orderByExpression = this.parseExpression(
+              element.properties.axis.expression
+            );
+            element.properties.axis.orderByCategories =
+              element.properties.axis.categories;
+            element.properties.axis.enableSelection = true;
+
             if (element.properties.axis.style) {
               element.properties.axis.style.showBaseline = true;
               element.properties.axis.style.showTicks = true;

@@ -85,6 +85,10 @@ export interface AxisDataBinding extends AttributeMap {
   /** render axis on top */
   onTop?: boolean;
 
+  /** Order by another column */
+  orderByExpression?: string;
+  orderByCategories?: string[];
+
   //axis tick selection
   enableSelection?: boolean;
 }

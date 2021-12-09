@@ -28,6 +28,9 @@ export interface ColumnMetadata {
   rawColumnName?: string;
   isRaw?: boolean;
   examples?: string;
+
+  /** Order by another column*/
+  orderByExpression?: string;
 }
 
 export interface Column {

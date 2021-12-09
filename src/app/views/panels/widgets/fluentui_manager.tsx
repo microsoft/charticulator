@@ -114,8 +114,8 @@ import { FilterPanel } from "./fluentui_filter";
 import { EventManager, EventType, UIManagerListener } from "./observer";
 import { FluentUIGradientPicker } from "../../../components/fluent_ui_gradient_picker";
 import { OrderMode } from "../../../../core/specification/types";
-import { ReorderStringsValue } from "./controls/reorder_string_value";
 import { CustomCollapsiblePanel } from "./controls/custom_collapsible_panel";
+import { FluentUIReorderStringsValue } from "./controls/fluentui_reorder_string_value";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -578,6 +578,10 @@ export class FluentUIWidgetManager
           })}
           onChange={(event, value) => {
             this.emitSetProperty(property, value.key);
+            this.defaultNotification(options.observerConfig);
+            if (options.onChange) {
+              options.onChange(value);
+            }
             return true;
           }}
           styles={{
@@ -671,6 +675,9 @@ export class FluentUIWidgetManager
                     this.emitSetProperty(property, v);
                   }
                   this.defaultNotification(options.observerConfig);
+                  if (options.onChange && !v) {
+                    options.onChange(v);
+                  }
                 }}
               />
             </FluentCheckbox>
@@ -878,12 +885,14 @@ export class FluentUIWidgetManager
   public clearButton(
     property: Prototypes.Controls.Property,
     icon?: string,
-    isHeader?: boolean
+    isHeader?: boolean,
+    styles?: CSSProperties
   ) {
     return (
       <FluentButton
         key={this.getKeyFromProperty(property)}
         marginTop={isHeader ? "0px" : null}
+        style={styles}
       >
         <DefaultButton
           styles={{
@@ -1035,7 +1044,7 @@ export class FluentUIWidgetManager
       <FluentButton
         ref={(e) => (container = e)}
         key={this.getKeyFromProperty(property)}
-        marginTop={"0px"}
+        marginTop={"1px"}
         paddingRight={"0px"}
       >
         <DefaultButton
@@ -1056,7 +1065,7 @@ export class FluentUIWidgetManager
                   : (this.getPropertyValue(property) as string[]);
                 return (
                   <PopupView context={context}>
-                    <ReorderStringsValue
+                    <FluentUIReorderStringsValue
                       items={items}
                       onConfirm={(items, customOrder, sortOrder) => {
                         this.emitSetProperty(property, items);
@@ -1258,7 +1267,7 @@ export class FluentUIWidgetManager
     );
   }
 
-  public label(title: string, options?: { addMargins: boolean }) {
+  public label(title: string, options?: Prototypes.Controls.LabelOptions) {
     // return <span className="charticulator__widget-label">{title}</span>;
     return (
       <FluentLabelHeader
@@ -1332,6 +1341,9 @@ export class FluentUIWidgetManager
       );
       const menuRender = this.director.getMenuRender();
 
+      const className = options.noLineHeight
+        ? "charticulator__widget-section-header-no-height charticulator__widget-section-header-dropzone"
+        : "charticulator__widget-section-header charticulator__widget-section-header-dropzone";
       return (
         <DropZoneView
           key={title}
@@ -1345,7 +1357,7 @@ export class FluentUIWidgetManager
               true
             ).dispatch(this.store.dispatcher);
           }}
-          className="charticulator__widget-section-header charticulator__widget-section-header-dropzone"
+          className={className}
           draggingHint={() => (
             <span className="el-dropzone-hint">{options.dropzone.prompt}</span>
           )}
@@ -1406,11 +1418,31 @@ export class FluentUIWidgetManager
     );
   }
 
+  public styledHorizontal(
+    styles: CSSProperties,
+    cols: number[],
+    ...widgets: JSX.Element[]
+  ) {
+    return (
+      <div className="charticulator__widget-horizontal" style={styles}>
+        {widgets.map((x, id) => (
+          <span
+            className={`el-layout-item el-layout-item-col-${cols[id]}`}
+            key={id}
+          >
+            {x}
+          </span>
+        ))}
+      </div>
+    );
+  }
+
   public filterEditor(
     options: Prototypes.Controls.FilterEditorOptions
   ): JSX.Element {
     return (
       <FilterPanel
+        key={options.key}
         options={{
           ...options,
         }}
@@ -1655,6 +1687,101 @@ export class FluentUIWidgetManager
         styles={options.styles}
         header={options.header}
       />
+    );
+  }
+
+  public reorderByAnotherColumnWidget(
+    property: Prototypes.Controls.Property,
+    options: Prototypes.Controls.ReOrderWidgetOptions = {}
+  ): JSX.Element {
+    let container: HTMLSpanElement;
+    return (
+      <FluentButton
+        ref={(e) => (container = e)}
+        key={this.getKeyFromProperty(property)}
+        marginTop={"0px"}
+        paddingRight={"0px"}
+      >
+        <DefaultButton
+          styles={{
+            root: {
+              minWidth: "unset",
+              ...defultComponentsHeight,
+            },
+          }}
+          iconProps={{
+            iconName: "SortLines",
+          }}
+          onClick={() => {
+            globals.popupController.popupAt(
+              (context) => {
+                const items = options.items
+                  ? options.items
+                  : (this.getPropertyValue(property) as string[]);
+                return (
+                  <PopupView context={context}>
+                    <FluentUIReorderStringsValue
+                      items={items}
+                      onConfirm={(items) => {
+                        this.emitSetProperty(property, items);
+                        if (options.onConfirmClick) {
+                          options.onConfirmClick(items);
+                        }
+                        this.emitSetProperty(
+                          {
+                            property: property.property,
+                            field: "orderMode",
+                          },
+                          OrderMode.order
+                        );
+                        context.close();
+                      }}
+                      onReset={() => {
+                        if (options.onResetCategories) {
+                          return options.onResetCategories;
+                        }
+                        const axisDataBinding = {
+                          ...(this.objectClass.object.properties[
+                            property.property
+                          ] as any),
+                        };
+
+                        axisDataBinding.table = this.store.chartManager.getTable(
+                          (this.objectClass.object as any).table
+                        );
+                        axisDataBinding.metadata = {
+                          kind: axisDataBinding.dataKind,
+                          orderMode: "order",
+                        };
+
+                        const groupBy: Specification.Types.GroupBy = this.store.getGroupingExpression(
+                          this.objectClass.object
+                        );
+                        const values = this.store.chartManager.getGroupedExpressionVector(
+                          (this.objectClass.object as any).table,
+                          groupBy,
+                          axisDataBinding.expression
+                        );
+
+                        const {
+                          categories,
+                        } = this.store.getCategoriesForDataBinding(
+                          axisDataBinding.metadata,
+                          axisDataBinding.type,
+                          values
+                        );
+                        return categories;
+                      }}
+                      {...options}
+                    />
+                  </PopupView>
+                );
+              },
+              { anchor: container }
+            );
+          }}
+        />
+      </FluentButton>
     );
   }
 }

@@ -22,6 +22,7 @@ import {
 import { PlotSegmentClass } from "../plot_segment";
 
 import { strings } from "./../../../../strings";
+import { ChartStateManager } from "../../state";
 
 export enum Region2DSublayoutType {
   Overlap = "overlap",
@@ -273,7 +274,8 @@ export class Region2DConstraintBuilder {
     public y1Name: string,
     public y2Name: string,
     public solver?: ConstraintSolver,
-    public solverContext?: BuildConstraintsContext
+    public solverContext?: BuildConstraintsContext,
+    public chartStateManager?: ChartStateManager
   ) {}
 
   public static defaultJitterPackingRadius = 5;
@@ -341,6 +343,7 @@ export class Region2DConstraintBuilder {
     const order = this.plotSegment.object.properties.sublayout.order;
     const dateRowIndices = this.plotSegment.state.dataRowIndices;
     const table = this.getTableContext();
+    // debugger
     // Sort results
     if (order != null && order.expression) {
       const orderExpression = this.getExpression(order.expression);
@@ -2752,7 +2755,14 @@ export class Region2DConstraintBuilder {
     return [
       manager.customCollapsiblePanel(
         [
-          ...buildAxisWidgets(data, axisProperty, manager, axisName),
+          ...buildAxisWidgets(
+            data,
+            axisProperty,
+            manager,
+            axisName,
+            false,
+            this.updatePlotSegment.bind(this)
+          ),
           ...this.plotSegment.buildGridLineWidgets(data, manager, axisProperty),
         ],
         {
@@ -2763,6 +2773,12 @@ export class Region2DConstraintBuilder {
         }
       ),
     ];
+  }
+
+  public updatePlotSegment() {
+    if (this.chartStateManager && this.plotSegment) {
+      this.chartStateManager.remapPlotSegmentGlyphs(this.plotSegment.object);
+    }
   }
 
   public buildPanelWidgets(m: Controls.WidgetManager): Controls.Widget[] {
