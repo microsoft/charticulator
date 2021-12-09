@@ -73,7 +73,7 @@ describe("Charticulator", () => {
     done();
   }).timeout(longTimeOut);
 
-  it("binds data to X axis", async () => {
+  xit("binds data to X axis", async () => {
     const store = application.appStore;
 
     const plotSegments = [

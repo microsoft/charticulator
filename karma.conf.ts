@@ -33,7 +33,19 @@ module.exports = (config: Config) => {
   config.set({
     mode: "development",
     browserNoActivityTimeout: 100000,
-    browsers: [browser],
+    browsers: ["ChromeHeadlessNoSandbox"],
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: "ChromeHeadless",
+        flags: [
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+          "--headless",
+          "--disable-gpu",
+          "--remote-debugging-port=9222",
+        ],
+      },
+    },
     colors: true,
     frameworks: ["mocha", "webpack", "snapshot", "mocha-snapshot", "viewport"],
     reporters: ["mocha"],

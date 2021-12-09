@@ -18,9 +18,16 @@ RUN mkdir -p ./src/tests/unit/charts
 COPY --chown=node:node ./src/tests/unit/charts ./src/tests/unit/charts
 COPY --chown=node:node ./src/tests/karma/Chrome ./src/tests/karma/Chrome
 COPY --chown=node:node ./src/tests/karma/ChromeHeadless ./src/tests/karma/ChromeHeadless
+COPY --chown=node:node ./src/tests/karma/* ./src/tests/karma/*
+COPY --chown=node:node ./src/app ./src/app
+COPY --chown=node:node ./src ./src
 COPY --chown=node:node ./dist ./dist
 COPY --chown=node:node ./yarn.lock ./yarn.lock
 COPY --chown=node:node ./build.js ./build.js
 COPY --chown=node:node ./package.json ./package.json
+COPY --chown=node:node ./karma.conf.ts ./karma.conf.ts
+COPY --chown=node:node ./tsconfig.test.json ./tsconfig.test.json
+COPY --chown=node:node ./tsconfig.json ./tsconfig.json
+COPY --chown=node:node ./webpack.config.test.js ./webpack.config.test.js
 RUN yarn install
 RUN xvfb-run --auto-servernum yarn unit_test
