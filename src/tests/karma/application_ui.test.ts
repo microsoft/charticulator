@@ -73,7 +73,7 @@ describe("Charticulator", () => {
     done();
   }).timeout(longTimeOut);
 
-  it("binds data to X axis", async () => {
+  xit("binds data to X axis", async () => {
     const store = application.appStore;
 
     const plotSegments = [
@@ -138,7 +138,7 @@ describe("Charticulator", () => {
     await testOpenChart(application, await loadJSON(chartFilePath));
   }).timeout(longTimeOut);
 
-  it("creates column names legend", async () => {
+  xit("creates column names legend", async () => {
     await clickOnButtonByTitle("Legend");
     const panel = getLinkTypePanel();
 
