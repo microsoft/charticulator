@@ -85,9 +85,9 @@ const devSequence = [
   "makedirs",
   "copy",
   "third_party_data",
-  // "pegjs",
-  // "typescript",
-  // "dtsBundle",
+  "pegjs",
+  "typescript",
+  "dtsBundle",
   "sass",
   "webpack",
   "config",
@@ -114,11 +114,11 @@ let COMMANDS = {
 
   // Copy files
   copy: [
-    // () =>
-    //   fs.copy(
-    //     "src/core/expression/parser.d.ts",
-    //     "dist/scripts/core/expression/parser.d.ts"
-    //   ),
+    () =>
+      fs.copy(
+        "src/core/expression/parser.d.ts",
+        "dist/scripts/core/expression/parser.d.ts"
+      ),
 
     // Copy all of the public files
     isProd
@@ -225,7 +225,8 @@ let COMMANDS = {
     sass: "sass --watch sass/app.scss:dist/styles/app.css sass/page.scss:dist/styles/page.css",
     server: "http-server ./dist -a 0.0.0.0 -p 4000 -c-1 -s --ssl --cors"
   },
-  dev: () => runCommands(devSequence)
+  dev: () => runCommands(devSequence),
+  visual_dev: () => runCommands([...devSequence, ...visualSequence])
 };
 
 /** Run the specified commands names in sequence */
