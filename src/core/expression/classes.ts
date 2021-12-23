@@ -259,7 +259,13 @@ export class FunctionCall extends Expression {
   }
 
   public getValue(c: Context) {
-    return this.function(...this.args.map((arg) => arg.getValue(c)));
+    const data = this.args
+      .map((arg) => arg.getValue(c))
+      ?.filter((item) => item);
+    if (!data.length) {
+      return null;
+    }
+    return this.function(...data);
   }
 
   public toString() {
