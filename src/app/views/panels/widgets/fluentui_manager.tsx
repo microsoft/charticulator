@@ -1734,13 +1734,9 @@ export class FluentUIWidgetManager
                           },
                           OrderMode.order
                         );
-                        this.emitSetProperty(
-                          {
-                            property: property.property,
-                            field: "order",
-                          },
-                          items
-                        );
+                        if (options.onConfirmClick) {
+                          options.onConfirmClick(items);
+                        }
                         context.close();
                       }}
                       onReset={() => {
