@@ -34,7 +34,7 @@ import {
 } from "../../graphics/renderer/text_measurer";
 import { Graphics, Prototypes, Specification } from "../../index";
 import { Controls, strokeStyleToDashArray } from "../common";
-import { AttributeMap, DataKind, DataType } from "../../specification";
+import { AttributeMap, DataType } from "../../specification";
 import { strings } from "../../../strings";
 import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
 import {
@@ -2298,15 +2298,14 @@ function getOrderByAnotherColumnWidgets(
         new_order.push(foundItem);
         items_idx.splice(currentItemIndex, 1);
       }
-
-      data.order = new_order.map((item) => item[0]);
-      data.orderMode = OrderMode.order;
       const getItem = (item: any) => {
-        if (data.dataKind == DataKind.Numerical) {
+        if (data.valueType == DataType.Number) {
           return "" + item;
         }
         return item;
       };
+      data.order = new_order.map((item) => getItem(item[0]));
+      data.orderMode = OrderMode.order;
       data.categories = new_order.map((item) => getItem(item[0]));
     } catch (e) {
       console.log(e);
