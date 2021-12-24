@@ -131,6 +131,7 @@ export interface MenuBarHandlers {
   onContactUsLink?: () => void;
   onImportTemplateClick?: () => void;
   onExportTemplateClick?: () => void;
+  onCopyToClipboardClick?: () => void;
 }
 
 export interface MenubarTabButton {
@@ -541,6 +542,19 @@ export class MenuBar extends ContextedComponent<
     );
   }
 
+  public renderCopyToClipboard(props: MenuBarProps) {
+    return (
+      <>
+        <MenuButton
+          url={R.getSVGIcon("Copy")}
+          text=""
+          title={strings.menuBar.copyTemplate}
+          onClick={props.handlers?.onCopyToClipboardClick}
+        />
+      </>
+    );
+  }
+
   public renderSaveEmbedded() {
     const hasUnsavedChanges = this.store.chartManager.hasUnsavedChanges();
 
@@ -625,6 +639,7 @@ export class MenuBar extends ContextedComponent<
             <span className="charticulator__menu-bar-separator" />
             {this.renderImportButton(props)}
             {this.renderExportButton(props)}
+            {this.renderCopyToClipboard(props)}
           </>
         ) : null}
         <span className="charticulator__menu-bar-separator" />
