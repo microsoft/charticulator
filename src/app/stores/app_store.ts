@@ -1871,7 +1871,7 @@ export class AppStore extends BaseStore {
         <string[]>objectProperties?.orderByCategories !== undefined
           ? <string[]>objectProperties?.orderByCategories
           : orderByCategories,
-      orderByExpression: column,
+      orderByExpression: <string>objectProperties?.orderByExpression ?? column,
     };
 
     let expressions = [groupExpression];
@@ -2030,10 +2030,8 @@ export class AppStore extends BaseStore {
               dataExpression.valueType,
               values
             );
-            dataBinding.order = order != undefined ? order : null;
             dataBinding.allCategories = deepClone(categories);
             dataBinding.categories = categories;
-            dataBinding.orderByCategories = deepClone(categories);
             if (dataBinding.allowScrolling) {
               const start = Math.floor(
                 ((categories.length - dataBinding.windowSize) / 100) *
