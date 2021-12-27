@@ -1481,11 +1481,16 @@ export class AppStore extends BaseStore {
                 : this.getDataKindByType(xDataProperty.type),
             orderMode: xDataProperty.orderMode
               ? xDataProperty.orderMode
-              : xDataProperty.valueType === "string"
+              : xDataProperty.valueType === "string" ||
+                xDataProperty.valueType === "number"
               ? OrderMode.order
               : null,
             order:
-              xDataProperty.order !== undefined ? xDataProperty.order : null,
+              xDataProperty.order != undefined
+                ? xDataProperty.order
+                : xDataProperty.orderByCategories
+                ? xDataProperty.orderByCategories
+                : null,
             orderByExpression:
               xDataProperty.orderByExpression !== undefined
                 ? xDataProperty.orderByExpression
@@ -1866,7 +1871,7 @@ export class AppStore extends BaseStore {
         <string[]>objectProperties?.orderByCategories !== undefined
           ? <string[]>objectProperties?.orderByCategories
           : orderByCategories,
-      orderByExpression: column,
+      orderByExpression: <string>objectProperties?.orderByExpression ?? column,
     };
 
     let expressions = [groupExpression];
@@ -1933,8 +1938,7 @@ export class AppStore extends BaseStore {
               values
             );
 
-            dataBinding.orderByCategories = categories;
-
+            dataBinding.orderByCategories = deepClone(categories);
             dataBinding.order = order != undefined ? order : null;
             dataBinding.allCategories = deepClone(categories);
 
@@ -2021,7 +2025,7 @@ export class AppStore extends BaseStore {
             }
             dataBinding.type = AxisDataBindingType.Numerical;
             dataBinding.numericalMode = NumericalMode.Temporal;
-            const { categories } = this.getCategoriesForDataBinding(
+            const { categories, order } = this.getCategoriesForDataBinding(
               dataExpression.metadata,
               dataExpression.valueType,
               values
@@ -2165,6 +2169,9 @@ export class AppStore extends BaseStore {
       scale.domain.forEach(
         (index: any, x: any) => (categories[index] = x.toString())
       );
+      if (type === "number") {
+        metadata.order = categories;
+      }
     }
     return { categories, order };
   }

@@ -82,9 +82,7 @@ export class ChartConstraintSolver {
       const xMapping =
         <Specification.ScaleMapping>mapping ||
         <Specification.TextMapping>mapping;
-
-      const tableContext = this.manager.dataflow.getTable(xMapping.table);
-      rowContext = tableContext.getGroupedContext(rowIndex);
+      rowContext = this.manager.getChartDataContext(xMapping.table);
     }
     switch (mapping.type) {
       case MappingType.scale:
