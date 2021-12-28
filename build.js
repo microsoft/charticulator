@@ -85,7 +85,7 @@ const devSequence = [
   "makedirs",
   "copy",
   "third_party_data",
-  "pegjs",
+  // "pegjs",
   "typescript",
   "dtsBundle",
   "sass",
