@@ -323,12 +323,10 @@ export class EditingLink extends React.Component<
                 undefined
           );
           if (rowItem) {
-            // eslint-disable-next-line
-            const [iRow0, i0] = tables[0].id2RowGlyphIndex.get(
+            const [, i0] = tables[0].id2RowGlyphIndex.get(
               rowItem.source_id?.toString()
             );
-            // eslint-disable-next-line
-            const [iRow1, i1] = tables[1].id2RowGlyphIndex.get(
+            const [, i1] = tables[1].id2RowGlyphIndex.get(
               rowItem.target_id?.toString()
             );
             glyphs = [
