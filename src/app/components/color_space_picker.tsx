@@ -1,19 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types  */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as Hammer from "hammerjs";
 import * as React from "react";
-import {
-  Color,
-  colorFromHTMLColor,
-  colorToHTMLColor,
-  colorToHTMLColorHEX,
-  prettyNumber,
-} from "../../core";
-import { Select } from "../views/panels/widgets/controls";
+import { Color, colorToHTMLColor } from "../../core";
+import { ColorSpaceSelect } from "./colors/color_space_select";
+import { ColorHexInput } from "./colors/color_hex_input";
+import { ColorDimensionInput } from "./colors/color_dimension_input";
+import { ColorRgbInput } from "./colors/color_rgb_input";
 
 export interface ColorSpaceDescription {
   name: string;
@@ -42,14 +36,6 @@ export interface ColorSpacePickerState {
   x3: number;
 }
 
-function clipToRange(num: number, range: [number, number]) {
-  if (range[0] < range[1]) {
-    return Math.max(range[0], Math.min(range[1], num));
-  } else {
-    return Math.max(range[1], Math.min(range[0], num));
-  }
-}
-
 // A general three component color picker
 export class ColorSpacePicker extends React.Component<
   ColorSpacePickerProps,
@@ -73,8 +59,6 @@ export class ColorSpacePicker extends React.Component<
       x3,
     };
   }
-
-  public componentWillUpdate() {}
 
   public reset() {
     const props = this.props;
@@ -171,7 +155,7 @@ export class ColorSpacePicker extends React.Component<
       />
     );
   }
-  // eslint-disable-next-line
+
   public render() {
     const currentColor = this.state.desc.toRGB(
       this.state.x1,
@@ -186,24 +170,12 @@ export class ColorSpacePicker extends React.Component<
           <section className="palette-z">{this.renderZ()}</section>
           <section className="values">
             <div className="row">
-              <Select
-                value={this.state.desc.name}
-                showText={true}
-                options={this.props.colorSpaces.map((x) => x.name)}
-                labels={this.props.colorSpaces.map((x) => x.description)}
-                onChange={(v) => {
-                  for (const sp of this.props.colorSpaces) {
-                    if (sp.name == v) {
-                      const [r, g, b] = this.state.desc.toRGB(
-                        this.state.x1,
-                        this.state.x2,
-                        this.state.x3
-                      );
-                      const [x1, x2, x3] = sp.fromRGB(r, g, b);
-                      this.setState({ desc: sp, x1, x2, x3 });
-                    }
-                  }
-                }}
+              <ColorSpaceSelect
+                colorSpaces={this.props.colorSpaces}
+                state={this.state}
+                updateState={(value: ColorSpacePickerState) =>
+                  this.setState(value)
+                }
               />
             </div>
             <div className="row">
@@ -214,21 +186,10 @@ export class ColorSpacePicker extends React.Component<
                   </span>
                 </div>
                 <div className="column">
-                  <label>HEX</label>
-                  <InputField
-                    defaultValue={colorToHTMLColorHEX(rgb)}
-                    onEnter={(v) => {
-                      const color = colorFromHTMLColor(v);
-                      if (color) {
-                        const [x1, x2, x3] = this.state.desc.fromRGB(
-                          color.r,
-                          color.g,
-                          color.b
-                        );
-                        this.setState({ x1, x2, x3 }, () => this.raiseChange());
-
-                        return true;
-                      }
+                  <ColorHexInput
+                    state={this.state}
+                    updateState={(value) => {
+                      this.setState(value, () => this.raiseChange());
                     }}
                   />
                 </div>
@@ -237,116 +198,54 @@ export class ColorSpacePicker extends React.Component<
             <div className="columns">
               <div className="column">
                 <div className="row">
-                  <label>{this.state.desc.dimension1.name}</label>
-                  <InputField
-                    defaultValue={prettyNumber(this.state.x1, 1)}
-                    onEnter={(v) => {
-                      let num = parseFloat(v);
-                      if (num == num && num != null) {
-                        num = clipToRange(
-                          num,
-                          this.state.desc.dimension1.range
-                        );
-                        this.setState({ x1: num }, () => this.raiseChange());
-                        return true;
-                      }
+                  <ColorDimensionInput
+                    defaultValue={this.state.x1}
+                    range={this.state.desc.dimension1.range}
+                    updateState={(num) => {
+                      this.setState({ x1: num }, () => this.raiseChange());
                     }}
-                  />
-                </div>
-                <div className="row">
-                  <label>{this.state.desc.dimension2.name}</label>
-                  <InputField
-                    defaultValue={prettyNumber(this.state.x2, 1)}
-                    onEnter={(v) => {
-                      let num = parseFloat(v);
-                      if (num == num && num != null) {
-                        num = clipToRange(
-                          num,
-                          this.state.desc.dimension2.range
-                        );
-                        this.setState({ x2: num }, () => this.raiseChange());
-                        return true;
-                      }
-                    }}
-                  />
-                </div>
-                <div className="row">
-                  <label>{this.state.desc.dimension3.name}</label>
-                  <InputField
-                    defaultValue={prettyNumber(this.state.x3, 1)}
-                    onEnter={(v) => {
-                      let num = parseFloat(v);
-                      if (num == num && num != null) {
-                        num = clipToRange(
-                          num,
-                          this.state.desc.dimension3.range
-                        );
-                        this.setState({ x3: num }, () => this.raiseChange());
-                        return true;
-                      }
-                    }}
+                    title={this.state.desc.dimension1.name}
                   />
                 </div>
               </div>
               <div className="column">
                 <div className="row">
-                  <label>R</label>
-                  <InputField
-                    defaultValue={prettyNumber(rgb.r, 0)}
-                    onEnter={(v) => {
-                      let num = parseFloat(v);
-                      if (num == num && num != null) {
-                        num = Math.max(0, Math.min(255, num));
-                        const [x1, x2, x3] = this.state.desc.fromRGB(
-                          num,
-                          rgb.g,
-                          rgb.b
-                        );
-                        this.setState({ x1, x2, x3 }, () => this.raiseChange());
-                        return true;
-                      }
+                  <ColorDimensionInput
+                    defaultValue={this.state.x1}
+                    range={this.state.desc.dimension1.range}
+                    updateState={(num) => {
+                      this.setState({ x1: num }, () => this.raiseChange());
                     }}
+                    title={this.state.desc.dimension1.name}
                   />
                 </div>
                 <div className="row">
-                  <label>G</label>
-                  <InputField
-                    defaultValue={prettyNumber(rgb.g, 0)}
-                    onEnter={(v) => {
-                      let num = parseFloat(v);
-                      if (num == num && num != null) {
-                        num = Math.max(0, Math.min(255, num));
-                        const [x1, x2, x3] = this.state.desc.fromRGB(
-                          rgb.r,
-                          num,
-                          rgb.b
-                        );
-                        this.setState({ x1, x2, x3 }, () => this.raiseChange());
-                        return true;
-                      }
+                  <ColorDimensionInput
+                    defaultValue={this.state.x2}
+                    range={this.state.desc.dimension2.range}
+                    updateState={(num) => {
+                      this.setState({ x2: num }, () => this.raiseChange());
                     }}
+                    title={this.state.desc.dimension2.name}
                   />
                 </div>
                 <div className="row">
-                  <label>B</label>
-                  <InputField
-                    defaultValue={prettyNumber(rgb.b, 0)}
-                    onEnter={(v) => {
-                      let num = parseFloat(v);
-                      if (num == num && num != null) {
-                        num = Math.max(0, Math.min(255, num));
-                        const [x1, x2, x3] = this.state.desc.fromRGB(
-                          rgb.r,
-                          rgb.g,
-                          num
-                        );
-                        this.setState({ x1, x2, x3 }, () => this.raiseChange());
-                        return true;
-                      }
+                  <ColorDimensionInput
+                    defaultValue={this.state.x3}
+                    range={this.state.desc.dimension3.range}
+                    updateState={(num) => {
+                      this.setState({ x3: num }, () => this.raiseChange());
                     }}
+                    title={this.state.desc.dimension3.name}
                   />
                 </div>
               </div>
+              <ColorRgbInput
+                state={this.state}
+                updateState={(value) => {
+                  this.setState(value, () => this.raiseChange());
+                }}
+              />
             </div>
           </section>
         </div>
@@ -360,7 +259,10 @@ export interface InputFieldProps {
   onEnter?: (value: string) => boolean;
 }
 
-export class InputField extends React.Component<InputFieldProps, {}> {
+export class InputField extends React.Component<
+  InputFieldProps,
+  Record<string, unknown>
+> {
   public inputElement: HTMLInputElement;
 
   public componentWillUpdate(newProps: InputFieldProps) {
@@ -448,7 +350,10 @@ interface XYCanvasProps {
   onMove: (nx: number, ny: number, isEnd: boolean) => void;
 }
 
-class XYCanvas extends React.PureComponent<XYCanvasProps, {}> {
+class XYCanvas extends React.PureComponent<
+  XYCanvasProps,
+  Record<string, unknown>
+> {
   public refs: {
     canvasElement: HTMLCanvasElement;
   };
@@ -572,7 +477,10 @@ interface ZCanvasProps {
   onMove: (nz: number, isEnd: boolean) => void;
 }
 
-class ZCanvas extends React.PureComponent<ZCanvasProps, {}> {
+class ZCanvas extends React.PureComponent<
+  ZCanvasProps,
+  Record<string, unknown>
+> {
   public refs: {
     canvasElement: HTMLCanvasElement;
   };
