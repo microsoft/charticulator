@@ -29,8 +29,12 @@ export class DataflowTableGroupedContext implements Expression.Context {
   }
 
   public getVariable(name: string) {
-    // eslint-disable-next-line
-    if (this.table.rows[this.indices[0]]?.hasOwnProperty(name)) {
+    if (
+      Object.prototype.hasOwnProperty.call(
+        this.table.rows[this.indices[0]],
+        name
+      )
+    ) {
       return this.indices.map((i) => this.table.rows[i][name]);
     }
     return this.table.getVariable(name);

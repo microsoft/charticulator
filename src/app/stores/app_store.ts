@@ -586,8 +586,12 @@ export class AppStore extends BaseStore {
     if (!plotSegment) {
       return 0;
     }
-    // eslint-disable-next-line
-    if (this.selectedGlyphIndex.hasOwnProperty(plotSegmentID)) {
+    if (
+      Object.prototype.hasOwnProperty.call(
+        this.selectedGlyphIndex,
+        plotSegmentID
+      )
+    ) {
       const idx = this.selectedGlyphIndex[plotSegmentID];
       if (idx >= plotSegment.state.dataRowIndices.length) {
         this.selectedGlyphIndex[plotSegmentID] = 0;
@@ -769,8 +773,7 @@ export class AppStore extends BaseStore {
 
       const findScale = (mappings: Specification.Mappings) => {
         for (const name in mappings) {
-          // eslint-disable-next-line
-          if (!mappings.hasOwnProperty(name)) {
+          if (!Object.prototype.hasOwnProperty.call(mappings, name)) {
             continue;
           }
           if (mappings[name].type == MappingType.scale) {
