@@ -207,18 +207,6 @@ export class ColorSpacePicker extends React.Component<
                     title={this.state.desc.dimension1.name}
                   />
                 </div>
-              </div>
-              <div className="column">
-                <div className="row">
-                  <ColorDimensionInput
-                    defaultValue={this.state.x1}
-                    range={this.state.desc.dimension1.range}
-                    updateState={(num) => {
-                      this.setState({ x1: num }, () => this.raiseChange());
-                    }}
-                    title={this.state.desc.dimension1.name}
-                  />
-                </div>
                 <div className="row">
                   <ColorDimensionInput
                     defaultValue={this.state.x2}
