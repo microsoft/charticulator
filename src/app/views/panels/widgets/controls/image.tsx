@@ -1,7 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types */
-/* eslint-disable @typescript-eslint/no-empty-function */
 
 import * as React from "react";
 import * as R from "../../../../resources";
@@ -13,6 +11,7 @@ import { PopupView } from "../../../../controllers/popup_controller";
 import { classNames } from "../../../../utils";
 import { Button } from "./button";
 import { strings } from "../../../../../strings";
+import { noop } from "../../../../utils/noop";
 
 export interface ImageDescription {
   src: string;
@@ -90,11 +89,9 @@ export class InputImage extends ContextedComponent<
         .split("\n")
         .map((x) => x.trim())
         .filter((x) => !x.startsWith("#"));
-      ImageUploader.ParseURIs(uris)
-        .then((r) => {
-          this.emitOnChange(r);
-        })
-        .catch(() => {});
+      ImageUploader.ParseURIs(uris).then((r) => {
+        this.emitOnChange(r);
+      });
     }
     if (e.dataTransfer.files.length > 0) {
       ImageUploader.ParseFiles(e.dataTransfer.files).then((r) => {
@@ -102,7 +99,7 @@ export class InputImage extends ContextedComponent<
       });
     }
   };
-  
+
   public render() {
     const isNone = this.props.value == null;
     const image = isNone ? null : this.resolveImage(this.props.value);
@@ -152,7 +149,10 @@ export interface ImageChooserProps {
   onChoose?: (value: ImageDescription) => void;
 }
 
-export class ImageChooser extends ContextedComponent<ImageChooserProps, {}> {
+export class ImageChooser extends ContextedComponent<
+  ImageChooserProps,
+  Record<string, unknown>
+> {
   public render() {
     return (
       <div className="charticulator__image-chooser">
@@ -204,7 +204,6 @@ export class ImageUploader extends React.Component<
       this.refInput.focus();
     }
   }
-  public componentWillUnmount() {}
 
   public static ReadFileAsImage(
     name: string,
@@ -357,7 +356,7 @@ export class ImageUploader extends React.Component<
               className="el-input"
               onPaste={this.handlePaste}
               value=""
-              onChange={() => {}}
+              onChange={noop}
               type="text"
               placeholder={this.props.placeholder || "Drop/Paste Image"}
             />
