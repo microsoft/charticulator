@@ -1734,6 +1734,9 @@ export class FluentUIWidgetManager
                           },
                           OrderMode.order
                         );
+                        if (options.onConfirmClick) {
+                          options.onConfirmClick(items);
+                        }
                         context.close();
                       }}
                       onReset={() => {

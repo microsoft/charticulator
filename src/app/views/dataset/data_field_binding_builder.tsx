@@ -538,7 +538,10 @@ class MenuItemsCreator {
                                 aggregationMenuItem
                               );
 
-                              if (mapping?.type === MappingType.text) {
+                              if (
+                                mapping?.type === MappingType.text ||
+                                mapping?.type === MappingType.value
+                              ) {
                                 this.textMappingOnClick(menuExpr, field);
                               } else {
                                 this.onClick(

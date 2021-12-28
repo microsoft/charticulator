@@ -45,7 +45,11 @@ import {
   TickFormatType,
 } from "../../specification/types";
 import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
-import { getTableColumns, parseDerivedColumnsExpression } from "./utils";
+import {
+  getTableColumns,
+  parseDerivedColumnsExpression,
+  transformOrderByExpression,
+} from "./utils";
 import { DataflowManager, DataflowTable } from "../dataflow";
 import * as Expression from "../../expression";
 import { CompiledGroupBy } from "../group_by";
@@ -2191,7 +2195,7 @@ function getOrderByAnotherColumnWidgets(
     .map((column) => column.displayName);
   const columnsNames = tableColumns
     .filter((item) => !item.metadata?.isRaw)
-    .map((column) => column.name);
+    .map((column) => transformOrderByExpression(column.name));
 
   const derivedColumns = [];
   const derivedColumnsNames = [];
@@ -2240,8 +2244,9 @@ function getOrderByAnotherColumnWidgets(
     table: string,
     groupBy?: Specification.Types.GroupBy
   ): any[] => {
-    const newExpression =
-      expression.split(" ").length >= 2 ? "`" + expression + "`" : expression;
+    const newExpression = transformOrderByExpression(expression);
+    groupBy.expression = transformOrderByExpression(groupBy.expression);
+
     const expr = Expression.parse(newExpression);
     const tableContext = df.getTable(table);
     const indices = groupBy
@@ -2293,10 +2298,15 @@ function getOrderByAnotherColumnWidgets(
         new_order.push(foundItem);
         items_idx.splice(currentItemIndex, 1);
       }
-
-      data.order = new_order.map((item) => item[0]);
+      const getItem = (item: any) => {
+        if (data.valueType == DataType.Number) {
+          return "" + item;
+        }
+        return item;
+      };
+      data.order = new_order.map((item) => getItem(item[0]));
       data.orderMode = OrderMode.order;
-      data.categories = new_order.map((item) => item[0]);
+      data.categories = new_order.map((item) => getItem(item[0]));
     } catch (e) {
       console.log(e);
     }

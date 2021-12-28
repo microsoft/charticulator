@@ -30,9 +30,6 @@ export function getColumnByExpression(
     //need to provide date.year() etc.
     // expression1 = this.parseDerivedColumnsExpression(expression);
   }
-  // console.log(expression1);
-
-  // debugger
   const currentColumn = deepClone<Dataset.Column[]>(storeTable.columns).filter(
     (column) => column.displayName === expression1
   );
@@ -58,4 +55,12 @@ export function parseDerivedColumnsExpression(expression: string): string {
     return expression.match(/\(([^)]+)\)/)[1];
   }
   return expression;
+}
+
+export function transformOrderByExpression(expression: string): string {
+  return expression.indexOf("`") < 0
+    ? expression.split(" ").length >= 2
+      ? "`" + expression + "`"
+      : expression
+    : expression;
 }
