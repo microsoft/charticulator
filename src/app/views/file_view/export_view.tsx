@@ -1,8 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types  */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import { DefaultButton } from "@fluentui/react";
 import * as React from "react";
@@ -27,6 +24,7 @@ import { AppStore } from "../../stores";
 import { ExportTemplateTarget } from "../../template";
 import { classNames } from "../../utils";
 import { InputImageProperty, Button } from "../panels/widgets/controls";
+import { noop } from "../../utils/noop";
 
 export class InputGroup extends React.Component<
   {
@@ -34,7 +32,7 @@ export class InputGroup extends React.Component<
     label: string;
     onChange: (newValue: string) => void;
   },
-  {}
+  Record<string, unknown>
 > {
   private ref: HTMLInputElement;
 
@@ -130,7 +128,7 @@ export class ExportHTMLView extends React.Component<
   {
     store: AppStore;
   },
-  {}
+  Record<string, unknown>
 > {
   public render() {
     return (
@@ -280,7 +278,7 @@ export class ExportTemplateView extends React.Component<
     exportKind: string;
     store: AppStore;
   },
-  {}
+  ExportTemplateViewState
 > {
   public state = this.getDefaultState(this.props.exportKind);
 
@@ -513,9 +511,9 @@ export class ExportTemplateView extends React.Component<
           const keyAutoDomainMin = "autoDomainMin";
           const keyAutoDomainMax = "autoDomainMax";
 
-          let onClickAutoDomainMin = () => {};
+          let onClickAutoDomainMin = noop;
 
-          let onClickAutoDomainMax = () => {};
+          let onClickAutoDomainMax = noop;
 
           let getAutoDomainMinPropertyValue: () => boolean = null;
 

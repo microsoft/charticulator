@@ -1,8 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types  */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
 import * as R from "../../../../resources";
@@ -179,7 +176,7 @@ export interface ComboBoxFontFamilyProps {
 }
 export class ComboBoxFontFamily extends React.Component<
   ComboBoxFontFamilyProps,
-  {}
+  Record<string, unknown>
 > {
   public render() {
     return (
@@ -215,9 +212,9 @@ export const FluentComboBoxFontFamily: React.FC<ComboBoxFontFamilyProps> = (
   const optionsWithCustomStyling: IComboBoxOption[] = React.useMemo<
     IComboBoxOption[]
   >(() => {
-    const cuurentFontList = [...new Set([...fontList, currentValue])];
+    const currentFontList = [...new Set([...fontList, currentValue])];
 
-    return cuurentFontList.map((fontName: string) => ({
+    return currentFontList.map((fontName: string) => ({
       key: fontName,
       text: fontName,
       styles: {

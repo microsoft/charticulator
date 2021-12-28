@@ -1,8 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types  */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
 import { SVGImageIcon } from "./icons";
@@ -14,7 +11,10 @@ export interface TabsViewProps {
   onSelect: (tabName: string) => void;
 }
 
-export class TabsView extends React.Component<TabsViewProps, {}> {
+export class TabsView extends React.Component<
+  TabsViewProps,
+  Record<string, unknown>
+> {
   public render() {
     return (
       <div className="charticulator__tabs-view">
