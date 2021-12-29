@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
@@ -13,7 +12,7 @@ import {
   FluentButton,
 } from "./controls/fluentui_customized_components";
 import { FluentUIFilterEditor } from "./fluentui_filter_editor";
-import { CharticulatorPropertyAccessors } from "./manager";
+import { CharticulatorPropertyAccessors } from "./types";
 
 export const FilterPanel: React.FC<{
   text: string;

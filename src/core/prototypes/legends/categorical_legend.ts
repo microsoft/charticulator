@@ -7,7 +7,7 @@ import * as Graphics from "../../graphics";
 import { LegendClass, LegendProperties } from "./legend";
 import { Controls } from "..";
 import { strings } from "../../../strings";
-import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/types";
 
 export interface CategoricalLegendItem {
   type: "number" | "color" | "boolean";

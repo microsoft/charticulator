@@ -11,7 +11,7 @@ import {
   labelRender,
 } from "./controls/fluentui_customized_components";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
-import { CharticulatorPropertyAccessors } from "./manager";
+import { CharticulatorPropertyAccessors } from "./types";
 
 export interface FilterEditorProps {
   manager: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;

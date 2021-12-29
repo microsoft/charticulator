@@ -53,7 +53,7 @@ import {
 import { DataflowManager, DataflowTable } from "../dataflow";
 import * as Expression from "../../expression";
 import { CompiledGroupBy } from "../group_by";
-import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/types";
 import { type2DerivedColumns } from "../../../app/views/dataset/common";
 import React = require("react");
 

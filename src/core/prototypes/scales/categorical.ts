@@ -272,7 +272,7 @@ export class CategoricalScaleColor extends ScaleClass<
         });
       } else if (getDefaultColorPaletteGenerator()) {
         s.domain.forEach((v, d) => {
-          props.mapping[d] = getDefaultColorPaletteByValue(d, s.length);
+          props.mapping[d] = getDefaultColorPaletteByValue(d);
         });
       } else {
         colorList = getDefaultColorPalette(s.length);
