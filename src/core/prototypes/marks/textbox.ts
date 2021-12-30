@@ -547,10 +547,10 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       };
       const background = <Graphics.Rect>{
         type: "rect",
-        x1: attrs.x1,
-        y1: attrs.y1,
-        x2: attrs.x2,
-        y2: attrs.y2,
+        x1: attrs.x1 + offset.x,
+        y1: attrs.y1 + offset.y,
+        x2: attrs.x2 + offset.x,
+        y2: attrs.y2 + offset.y,
         style: {
           fillColor: attrs.backgroundColor,
         },
