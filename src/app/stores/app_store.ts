@@ -2028,7 +2028,7 @@ export class AppStore extends BaseStore {
             }
             dataBinding.type = AxisDataBindingType.Numerical;
             dataBinding.numericalMode = NumericalMode.Temporal;
-            const { categories, order } = this.getCategoriesForDataBinding(
+            const { categories } = this.getCategoriesForDataBinding(
               dataExpression.metadata,
               dataExpression.valueType,
               values
