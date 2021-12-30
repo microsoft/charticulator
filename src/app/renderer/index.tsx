@@ -192,13 +192,12 @@ class TextOnPath extends React.PureComponent<{
   style: React.CSSProperties;
   align: "start" | "middle" | "end";
   cmds: any;
-  filter: string;
 }> {
   private pathID: string = uniqueID();
 
   public render() {
     return (
-      <g filter={this.props.filter}>
+      <g>
         <defs>
           <path
             id={this.pathID}
@@ -231,8 +230,7 @@ export function renderSVGDefs(element: Graphics.Element): JSX.Element {
     return null;
   }
   switch (element.type) {
-    case "text":
-    case "text-on-path": {
+    case "text": {
       const text = element as Graphics.Text;
       if (text.style.backgroundColor) {
         return (
@@ -462,16 +460,12 @@ export function renderGraphicalElementSVG(
       const text = element as Graphics.TextOnPath;
       style.fontFamily = text.fontFamily;
       style.fontSize = text.fontSize + "px";
-      const filter = text.style.backgroundColor
-        ? `url(#${text.style.backgroundColorId})`
-        : null;
       return (
         <TextOnPath
           text={text.text}
           style={style}
           cmds={text.pathCmds}
           align={text.align}
-          filter={filter}
         />
       );
     }
