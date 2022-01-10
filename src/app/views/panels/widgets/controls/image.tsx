@@ -94,9 +94,13 @@ export class InputImage extends ContextedComponent<
       });
     }
     if (e.dataTransfer.files.length > 0) {
-      ImageUploader.ParseFiles(e.dataTransfer.files).then((r) => {
-        this.emitOnChange(r);
-      });
+      ImageUploader.ParseFiles(e.dataTransfer.files)
+        .then((r) => {
+          this.emitOnChange(r);
+        })
+        .catch((ex) => {
+          console.log(ex);
+        });
     }
   };
 
