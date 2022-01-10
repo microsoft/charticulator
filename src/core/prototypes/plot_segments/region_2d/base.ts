@@ -2547,12 +2547,12 @@ export class Region2DConstraintBuilder {
           m.vertical(
             m.label(strings.objects.axes.gap),
             m.vertical(
-              m.label("x: "),
+              m.label(strings.coordinateSystem.x),
               m.inputNumber(
                 { property: "sublayout", field: "ratioX" },
                 { minimum: 0, maximum: 1, percentage: true, showSlider: true }
               ),
-              m.label("y: "),
+              m.label(strings.coordinateSystem.y),
               m.inputNumber(
                 { property: "sublayout", field: "ratioY" },
                 { minimum: 0, maximum: 1, percentage: true, showSlider: true }
