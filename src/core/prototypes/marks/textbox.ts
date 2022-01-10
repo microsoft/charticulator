@@ -4,13 +4,13 @@
 import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
 import { strings } from "../../../strings";
 import {
+  getRandomNumber,
   Point,
   replaceNewLineBySymbol,
-  replaceSymbolByTab,
   replaceSymbolByNewLine,
+  replaceSymbolByTab,
   rgbToHex,
   splitStringByNewLine,
-  getRandomNumber,
 } from "../../common";
 import * as Graphics from "../../graphics";
 import { splitByWidth } from "../../graphics";
@@ -264,10 +264,10 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         },
         [
           manager.mappingEditor(strings.objects.color, "color", {}),
+          manager.mappingEditor(strings.objects.outline, "outline", {}),
           manager.mappingEditor(strings.objects.background, "backgroundColor", {
             defaultValue: null,
           }),
-          manager.mappingEditor(strings.objects.outline, "outline", {}),
           manager.mappingEditor(strings.objects.opacity, "opacity", {
             hints: { rangeNumber: [0, 1] },
             defaultValue: 1,
@@ -545,7 +545,20 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         fontSize: attrs.fontSize,
         align: props.alignX,
       };
-      return applyStyles(<Graphics.TextOnPath>textElement, attrs);
+      const background = <Graphics.Rect>{
+        type: "rect",
+        x1: attrs.x1 + offset.x,
+        y1: attrs.y1 + offset.y,
+        x2: attrs.x2 + offset.x,
+        y2: attrs.y2 + offset.y,
+        style: {
+          fillColor: attrs.backgroundColor,
+        },
+      };
+      return Graphics.makeGroup([
+        background,
+        applyStyles(<Graphics.TextOnPath>textElement, attrs),
+      ]);
     }
   }
 
