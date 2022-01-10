@@ -1341,6 +1341,7 @@ interface AxisAppearanceWidgets {
   isVisible: boolean;
   wordWrap: boolean;
   isOffset: boolean;
+  isOnTop: boolean;
 }
 
 export function buildAxisAppearanceWidgets(
@@ -1374,13 +1375,15 @@ export function buildAxisAppearanceWidgets(
                 label: strings.objects.visibleOn.visible,
               }
             ),
-            manager.inputBoolean(
-              { property: axisProperty, field: "onTop" },
-              {
-                type: "checkbox",
-                label: strings.objects.onTop,
-              }
-            ),
+            options.isOnTop
+              ? manager.inputBoolean(
+                  { property: axisProperty, field: "onTop" },
+                  {
+                    type: "checkbox",
+                    label: strings.objects.onTop,
+                  }
+                )
+              : null,
             manager.inputSelect(
               { property: axisProperty, field: "side" },
               {
@@ -1559,11 +1562,13 @@ function buildInteractivityGroup(
 interface AxisWidgetsConfig {
   showOffset: boolean;
   showScrolling: boolean;
+  showOnTop: boolean;
 }
 
 const defaultAxisWidgetsConfig: AxisWidgetsConfig = {
   showOffset: true,
   showScrolling: true,
+  showOnTop: true,
 };
 
 function buildScrollingAxisWidgets(
@@ -1646,6 +1651,7 @@ export function buildAxisWidgets(
       isVisible: data.visible,
       wordWrap: data.style.wordWrap,
       isOffset: axisWidgetsConfig.showOffset,
+      isOnTop: axisWidgetsConfig.showOnTop,
     });
   };
   if (data != null) {

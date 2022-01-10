@@ -336,6 +336,7 @@ export class DataAxisClass extends MarkClass<
       {
         showOffset: false,
         showScrolling: false,
+        showOnTop: false,
       }
     );
     const r = [

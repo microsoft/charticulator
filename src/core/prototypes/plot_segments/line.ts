@@ -287,6 +287,7 @@ export class LineGuide extends PlotSegmentClass {
       ...buildAxisWidgets(props.axis, "axis", manager, "Axis", {
         showScrolling: false,
         showOffset: false,
+        showOnTop: false,
       }),
     ];
   }

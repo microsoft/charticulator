@@ -2763,6 +2763,7 @@ export class Region2DConstraintBuilder {
             {
               showOffset: true,
               showScrolling: true,
+              showOnTop: true,
             },
             this.updatePlotSegment.bind(this)
           ),
