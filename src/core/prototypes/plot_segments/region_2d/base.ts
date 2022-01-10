@@ -2760,7 +2760,10 @@ export class Region2DConstraintBuilder {
             axisProperty,
             manager,
             axisName,
-            false,
+            {
+              showOffset: true,
+              showScrolling: true,
+            },
             this.updatePlotSegment.bind(this)
           ),
           ...this.plotSegment.buildGridLineWidgets(data, manager, axisProperty),
