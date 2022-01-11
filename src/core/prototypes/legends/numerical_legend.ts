@@ -476,6 +476,7 @@ export class NumericalNumberLegendClass extends ChartElementClass<
         isVisible: props.axis.visible,
         wordWrap: props.axis.style.wordWrap,
         isOffset: false,
+        isOnTop: false,
       }),
       ...PlotSegmentClass.getGridLineAttributePanelWidgets(manager, "axis"),
     ];

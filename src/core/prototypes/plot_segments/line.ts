@@ -284,7 +284,11 @@ export class LineGuide extends PlotSegmentClass {
     const props = this.object.properties;
     return [
       ...super.getAttributePanelWidgets(manager),
-      ...buildAxisWidgets(props.axis, "axis", manager, "Axis"),
+      ...buildAxisWidgets(props.axis, "axis", manager, "Axis", {
+        showScrolling: false,
+        showOffset: false,
+        showOnTop: false,
+      }),
     ];
   }
 
