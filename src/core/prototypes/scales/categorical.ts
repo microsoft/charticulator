@@ -42,8 +42,7 @@ function reuseMapping<T>(
   }
   // Assign remaining keys from the domain
   domain.forEach((v, d) => {
-    // eslint-disable-next-line
-    if (!result.hasOwnProperty(d)) {
+    if (!Object.prototype.hasOwnProperty.call(result, d)) {
       if (available.length > 0) {
         result[d] = available[0];
         available.splice(0, 1);
@@ -146,8 +145,7 @@ export class CategoricalScaleNumber extends ScaleClass<
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
-      // eslint-disable-next-line
-      if (props.mapping.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(props.mapping, key)) {
         keys.push(key);
       }
     }
@@ -274,7 +272,7 @@ export class CategoricalScaleColor extends ScaleClass<
         });
       } else if (getDefaultColorPaletteGenerator()) {
         s.domain.forEach((v, d) => {
-          props.mapping[d] = getDefaultColorPaletteByValue(d, s.length);
+          props.mapping[d] = getDefaultColorPaletteByValue(d);
         });
       } else {
         colorList = getDefaultColorPalette(s.length);
@@ -291,8 +289,7 @@ export class CategoricalScaleColor extends ScaleClass<
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
-      // eslint-disable-next-line
-      if (props.mapping.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(props.mapping, key)) {
         keys.push(key);
       }
     }
@@ -433,8 +430,7 @@ export class CategoricalScaleEnum extends ScaleClass<
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
-      // eslint-disable-next-line
-      if (props.mapping.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(props.mapping, key)) {
         keys.push(key);
       }
     }
@@ -520,8 +516,7 @@ export class CategoricalScaleBoolean extends ScaleClass<
     const mappingALL: { [name: string]: boolean } = {};
     const mappingNONE: { [name: string]: boolean } = {};
     for (const key in props.mapping) {
-      // eslint-disable-next-line
-      if (props.mapping.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(props.mapping, key)) {
         items.push(
           manager.inputBoolean(
             { property: "mapping", field: key },
@@ -619,8 +614,7 @@ export class CategoricalScaleImage extends ScaleClass<
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
-      // eslint-disable-next-line
-      if (props.mapping.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(props.mapping, key)) {
         keys.push(key);
       }
     }

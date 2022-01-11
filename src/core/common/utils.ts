@@ -63,8 +63,7 @@ export function deepClone<T>(obj: T): T {
 export function shallowClone<T>(obj: T): T {
   const r = <T>{};
   for (const key in obj) {
-    // eslint-disable-next-line
-    if (obj.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
       r[key] = obj[key];
     }
   }
@@ -213,10 +212,8 @@ export function fillDefaults<T extends Record<string, unknown>>(
     obj = <T>{};
   }
   for (const key in defaults) {
-    // eslint-disable-next-line
-    if (defaults.hasOwnProperty(key)) {
-      // eslint-disable-next-line
-      if (!obj.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(defaults, key)) {
+      if (!Object.prototype.hasOwnProperty.call(obj, key)) {
         obj[key] = defaults[key];
       }
     }
@@ -411,8 +408,7 @@ export class KeyNameMap<KeyType, ValueType> {
   /** Determine if the map has an entry */
   public has(key: KeyType, name: string) {
     if (this.mapping.has(key)) {
-      // eslint-disable-next-line
-      return this.mapping.get(key).hasOwnProperty(name);
+      return Object.prototype.hasOwnProperty.call(this.mapping.get(key), name);
     }
     return false;
   }
@@ -421,8 +417,7 @@ export class KeyNameMap<KeyType, ValueType> {
   public get(key: KeyType, name: string) {
     if (this.mapping.has(key)) {
       const m = this.mapping.get(key);
-      // eslint-disable-next-line
-      if (m.hasOwnProperty(name)) {
+      if (Object.prototype.hasOwnProperty.call(m, name)) {
         return m[name];
       }
       return null;
@@ -435,8 +430,7 @@ export class KeyNameMap<KeyType, ValueType> {
   ) {
     this.mapping.forEach((v, key) => {
       for (const p in v) {
-        // eslint-disable-next-line
-        if (v.hasOwnProperty(p)) {
+        if (Object.prototype.hasOwnProperty.call(v, p)) {
           callback(v[p], key, p);
         }
       }
@@ -574,7 +568,7 @@ export function getSortFunctionByData(values: string[]) {
     }
     return false;
   };
-  if (values.length > 0){
+  if (values.length > 0) {
     const testResult = values
       .map((val) => testToRange(val))
       .reduceRight((a, b) => a && b);
@@ -586,8 +580,8 @@ export function getSortFunctionByData(values: string[]) {
           return +aNum < +bNum
             ? 1
             : +a.split("-").pop() < +b.split("-").pop()
-              ? 1
-              : -1;
+            ? 1
+            : -1;
         }
       };
     }

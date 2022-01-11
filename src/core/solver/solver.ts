@@ -225,8 +225,7 @@ export class ChartConstraintSolver {
         );
       }
       if (!info.stateExclude) {
-        // eslint-disable-next-line
-        if (object.mappings.hasOwnProperty(attr)) {
+        if (Object.prototype.hasOwnProperty.call(object.mappings, attr)) {
           // If the attribute is mapped, apply the mapping, and do not compute gradient
           const mapping = object.mappings[attr];
           this.addMapping(
@@ -743,8 +742,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
         continue;
       }
       this.addAttribute(glyphState.attributes, attr, glyph._id);
-      // eslint-disable-next-line
-      if (glyph.mappings.hasOwnProperty(attr)) {
+      if (Object.prototype.hasOwnProperty.call(glyph.mappings, attr)) {
         this.addMapping(
           glyphState.attributes,
           attr,
@@ -764,8 +762,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
           continue;
         }
         this.addAttribute(markState.attributes, attr, mark._id);
-        // eslint-disable-next-line
-        if (mark.mappings.hasOwnProperty(attr)) {
+        if (Object.prototype.hasOwnProperty.call(mark.mappings, attr)) {
           this.addMapping(
             markState.attributes,
             attr,

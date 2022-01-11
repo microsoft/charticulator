@@ -1,5 +1,4 @@
 /* eslint-disable max-lines-per-function */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
@@ -17,7 +16,7 @@ import { ColorPicker } from "../../../components/fluentui_color_picker";
 import { ContextedComponent } from "../../../context_component";
 import { isKindAcceptable, type2DerivedColumns } from "../../dataset/common";
 import { ScaleEditor } from "../scale_editor";
-import { CharticulatorPropertyAccessors, DropZoneView } from "./manager";
+import { CharticulatorPropertyAccessors, DropZoneView } from "./types";
 import { AppStore } from "../../../stores";
 import { ScaleValueSelector } from "../scale_value_selector";
 import { FunctionCall } from "../../../../core/expression";

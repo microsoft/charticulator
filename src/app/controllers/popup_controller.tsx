@@ -1,8 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types  */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
 import { EventEmitter, EventSubscription } from "../../core";
@@ -50,7 +47,6 @@ function findParentPopup(anchor: Element) {
     anchor = anchor.parentElement;
   }
 }
-export interface PopupResult {}
 
 export class PopupContext extends EventEmitter {
   public readonly id: string;
@@ -183,7 +179,10 @@ export interface PopupViewProps {
   controller: PopupController;
 }
 
-export class PopupContainer extends React.Component<PopupViewProps, {}> {
+export class PopupContainer extends React.Component<
+  PopupViewProps,
+  Record<string, unknown>
+> {
   public token: EventSubscription;
   private popupContainer: HTMLDivElement;
   constructor(props: PopupViewProps) {
@@ -300,13 +299,15 @@ export class PopupContainer extends React.Component<PopupViewProps, {}> {
   }
 }
 
+interface PopupViewComponentProps {
+  context: PopupContext;
+  className?: string;
+  width?: number;
+}
+
 export class PopupView extends React.Component<
-  {
-    context: PopupContext;
-    className?: string;
-    width?: number;
-  },
-  {}
+  PopupViewComponentProps,
+  Record<string, unknown>
 > {
   private popupContainer: HTMLDivElement;
 
@@ -501,7 +502,7 @@ export class ModalView extends React.Component<
     context: PopupContext;
     type?: string;
   },
-  {}
+  Record<string, unknown>
 > {
   public render() {
     const type = this.props.type || "default";

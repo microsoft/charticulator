@@ -22,8 +22,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
 
   MR.add(Actions.UpdateMarkAttribute, function (action) {
     for (const key in action.updates) {
-      // eslint-disable-next-line
-      if (!action.updates.hasOwnProperty(key)) {
+      if (!Object.prototype.hasOwnProperty.call(action.updates, key)) {
         continue;
       }
       delete action.mark.mappings[key];
@@ -48,8 +47,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       )) {
         if (mark == action.mark) {
           for (const key in action.updates) {
-            // eslint-disable-next-line
-            if (!action.updates.hasOwnProperty(key)) {
+            if (!Object.prototype.hasOwnProperty.call(action.updates, key)) {
               continue;
             }
             markState.attributes[key] = action.updates[key];
