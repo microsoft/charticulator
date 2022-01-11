@@ -333,7 +333,11 @@ export class DataAxisClass extends MarkClass<
       "axis",
       manager,
       strings.toolbar.dataAxis,
-      false
+      {
+        showOffset: false,
+        showScrolling: false,
+        showOnTop: false,
+      }
     );
     const r = [
       manager.verticalGroup(
