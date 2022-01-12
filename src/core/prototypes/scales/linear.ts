@@ -329,7 +329,7 @@ export class LinearColorScale extends ScaleClass<
         },
         {
           type: "checkbox",
-          label: "Auto min value",
+          label: strings.objects.dataAxis.autoMin,
         }
       ),
       manager.inputBoolean(
@@ -338,7 +338,7 @@ export class LinearColorScale extends ScaleClass<
         },
         {
           type: "checkbox",
-          label: "Auto max value",
+          label: strings.objects.dataAxis.autoMax,
         }
       ),
       manager.sectionHeader(strings.objects.dataAxis.gradient),
