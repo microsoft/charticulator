@@ -510,8 +510,16 @@ export class RectangleChart extends ChartClass {
   ): Controls.Widget[] {
     const result = [
       manager.sectionHeader(strings.objects.dimensions),
-      manager.mappingEditor(strings.objects.width, "width", {}),
-      manager.mappingEditor(strings.objects.height, "height", {}),
+      manager.mappingEditor(strings.objects.width, "width", {
+        numberOptions: {
+          minimum: 1,
+        },
+      }),
+      manager.mappingEditor(strings.objects.height, "height", {
+        numberOptions: {
+          minimum: 1,
+        },
+      }),
       manager.sectionHeader(strings.margins.margins),
       manager.mappingEditor(strings.margins.left, "marginLeft", {}),
       manager.mappingEditor(strings.margins.right, "marginRight", {}),

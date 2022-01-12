@@ -1,7 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types */
-/* eslint-disable @typescript-eslint/no-empty-function */
 
 import * as React from "react";
 import * as R from "../../../../resources";
@@ -110,7 +108,9 @@ export class InputImage extends ContextedComponent<
         .then((r) => {
           this.emitOnChange(r);
         })
-        .catch(() => {});
+        .catch((e) => {
+          console.log(e);
+        });
     }
     if (e.dataTransfer.files.length > 0) {
       ImageUploader.ParseFiles(e.dataTransfer.files).then((r) => {
@@ -193,7 +193,10 @@ export interface ImageChooserProps {
   onChoose?: (value: ImageDescription) => void;
 }
 
-export class ImageChooser extends ContextedComponent<ImageChooserProps, {}> {
+export class ImageChooser extends ContextedComponent<
+  ImageChooserProps,
+  Record<string, unknown>
+> {
   public render() {
     return (
       <div className="charticulator__image-chooser">
@@ -238,9 +241,6 @@ export class ImageUploader extends React.Component<
 > {
   public state: ImageUploaderState = { dragOver: false };
   protected refContainer: HTMLDivElement;
-
-  public componentDidMount() {}
-  public componentWillUnmount() {}
 
   public static ReadFileAsImage(
     name: string,

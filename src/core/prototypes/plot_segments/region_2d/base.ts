@@ -2547,12 +2547,12 @@ export class Region2DConstraintBuilder {
           m.vertical(
             m.label(strings.objects.axes.gap),
             m.vertical(
-              m.label("x: "),
+              m.label(strings.coordinateSystem.x),
               m.inputNumber(
                 { property: "sublayout", field: "ratioX" },
                 { minimum: 0, maximum: 1, percentage: true, showSlider: true }
               ),
-              m.label("y: "),
+              m.label(strings.coordinateSystem.y),
               m.inputNumber(
                 { property: "sublayout", field: "ratioY" },
                 { minimum: 0, maximum: 1, percentage: true, showSlider: true }
@@ -2760,7 +2760,11 @@ export class Region2DConstraintBuilder {
             axisProperty,
             manager,
             axisName,
-            false,
+            {
+              showOffset: true,
+              showScrolling: true,
+              showOnTop: true,
+            },
             this.updatePlotSegment.bind(this)
           ),
           ...this.plotSegment.buildGridLineWidgets(data, manager, axisProperty),

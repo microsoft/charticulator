@@ -53,7 +53,7 @@ import {
 import { DataflowManager, DataflowTable } from "../dataflow";
 import * as Expression from "../../expression";
 import { CompiledGroupBy } from "../group_by";
-import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/types";
 import { type2DerivedColumns } from "../../../app/views/dataset/common";
 import React = require("react");
 
@@ -1341,6 +1341,7 @@ interface AxisAppearanceWidgets {
   isVisible: boolean;
   wordWrap: boolean;
   isOffset: boolean;
+  isOnTop: boolean;
 }
 
 export function buildAxisAppearanceWidgets(
@@ -1374,13 +1375,15 @@ export function buildAxisAppearanceWidgets(
                 label: strings.objects.visibleOn.visible,
               }
             ),
-            manager.inputBoolean(
-              { property: axisProperty, field: "onTop" },
-              {
-                type: "checkbox",
-                label: strings.objects.onTop,
-              }
-            ),
+            options.isOnTop
+              ? manager.inputBoolean(
+                  { property: axisProperty, field: "onTop" },
+                  {
+                    type: "checkbox",
+                    label: strings.objects.onTop,
+                  }
+                )
+              : null,
             manager.inputSelect(
               { property: axisProperty, field: "side" },
               {
@@ -1556,13 +1559,82 @@ function buildInteractivityGroup(
   );
 }
 
+interface AxisWidgetsConfig {
+  showOffset: boolean;
+  showScrolling: boolean;
+  showOnTop: boolean;
+}
+
+const defaultAxisWidgetsConfig: AxisWidgetsConfig = {
+  showOffset: true,
+  showScrolling: true,
+  showOnTop: true,
+};
+
+function buildScrollingAxisWidgets(
+  data: Specification.Types.AxisDataBinding,
+  axisProperty: string,
+  manager: Controls.WidgetManager,
+  axisName: string,
+  onChange?: () => void
+) {
+  return [
+    manager.label(strings.objects.dataAxis.scrolling),
+    manager.inputBoolean(
+      {
+        property: axisProperty,
+        field: "allowScrolling",
+      },
+      {
+        type: "checkbox",
+        label: strings.objects.dataAxis.allowScrolling,
+        observerConfig: {
+          isObserver: true,
+          properties: {
+            property: axisProperty,
+            field: "windowSize",
+          },
+          value: 10,
+        },
+        onChange: onChange,
+      }
+    ),
+    data.allowScrolling
+      ? manager.inputNumber(
+          {
+            property: axisProperty,
+            field: "windowSize",
+          },
+          {
+            maximum: 1000000,
+            minimum: 1,
+            label: strings.objects.dataAxis.windowSize,
+          }
+        )
+      : null,
+    data.allowScrolling
+      ? manager.inputNumber(
+          {
+            property: axisProperty,
+            field: "barOffset",
+          },
+          {
+            maximum: 1000000,
+            minimum: -1000000,
+            label: strings.objects.dataAxis.barOffset,
+          }
+        )
+      : null,
+  ];
+}
+
 // eslint-disable-next-line
 export function buildAxisWidgets(
   data: Specification.Types.AxisDataBinding,
   axisProperty: string,
   manager: Controls.WidgetManager,
   axisName: string,
-  showOffset: boolean = true,
+  axisWidgetsConfig: AxisWidgetsConfig = defaultAxisWidgetsConfig,
   onChange?: () => void
 ): Controls.Widget[] {
   const widgets = [];
@@ -1578,11 +1650,21 @@ export function buildAxisWidgets(
     return buildAxisAppearanceWidgets(axisProperty, manager, {
       isVisible: data.visible,
       wordWrap: data.style.wordWrap,
-      isOffset: showOffset,
+      isOffset: axisWidgetsConfig.showOffset,
+      isOnTop: axisWidgetsConfig.showOnTop,
     });
   };
   if (data != null) {
     const isDateExpression = data.expression.includes("date.");
+    const scrollingWidgets = axisWidgetsConfig.showScrolling
+      ? buildScrollingAxisWidgets(
+          data,
+          axisProperty,
+          manager,
+          axisName,
+          onChange
+        )
+      : [];
     switch (data.type) {
       case "numerical":
         {
@@ -1726,52 +1808,7 @@ export function buildAxisWidgets(
                     label: strings.objects.axes.tickFormat,
                   }
                 ),
-                manager.label(strings.objects.dataAxis.scrolling),
-                manager.inputBoolean(
-                  {
-                    property: axisProperty,
-                    field: "allowScrolling",
-                  },
-                  {
-                    type: "checkbox",
-                    label: strings.objects.dataAxis.allowScrolling,
-                    observerConfig: {
-                      isObserver: true,
-                      properties: {
-                        property: axisProperty,
-                        field: "windowSize",
-                      },
-                      value: 10,
-                    },
-                    onChange: onChange,
-                  }
-                ),
-                data.allowScrolling
-                  ? manager.inputNumber(
-                      {
-                        property: axisProperty,
-                        field: "windowSize",
-                      },
-                      {
-                        maximum: 1000000,
-                        minimum: 1,
-                        label: strings.objects.dataAxis.windowSize,
-                      }
-                    )
-                  : null,
-                data.allowScrolling
-                  ? manager.inputNumber(
-                      {
-                        property: axisProperty,
-                        field: "barOffset",
-                      },
-                      {
-                        maximum: 1000000,
-                        minimum: -1000000,
-                        label: strings.objects.dataAxis.barOffset,
-                      }
-                    )
-                  : null,
+                ...scrollingWidgets,
               ]
             )
           );
@@ -1860,52 +1897,7 @@ export function buildAxisWidgets(
                       )
                     ))
                   : null,
-                manager.label(strings.objects.dataAxis.scrolling),
-                manager.inputBoolean(
-                  {
-                    property: axisProperty,
-                    field: "allowScrolling",
-                  },
-                  {
-                    type: "checkbox",
-                    label: strings.objects.dataAxis.allowScrolling,
-                    observerConfig: {
-                      isObserver: true,
-                      properties: {
-                        property: axisProperty,
-                        field: "windowSize",
-                      },
-                      value: 10,
-                    },
-                    onChange: onChange,
-                  }
-                ),
-                data.allowScrolling
-                  ? manager.inputNumber(
-                      {
-                        property: axisProperty,
-                        field: "windowSize",
-                      },
-                      {
-                        maximum: 1000000,
-                        minimum: 1,
-                        label: strings.objects.dataAxis.windowSize,
-                      }
-                    )
-                  : null,
-                data.allowScrolling
-                  ? manager.inputNumber(
-                      {
-                        property: axisProperty,
-                        field: "barOffset",
-                      },
-                      {
-                        maximum: 1000000,
-                        minimum: -1000000,
-                        label: strings.objects.dataAxis.barOffset,
-                      }
-                    )
-                  : null,
+                ...scrollingWidgets,
                 // )
               ]
             )

@@ -4,7 +4,7 @@
 import { Controls } from "../common";
 import { deepClone } from "../../common";
 import { Dataset, Expression } from "../../index";
-import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/types";
 
 export function getTableColumns(
   manager: Controls.WidgetManager & CharticulatorPropertyAccessors

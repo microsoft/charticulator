@@ -307,8 +307,7 @@ export class Migrator {
     for (const glyph of state.chart.glyphs) {
       for (const mark of glyph.marks) {
         for (const key in mark.mappings) {
-          // eslint-disable-next-line
-          if (mark.mappings.hasOwnProperty(key)) {
+          if (Object.prototype.hasOwnProperty.call(mark.mappings, key)) {
             const mapping = mark.mappings[key];
             if (mapping.type == MappingType.scale) {
               const scaleMapping = mapping as Specification.ScaleMapping;

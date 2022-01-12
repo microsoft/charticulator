@@ -18,16 +18,16 @@ import {
 import { ColorFilter, NumberModifier } from "../../core/graphics";
 
 // adapted from https://stackoverflow.com/a/20820649
-// eslint-disable-next-line
-function desaturate(color: Color, amount: number) {
-  const { r, g, b } = color;
-  const l = 0.3 * r + 0.6 * g + 0.1 * b;
-  return {
-    r: Math.min(r + amount * (l - r), 255),
-    g: Math.min(g + amount * (l - g), 255),
-    b: Math.min(b + amount * (l - b), 255),
-  };
-}
+// probably useful
+// function desaturate(color: Color, amount: number) {
+//   const { r, g, b } = color;
+//   const l = 0.3 * r + 0.6 * g + 0.1 * b;
+//   return {
+//     r: Math.min(r + amount * (l - r), 255),
+//     g: Math.min(g + amount * (l - g), 255),
+//     b: Math.min(b + amount * (l - b), 255),
+//   };
+// }
 
 const srgb2lab = getColorConverter("sRGB", "lab");
 const lab2srgb = getColorConverter("lab", "sRGB");

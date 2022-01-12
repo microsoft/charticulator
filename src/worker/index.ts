@@ -102,8 +102,7 @@ export class CharticulatorWorker
       src: Specification.AttributeMap
     ) => {
       for (const key in src) {
-        // eslint-disable-next-line
-        if (src.hasOwnProperty(key)) {
+        if (Object.prototype.hasOwnProperty.call(src, key)) {
           dest[key] = src[key] as any;
         }
       }

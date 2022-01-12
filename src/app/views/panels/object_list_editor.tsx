@@ -1,8 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types  */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
 import * as R from "../../resources";
@@ -21,7 +18,10 @@ import {
 import { classNames } from "../../utils";
 import { Button } from "./widgets/controls";
 
-export class ObjectListEditor extends ContextedComponent<{}, {}> {
+export class ObjectListEditor extends ContextedComponent<
+  Record<string, unknown>,
+  Record<string, unknown>
+> {
   private tokens: EventSubscription[];
 
   public componentDidMount() {

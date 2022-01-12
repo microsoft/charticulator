@@ -111,7 +111,6 @@ export class ChartRenderer {
    */
   // eslint-disable-next-line
   private renderChart(
-    // eslint-disable-next-line
     dataset: Dataset.Dataset,
     chart: Specification.Chart,
     chartState: Specification.ChartState
