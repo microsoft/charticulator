@@ -20,6 +20,7 @@ import {
   labelRender,
   PlaceholderStyle,
 } from "./fluentui_customized_components";
+import { CSSProperties } from "react";
 
 export interface InputNumberProps {
   defaultValue?: number;
@@ -43,6 +44,8 @@ export interface InputNumberProps {
 
   label?: string;
   stopPropagation?: boolean;
+
+  styles?: CSSProperties;
 }
 
 export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
@@ -197,7 +200,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
       {props.showSlider ? (
         <Label styles={defaultLabelStyle}>{props.label}</Label>
       ) : null}
-      <FluentRowLayout>
+      <FluentRowLayout style={props.styles}>
         <FluentLayoutItem flex={1}>
           {props.showUpdown ? (
             renderUpdown()

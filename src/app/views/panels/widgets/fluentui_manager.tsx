@@ -608,7 +608,7 @@ export class FluentUIWidgetManager
             {options.headerLabel ? (
               <Label styles={defaultLabelStyle}>{options.headerLabel}</Label>
             ) : null}
-            <FluentCheckbox>
+            <FluentCheckbox style={options.styles}>
               <Checkbox
                 checked={this.getPropertyValue(property) as boolean}
                 label={options.label}

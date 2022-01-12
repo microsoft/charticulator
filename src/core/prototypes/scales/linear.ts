@@ -154,7 +154,11 @@ export class LinearScale extends ScaleClass<
       ),
       manager.inputNumber(
         { property: "domainMax" },
-        { label: strings.objects.dataAxis.end, stopPropagation: true }
+        {
+          label: strings.objects.dataAxis.end,
+          stopPropagation: true,
+          styles: { marginBottom: "0.5rem" },
+        }
       ),
       manager.sectionHeader(strings.objects.dataAxis.autoUpdateValues),
       manager.inputBoolean(
@@ -296,7 +300,6 @@ export class LinearColorScale extends ScaleClass<
     const s = new Scale.LinearScale();
     const values = <number[]>column.filter((x) => typeof x == "number");
     s.inferParameters(values);
-    // s.adjustDomain(options);
 
     if (options.extendScaleMin || props.domainMin === undefined) {
       props.domainMin = s.domainMin;
@@ -321,8 +324,13 @@ export class LinearColorScale extends ScaleClass<
       ),
       manager.inputNumber(
         { property: "domainMax" },
-        { stopPropagation: true, label: strings.objects.dataAxis.end }
+        {
+          stopPropagation: true,
+          label: strings.objects.dataAxis.end,
+          styles: { marginBottom: "0.5rem" },
+        }
       ),
+      manager.sectionHeader(strings.objects.dataAxis.autoUpdateValues),
       manager.inputBoolean(
         {
           property: "autoDomainMin",
@@ -339,6 +347,7 @@ export class LinearColorScale extends ScaleClass<
         {
           type: "checkbox",
           label: strings.objects.dataAxis.autoMax,
+          styles: { marginBottom: "0.5rem" },
         }
       ),
       manager.sectionHeader(strings.objects.dataAxis.gradient),
