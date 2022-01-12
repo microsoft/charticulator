@@ -19,8 +19,8 @@ import { InferParametersOptions } from "./scale";
 export interface LinearScaleProperties extends Specification.AttributeMap {
   domainMin: number;
   domainMax: number;
-  autoDomainMin: number;
-  autoDomainMax: number;
+  autoDomainMin: boolean;
+  autoDomainMax: boolean;
 }
 
 export interface LinearScaleAttributes extends Specification.AttributeMap {
@@ -296,7 +296,7 @@ export class LinearColorScale extends ScaleClass<
     const s = new Scale.LinearScale();
     const values = <number[]>column.filter((x) => typeof x == "number");
     s.inferParameters(values);
-    s.adjustDomain(options);
+    // s.adjustDomain(options);
 
     if (options.extendScaleMin || props.domainMin === undefined) {
       props.domainMin = s.domainMin;
@@ -322,6 +322,24 @@ export class LinearColorScale extends ScaleClass<
       manager.inputNumber(
         { property: "domainMax" },
         { stopPropagation: true, label: strings.objects.dataAxis.end }
+      ),
+      manager.inputBoolean(
+        {
+          property: "autoDomainMin",
+        },
+        {
+          type: "checkbox",
+          label: "Auto min value",
+        }
+      ),
+      manager.inputBoolean(
+        {
+          property: "autoDomainMax",
+        },
+        {
+          type: "checkbox",
+          label: "Auto max value",
+        }
       ),
       manager.sectionHeader(strings.objects.dataAxis.gradient),
       manager.inputColorGradient(

@@ -542,13 +542,13 @@ export class ChartTemplate {
           );
 
           if (
-            inference.autoDomainMin &&
+            !inference.autoDomainMin &&
             object.properties.domainMin !== undefined
           ) {
             vectors.push([object.properties.domainMin]);
           }
           if (
-            inference.autoDomainMax &&
+            !inference.autoDomainMax &&
             object.properties.domainMax != undefined
           ) {
             vectors.push([object.properties.domainMax]);
