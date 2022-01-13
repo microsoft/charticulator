@@ -1469,17 +1469,17 @@ export function buildAxisAppearanceWidgets(
                 allowNull: true,
               }
             ),
-            manager.inputFormat(
-              {
-                property: axisProperty,
-                field: "tickFormat",
-              },
-              {
-                blank: strings.core.auto,
-                isDateField: false,
-                label: strings.objects.axes.tickFormat,
-              }
-            ),
+            // manager.inputFormat(
+            //   {
+            //     property: axisProperty,
+            //     field: "tickFormat",
+            //   },
+            //   {
+            //     blank: strings.core.auto,
+            //     isDateField: false,
+            //     label: strings.objects.axes.tickFormat,
+            //   }
+            // ),
             manager.inputNumber(
               {
                 property: axisProperty,
