@@ -12,21 +12,45 @@ import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widget
 import { strings } from "../../../strings";
 import { OrientationType } from "./types";
 
+interface NumericalColorLegendProperties extends LegendProperties {
+  orientation: OrientationType;
+  length: number;
+}
+
 export class NumericalColorLegendClass extends LegendClass {
   public static classID: string = "legend.numerical-color";
   public static type: string = "legend";
 
-  public getLegendSize(): [number, number] {
-    return [100, 100];
-  }
-
   public static defaultProperties: LegendProperties = {
     ...LegendClass.defaultProperties,
     orientation: OrientationType.VERTICAL,
+    length: 100,
   };
 
+  private gradientWidth: number = 12;
+
+  public getLineHeight(): number {
+    return this.object.properties.fontSize + 25 + this.gradientWidth;
+  }
+
+  public getLegendSize(): [number, number] {
+    const props = this.object.properties;
+    const length = props.length ? +props.length : 100;
+    if (this.isVerticalOrientation()) {
+      return [this.getLineHeight(), length];
+    }
+    return [length, this.getLineHeight()];
+  }
+
+  private isVerticalOrientation(): boolean {
+    const props = this.object.properties;
+    return props.orientation === OrientationType.VERTICAL;
+  }
+
   public getGraphics(): Graphics.Element {
-    const height = this.getLegendSize()[1];
+    const height = this.isVerticalOrientation()
+      ? this.getLegendSize()[1]
+      : this.getLegendSize()[0];
     const props = this.object.properties;
     const marginLeft = 5;
     const gradientWidth = 12;
@@ -108,6 +132,16 @@ export class NumericalColorLegendClass extends LegendClass {
           header: strings.objects.legend.numericalColorLegend,
         },
         [
+          manager.inputNumber(
+            { property: "length" },
+            {
+              label: this.isVerticalOrientation()
+                ? strings.objects.height
+                : strings.objects.width,
+              updownTick: 10,
+              showUpdown: true,
+            }
+          ),
           manager.inputSelect(
             { property: "orientation" },
             {
