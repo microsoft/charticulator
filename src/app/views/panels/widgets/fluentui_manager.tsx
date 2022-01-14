@@ -63,7 +63,6 @@ import {
   Label,
   ComboBox,
   Dropdown,
-  IDropdownOption,
   FontIcon,
   getTheme,
   TooltipHost,
@@ -73,7 +72,6 @@ import { CharticulatorPropertyAccessors } from "./types";
 import { FluentInputColor } from "./controls/fluentui_input_color";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
-import { Icon } from "@fluentui/react/lib/Icon";
 import {
   defaultLabelStyle,
   defaultStyle,
@@ -82,8 +80,6 @@ import {
   FluentButton,
   FluentCheckbox,
   FluentDatePickerWrapper,
-  FluentDropdown,
-  FluentDropdownWrapper,
   FluentLabelHeader,
   labelRender,
   NestedChartButtonsWrapper,
