@@ -45,6 +45,7 @@ import {
   ValueMapping,
 } from "../../../core/specification";
 import { SnappingGuidesVisualTypes } from "../../../core/prototypes";
+import { BindDataWarningDialog } from "./utils/BindDataWarningDialog";
 
 export interface MarkEditorViewProps {
   height?: number;
@@ -275,6 +276,7 @@ export interface SingleMarkViewState {
   showIndicatorActive: boolean;
   snappingCandidates: MarkSnappableGuide[] | null;
   zoom: ZoomInfo;
+  isHidden: boolean;
 }
 
 export class SingleMarkView
@@ -300,6 +302,7 @@ export class SingleMarkView
         centerY: this.props.height / 2,
         scale: 1,
       },
+      isHidden: true,
     };
   }
 
@@ -1151,6 +1154,21 @@ export class SingleMarkView
     );
   }
 
+  private toggleHideDialog() {
+    this.setState({
+      isHidden: true,
+    });
+  }
+
+  public renderDialog(): JSX.Element {
+    return (
+      <BindDataWarningDialog
+        isHidden={this.state.isHidden}
+        onClick={this.toggleHideDialog.bind(this)}
+      />
+    );
+  }
+
   public renderDropZoneForElement(
     data: any,
     element: Specification.Element,
@@ -1230,6 +1248,13 @@ export class SingleMarkView
             }}
             zone={zone}
             zoom={this.state.zoom}
+            onOpenDialog={(value: boolean) => {
+              if (value) {
+                this.setState({
+                  isHidden: false,
+                });
+              }
+            }}
           />
         );
       });
@@ -1715,6 +1740,7 @@ export class SingleMarkView
             {/* {this.renderAnchor()} */}
             {this.renderSnappingGuides()}
             {this.renderSnappingGuidesLabels()}
+            {this.renderDialog()}
             <g>{!this.state.dataForDropZones ? this.renderHandles() : null}</g>
             <g>
               {this.state.dataForDropZones

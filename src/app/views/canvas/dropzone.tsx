@@ -13,6 +13,7 @@ export interface DropZoneViewProps {
   onDragEnter: (
     data: any
   ) => (point: Point, modifiers: DragModifiers) => boolean;
+  onOpenDialog?: (value: boolean) => void;
 }
 
 export interface DropZoneViewState {
@@ -52,6 +53,7 @@ export class DropZoneView
         });
       });
       ctx.onDrop((point: Point, modifiers: DragModifiers) => {
+        this.props?.onOpenDialog(ctx?.data?.table?.type == "Links");
         return handler(point, modifiers);
       });
       return true;

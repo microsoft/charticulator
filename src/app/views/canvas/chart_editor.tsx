@@ -49,6 +49,7 @@ import { SnappingGuidesVisualTypes } from "../../../core/prototypes";
 import { classNames } from "../../utils";
 import { FluentUIWidgetManager } from "../panels/widgets/fluentui_manager";
 import { Callout, DirectionalHint } from "@fluentui/react";
+import { BindDataWarningDialog } from "./utils/BindDataWarningDialog";
 
 export interface ChartEditorViewProps {
   store: AppStore;
@@ -71,6 +72,7 @@ export interface ChartEditorViewState {
     | false;
   isSolving: boolean;
   canvasToolbar: boolean;
+  isHidden: boolean;
 }
 
 /**
@@ -107,6 +109,7 @@ export class ChartEditorView
       viewHeight: 100,
       isSolving: false,
       canvasToolbar: true,
+      isHidden: true,
     };
 
     this.tokens = [];
@@ -1288,6 +1291,21 @@ export class ChartEditorView
     );
   }
 
+  private toggleHideDialog() {
+    this.setState({
+      isHidden: true,
+    });
+  }
+
+  public renderDialog(): JSX.Element {
+    return (
+      <BindDataWarningDialog
+        isHidden={this.state.isHidden}
+        onClick={this.toggleHideDialog.bind(this)}
+      />
+    );
+  }
+
   public renderDropZoneForMarkLayout(
     layout: Specification.PlotSegment,
     state: Specification.PlotSegmentState
@@ -1366,6 +1384,13 @@ export class ChartEditorView
           }}
           zone={zone}
           zoom={this.state.zoom}
+          onOpenDialog={(value: boolean) => {
+            if (value) {
+              this.setState({
+                isHidden: false,
+              });
+            }
+          }}
         />
       ));
   }
@@ -1447,6 +1472,7 @@ export class ChartEditorView
             {this.renderDropZones()}
             {this.renderEditingLink()}
             {this.renderCreatingComponent()}
+            {this.renderDialog()}
           </svg>
           {this.renderControls()}
         </div>

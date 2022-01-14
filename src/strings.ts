@@ -132,6 +132,8 @@ export const strings = {
   dialog: {
     resetConfirm: "Are you sure you want to delete the chart?",
     deleteChart: "Delete chart",
+    warning: "Warning",
+    bindLinksTableMessage: "Please use data not from the link table",
   },
   scaleEditor: {
     add: "Add",
