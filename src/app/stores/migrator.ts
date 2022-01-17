@@ -35,6 +35,7 @@ import { SymbolElementProperties } from "../../core/prototypes/marks/symbol.attr
 import { LinearBooleanScaleMode } from "../../core/prototypes/scales/linear";
 import { parseDerivedColumnsExpression } from "../../core/prototypes/plot_segments/utils";
 import { OrientationType } from "../../core/prototypes/legends/types";
+import { NumericalColorLegendClass } from "../../core/prototypes/legends/color_legend";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -178,8 +179,8 @@ export class Migrator {
     }
 
     if (
-      compareVersion(state.version, "2.1.4") < 0 &&
-      compareVersion(targetVersion, "2.1.4") >= 0
+      compareVersion(state.version, "2.1.5") < 0 &&
+      compareVersion(targetVersion, "2.1.5") >= 0
     ) {
       state = this.setMissedLegendProperties(state);
     }
@@ -926,7 +927,8 @@ export class Migrator {
           legend.properties.orientation = OrientationType.VERTICAL;
         }
         if (legend.properties.length === undefined) {
-          legend.properties.length = 100;
+          legend.properties.length =
+            NumericalColorLegendClass.defaultLegendLength;
         }
       }
     }

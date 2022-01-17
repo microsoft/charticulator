@@ -16,12 +16,13 @@ export class NumericalColorLegendClass extends LegendClass {
   public static classID: string = "legend.numerical-color";
   public static type: string = "legend";
 
+  public static defaultLegendLength: number = 100;
+
   public static defaultProperties: LegendProperties = {
     ...LegendClass.defaultProperties,
     orientation: OrientationType.VERTICAL,
-    length: 100,
+    length: NumericalColorLegendClass.defaultLegendLength,
   };
-
   private gradientWidth: number = 12;
 
   public getLineHeight(): number {
@@ -30,7 +31,9 @@ export class NumericalColorLegendClass extends LegendClass {
 
   public getLegendSize(): [number, number] {
     const props = this.object.properties;
-    const length = props.length ? +props.length : 100;
+    const length = props.length
+      ? +props.length
+      : NumericalColorLegendClass.defaultLegendLength;
     if (this.isHorizontalOrientation()) {
       return [length, this.getLineHeight()];
     }
