@@ -1,0 +1,24 @@
+MainView:
+  ColumnsPosition: "left"
+  EditorPanelsPosition: "left"
+  ToolbarPosition: "top"
+
+LegalNotices:
+  privacyStatementHTML: |
+    "<p>
+      <b>A note about privacy:</b>
+      We collect anonymous usage information such as the number of charts you create, the number of components in each chart, and the size of imported datasets. 
+      Except these statistics, your data remains on your machine and is not shared with <a title="Microsoft" href="http://microsoft.com">Microsoft</a>.  If you have privacy concerns, Charticulator can be built from source and hosted on your own server.
+      By using this service, you agree to
+      <a title="Microsoft" href="http://microsoft.com">Microsoft</a>'s
+      <a title="Privacy" href="https://go.microsoft.com/fwlink/?LinkId=521839">Privacy Statement</a>
+      and
+      <a title="Terms of Use" href="https://go.microsoft.com/fwlink/?LinkID=760869">Terms of Use</a>.
+    </p>
+    <p>
+      <a href="https://go.microsoft.com/fwlink/?LinkId=521839">Privacy & cookies</a> |
+      <a href="https://go.microsoft.com/fwlink/?LinkID=760869">Terms of use</a> |
+      <a href="http://go.microsoft.com/fwlink/?LinkId=506942">Trademarks</a> |
+      <a href="http://choice.microsoft.com/">About our ads</a> |
+      Copyright 2021 Microsoft Corporation
+    </p>"
