@@ -1,0 +1,709 @@
+{
+  "specification": {
+    "_id": "vtrqvpsbctj",
+    "classID": "chart.rectangle",
+    "properties": {
+      "name": "Chart",
+      "backgroundColor": {
+        "r": 0,
+        "g": 0,
+        "b": 0
+      },
+      "backgroundOpacity": 1,
+      "exposed": true
+    },
+    "mappings": {
+      "marginTop": {
+        "type": "value",
+        "value": 70
+      },
+      "marginRight": {
+        "type": "value",
+        "value": 100
+      },
+      "width": {
+        "type": "value",
+        "value": 600
+      },
+      "marginBottom": {
+        "type": "value",
+        "value": -210
+      },
+      "height": {
+        "type": "value",
+        "value": 450
+      },
+      "marginLeft": {
+        "type": "value",
+        "value": 40
+      }
+    },
+    "glyphs": [
+      {
+        "_id": "2uq32pqz9wr",
+        "classID": "glyph.rectangle",
+        "properties": {
+          "name": "Glyph"
+        },
+        "table": "fitbit_steps",
+        "marks": [
+          {
+            "_id": "l5djk9nstd",
+            "classID": "mark.anchor",
+            "properties": {
+              "name": "Anchor"
+            },
+            "mappings": {
+              "x": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              }
+            }
+          },
+          {
+            "_id": "q7jctckosc",
+            "classID": "mark.rect",
+            "properties": {
+              "visible": true,
+              "strokeStyle": "solid",
+              "shape": "ellipse",
+              "name": "Shape1",
+              "exposed": true
+            },
+            "mappings": {
+              "fill": {
+                "type": "scale",
+                "table": "fitbit_steps",
+                "expression": "avg(Steps)",
+                "valueType": "number",
+                "scale": "yk3wnsqjdc",
+                "attribute": "fill"
+              },
+              "strokeWidth": {
+                "type": "value",
+                "value": 1
+              },
+              "opacity": {
+                "type": "value",
+                "value": 1
+              },
+              "visible": {
+                "type": "value",
+                "value": true
+              },
+              "x1": {
+                "type": "parent",
+                "parentAttribute": "ix1"
+              },
+              "y1": {
+                "type": "parent",
+                "parentAttribute": "iy1"
+              },
+              "x2": {
+                "type": "parent",
+                "parentAttribute": "ix2"
+              },
+              "y2": {
+                "type": "parent",
+                "parentAttribute": "iy2"
+              },
+              "height": {
+                "type": "scale",
+                "table": "fitbit_steps",
+                "expression": "avg(Steps)",
+                "valueType": "number",
+                "scale": "r1z7bupq47m",
+                "attribute": "height"
+              }
+            }
+          }
+        ],
+        "mappings": {},
+        "constraints": []
+      }
+    ],
+    "elements": [
+      {
+        "_id": "wobusntycl",
+        "classID": "plot-segment.polar",
+        "glyph": "2uq32pqz9wr",
+        "table": "fitbit_steps",
+        "filter": null,
+        "mappings": {
+          "x1": {
+            "type": "parent",
+            "parentAttribute": "x1"
+          },
+          "x2": {
+            "type": "parent",
+            "parentAttribute": "x2"
+          },
+          "y1": {
+            "type": "parent",
+            "parentAttribute": "y1"
+          },
+          "y2": {
+            "type": "parent",
+            "parentAttribute": "y2"
+          }
+        },
+        "properties": {
+          "name": "PlotSegment1",
+          "visible": true,
+          "sublayout": {
+            "type": "dodge-x",
+            "order": null,
+            "ratioX": 0.1,
+            "ratioY": 0.1,
+            "align": {
+              "x": "start",
+              "y": "start"
+            },
+            "grid": {
+              "direction": "x",
+              "xCount": null,
+              "yCount": null
+            },
+            "packing": {
+              "gravityX": 0.1,
+              "gravityY": 0.1
+            }
+          },
+          "marginX1": 0,
+          "marginY1": 0,
+          "marginX2": 0,
+          "marginY2": 0,
+          "startAngle": -90,
+          "endAngle": 90,
+          "innerRatio": 0.07031690265733853,
+          "outerRatio": 1,
+          "curve": [
+            [
+              {
+                "x": -1,
+                "y": 0
+              },
+              {
+                "x": -0.25,
+                "y": -0.5
+              },
+              {
+                "x": 0.25,
+                "y": 0.5
+              },
+              {
+                "x": 1,
+                "y": 0
+              }
+            ]
+          ],
+          "normalStart": -0.2,
+          "normalEnd": 0.2
+        }
+      },
+      {
+        "_id": "aiu408l9e19",
+        "classID": "mark.text",
+        "properties": {
+          "name": "Title",
+          "visible": true,
+          "alignment": {
+            "x": "middle",
+            "y": "top",
+            "xMargin": 0,
+            "yMargin": 30
+          },
+          "rotation": 0,
+          "exposed": true
+        },
+        "mappings": {
+          "x": {
+            "type": "parent",
+            "parentAttribute": "cx"
+          },
+          "y": {
+            "type": "parent",
+            "parentAttribute": "oy2"
+          },
+          "text": {
+            "type": "value",
+            "value": "Step Counts by Month"
+          },
+          "fontSize": {
+            "type": "value",
+            "value": 24
+          },
+          "color": {
+            "type": "value",
+            "value": {
+              "r": 255,
+              "g": 255,
+              "b": 255
+            }
+          }
+        }
+      },
+      {
+        "_id": "36ahhnigrjh",
+        "classID": "legend.numerical-color",
+        "properties": {
+          "scale": "yk3wnsqjdc",
+          "visible": true,
+          "alignX": "start",
+          "alignY": "start",
+          "fontFamily": "Arial",
+          "fontSize": 10,
+          "textColor": {
+            "r": 255,
+            "g": 255,
+            "b": 255
+          },
+          "dataSource": "columnValues",
+          "dataExpressions": [],
+          "markerShape": "circle",
+          "name": "Legend1",
+          "exposed": true
+        },
+        "mappings": {
+          "x": {
+            "type": "parent",
+            "parentAttribute": "x2"
+          },
+          "y": {
+            "type": "parent",
+            "parentAttribute": "cy"
+          },
+          "mappingOptions": {
+            "type": "scale",
+            "table": "fitbit_steps",
+            "expression": "avg(Steps)",
+            "valueType": "number",
+            "scale": "yk3wnsqjdc",
+            "allowSelectValue": false
+          }
+        }
+      }
+    ],
+    "scales": [
+      {
+        "_id": "r1z7bupq47m",
+        "classID": "scale.linear<number,number>",
+        "properties": {
+          "autoDomainMin": true,
+          "autoDomainMax": true,
+          "name": "Scale1",
+          "domainMin": 0,
+          "domainMax": 350000,
+          "exposed": true
+        },
+        "mappings": {
+          "rangeMin": {
+            "type": "value",
+            "value": 0
+          }
+        },
+        "inputType": "number",
+        "outputType": "number"
+      },
+      {
+        "_id": "yk3wnsqjdc",
+        "classID": "scale.linear<number,color>",
+        "properties": {
+          "name": "Scale2",
+          "domainMin": 0,
+          "domainMax": 320000,
+          "range": {
+            "colors": [
+              {
+                "r": 94,
+                "g": 79,
+                "b": 162
+              },
+              {
+                "r": 50,
+                "g": 136,
+                "b": 189
+              },
+              {
+                "r": 102,
+                "g": 194,
+                "b": 165
+              },
+              {
+                "r": 171,
+                "g": 221,
+                "b": 164
+              },
+              {
+                "r": 230,
+                "g": 245,
+                "b": 152
+              },
+              {
+                "r": 255,
+                "g": 255,
+                "b": 191
+              },
+              {
+                "r": 254,
+                "g": 224,
+                "b": 139
+              },
+              {
+                "r": 253,
+                "g": 174,
+                "b": 97
+              },
+              {
+                "r": 244,
+                "g": 109,
+                "b": 67
+              },
+              {
+                "r": 213,
+                "g": 62,
+                "b": 79
+              },
+              {
+                "r": 158,
+                "g": 1,
+                "b": 66
+              }
+            ],
+            "colorspace": "lab"
+          },
+          "autoDomainMax": true,
+          "autoDomainMin": true,
+          "exposed": true
+        },
+        "mappings": {
+          "range": {
+            "type": "value",
+            "value": {
+              "colorspace": "lab",
+              "colors": [
+                {
+                  "r": 255,
+                  "g": 255,
+                  "b": 255
+                },
+                {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0
+                }
+              ]
+            }
+          }
+        },
+        "inputType": "number",
+        "outputType": "color"
+      }
+    ],
+    "scaleMappings": [
+      {
+        "type": "scale",
+        "table": "fitbit_steps",
+        "expression": "avg(Steps)",
+        "valueType": "number",
+        "scale": "r1z7bupq47m",
+        "attribute": "height"
+      },
+      {
+        "type": "scale",
+        "table": "fitbit_steps",
+        "expression": "avg(Steps)",
+        "valueType": "number",
+        "scale": "yk3wnsqjdc",
+        "attribute": "fill"
+      }
+    ],
+    "constraints": [],
+    "resources": []
+  },
+  "defaultAttributes": {
+    "l5djk9nstd": {
+      "x": 0,
+      "y": 0
+    },
+    "q7jctckosc": {
+      "x1": -0.6749999999999999,
+      "y1": -7.094817117623152,
+      "x2": 0.6749999999999999,
+      "y2": 7.094817117623152,
+      "cx": 0,
+      "cy": 0,
+      "width": 1.3499999999999999,
+      "height": 14.189634235246304,
+      "strokeWidth": 0.1,
+      "opacity": 0.1
+    },
+    "aiu408l9e19": {
+      "x": -7.5,
+      "y": 56.25,
+      "fontSize": 6,
+      "opacity": 0.25
+    }
+  },
+  "tables": [
+    {
+      "name": "fitbit_steps",
+      "columns": [
+        {
+          "displayName": "Steps",
+          "name": "Steps",
+          "type": "number",
+          "metadata": {
+            "kind": "numerical",
+            "examples": "131663, 135652, 146284"
+          }
+        }
+      ]
+    }
+  ],
+  "inference": [
+    {
+      "objectID": "r1z7bupq47m",
+      "scale": {
+        "classID": "scale.linear<number,number>",
+        "expressions": [
+          "avg(Steps)"
+        ],
+        "properties": {
+          "mapping": "mapping"
+        }
+      },
+      "dataSource": {
+        "table": "fitbit_steps"
+      },
+      "autoDomainMax": true,
+      "autoDomainMin": true
+    },
+    {
+      "objectID": "yk3wnsqjdc",
+      "scale": {
+        "classID": "scale.linear<number,color>",
+        "expressions": [
+          "avg(Steps)"
+        ],
+        "properties": {
+          "mapping": "mapping"
+        }
+      },
+      "dataSource": {
+        "table": "fitbit_steps"
+      },
+      "autoDomainMax": true,
+      "autoDomainMin": true
+    }
+  ],
+  "properties": [
+    {
+      "objectID": "q7jctckosc",
+      "target": {
+        "attribute": "visible"
+      },
+      "type": "boolean",
+      "default": true,
+      "displayName": "Shape1/visible"
+    },
+    {
+      "objectID": "q7jctckosc",
+      "target": {
+        "attribute": "strokeWidth"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Shape1/strokeWidth"
+    },
+    {
+      "objectID": "q7jctckosc",
+      "target": {
+        "property": "strokeStyle"
+      },
+      "type": "enum",
+      "default": "solid",
+      "displayName": "Shape1/strokeStyle"
+    },
+    {
+      "objectID": "q7jctckosc",
+      "target": {
+        "attribute": "opacity"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Shape1/opacity"
+    },
+    {
+      "objectID": "aiu408l9e19",
+      "target": {
+        "attribute": "fontSize"
+      },
+      "type": "number",
+      "default": 24,
+      "displayName": "Title/fontSize"
+    },
+    {
+      "objectID": "aiu408l9e19",
+      "target": {
+        "attribute": "color"
+      },
+      "type": "color",
+      "default": "#ffffff",
+      "displayName": "Title/color"
+    },
+    {
+      "objectID": "aiu408l9e19",
+      "target": {
+        "attribute": "text"
+      },
+      "type": "text",
+      "default": "Step Counts by Month",
+      "displayName": "Title/text"
+    },
+    {
+      "objectID": "36ahhnigrjh",
+      "target": {
+        "property": "fontFamily"
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "Legend1/fontFamily"
+    },
+    {
+      "objectID": "36ahhnigrjh",
+      "target": {
+        "property": "fontSize"
+      },
+      "type": "number",
+      "default": 10,
+      "displayName": "Legend1/fontSize"
+    },
+    {
+      "objectID": "36ahhnigrjh",
+      "target": {
+        "property": "textColor"
+      },
+      "type": "color",
+      "default": "#ffffff",
+      "displayName": "Legend1/textColor"
+    },
+    {
+      "objectID": "36ahhnigrjh",
+      "target": {
+        "property": "markerShape"
+      },
+      "type": "enum",
+      "default": "circle",
+      "displayName": "Legend1/markerShape"
+    },
+    {
+      "objectID": "36ahhnigrjh",
+      "target": {
+        "property": "alignY"
+      },
+      "type": "enum",
+      "default": "start",
+      "displayName": "Legend1/alignY"
+    },
+    {
+      "objectID": "36ahhnigrjh",
+      "target": {
+        "property": "alignX"
+      },
+      "type": "enum",
+      "default": "start",
+      "displayName": "Legend1/alignX"
+    },
+    {
+      "objectID": "r1z7bupq47m",
+      "target": {
+        "property": "domainMin"
+      },
+      "type": "number",
+      "displayName": "Scale1/domainMin"
+    },
+    {
+      "objectID": "r1z7bupq47m",
+      "target": {
+        "property": "domainMax"
+      },
+      "type": "number",
+      "displayName": "Scale1/domainMax"
+    },
+    {
+      "objectID": "r1z7bupq47m",
+      "target": {
+        "attribute": "rangeMin"
+      },
+      "type": "number",
+      "default": null,
+      "displayName": "Scale1/rangeMin"
+    },
+    {
+      "objectID": "r1z7bupq47m",
+      "target": {
+        "attribute": "rangeMax"
+      },
+      "type": "number",
+      "default": null,
+      "displayName": "Scale1/rangeMax"
+    },
+    {
+      "objectID": "yk3wnsqjdc",
+      "target": {
+        "property": "domainMin"
+      },
+      "type": "number",
+      "displayName": "Scale2/domainMin"
+    },
+    {
+      "objectID": "yk3wnsqjdc",
+      "target": {
+        "property": "domainMax"
+      },
+      "type": "number",
+      "displayName": "Scale2/domainMax"
+    },
+    {
+      "objectID": "vtrqvpsbctj",
+      "target": {
+        "attribute": "marginLeft"
+      },
+      "type": "number",
+      "default": 40,
+      "displayName": "Chart/marginLeft"
+    },
+    {
+      "objectID": "vtrqvpsbctj",
+      "target": {
+        "attribute": "marginRight"
+      },
+      "type": "number",
+      "default": 100,
+      "displayName": "Chart/marginRight"
+    },
+    {
+      "objectID": "vtrqvpsbctj",
+      "target": {
+        "attribute": "marginTop"
+      },
+      "type": "number",
+      "default": 70,
+      "displayName": "Chart/marginTop"
+    },
+    {
+      "objectID": "vtrqvpsbctj",
+      "target": {
+        "attribute": "marginBottom"
+      },
+      "type": "number",
+      "default": -210,
+      "displayName": "Chart/marginBottom"
+    }
+  ]
+}
