@@ -12,11 +12,6 @@ import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widget
 import { strings } from "../../../strings";
 import { OrientationType } from "./types";
 
-interface NumericalColorLegendProperties extends LegendProperties {
-  orientation: OrientationType;
-  length: number;
-}
-
 export class NumericalColorLegendClass extends LegendClass {
   public static classID: string = "legend.numerical-color";
   public static type: string = "legend";
@@ -36,22 +31,21 @@ export class NumericalColorLegendClass extends LegendClass {
   public getLegendSize(): [number, number] {
     const props = this.object.properties;
     const length = props.length ? +props.length : 100;
-    if (this.isVerticalOrientation()) {
-      return [this.getLineHeight(), length];
+    if (this.isHorizontalOrientation()) {
+      return [length, this.getLineHeight()];
     }
-    return [length, this.getLineHeight()];
+    return [this.getLineHeight(), length];
   }
 
-  private isVerticalOrientation(): boolean {
+  private isHorizontalOrientation(): boolean {
     const props = this.object.properties;
-    return props.orientation === OrientationType.VERTICAL;
+    return props.orientation === OrientationType.HORIZONTAL;
   }
 
   public getGraphics(): Graphics.Element {
-    const height = this.isVerticalOrientation()
-      ? this.getLegendSize()[1]
-      : this.getLegendSize()[0];
-    const props = this.object.properties;
+    const height = this.isHorizontalOrientation()
+      ? this.getLegendSize()[0]
+      : this.getLegendSize()[1];
     const marginLeft = 5;
     const gradientWidth = 12;
     const axisMargin = 2;
@@ -62,7 +56,6 @@ export class NumericalColorLegendClass extends LegendClass {
       return null;
     }
 
-    const isVertical = props.orientation === OrientationType.VERTICAL;
     const range = <Specification.Types.ColorGradient>scale[0].properties.range;
     const domainMin = <number>scale[0].properties.domainMin;
     const domainMax = <number>scale[0].properties.domainMax;
@@ -76,7 +69,9 @@ export class NumericalColorLegendClass extends LegendClass {
       lineColor: this.object.properties.textColor,
     });
     const g = Graphics.makeGroup([]);
-    if (isVertical) {
+    if (this.isHorizontalOrientation()) {
+      g.elements.push(axisRenderer.renderLine(0, -axisMargin, 0, 1));
+    } else {
       g.elements.push(
         axisRenderer.renderLine(
           marginLeft + gradientWidth + axisMargin,
@@ -85,8 +80,6 @@ export class NumericalColorLegendClass extends LegendClass {
           1
         )
       );
-    } else {
-      g.elements.push(axisRenderer.renderLine(0, -axisMargin, 0, 1));
     }
 
     const ticks = height * 2;
@@ -96,15 +89,15 @@ export class NumericalColorLegendClass extends LegendClass {
       const color = interp(t);
       const y1 = (i / ticks) * height;
       const y2 = Math.min(height, ((i + 1.5) / ticks) * height);
-      if (isVertical) {
+      if (this.isHorizontalOrientation()) {
         g.elements.push(
-          Graphics.makeRect(marginLeft, y1, marginLeft + gradientWidth, y2, {
+          Graphics.makeRect(y1, 0, y2, gradientWidth, {
             fillColor: color,
           })
         );
       } else {
         g.elements.push(
-          Graphics.makeRect(y1, 0, y2, gradientWidth, {
+          Graphics.makeRect(marginLeft, y1, marginLeft + gradientWidth, y2, {
             fillColor: color,
           })
         );
@@ -112,10 +105,10 @@ export class NumericalColorLegendClass extends LegendClass {
     }
 
     const { x1, y1 } = this.getLayoutBox();
-    if (isVertical) {
-      g.transform = { x: x1, y: y1, angle: 0 };
-    } else {
+    if (this.isHorizontalOrientation()) {
       g.transform = { x: x1, y: y1 + horizontalShift, angle: 0 };
+    } else {
+      g.transform = { x: x1, y: y1, angle: 0 };
     }
     return g;
   }
@@ -135,9 +128,9 @@ export class NumericalColorLegendClass extends LegendClass {
           manager.inputNumber(
             { property: "length" },
             {
-              label: this.isVerticalOrientation()
-                ? strings.objects.height
-                : strings.objects.width,
+              label: this.isHorizontalOrientation()
+                ? strings.objects.width
+                : strings.objects.height,
               updownTick: 10,
               showUpdown: true,
             }

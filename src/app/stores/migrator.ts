@@ -34,6 +34,7 @@ import { TickFormatType } from "../../core/specification/types";
 import { SymbolElementProperties } from "../../core/prototypes/marks/symbol.attrs";
 import { LinearBooleanScaleMode } from "../../core/prototypes/scales/linear";
 import { parseDerivedColumnsExpression } from "../../core/prototypes/plot_segments/utils";
+import { OrientationType } from "../../core/prototypes/legends/types";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -174,6 +175,13 @@ export class Migrator {
       compareVersion(targetVersion, "2.1.2") >= 0
     ) {
       state = this.setMissedSortProperties(state);
+    }
+
+    if (
+      compareVersion(state.version, "2.1.4") < 0 &&
+      compareVersion(targetVersion, "2.1.4") >= 0
+    ) {
+      state = this.setMissedLegendProperties(state);
     }
 
     // After migration, set version to targetVersion
@@ -904,6 +912,21 @@ export class Migrator {
           if (element.properties.axis === undefined) {
             element.properties.axis = null;
           }
+        }
+      }
+    }
+    return state;
+  }
+
+  public setMissedLegendProperties(state: AppStoreState) {
+    for (const element of state.chart.elements) {
+      if (Prototypes.isType(element.classID, "legend.numerical-color")) {
+        const legend = element as ChartElement<LegendProperties>;
+        if (legend.properties.orientation === undefined) {
+          legend.properties.orientation = OrientationType.VERTICAL;
+        }
+        if (legend.properties.length === undefined) {
+          legend.properties.length = 100;
         }
       }
     }
