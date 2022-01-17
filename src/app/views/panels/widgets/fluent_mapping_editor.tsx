@@ -24,7 +24,6 @@ import { FluentValueEditor } from "./fluentui_value_editor";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 import {
   DefaultButton,
-  TextField,
   ActionButton,
   Label,
   IContextualMenuItem,
