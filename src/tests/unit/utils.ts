@@ -62,6 +62,12 @@ export function expect_deep_approximately_equals(
       }
     } else {
       try {
+        /**
+         Numeric attributes in the SVG tree are stored as strings and we are trying to
+         convert them to numbers and check for null. Such a check is needed to process
+         the SVG path. Example d="M 0,7.20843424 L 4.16179145,0 L 0,-7.20843424 L -4.16179145,0 Z"
+         It contains numbers and letters
+         */
         if (!isNaN(+a) && a != null) {
           a = +a;
         }
