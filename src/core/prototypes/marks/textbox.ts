@@ -35,6 +35,7 @@ import {
   TextboxElementAttributes,
   TextboxElementProperties,
 } from "./textbox.attrs";
+import { RectangleGlyph } from "../glyphs";
 
 export { TextboxElementAttributes, TextboxElementProperties };
 
@@ -705,7 +706,10 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         p1: { x: x2, y: y1 },
         p2: { x: x1, y: y1 },
         title: "width",
-        accept: { kind: Specification.DataKind.Numerical },
+        accept: {
+          kind: Specification.DataKind.Numerical,
+          table: (this.parent as RectangleGlyph).object.table,
+        },
         dropAction: {
           scaleInference: {
             attribute: "width",
@@ -719,7 +723,10 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         p1: { x: x1, y: y1 },
         p2: { x: x1, y: y2 },
         title: "height",
-        accept: { kind: Specification.DataKind.Numerical },
+        accept: {
+          kind: Specification.DataKind.Numerical,
+          table: (this.parent as RectangleGlyph).object.table,
+        },
         dropAction: {
           scaleInference: {
             attribute: "height",

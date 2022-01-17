@@ -37,6 +37,7 @@ import {
   TextElementAttributes,
   TextElementProperties,
 } from "./text.attrs";
+import { RectangleGlyph } from "../glyphs";
 
 export { TextElementAttributes, TextElementProperties };
 
@@ -199,6 +200,9 @@ export class TextElementClass extends EmphasizableMarkClass<
             attribute: "text",
             attributeType: Specification.AttributeType.Text,
           },
+        },
+        accept: {
+          table: (this.parent as RectangleGlyph).object.table,
         },
       },
     ];
