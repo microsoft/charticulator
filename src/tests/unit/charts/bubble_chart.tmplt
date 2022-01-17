@@ -1,0 +1,682 @@
+{
+  "specification": {
+    "_id": "vnneqlj4qr",
+    "classID": "chart.rectangle",
+    "properties": {
+      "name": "Chart",
+      "backgroundColor": null,
+      "backgroundOpacity": 1,
+      "exposed": true
+    },
+    "mappings": {
+      "marginTop": {
+        "type": "value",
+        "value": 80
+      },
+      "width": {
+        "type": "value",
+        "value": 600
+      }
+    },
+    "glyphs": [
+      {
+        "_id": "7b3qvtgsqpv",
+        "classID": "glyph.rectangle",
+        "properties": {
+          "name": "Glyph"
+        },
+        "table": "oecd_population_2018",
+        "marks": [
+          {
+            "_id": "pfs5qjcsbma",
+            "classID": "mark.anchor",
+            "properties": {
+              "name": "Anchor"
+            },
+            "mappings": {
+              "x": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              }
+            }
+          },
+          {
+            "_id": "93alzvecgnq",
+            "classID": "mark.symbol",
+            "properties": {
+              "visible": true,
+              "name": "Symbol1",
+              "exposed": true
+            },
+            "mappings": {
+              "fill": {
+                "type": "scale",
+                "table": "oecd_population_2018",
+                "expression": "first(`Geographic Location`)",
+                "valueType": "string",
+                "scale": "aqx25hxd9oc",
+                "attribute": "fill"
+              },
+              "strokeWidth": {
+                "type": "value",
+                "value": 1
+              },
+              "opacity": {
+                "type": "value",
+                "value": 1
+              },
+              "size": {
+                "type": "scale",
+                "table": "oecd_population_2018",
+                "expression": "avg(Population)",
+                "valueType": "number",
+                "scale": "wdt76ny31o",
+                "attribute": "size"
+              },
+              "visible": {
+                "type": "value",
+                "value": true
+              },
+              "x": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              }
+            }
+          },
+          {
+            "_id": "yq3vl96ybsm",
+            "classID": "mark.text",
+            "properties": {
+              "alignment": {
+                "x": "middle",
+                "y": "middle",
+                "xMargin": 5,
+                "yMargin": 5
+              },
+              "rotation": 0,
+              "visible": true,
+              "name": "Text1",
+              "exposed": true
+            },
+            "mappings": {
+              "text": {
+                "type": "text",
+                "table": "oecd_population_2018",
+                "textExpression": "${first(Country)}"
+              },
+              "fontFamily": {
+                "type": "value",
+                "value": "Arial"
+              },
+              "fontSize": {
+                "type": "scale",
+                "table": "oecd_population_2018",
+                "expression": "avg(Population)",
+                "valueType": "number",
+                "scale": "1kd5xhem0j8",
+                "attribute": "fontSize"
+              },
+              "color": {
+                "type": "value",
+                "value": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0
+                }
+              },
+              "opacity": {
+                "type": "value",
+                "value": 1
+              },
+              "visible": {
+                "type": "value",
+                "value": true
+              },
+              "x": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              }
+            }
+          }
+        ],
+        "mappings": {},
+        "constraints": []
+      }
+    ],
+    "elements": [
+      {
+        "_id": "fk2gwx9eu4g",
+        "classID": "plot-segment.cartesian",
+        "glyph": "7b3qvtgsqpv",
+        "table": "oecd_population_2018",
+        "filter": null,
+        "mappings": {
+          "x1": {
+            "type": "parent",
+            "parentAttribute": "x1"
+          },
+          "y1": {
+            "type": "parent",
+            "parentAttribute": "y1"
+          },
+          "x2": {
+            "type": "parent",
+            "parentAttribute": "x2"
+          },
+          "y2": {
+            "type": "parent",
+            "parentAttribute": "y2"
+          }
+        },
+        "properties": {
+          "name": "PlotSegment1",
+          "visible": true,
+          "marginX1": 0,
+          "marginY1": 0,
+          "marginX2": 0,
+          "marginY2": 0,
+          "sublayout": {
+            "type": "packing",
+            "order": null,
+            "ratioX": 0.1,
+            "ratioY": 0.1,
+            "align": {
+              "x": "start",
+              "y": "start"
+            },
+            "grid": {
+              "direction": "x",
+              "xCount": null,
+              "yCount": null
+            },
+            "packing": {
+              "gravityX": 0.1,
+              "gravityY": 0.1
+            }
+          }
+        }
+      },
+      {
+        "_id": "s93hz4d5xgh",
+        "classID": "mark.text",
+        "properties": {
+          "name": "Title",
+          "visible": true,
+          "alignment": {
+            "x": "middle",
+            "y": "top",
+            "xMargin": 0,
+            "yMargin": 30
+          },
+          "rotation": 0,
+          "exposed": true
+        },
+        "mappings": {
+          "x": {
+            "type": "parent",
+            "parentAttribute": "cx"
+          },
+          "y": {
+            "type": "parent",
+            "parentAttribute": "oy2"
+          },
+          "text": {
+            "type": "value",
+            "value": "Population of OECD Countries in 2018"
+          },
+          "fontSize": {
+            "type": "value",
+            "value": 24
+          },
+          "color": {
+            "type": "value",
+            "value": {
+              "r": 0,
+              "g": 0,
+              "b": 0
+            }
+          }
+        }
+      }
+    ],
+    "scales": [
+      {
+        "_id": "wdt76ny31o",
+        "classID": "scale.linear<number,number>",
+        "properties": {
+          "autoDomainMin": true,
+          "autoDomainMax": true,
+          "name": "Scale1",
+          "domainMin": 0,
+          "domainMax": 350,
+          "exposed": true
+        },
+        "mappings": {
+          "rangeMin": {
+            "type": "value",
+            "value": 0
+          },
+          "rangeMax": {
+            "type": "value",
+            "value": 30000
+          }
+        },
+        "inputType": "number",
+        "outputType": "number"
+      },
+      {
+        "_id": "aqx25hxd9oc",
+        "classID": "scale.categorical<string,color>",
+        "properties": {
+          "name": "Scale2",
+          "mapping": {
+            "Europe": {
+              "r": 166,
+              "g": 206,
+              "b": 227
+            },
+            "Oceania": {
+              "r": 31,
+              "g": 120,
+              "b": 180
+            },
+            "Asia": {
+              "r": 178,
+              "g": 223,
+              "b": 138
+            },
+            "South America": {
+              "r": 51,
+              "g": 160,
+              "b": 44
+            },
+            "North America": {
+              "r": 251,
+              "g": 154,
+              "b": 153
+            }
+          },
+          "autoDomainMax": true,
+          "autoDomainMin": true
+        },
+        "mappings": {},
+        "inputType": "string",
+        "outputType": "color"
+      },
+      {
+        "_id": "1kd5xhem0j8",
+        "classID": "scale.linear<number,number>",
+        "properties": {
+          "autoDomainMin": true,
+          "autoDomainMax": true,
+          "name": "Scale3",
+          "domainMin": 0,
+          "domainMax": 350,
+          "exposed": true
+        },
+        "mappings": {
+          "rangeMin": {
+            "type": "value",
+            "value": 6
+          },
+          "rangeMax": {
+            "type": "value",
+            "value": 26
+          }
+        },
+        "inputType": "number",
+        "outputType": "number"
+      }
+    ],
+    "scaleMappings": [
+      {
+        "type": "scale",
+        "table": "oecd_population_2018",
+        "expression": "avg(Population)",
+        "valueType": "number",
+        "scale": "wdt76ny31o",
+        "attribute": "size"
+      },
+      {
+        "type": "scale",
+        "table": "oecd_population_2018",
+        "expression": "first(`Geographic Location`)",
+        "valueType": "string",
+        "scale": "aqx25hxd9oc",
+        "attribute": "fill"
+      },
+      {
+        "type": "scale",
+        "table": "oecd_population_2018",
+        "expression": "avg(Population)",
+        "valueType": "number",
+        "scale": "1kd5xhem0j8",
+        "attribute": "fontSize"
+      }
+    ],
+    "constraints": [],
+    "resources": []
+  },
+  "defaultAttributes": {
+    "pfs5qjcsbma": {
+      "x": 0,
+      "y": 0
+    },
+    "93alzvecgnq": {
+      "x": 0,
+      "y": 0,
+      "size": 619.98557,
+      "strokeWidth": 0.2,
+      "opacity": 0.2
+    },
+    "yq3vl96ybsm": {
+      "x": 0,
+      "y": 0,
+      "fontSize": 2.016654641666667,
+      "opacity": 0.25
+    },
+    "s93hz4d5xgh": {
+      "x": 0,
+      "y": 75,
+      "fontSize": 6,
+      "opacity": 0.25
+    }
+  },
+  "tables": [
+    {
+      "name": "oecd_population_2018",
+      "columns": [
+        {
+          "displayName": "Country",
+          "name": "Country",
+          "type": "string",
+          "metadata": {
+            "kind": "categorical",
+            "orderMode": "alphabetically",
+            "examples": "Iceland, Luxembourg, Estonia"
+          }
+        },
+        {
+          "displayName": "Population",
+          "name": "Population",
+          "type": "number",
+          "metadata": {
+            "kind": "numerical",
+            "examples": "0.352722, 0.60795, 1.321977"
+          }
+        },
+        {
+          "displayName": "Geographic Location",
+          "name": "Geographic Location",
+          "type": "string",
+          "metadata": {
+            "kind": "categorical",
+            "orderMode": "alphabetically",
+            "examples": "Europe, Oceania, Asia"
+          }
+        }
+      ]
+    }
+  ],
+  "inference": [
+    {
+      "objectID": "wdt76ny31o",
+      "scale": {
+        "classID": "scale.linear<number,number>",
+        "expressions": [
+          "avg(Population)"
+        ],
+        "properties": {
+          "mapping": "mapping"
+        }
+      },
+      "dataSource": {
+        "table": "oecd_population_2018"
+      },
+      "autoDomainMax": true,
+      "autoDomainMin": true
+    },
+    {
+      "objectID": "aqx25hxd9oc",
+      "scale": {
+        "classID": "scale.categorical<string,color>",
+        "expressions": [
+          "first(`Geographic Location`)"
+        ],
+        "properties": {
+          "mapping": "mapping"
+        }
+      },
+      "dataSource": {
+        "table": "oecd_population_2018"
+      },
+      "autoDomainMax": true,
+      "autoDomainMin": true
+    },
+    {
+      "objectID": "1kd5xhem0j8",
+      "scale": {
+        "classID": "scale.linear<number,number>",
+        "expressions": [
+          "avg(Population)"
+        ],
+        "properties": {
+          "mapping": "mapping"
+        }
+      },
+      "dataSource": {
+        "table": "oecd_population_2018"
+      },
+      "autoDomainMax": true,
+      "autoDomainMin": true
+    }
+  ],
+  "properties": [
+    {
+      "objectID": "93alzvecgnq",
+      "target": {
+        "attribute": "visible"
+      },
+      "type": "boolean",
+      "default": true,
+      "displayName": "Symbol1/visible"
+    },
+    {
+      "objectID": "93alzvecgnq",
+      "target": {
+        "attribute": "strokeWidth"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Symbol1/strokeWidth"
+    },
+    {
+      "objectID": "93alzvecgnq",
+      "target": {
+        "attribute": "opacity"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Symbol1/opacity"
+    },
+    {
+      "objectID": "yq3vl96ybsm",
+      "target": {
+        "attribute": "fontFamily"
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "Text1/fontFamily"
+    },
+    {
+      "objectID": "yq3vl96ybsm",
+      "target": {
+        "attribute": "color"
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "Text1/color"
+    },
+    {
+      "objectID": "yq3vl96ybsm",
+      "target": {
+        "attribute": "visible"
+      },
+      "type": "boolean",
+      "default": true,
+      "displayName": "Text1/visible"
+    },
+    {
+      "objectID": "yq3vl96ybsm",
+      "target": {
+        "attribute": "opacity"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Text1/opacity"
+    },
+    {
+      "objectID": "s93hz4d5xgh",
+      "target": {
+        "attribute": "fontSize"
+      },
+      "type": "number",
+      "default": 24,
+      "displayName": "Title/fontSize"
+    },
+    {
+      "objectID": "s93hz4d5xgh",
+      "target": {
+        "attribute": "color"
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "Title/color"
+    },
+    {
+      "objectID": "s93hz4d5xgh",
+      "target": {
+        "attribute": "text"
+      },
+      "type": "text",
+      "default": "Population of OECD Countries in 2018",
+      "displayName": "Title/text"
+    },
+    {
+      "objectID": "wdt76ny31o",
+      "target": {
+        "property": "domainMin"
+      },
+      "type": "number",
+      "displayName": "Scale1/domainMin"
+    },
+    {
+      "objectID": "wdt76ny31o",
+      "target": {
+        "property": "domainMax"
+      },
+      "type": "number",
+      "displayName": "Scale1/domainMax"
+    },
+    {
+      "objectID": "wdt76ny31o",
+      "target": {
+        "attribute": "rangeMin"
+      },
+      "type": "number",
+      "default": null,
+      "displayName": "Scale1/rangeMin"
+    },
+    {
+      "objectID": "wdt76ny31o",
+      "target": {
+        "attribute": "rangeMax"
+      },
+      "type": "number",
+      "default": null,
+      "displayName": "Scale1/rangeMax"
+    },
+    {
+      "objectID": "1kd5xhem0j8",
+      "target": {
+        "property": "domainMin"
+      },
+      "type": "number",
+      "displayName": "Scale3/domainMin"
+    },
+    {
+      "objectID": "1kd5xhem0j8",
+      "target": {
+        "property": "domainMax"
+      },
+      "type": "number",
+      "displayName": "Scale3/domainMax"
+    },
+    {
+      "objectID": "1kd5xhem0j8",
+      "target": {
+        "attribute": "rangeMin"
+      },
+      "type": "number",
+      "default": null,
+      "displayName": "Scale3/rangeMin"
+    },
+    {
+      "objectID": "1kd5xhem0j8",
+      "target": {
+        "attribute": "rangeMax"
+      },
+      "type": "number",
+      "default": null,
+      "displayName": "Scale3/rangeMax"
+    },
+    {
+      "objectID": "vnneqlj4qr",
+      "target": {
+        "attribute": "marginLeft"
+      },
+      "type": "number",
+      "default": 50,
+      "displayName": "Chart/marginLeft"
+    },
+    {
+      "objectID": "vnneqlj4qr",
+      "target": {
+        "attribute": "marginRight"
+      },
+      "type": "number",
+      "default": 50,
+      "displayName": "Chart/marginRight"
+    },
+    {
+      "objectID": "vnneqlj4qr",
+      "target": {
+        "attribute": "marginTop"
+      },
+      "type": "number",
+      "default": 80,
+      "displayName": "Chart/marginTop"
+    },
+    {
+      "objectID": "vnneqlj4qr",
+      "target": {
+        "attribute": "marginBottom"
+      },
+      "type": "number",
+      "default": 50,
+      "displayName": "Chart/marginBottom"
+    }
+  ]
+}

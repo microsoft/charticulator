@@ -31,8 +31,6 @@ export {
   variableReplacer,
 } from "./classes";
 
-export { SyntaxError } from "./parser";
-
 /** Shortcut to Expression.Parse */
 export function parse(str: string): Expression {
   return Expression.Parse(str);
