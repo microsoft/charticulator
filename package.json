@@ -11,8 +11,8 @@
     "David Tittsworth <datittsw@microsoft.com>"
   ],
   "scripts": {
-    "dev": "node build.js",
-    "build": "node build.js --mode=production",
+    "dev": "node --max-old-space-size=8192 build.js",
+    "build": "node --max-old-space-size=8192 build.js --mode=production",
     "server": "node build.js server",
     "ssl_server": "node build.js ssl_server",
     "public_server": "node build.js public_server",

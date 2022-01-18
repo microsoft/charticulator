@@ -226,7 +226,6 @@ let COMMANDS = {
     server: "http-server ./dist -a 0.0.0.0 -p 4000 -c-1 -s --ssl --cors"
   },
   dev: () => runCommands(devSequence),
-  visual_dev: () => runCommands([...devSequence, ...visualSequence])
 };
 
 /** Run the specified commands names in sequence */
