@@ -589,7 +589,10 @@ export class Migrator {
             }
             element.properties.xData.offset = 0;
             element.properties.xData.tickFormatType = TickFormatType.None;
-            element.properties.xData.style.showTicks = true;
+            if (element.properties.xData?.style) {
+              element.properties.xData.style.showTicks = true;
+              element.properties.xData.style.showBaseline = true;
+            }
           }
           if (element.properties.yData) {
             element.properties.yData = this.updateAxis(
@@ -600,7 +603,10 @@ export class Migrator {
             }
             element.properties.yData.offset = 0;
             element.properties.yData.tickFormatType = TickFormatType.None;
-            element.properties.yData.style.showTicks = true;
+            if (element.properties.yData?.style) {
+              element.properties.yData.style.showTicks = true;
+              element.properties.yData.style.showBaseline = true;
+            }
           }
         }
       }
@@ -669,6 +675,15 @@ export class Migrator {
 
   public setMissedSortProperties(state: AppStoreState) {
     for (const item of forEachObject(state.chart)) {
+      if (item.kind == ObjectItemKind.Mark) {
+        if (Prototypes.isType(item.mark.classID, "mark.rect")) {
+          (item.mark.properties as RectElementProperties).rx = 0;
+          (item.mark.properties as RectElementProperties).ry = 0;
+        }
+        if (Prototypes.isType(item.mark.classID, "mark.symbol")) {
+          (item.mark.properties as SymbolElementProperties).rotation = 0;
+        }
+      }
       if (item.kind == ObjectItemKind.Chart) {
         item.object.properties.exposed = true;
       }
