@@ -258,7 +258,7 @@ export class FunctionCall extends Expression {
   public getValue(c: Context) {
     const data = this.args
       .map((arg) => arg.getValue(c))
-      ?.filter((item) => item);
+      ?.filter((item) => item !== undefined);
     if (!data.length) {
       return null;
     }

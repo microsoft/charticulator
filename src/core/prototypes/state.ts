@@ -1119,7 +1119,9 @@ export class ChartStateManager {
     glyphIndex: number = 0
   ): Specification.MarkState {
     const markIndex = glyph.marks.indexOf(mark);
-    return this.findGlyphState(plotSegment, glyph, glyphIndex).marks[markIndex];
+    return this.findGlyphState(plotSegment, glyph, glyphIndex)?.marks[
+      markIndex
+    ];
   }
 
   /** Remove constraints that relate to non-existant element */
