@@ -94,7 +94,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
 
     let attributesSet = false;
     for (const attr in action.mappings) {
-      if (!Object.prototype.hasOwnProperty.call(action.mappings, attr)) {
+      if (Object.prototype.hasOwnProperty.call(action.mappings, attr)) {
         const [value, mapping] = action.mappings[attr];
         if (mapping != null) {
           if (mapping.type == MappingType._element) {
