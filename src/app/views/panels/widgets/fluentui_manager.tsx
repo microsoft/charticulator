@@ -18,6 +18,7 @@ import {
   Specification,
   refineColumnName,
   getById,
+  applyDateFormat,
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
 import { ButtonRaised } from "../../../components";
@@ -314,7 +315,14 @@ export class FluentUIWidgetManager
         validate={(value: string) => {
           if (value && value.trim() !== "") {
             try {
-              getFormat()(value?.replace(tickFormatParserExpression(), "$1"));
+              if (options.isDateField) {
+                applyDateFormat(
+                  new Date(),
+                  value?.replace(tickFormatParserExpression(), "$1")
+                );
+              } else {
+                getFormat()(value?.replace(tickFormatParserExpression(), "$1"));
+              }
               return {
                 pass: true,
                 formatted: value,
