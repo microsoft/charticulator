@@ -1655,7 +1655,9 @@ export function buildAxisWidgets(
     });
   };
   if (data != null) {
-    const isDateExpression = data.expression.includes("date.");
+    const isDateExpression = data.expression
+      ? data.expression?.includes("date.")
+      : false;
     const scrollingWidgets = axisWidgetsConfig.showScrolling
       ? buildScrollingAxisWidgets(
           data,
@@ -1912,7 +1914,10 @@ export function buildAxisWidgets(
             manager.sectionHeader(
               axisName + strings.objects.axes.stackingSuffix,
               manager.clearButton({ property: axisProperty }, null, true),
-              dropzoneOptions
+              {
+                ...dropzoneOptions,
+                noLineHeight: false,
+              }
             ),
             manager.inputNumber(
               { property: axisProperty, field: "gapRatio" },
