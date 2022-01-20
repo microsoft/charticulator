@@ -1649,7 +1649,7 @@ export function buildAxisWidgets(
   const makeAppearance = () => {
     return buildAxisAppearanceWidgets(axisProperty, manager, {
       isVisible: data.visible,
-      wordWrap: data.style.wordWrap,
+      wordWrap: data.style?.wordWrap ?? false,
       isOffset: axisWidgetsConfig.showOffset,
       isOnTop: axisWidgetsConfig.showOnTop,
     });

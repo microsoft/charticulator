@@ -589,7 +589,10 @@ export class Migrator {
             }
             element.properties.xData.offset = 0;
             element.properties.xData.tickFormatType = TickFormatType.None;
-            element.properties.xData.style.showTicks = true;
+            if (element.properties.xData?.style) {
+              element.properties.xData.style.showTicks = true;
+              element.properties.xData.style.showBaseline = true;
+            }
           }
           if (element.properties.yData) {
             element.properties.yData = this.updateAxis(
@@ -600,7 +603,10 @@ export class Migrator {
             }
             element.properties.yData.offset = 0;
             element.properties.yData.tickFormatType = TickFormatType.None;
-            element.properties.yData.style.showTicks = true;
+            if (element.properties.yData?.style) {
+              element.properties.yData.style.showTicks = true;
+              element.properties.yData.style.showBaseline = true;
+            }
           }
         }
       }
