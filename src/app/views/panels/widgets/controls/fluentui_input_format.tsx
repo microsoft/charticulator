@@ -35,7 +35,7 @@ export const FluentInputFormat: React.FC<InputExpressionProps> = (
   const [value, setValue] = React.useState(props.defaultValue);
 
   const doEnter = React.useCallback(() => {
-    if (props.allowNull && value.trim() == "") {
+    if (props.allowNull && value?.trim() == "") {
       setValue("");
       props.onEnter(null);
     } else {
