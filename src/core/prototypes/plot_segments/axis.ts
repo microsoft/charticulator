@@ -1478,6 +1478,7 @@ export function buildAxisAppearanceWidgets(
                 blank: strings.core.auto,
                 isDateField: false,
                 label: strings.objects.axes.tickFormat,
+                allowNull: true,
               }
             ),
             manager.inputNumber(
@@ -1794,6 +1795,7 @@ export function buildAxisWidgets(
                       },
                       {
                         label: strings.objects.axes.tickData,
+                        allowNull: true,
                       }
                     )
                   : null,
@@ -1808,6 +1810,7 @@ export function buildAxisWidgets(
                       data.numericalMode === NumericalMode.Temporal ||
                       data.valueType === DataType.Date,
                     label: strings.objects.axes.tickFormat,
+                    allowNull: true,
                   }
                 ),
                 ...scrollingWidgets,
@@ -1881,6 +1884,7 @@ export function buildAxisWidgets(
                       },
                       {
                         label: strings.objects.axes.tickData,
+                        allowNull: true,
                       }
                     ),
                     manager.row(
@@ -1895,6 +1899,7 @@ export function buildAxisWidgets(
                           isDateField:
                             data.numericalMode === NumericalMode.Temporal ||
                             data.valueType === DataType.Date,
+                          allowNull: true,
                         }
                       )
                     ))

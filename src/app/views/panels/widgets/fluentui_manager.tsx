@@ -347,6 +347,7 @@ export class FluentUIWidgetManager
           }
           return true;
         }}
+        allowNull={options.allowNull}
       />
     );
   }
@@ -726,6 +727,7 @@ export class FluentUIWidgetManager
           }
           return true;
         }}
+        allowNull={options.allowNull}
       />
     );
 
