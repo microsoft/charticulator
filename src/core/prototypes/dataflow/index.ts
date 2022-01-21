@@ -31,7 +31,7 @@ export class DataflowTableGroupedContext implements Expression.Context {
   public getVariable(name: string) {
     if (
       Object.prototype.hasOwnProperty.call(
-        this.table.rows[this.indices[0]],
+        this.table.rows[this.indices[0]] ?? {},
         name
       )
     ) {
