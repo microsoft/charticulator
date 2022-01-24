@@ -242,19 +242,20 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       if (
         (action.valueType == Specification.DataType.Boolean ||
           action.valueType == Specification.DataType.String ||
-          action.valueType == Specification.DataType.Number) &&
+          action.valueType == Specification.DataType.Number ||
+          action.valueType == Specification.DataType.Date) &&
         action.attributeType == Specification.AttributeType.Text
       ) {
         let format: string;
         // don't apply format to numbers if data kind is categorical to draw as are
         if (action.valueMetadata.kind === DataKind.Categorical) {
           format = undefined;
-        } else {
+        } else if (action.valueType == Specification.DataType.Number) {
           // If the valueType is a number and kind is not categorical, use a format
-          format =
-            action.valueType == Specification.DataType.Number
-              ? ".1f"
-              : undefined;
+          format = ".1f";
+        } else if (action.valueType == Specification.DataType.Date) {
+          // If the valueType is a date and kind is not categorical, use a format
+          format = "%m/%d/%Y";
         }
         action.mark.mappings[action.attribute] = {
           type: MappingType.text,
