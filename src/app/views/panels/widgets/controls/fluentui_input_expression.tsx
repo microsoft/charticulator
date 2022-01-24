@@ -76,8 +76,12 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
             return validateResults.error;
           }
         }}
-        defaultValue={replaceSymbolByTab(
-          replaceSymbolByNewLine(value || props.defaultValue)
+        value={replaceSymbolByTab(
+          replaceSymbolByNewLine(
+            value || (props.allowNull && value == "")
+              ? value
+              : props.defaultValue
+          )
         )}
         onChange={(event, newValue) => {
           // Check for parse errors while input
