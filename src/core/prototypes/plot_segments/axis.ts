@@ -1808,7 +1808,8 @@ export function buildAxisWidgets(
                     blank: strings.core.auto,
                     isDateField:
                       data.numericalMode === NumericalMode.Temporal ||
-                      data.valueType === DataType.Date,
+                      data.valueType === DataType.Date ||
+                      data.tickFormatType === TickFormatType.Date,
                     label: strings.objects.axes.tickFormat,
                     allowNull: true,
                   }
@@ -1898,7 +1899,8 @@ export function buildAxisWidgets(
                           blank: strings.core.auto,
                           isDateField:
                             data.numericalMode === NumericalMode.Temporal ||
-                            data.valueType === DataType.Date,
+                            data.valueType === DataType.Date ||
+                            data.tickFormatType === TickFormatType.Date,
                           allowNull: true,
                         }
                       )
