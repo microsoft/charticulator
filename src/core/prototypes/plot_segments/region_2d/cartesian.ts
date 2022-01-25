@@ -367,11 +367,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         this.parent.dataflow
       );
       if (props.xData.tickDataExpression) {
-        const tickFormatType = props.xData?.tickFormatType;
         axisRenderer.setTicksByData(
           this.getTickData(props.xData, manager),
-          props.xData.tickFormat,
-          tickFormatType
+          props.xData.tickFormat
         );
       }
       g.elements.push(
@@ -406,11 +404,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         this.parent.dataflow
       );
       if (props.yData.tickDataExpression) {
-        const tickFormatType = props.yData?.tickFormatType;
         axisRenderer.setTicksByData(
           this.getTickData(props.yData, manager),
-          props.yData.tickFormat,
-          tickFormatType
+          props.yData.tickFormat
         );
       }
       g.elements.push(

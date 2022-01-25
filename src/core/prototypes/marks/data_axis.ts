@@ -240,11 +240,9 @@ export class DataAxisClass extends MarkClass<
         );
         if (props.axis.tickDataExpression) {
           try {
-            const tickFormatType = props.axis?.tickFormatType;
             renderer.setTicksByData(
               this.getTickData(props.axis, manager),
-              props.axis.tickFormat,
-              tickFormatType
+              props.axis.tickFormat
             );
           } catch (ex) {
             console.log(ex);

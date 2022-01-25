@@ -315,23 +315,27 @@ export class FluentUIWidgetManager
         validate={(value: string) => {
           if (value && value.trim() !== "") {
             try {
-              if (options.isDateField) {
-                applyDateFormat(
-                  new Date(),
-                  value?.replace(tickFormatParserExpression(), "$1")
-                );
-              } else {
-                getFormat()(value?.replace(tickFormatParserExpression(), "$1"));
-              }
+              getFormat()(value?.replace(tickFormatParserExpression(), "$1"));
               return {
                 pass: true,
                 formatted: value,
               };
             } catch (ex) {
-              return {
-                pass: false,
-                error: strings.objects.invalidFormat,
-              };
+              try {
+                applyDateFormat(
+                  new Date(),
+                  value?.replace(tickFormatParserExpression(), "$1")
+                );
+                return {
+                  pass: true,
+                  formatted: value,
+                };
+              } catch (ex) {
+                return {
+                  pass: false,
+                  error: strings.objects.invalidFormat,
+                };
+              }
             }
           }
           return {
@@ -716,7 +720,7 @@ export class FluentUIWidgetManager
             pass: true,
           };
         }}
-        placeholder={strings.core.none}
+        placeholder={options.placeholder ?? strings.core.none}
         onEnter={(value) => {
           if (!value || value.trim() == "") {
             this.emitSetProperty(property, null);

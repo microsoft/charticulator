@@ -228,6 +228,7 @@ export interface InputExpressionOptions {
   table?: string;
   label?: string;
   allowNull?: boolean;
+  placeholder?: string;
   dropzone?: {
     type: "axis-data-binding";
     prompt?: string;
