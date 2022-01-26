@@ -70,6 +70,7 @@ export interface InputBooleanOptions {
   observerConfig?: ObserverConfig;
   checkBoxStyles?: ICheckboxStyles;
   onChange?: (value: boolean) => void;
+  styles?: CSSProperties;
 }
 
 export interface RowOptions {
@@ -144,6 +145,7 @@ export interface InputNumberOptions {
   stopPropagation?: boolean;
 
   observerConfig?: ObserverConfig;
+  styles?: CSSProperties;
 }
 
 export interface InputDateOptions {

@@ -492,6 +492,7 @@ export const strings = {
       labels: "Labels",
       layout: "Layout",
       categoricalLegend: "Categorical legend",
+      numericalColorLegend: "Numerical color legend",
       ordering: "Ordering",
     },
     links: {

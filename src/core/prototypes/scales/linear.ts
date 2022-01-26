@@ -19,8 +19,8 @@ import { InferParametersOptions } from "./scale";
 export interface LinearScaleProperties extends Specification.AttributeMap {
   domainMin: number;
   domainMax: number;
-  autoDomainMin: number;
-  autoDomainMax: number;
+  autoDomainMin: boolean;
+  autoDomainMax: boolean;
 }
 
 export interface LinearScaleAttributes extends Specification.AttributeMap {
@@ -154,7 +154,11 @@ export class LinearScale extends ScaleClass<
       ),
       manager.inputNumber(
         { property: "domainMax" },
-        { label: strings.objects.dataAxis.end, stopPropagation: true }
+        {
+          label: strings.objects.dataAxis.end,
+          stopPropagation: true,
+          styles: { marginBottom: "0.5rem" },
+        }
       ),
       manager.sectionHeader(strings.objects.dataAxis.autoUpdateValues),
       manager.inputBoolean(
@@ -296,7 +300,6 @@ export class LinearColorScale extends ScaleClass<
     const s = new Scale.LinearScale();
     const values = <number[]>column.filter((x) => typeof x == "number");
     s.inferParameters(values);
-    s.adjustDomain(options);
 
     if (options.extendScaleMin || props.domainMin === undefined) {
       props.domainMin = s.domainMin;
@@ -321,7 +324,31 @@ export class LinearColorScale extends ScaleClass<
       ),
       manager.inputNumber(
         { property: "domainMax" },
-        { stopPropagation: true, label: strings.objects.dataAxis.end }
+        {
+          stopPropagation: true,
+          label: strings.objects.dataAxis.end,
+          styles: { marginBottom: "0.5rem" },
+        }
+      ),
+      manager.sectionHeader(strings.objects.dataAxis.autoUpdateValues),
+      manager.inputBoolean(
+        {
+          property: "autoDomainMin",
+        },
+        {
+          type: "checkbox",
+          label: strings.objects.dataAxis.autoMin,
+        }
+      ),
+      manager.inputBoolean(
+        {
+          property: "autoDomainMax",
+        },
+        {
+          type: "checkbox",
+          label: strings.objects.dataAxis.autoMax,
+          styles: { marginBottom: "0.5rem" },
+        }
       ),
       manager.sectionHeader(strings.objects.dataAxis.gradient),
       manager.inputColorGradient(
