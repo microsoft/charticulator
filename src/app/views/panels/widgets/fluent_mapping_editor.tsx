@@ -671,7 +671,10 @@ export class FluentMappingEditor extends React.Component<
           }}
           className="charticulator__widget-control-mapping-editor"
         >
-          {parent.horizontal(
+          {parent.styledHorizontal(
+            {
+              alignItems: "start",
+            },
             [1, 0],
             this.renderCurrentAttributeMapping(),
             <span>
