@@ -3,22 +3,23 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
+import { CSSProperties } from "react";
 import * as ReactDOM from "react-dom";
 
 import * as globals from "../../../globals";
 import * as R from "../../../resources";
 
 import {
+  applyDateFormat,
   Color,
   ColorGradient,
   EventSubscription,
+  getById,
   getField,
   Point,
   Prototypes,
-  Specification,
   refineColumnName,
-  getById,
-  applyDateFormat,
+  Specification,
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
 import { ButtonRaised } from "../../../components";
@@ -33,8 +34,8 @@ import {
 import { AppStore } from "../../../stores";
 import {
   classNames,
-  showOpenFileDialog,
   readFileAsString,
+  showOpenFileDialog,
 } from "../../../utils/index";
 import { DataFieldSelectorValue } from "../../dataset/data_field_selector";
 import { ReorderListView } from "../object_list_editor";
@@ -46,8 +47,8 @@ import {
   tickFormatParserExpression,
 } from "../../../../container";
 import {
-  TextExpression,
   FunctionCall,
+  TextExpression,
   Variable,
 } from "../../../../core/expression";
 import { getDateFormat } from "../../../../core/dataset/datetime";
@@ -55,17 +56,17 @@ import { ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
 
 import {
-  IconButton,
-  TextField,
-  DatePicker,
-  DefaultButton,
-  DayOfWeek,
   Checkbox,
-  Label,
   ComboBox,
+  DatePicker,
+  DayOfWeek,
+  DefaultButton,
   Dropdown,
   FontIcon,
   getTheme,
+  IconButton,
+  Label,
+  TextField,
   TooltipHost,
 } from "@fluentui/react";
 import { FluentMappingEditor } from "./fluent_mapping_editor";
@@ -94,7 +95,6 @@ import {
 } from "../../../../core/prototypes/controls";
 
 import { mergeStyles } from "@fluentui/merge-styles";
-import { CSSProperties } from "react";
 import { strings } from "../../../../strings";
 import { InputImage } from "./controls/fluentui_image";
 import { InputImageProperty } from "./controls/fluentui_image_2";
@@ -736,20 +736,42 @@ export class FluentUIWidgetManager
     );
 
     if (options.dropzone) {
+      const className = options.noLineHeight
+        ? "charticulator__widget-section-header-no-height charticulator__widget-section-header-dropzone"
+        : "charticulator__widget-section-header charticulator__widget-section-header-dropzone";
       return (
         <DropZoneView
           key={options.label}
           filter={(data) => data instanceof DragData.DataExpression}
           onDrop={(data: DragData.DataExpression) => {
-            new Actions.BindDataToAxis(
-              this.objectClass.object as Specification.PlotSegment,
-              options.dropzone.property,
-              null,
-              data,
-              true
-            ).dispatch(this.store.dispatcher);
+            if (options.dropzone.type === "axis-data-binding") {
+              new Actions.BindDataToAxis(
+                this.objectClass.object as Specification.PlotSegment,
+                options.dropzone.property,
+                null,
+                data,
+                true
+              ).dispatch(this.store.dispatcher);
+            } else {
+              let newValue = data.expression;
+              try {
+                if (data.metadata?.columnName) {
+                  if (data.metadata?.columnName.split(" ").length > 1) {
+                    newValue = "`" + data.metadata?.columnName + "`";
+                  } else {
+                    newValue = data.metadata?.columnName;
+                  }
+                } else {
+                  newValue = data.expression;
+                }
+                this.emitSetProperty(property, newValue);
+              } catch (ex) {
+                //put data.expression value
+                this.emitSetProperty(property, newValue);
+              }
+            }
           }}
-          className="charticulator__widget-section-header charticulator__widget-section-header-dropzone"
+          className={className}
           draggingHint={() => (
             <span className="el-dropzone-hint">{options.dropzone?.prompt}</span>
           )}

@@ -2329,16 +2329,27 @@ function getTickDataAndTickFormatFields(
 
   const widgets = [];
   widgets.push(
-    manager.inputExpression(
+    manager.label(strings.objects.axes.tickData),
+    manager.styledHorizontal(
       {
-        property: axisProperty,
-        field: "tickDataExpression",
+        alignItems: "start",
       },
-      {
-        label: strings.objects.axes.tickData,
-        allowNull: true,
-        placeholder: strings.core.default,
-      }
+      [1, 0],
+      manager.inputExpression(
+        {
+          property: axisProperty,
+          field: "tickDataExpression",
+        },
+        {
+          allowNull: true,
+          placeholder: strings.core.default,
+          dropzone: {
+            type: "tick-data-binding",
+            prompt: strings.objects.dropTickData,
+          },
+          noLineHeight: true,
+        }
+      )
     )
   );
   if (showInputFormat) {

@@ -231,8 +231,9 @@ export interface InputExpressionOptions {
   label?: string;
   allowNull?: boolean;
   placeholder?: string;
+  noLineHeight?: boolean;
   dropzone?: {
-    type: "axis-data-binding";
+    type: "axis-data-binding" | "tick-data-binding";
     prompt?: string;
     property?: string;
     defineCategories?: boolean;

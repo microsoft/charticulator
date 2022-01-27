@@ -31,6 +31,8 @@ export interface ColumnMetadata {
 
   /** Order by another column*/
   orderByExpression?: string;
+
+  columnName?: string;
 }
 
 export interface Column {
