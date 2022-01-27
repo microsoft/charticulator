@@ -541,18 +541,6 @@ export class ChartTemplate {
             )
           );
 
-          if (
-            inference.autoDomainMin &&
-            object.properties.domainMin !== undefined
-          ) {
-            vectors.push([object.properties.domainMin]);
-          }
-          if (
-            inference.autoDomainMax &&
-            object.properties.domainMax != undefined
-          ) {
-            vectors.push([object.properties.domainMax]);
-          }
           const vector = vectors.reduce((a, b) => a.concat(b), []);
           const scaleClass = Prototypes.ObjectClasses.Create(null, object, {
             attributes: {},

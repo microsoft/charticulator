@@ -56,7 +56,9 @@ export class ScaleEditor extends React.Component<
     let canAddLegend = true;
     if (
       scale.classID.startsWith("scale.format") ||
-      scale.classID === "scale.categorical<string,image>"
+      scale.classID === "scale.categorical<string,image>" ||
+      scale.classID === "scale.categorical<string,boolean>" ||
+      scale.classID === "scale.linear<number,boolean>"
     ) {
       canAddLegend = false;
     }
