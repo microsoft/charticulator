@@ -304,6 +304,9 @@ export class AxisRenderer {
     let tickNumber = numberOfTicks;
     if (autoTickNumber) {
       tickNumber = Math.round(Math.min(10, rangeLength / 40));
+      if (this.data) {
+        this.data.numberOfTicks = tickNumber;
+      }
     }
     const ticks = scale.ticks(tickNumber);
 
@@ -352,6 +355,9 @@ export class AxisRenderer {
     let tickNumber = numberOfTicks;
     if (autoTickNumber) {
       tickNumber = Math.round(Math.min(10, rangeLength / 40));
+      if (this.data) {
+        this.data.numberOfTicks = tickNumber;
+      }
     }
     const ticks = scale.ticks(tickNumber);
     const defaultFormat = scale.tickFormat(tickNumber);
@@ -400,6 +406,9 @@ export class AxisRenderer {
     let tickNumber = numberOfTicks;
     if (autoTickNumber) {
       tickNumber = Math.round(Math.min(10, rangeLength / 40));
+      if (this.data) {
+        this.data.numberOfTicks = tickNumber;
+      }
     }
     const ticks = scale.ticks(tickNumber);
     const tickFormat = scale.tickFormat(
