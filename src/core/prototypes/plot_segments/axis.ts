@@ -233,7 +233,6 @@ export class AxisRenderer {
   }
 
   public ticksData: { tick: any; value: any }[];
-  public isStringTickDataType: boolean = false;
   public setTicksByData(
     ticks: { tick: any; value: any }[],
     tickFormatString: string
@@ -247,21 +246,17 @@ export class AxisRenderer {
         : null;
       if (!tickFormat || typeof tick.tick == "string") {
         label = <string>tick.tick;
-        this.isStringTickDataType = true;
       } else {
         try {
           //try parse numeric format
           label = getFormat()(tickFormat)(tick.tick);
-          this.isStringTickDataType = false;
         } catch (e) {
           try {
             //try parse date format
             label = applyDateFormat(new Date(tick.tick), tickFormat);
-            this.isStringTickDataType = false;
           } catch (ex) {
             //use string format
             label = <string>tick.tick;
-            this.isStringTickDataType = true;
           }
         }
       }
