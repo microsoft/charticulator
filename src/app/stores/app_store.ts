@@ -85,6 +85,7 @@ import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
 import { DataAxisProperties } from "../../core/prototypes/marks/data_axis.attrs";
 import { isBase64Image } from "../../core/dataset/data_types";
 import { getColumnNameByExpression } from "../../core/prototypes/plot_segments/utils";
+import { AxisRenderer } from "../../core/prototypes/plot_segments/axis";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -1878,7 +1879,7 @@ export class AppStore extends BaseStore {
       numberOfTicks:
         <number>objectProperties?.numberOfTicks !== undefined
           ? <number>objectProperties?.numberOfTicks
-          : 10,
+          : AxisRenderer.DEFAULT_TICKS_NUMBER,
       autoNumberOfTicks:
         <boolean>objectProperties?.autoNumberOfTicks !== undefined
           ? <boolean>objectProperties?.autoNumberOfTicks

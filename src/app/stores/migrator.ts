@@ -36,6 +36,7 @@ import { LinearBooleanScaleMode } from "../../core/prototypes/scales/linear";
 import { parseDerivedColumnsExpression } from "../../core/prototypes/plot_segments/utils";
 import { OrientationType } from "../../core/prototypes/legends/types";
 import { NumericalColorLegendClass } from "../../core/prototypes/legends/color_legend";
+import { AxisRenderer } from "../../core/prototypes/plot_segments/axis";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -960,7 +961,8 @@ export class Migrator {
               element.properties.xData
             );
             if (element.properties.xData.numberOfTicks == undefined) {
-              element.properties.xData.numberOfTicks = 10;
+              element.properties.xData.numberOfTicks =
+                AxisRenderer.DEFAULT_TICKS_NUMBER;
             }
             if (element.properties.xData.autoNumberOfTicks == undefined) {
               element.properties.xData.autoNumberOfTicks = true;
@@ -971,7 +973,8 @@ export class Migrator {
               element.properties.yData
             );
             if (element.properties.yData.numberOfTicks == undefined) {
-              element.properties.yData.numberOfTicks = 10;
+              element.properties.yData.numberOfTicks =
+                AxisRenderer.DEFAULT_TICKS_NUMBER;
             }
             if (element.properties.yData.autoNumberOfTicks == undefined) {
               element.properties.yData.autoNumberOfTicks = true;
@@ -986,7 +989,8 @@ export class Migrator {
                 element.properties.xData
               );
               if (element.properties.xData.numberOfTicks == undefined) {
-                element.properties.xData.numberOfTicks = 10;
+                element.properties.xData.numberOfTicks =
+                  AxisRenderer.DEFAULT_TICKS_NUMBER;
               }
               if (element.properties.xData.autoNumberOfTicks == undefined) {
                 element.properties.xData.autoNumberOfTicks = true;
@@ -1000,7 +1004,8 @@ export class Migrator {
                 element.properties.yData
               );
               if (element.properties.yData.numberOfTicks == undefined) {
-                element.properties.yData.numberOfTicks = 10;
+                element.properties.yData.numberOfTicks =
+                  AxisRenderer.DEFAULT_TICKS_NUMBER;
               }
               if (element.properties.yData.autoNumberOfTicks == undefined) {
                 element.properties.yData.autoNumberOfTicks = true;
@@ -1021,7 +1026,8 @@ export class Migrator {
                 element.properties.axis
               );
               if (element.properties.axis.numberOfTicks == undefined) {
-                element.properties.axis.numberOfTicks = 10;
+                element.properties.axis.numberOfTicks =
+                  AxisRenderer.DEFAULT_TICKS_NUMBER;
               }
               if (element.properties.axis.autoNumberOfTicks == undefined) {
                 element.properties.axis.autoNumberOfTicks = true;
@@ -1037,7 +1043,8 @@ export class Migrator {
                 element.properties.xData
               );
               if (element.properties.xData.numberOfTicks == undefined) {
-                element.properties.xData.numberOfTicks = 10;
+                element.properties.xData.numberOfTicks =
+                  AxisRenderer.DEFAULT_TICKS_NUMBER;
               }
               if (element.properties.xData.autoNumberOfTicks == undefined) {
                 element.properties.xData.autoNumberOfTicks = true;
@@ -1051,7 +1058,8 @@ export class Migrator {
                 element.properties.yData
               );
               if (element.properties.yData.numberOfTicks == undefined) {
-                element.properties.yData.numberOfTicks = 10;
+                element.properties.yData.numberOfTicks =
+                  AxisRenderer.DEFAULT_TICKS_NUMBER;
               }
               if (element.properties.yData.autoNumberOfTicks == undefined) {
                 element.properties.yData.autoNumberOfTicks = true;
@@ -1071,7 +1079,8 @@ export class Migrator {
                 element.properties.axis
               );
               if (element.properties.axis.numberOfTicks == undefined) {
-                element.properties.axis.numberOfTicks = 10;
+                element.properties.axis.numberOfTicks =
+                  AxisRenderer.DEFAULT_TICKS_NUMBER;
               }
               if (element.properties.axis.autoNumberOfTicks == undefined) {
                 element.properties.axis.autoNumberOfTicks = true;
@@ -1089,7 +1098,8 @@ export class Migrator {
           const element = (item.mark as unknown) as Object<DataAxisProperties>;
           if (element.properties.axis) {
             if (element.properties.axis.numberOfTicks == undefined) {
-              element.properties.axis.numberOfTicks = 10;
+              element.properties.axis.numberOfTicks =
+                AxisRenderer.DEFAULT_TICKS_NUMBER;
             }
             if (element.properties.axis.autoNumberOfTicks == undefined) {
               element.properties.axis.autoNumberOfTicks = true;

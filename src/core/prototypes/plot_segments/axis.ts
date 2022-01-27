@@ -102,6 +102,7 @@ export class AxisRenderer {
   public valueToPosition: (value: any) => number;
   public oppositeSide: boolean = false;
   public static SCROLL_BAR_SIZE = 10;
+  public static DEFAULT_TICKS_NUMBER = 10;
 
   //axis tick selection
   private plotSegment: Specification.PlotSegment;
@@ -293,7 +294,7 @@ export class AxisRenderer {
     rangeMin: number,
     rangeMax: number,
     tickFormat: string,
-    numberOfTicks: number = 10,
+    numberOfTicks: number = AxisRenderer.DEFAULT_TICKS_NUMBER,
     autoTickNumber: boolean = true
   ) {
     const scale = new Scale.LinearScale();
@@ -341,7 +342,7 @@ export class AxisRenderer {
     rangeMin: number,
     rangeMax: number,
     tickFormat: string,
-    numberOfTicks: number = 10,
+    numberOfTicks: number = AxisRenderer.DEFAULT_TICKS_NUMBER,
     autoTickNumber: boolean = true
   ) {
     const scale = new Scale.LogarithmicScale();
@@ -389,7 +390,7 @@ export class AxisRenderer {
     rangeMin: number,
     rangeMax: number,
     tickFormatString: string,
-    numberOfTicks: number = 10,
+    numberOfTicks: number = AxisRenderer.DEFAULT_TICKS_NUMBER,
     autoTickNumber: boolean = true
   ) {
     const scale = new Scale.DateScale();
