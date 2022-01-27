@@ -2359,36 +2359,38 @@ function getTickDataAndTickFormatFields(
       )
     );
   }
-  widgets.push(
-    manager.inputBoolean(
-      {
-        property: axisProperty,
-        field: "autoNumberOfTicks",
-      },
-      {
-        type: "checkbox",
-        label: strings.objects.axes.autoNumberOfTicks,
-        styles: {
-          marginTop: "0.5rem",
-        },
-      }
-    )
-  );
-  if (!data.autoNumberOfTicks) {
+  if (!data.tickDataExpression) {
     widgets.push(
-      manager.inputNumber(
+      manager.inputBoolean(
         {
           property: axisProperty,
-          field: "numberOfTicks",
+          field: "autoNumberOfTicks",
         },
         {
-          label: strings.objects.axes.numberOfTicks,
-          showUpdown: true,
-          updownTick: 1,
-          minimum: 2,
+          type: "checkbox",
+          label: strings.objects.axes.autoNumberOfTicks,
+          styles: {
+            marginTop: "0.5rem",
+          },
         }
       )
     );
+    if (!data.autoNumberOfTicks) {
+      widgets.push(
+        manager.inputNumber(
+          {
+            property: axisProperty,
+            field: "numberOfTicks",
+          },
+          {
+            label: strings.objects.axes.numberOfTicks,
+            showUpdown: true,
+            updownTick: 1,
+            minimum: 2,
+          }
+        )
+      );
+    }
   }
   return widgets;
 }
