@@ -184,7 +184,9 @@ export class AxisRenderer {
               data.domainMax,
               rangeMin,
               rangeMax,
-              data.tickFormat
+              data.tickFormat,
+              data.numberOfTicks,
+              data.autoNumberOfTicks
             );
           }
           if (data.numericalMode == "logarithmic") {
@@ -193,7 +195,9 @@ export class AxisRenderer {
               data.domainMax,
               rangeMin,
               rangeMax,
-              data.tickFormat
+              data.tickFormat,
+              data.numberOfTicks,
+              data.autoNumberOfTicks
             );
           }
           if (data.numericalMode == "temporal") {
@@ -202,7 +206,9 @@ export class AxisRenderer {
               data.domainMax,
               rangeMin,
               rangeMax,
-              data.tickFormat
+              data.tickFormat,
+              data.numberOfTicks,
+              data.autoNumberOfTicks
             );
           }
         }
@@ -291,16 +297,21 @@ export class AxisRenderer {
     domainMax: number,
     rangeMin: number,
     rangeMax: number,
-    tickFormat: string
+    tickFormat: string,
+    numberOfTicks: number = 10,
+    autoTickNumber: boolean = true
   ) {
     const scale = new Scale.LinearScale();
     scale.domainMin = domainMin;
     scale.domainMax = domainMax;
     const rangeLength = Math.abs(rangeMax - rangeMin);
-    const ticks = scale.ticks(Math.round(Math.min(10, rangeLength / 40)));
-    const defaultFormat = scale.tickFormat(
-      Math.round(Math.min(10, rangeLength / 40))
-    );
+    let tickNumber = numberOfTicks;
+    if (autoTickNumber) {
+      tickNumber = Math.round(Math.min(10, rangeLength / 40));
+    }
+    const ticks = scale.ticks(tickNumber);
+
+    const defaultFormat = scale.tickFormat(tickNumber);
 
     const resolvedFormat = AxisRenderer.getTickFormat(
       tickFormat,
@@ -334,16 +345,20 @@ export class AxisRenderer {
     domainMax: number,
     rangeMin: number,
     rangeMax: number,
-    tickFormat: string
+    tickFormat: string,
+    numberOfTicks: number = 10,
+    autoTickNumber: boolean = true
   ) {
     const scale = new Scale.LogarithmicScale();
     scale.domainMin = domainMin;
     scale.domainMax = domainMax;
     const rangeLength = Math.abs(rangeMax - rangeMin);
-    const ticks = scale.ticks(Math.round(Math.min(10, rangeLength / 40)));
-    const defaultFormat = scale.tickFormat(
-      Math.round(Math.min(10, rangeLength / 40))
-    );
+    let tickNumber = numberOfTicks;
+    if (autoTickNumber) {
+      tickNumber = Math.round(Math.min(10, rangeLength / 40));
+    }
+    const ticks = scale.ticks(tickNumber);
+    const defaultFormat = scale.tickFormat(tickNumber);
 
     const resolvedFormat = AxisRenderer.getTickFormat(
       tickFormat,
@@ -378,16 +393,21 @@ export class AxisRenderer {
     domainMax: number,
     rangeMin: number,
     rangeMax: number,
-    tickFormatString: string
+    tickFormatString: string,
+    numberOfTicks: number = 10,
+    autoTickNumber: boolean = true
   ) {
     const scale = new Scale.DateScale();
     scale.domainMin = domainMin;
     scale.domainMax = domainMax;
     const rangeLength = Math.abs(rangeMax - rangeMin);
-    const ticksCount = Math.round(Math.min(10, rangeLength / 40));
-    const ticks = scale.ticks(ticksCount);
+    let tickNumber = numberOfTicks;
+    if (autoTickNumber) {
+      tickNumber = Math.round(Math.min(10, rangeLength / 40));
+    }
+    const ticks = scale.ticks(tickNumber);
     const tickFormat = scale.tickFormat(
-      ticksCount,
+      tickNumber,
       tickFormatString?.replace(tickFormatParserExpression(), "$1")
     );
     const r: TickDescription[] = [];
@@ -2068,6 +2088,28 @@ export function buildAxisProperties(
       type: Specification.AttributeType.Number,
       default: 0,
     },
+    {
+      objectID: plotSegment._id,
+      target: {
+        property: {
+          property,
+          field: "numberOfTicks",
+        },
+      },
+      type: Specification.AttributeType.Number,
+      default: 10,
+    },
+    {
+      objectID: plotSegment._id,
+      target: {
+        property: {
+          property,
+          field: "autoNumberOfTicks",
+        },
+      },
+      type: Specification.AttributeType.Boolean,
+      default: true,
+    },
   ];
 }
 
@@ -2313,6 +2355,37 @@ function getTickDataAndTickFormatFields(
             data.numericalMode === NumericalMode.Temporal ||
             data.valueType === DataType.Date,
           allowNull: true,
+        }
+      )
+    );
+  }
+  widgets.push(
+    manager.inputBoolean(
+      {
+        property: axisProperty,
+        field: "autoNumberOfTicks",
+      },
+      {
+        type: "checkbox",
+        label: strings.objects.axes.autoNumberOfTicks,
+        styles: {
+          marginTop: "0.5rem",
+        },
+      }
+    )
+  );
+  if (!data.autoNumberOfTicks) {
+    widgets.push(
+      manager.inputNumber(
+        {
+          property: axisProperty,
+          field: "numberOfTicks",
+        },
+        {
+          label: strings.objects.axes.numberOfTicks,
+          showUpdown: true,
+          updownTick: 1,
+          minimum: 2,
         }
       )
     );

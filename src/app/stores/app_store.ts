@@ -1875,6 +1875,14 @@ export class AppStore extends BaseStore {
           ? <string[]>objectProperties?.orderByCategories
           : orderByCategories,
       orderByExpression: <string>objectProperties?.orderByExpression ?? column,
+      numberOfTicks:
+        <number>objectProperties?.numberOfTicks !== undefined
+          ? <number>objectProperties?.numberOfTicks
+          : 10,
+      autoNumberOfTicks:
+        <boolean>objectProperties?.autoNumberOfTicks !== undefined
+          ? <boolean>objectProperties?.autoNumberOfTicks
+          : true,
     };
 
     let expressions = [groupExpression];

@@ -91,6 +91,10 @@ export interface AxisDataBinding extends AttributeMap {
 
   //axis tick selection
   enableSelection?: boolean;
+
+  //amount ticks in axis
+  numberOfTicks?: number;
+  autoNumberOfTicks?: boolean;
 }
 
 export interface AxisRenderingStyle extends AttributeMap {

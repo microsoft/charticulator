@@ -434,6 +434,8 @@ export const strings = {
       verticalText: "Vertical text",
       offSet: "Offset",
       orderBy: "Order by",
+      numberOfTicks: "Number of Ticks",
+      autoNumberOfTicks: "Auto Number of Ticks",
     },
     plotSegment: {
       subLayout: "Sub-layout",
