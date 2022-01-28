@@ -1155,7 +1155,7 @@ export class ChartEditorView
                 <React.Fragment key={`snapping-link-${idx}`}>
                   <line
                     key={`lk${idx}display1`}
-                    className="snapping-guid"
+                    className="snapping-guide"
                     x1={
                       axisGuide.cx * this.state.zoom.scale +
                       this.state.zoom.centerX
