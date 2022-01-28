@@ -25,6 +25,7 @@ import {
   ImageElementAttributes,
   ImageElementProperties,
 } from "./image.attrs";
+import { RectangleGlyph } from "../glyphs";
 
 export const imagePlaceholder: Specification.Types.Image = {
   src:
@@ -582,7 +583,10 @@ export class ImageElementClass extends EmphasizableMarkClass<
         p1: { x: x2, y: y1 },
         p2: { x: x1, y: y1 },
         title: "width",
-        accept: { kind: Specification.DataKind.Numerical },
+        accept: {
+          kind: Specification.DataKind.Numerical,
+          table: (this.parent as RectangleGlyph).object.table,
+        },
         dropAction: {
           scaleInference: {
             attribute: "width",
@@ -596,7 +600,10 @@ export class ImageElementClass extends EmphasizableMarkClass<
         p1: { x: x1, y: y1 },
         p2: { x: x1, y: y2 },
         title: "height",
-        accept: { kind: Specification.DataKind.Numerical },
+        accept: {
+          kind: Specification.DataKind.Numerical,
+          table: (this.parent as RectangleGlyph).object.table,
+        },
         dropAction: {
           scaleInference: {
             attribute: "height",

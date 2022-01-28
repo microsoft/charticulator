@@ -681,6 +681,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       dropAction: {
         axisInference: { property: PlotSegmentAxisPropertyNames.xData },
       },
+      accept: {
+        table: this.object.table,
+      },
     });
     zones.push(<DropZones.Line>{
       type: "line",
@@ -689,6 +692,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       title: "Y Axis",
       dropAction: {
         axisInference: { property: PlotSegmentAxisPropertyNames.yData },
+      },
+      accept: {
+        table: this.object.table,
       },
     });
     return zones;
