@@ -81,6 +81,7 @@ export interface RowOptions {
     defineCategories?: boolean;
   };
   noLineHeight?: boolean;
+  acceptLinksTable?: boolean;
 }
 
 export interface DropTargetOptions {
