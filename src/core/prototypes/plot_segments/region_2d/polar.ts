@@ -613,6 +613,9 @@ export class PolarPlotSegment extends PlotSegmentClass<
       dropAction: {
         axisInference: { property: PlotSegmentAxisPropertyNames.yData },
       },
+      accept: {
+        table: this.object.table,
+      },
     });
     zones.push(<DropZones.Arc>{
       type: "arc",
@@ -623,6 +626,9 @@ export class PolarPlotSegment extends PlotSegmentClass<
       title: "Angular Axis",
       dropAction: {
         axisInference: { property: PlotSegmentAxisPropertyNames.xData },
+      },
+      accept: {
+        table: this.object.table,
       },
     });
     return zones;

@@ -27,6 +27,7 @@ import {
   RectElementProperties,
 } from "./rect.attrs";
 import { strings } from "../../../strings";
+import { RectangleGlyph } from "../glyphs";
 
 export { RectElementAttributes, RectElementProperties };
 
@@ -650,7 +651,10 @@ export class RectElementClass extends EmphasizableMarkClass<
         p1: { x: x2, y: y1 },
         p2: { x: x1, y: y1 },
         title: "width",
-        accept: { kind: DataKind.Numerical },
+        accept: {
+          kind: DataKind.Numerical,
+          table: (this.parent as RectangleGlyph).object.table,
+        },
         dropAction: {
           scaleInference: {
             attribute: "width",
@@ -664,7 +668,10 @@ export class RectElementClass extends EmphasizableMarkClass<
         p1: { x: x1, y: y1 },
         p2: { x: x1, y: y2 },
         title: "height",
-        accept: { kind: DataKind.Numerical },
+        accept: {
+          kind: DataKind.Numerical,
+          table: (this.parent as RectangleGlyph).object.table,
+        },
         dropAction: {
           scaleInference: {
             attribute: "height",

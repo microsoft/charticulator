@@ -25,8 +25,9 @@ import {
 import * as Graphics from "../../graphics";
 import { EmphasizableMarkClass } from "./emphasis";
 import { ChartStateManager } from "../state";
-import { MappingType } from "../../specification";
+import { DataKind, MappingType } from "../../specification";
 import { strings } from "../../../strings";
+import { RectangleGlyph } from "../glyphs";
 
 export { LineElementAttributes, LineElementProperties };
 
@@ -214,7 +215,10 @@ export class LineElementClass extends EmphasizableMarkClass<
         p1: { x: x2, y: cy },
         p2: { x: x1, y: cy },
         title: "dx",
-        accept: { kind: "numerical" },
+        accept: {
+          kind: DataKind.Numerical,
+          table: (this.parent as RectangleGlyph).object.table,
+        },
         dropAction: {
           scaleInference: {
             attribute: "dx",
@@ -228,7 +232,10 @@ export class LineElementClass extends EmphasizableMarkClass<
         p1: { x: cx, y: y1 },
         p2: { x: cx, y: y2 },
         title: "dy",
-        accept: { kind: "numerical" },
+        accept: {
+          kind: DataKind.Numerical,
+          table: (this.parent as RectangleGlyph).object.table,
+        },
         dropAction: {
           scaleInference: {
             attribute: "dy",

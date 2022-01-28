@@ -6,7 +6,7 @@ import { Color, Point, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
 import { makeGroup } from "../../graphics";
 import * as Specification from "../../specification";
-import { MappingType } from "../../specification";
+import { DataKind, MappingType } from "../../specification";
 import {
   AttributeDescriptions,
   BoundingBox,
@@ -27,6 +27,7 @@ import {
   SymbolElementProperties,
   symbolTypes,
 } from "./symbol.attrs";
+import { RectangleGlyph } from "../glyphs";
 
 export const symbolTypesList = symbolTypes;
 
@@ -282,6 +283,10 @@ export class SymbolElementClass extends EmphasizableMarkClass<
             attributeType: Specification.AttributeType.Number,
             hints: { rangeNumber: [0, 200 * Math.PI] },
           },
+        },
+        accept: {
+          kind: DataKind.Numerical,
+          table: (this.parent as RectangleGlyph).object.table,
         },
       },
     ];
