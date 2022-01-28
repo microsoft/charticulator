@@ -206,6 +206,9 @@ export class LineGuide extends PlotSegmentClass {
       dropAction: {
         axisInference: { property: "axis" },
       },
+      accept: {
+        table: this.object.table,
+      },
     });
     return zones;
   }

@@ -713,6 +713,7 @@ export abstract class LinksClass extends ChartElementClass {
     widgets.push(
       manager.mappingEditor(strings.objects.color, "color", {
         table: props.linkTable && props.linkTable.table,
+        acceptLinksTable: !!(props.linkTable && props.linkTable.table),
       })
     );
     // if (props.linkType == "line") {
@@ -722,6 +723,7 @@ export abstract class LinksClass extends ChartElementClass {
         defaultValue: 1,
         numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
         table: props.linkTable && props.linkTable.table,
+        acceptLinksTable: !!(props.linkTable && props.linkTable.table),
       })
     );
     // }
@@ -731,6 +733,7 @@ export abstract class LinksClass extends ChartElementClass {
         defaultValue: 1,
         numberOptions: { showSlider: true, minimum: 0, maximum: 1, step: 0.1 },
         table: props.linkTable && props.linkTable.table,
+        acceptLinksTable: !!(props.linkTable && props.linkTable.table),
       })
     );
     return widgets;
