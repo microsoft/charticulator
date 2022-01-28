@@ -342,7 +342,7 @@ export class ChartEditorView
     );
 
     return (
-      <>
+      <React.Fragment key={"graphics"}>
         <GraphicalElementDisplay element={this.state.graphics} />
         <g className="canvas-chart-controls">
           {renderer.renderControls(
@@ -351,7 +351,7 @@ export class ChartEditorView
             this.state.zoom
           )}
         </g>
-      </>
+      </React.Fragment>
     );
   }
 
@@ -1136,7 +1136,7 @@ export class ChartEditorView
         case "point": {
           const axisGuide = (guide.guide as unknown) as Prototypes.SnappingGuides.PolarAxis;
           return (
-            <>
+            <React.Fragment key={`snapping-guid-${idx}`}>
               {axisGuide.visibleRadius ? (
                 <circle
                   className="snapping-guide"
@@ -1152,10 +1152,10 @@ export class ChartEditorView
                   r={Math.abs(axisGuide.visibleRadius * this.state.zoom.scale)}
                 />
               ) : (
-                <>
+                <React.Fragment key={`snapping-link-${idx}`}>
                   <line
                     key={`lk${idx}display1`}
-                    className="snapping-guide"
+                    className="snapping-guid"
                     x1={
                       axisGuide.cx * this.state.zoom.scale +
                       this.state.zoom.centerX
@@ -1193,7 +1193,7 @@ export class ChartEditorView
                       this.state.zoom.centerY
                     }
                   />
-                </>
+                </React.Fragment>
               )}
               <line
                 key={`lk${idx}display`}
@@ -1214,7 +1214,7 @@ export class ChartEditorView
                   this.state.zoom.centerY
                 }
               />
-            </>
+            </React.Fragment>
           );
         }
       }

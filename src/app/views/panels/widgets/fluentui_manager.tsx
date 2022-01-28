@@ -163,7 +163,7 @@ export class FluentUIWidgetManager
     if (options.defaultValue == null) {
       options.defaultValue = info.defaultValue;
     }
-
+    options.acceptLinksTable = options.acceptLinksTable ?? false;
     const openMapping =
       options.openMapping || attribute === this.store.currentAttributeFocus;
     if (openMapping) {

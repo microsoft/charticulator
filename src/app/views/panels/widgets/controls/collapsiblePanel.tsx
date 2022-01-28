@@ -73,7 +73,10 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
           itemIndex?: number
         ) => {
           return item && typeof itemIndex === "number" && itemIndex > -1 ? (
-            <div className="charticulator__widget-collapsible-panel-item">
+            <div
+              className="charticulator__widget-collapsible-panel-item"
+              key={itemIndex}
+            >
               {item.item}
             </div>
           ) : null;

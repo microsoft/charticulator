@@ -117,6 +117,8 @@ export interface MappingEditorOptions {
   /** Text lael of input */
   label?: string;
   stopPropagation?: boolean;
+
+  acceptLinksTable?: boolean;
 }
 
 export interface ObserverConfig {
