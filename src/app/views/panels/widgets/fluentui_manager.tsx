@@ -115,6 +115,7 @@ import { CustomCollapsiblePanel } from "./controls/custom_collapsible_panel";
 import { FluentUIReorderStringsValue } from "./controls/fluentui_reorder_string_value";
 import { InputColorGradient } from "./controls/input_gradient";
 import { dropdownStyles, onRenderOption, onRenderTitle } from "./styles";
+import { getDropzoneAcceptTables } from "./utils";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -164,7 +165,7 @@ export class FluentUIWidgetManager
     if (options.defaultValue == null) {
       options.defaultValue = info.defaultValue;
     }
-
+    options.acceptLinksTable = options.acceptLinksTable ?? false;
     const openMapping =
       options.openMapping || attribute === this.store.currentAttributeFocus;
     if (openMapping) {
@@ -1328,10 +1329,23 @@ export class FluentUIWidgetManager
       const className = options.noLineHeight
         ? "charticulator__widget-section-header-no-height charticulator__widget-section-header-dropzone"
         : "charticulator__widget-section-header charticulator__widget-section-header-dropzone";
+
+      const acceptTables = getDropzoneAcceptTables(
+        this as FluentUIWidgetManager,
+        options.acceptLinksTable ?? false
+      );
       return (
         <DropZoneView
           key={title}
-          filter={(data) => data instanceof DragData.DataExpression}
+          filter={(data) => {
+            if (
+              acceptTables.length > 0 &&
+              !acceptTables.includes(data.table?.name)
+            ) {
+              return false;
+            }
+            return data instanceof DragData.DataExpression;
+          }}
           onDrop={(data: DragData.DataExpression) => {
             new Actions.BindDataToAxis(
               this.objectClass.object as Specification.PlotSegment,

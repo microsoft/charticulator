@@ -50,6 +50,8 @@ import {
 import { strings } from "../../../../strings";
 import { MappingType } from "../../../../core/specification";
 import { EmptyMapping } from "./controls/fluentui_empty_mapping";
+import { FluentUIWidgetManager } from "./fluentui_manager";
+import { getDropzoneAcceptTables } from "./utils";
 
 export interface MappingEditorProps {
   parent: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
@@ -632,11 +634,21 @@ export class FluentMappingEditor extends React.Component<
       options.acceptKinds
     );
     const menuRender = this.director.getMenuRender();
+    const acceptTables = getDropzoneAcceptTables(
+      this.props.parent as FluentUIWidgetManager,
+      options.acceptLinksTable
+    );
 
     return (
       <div ref={(e) => (this.noneLabel = e)} key={attribute}>
         <DropZoneView
           filter={(data) => {
+            if (
+              acceptTables.length > 0 &&
+              !acceptTables.includes(data.table?.name)
+            ) {
+              return false;
+            }
             if (!shouldShowBindData) {
               return false;
             }

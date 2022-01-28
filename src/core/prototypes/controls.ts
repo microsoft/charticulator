@@ -81,6 +81,7 @@ export interface RowOptions {
     defineCategories?: boolean;
   };
   noLineHeight?: boolean;
+  acceptLinksTable?: boolean;
 }
 
 export interface DropTargetOptions {
@@ -118,6 +119,8 @@ export interface MappingEditorOptions {
   /** Text lael of input */
   label?: string;
   stopPropagation?: boolean;
+
+  acceptLinksTable?: boolean;
 }
 
 export interface ObserverConfig {

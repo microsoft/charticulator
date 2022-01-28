@@ -6,7 +6,7 @@ import { strings } from "../../../strings";
 import { Geometry, Point } from "../../common";
 import * as Graphics from "../../graphics";
 import * as Specification from "../../specification";
-import { MappingType } from "../../specification";
+import { DataKind, MappingType } from "../../specification";
 import {
   TextAlignmentHorizontal,
   TextAlignmentVertical,
@@ -30,6 +30,7 @@ import {
   IconElementProperties,
 } from "./icon.attrs";
 import { imagePlaceholder } from "./image";
+import { RectangleGlyph } from "../glyphs";
 
 export { IconElementAttributes, IconElementProperties };
 
@@ -209,6 +210,10 @@ export class IconElementClass extends EmphasizableMarkClass<
             attribute: "size",
             attributeType: Specification.AttributeType.Number,
           },
+        },
+        accept: {
+          kind: DataKind.Numerical,
+          table: (this.parent as RectangleGlyph).object.table,
         },
       },
     ];
