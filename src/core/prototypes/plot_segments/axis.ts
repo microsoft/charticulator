@@ -1953,11 +1953,6 @@ export function buildAxisWidgets(
     );
   } else {
     widgets.push(
-      // manager.sectionHeader(
-      //   axisName + ": " + strings.core.none,
-      //   null,
-      //   dropzoneOptions
-      // )
       manager.verticalGroup(
         {
           header: strings.objects.general,

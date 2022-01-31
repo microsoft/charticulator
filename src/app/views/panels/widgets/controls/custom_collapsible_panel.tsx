@@ -23,14 +23,15 @@ export const CustomCollapsiblePanel = ({
   const panelHeader = header ?? "";
 
   return (
-    <>
+    <React.Fragment key={`panel-${panelHeader}`}>
       <PanelHeader
         header={panelHeader}
         setCollapsed={setCollapsed}
         collapsed={collapsed}
+        key={`panelHeader-${panelHeader}`}
       />
       <div style={styles}>{!collapsed ? widgets : null}</div>
-    </>
+    </React.Fragment>
   );
 };
 

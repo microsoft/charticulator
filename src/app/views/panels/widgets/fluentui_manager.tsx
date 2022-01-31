@@ -18,6 +18,7 @@ import {
   Specification,
   refineColumnName,
   getById,
+  uuid,
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
 import { ButtonRaised } from "../../../components";
@@ -1367,11 +1368,11 @@ export class FluentUIWidgetManager
 
   public horizontal(cols: number[], ...widgets: JSX.Element[]) {
     return (
-      <div className="charticulator__widget-horizontal">
+      <div className="charticulator__widget-horizontal" key="widget-horizontal">
         {widgets.map((x, id) => (
           <span
             className={`el-layout-item el-layout-item-col-${cols[id]}`}
-            key={id}
+            key={`horizontal-${id}-${uuid()}`}
           >
             {x}
           </span>
@@ -1386,11 +1387,15 @@ export class FluentUIWidgetManager
     ...widgets: JSX.Element[]
   ) {
     return (
-      <div className="charticulator__widget-horizontal" style={styles}>
+      <div
+        className="charticulator__widget-horizontal"
+        style={styles}
+        key="s-widget-horizontal"
+      >
         {widgets.map((x, id) => (
           <span
             className={`el-layout-item el-layout-item-col-${cols[id]}`}
-            key={id}
+            key={`horizontal-${id}-${uuid()}`}
           >
             {x}
           </span>
@@ -1486,7 +1491,11 @@ export class FluentUIWidgetManager
     };
 
     return (
-      <div style={{ display: "inline" }} ref={(e) => (button = e)}>
+      <div
+        key={options.key}
+        style={{ display: "inline" }}
+        ref={(e) => (button = e)}
+      >
         {getControl()}
       </div>
     );
@@ -1563,7 +1572,7 @@ export class FluentUIWidgetManager
     return (
       <div className="charticulator__widget-vertical">
         {widgets.map((x, id) => (
-          <span className="el-layout-item" key={id}>
+          <span className="el-layout-item" key={`vertical-${id}-${uuid()}`}>
             {x}
           </span>
         ))}
@@ -1576,12 +1585,14 @@ export class FluentUIWidgetManager
     widgets: JSX.Element[]
   ) {
     return (
-      <CollapsiblePanel
-        header={options.header}
-        widgets={widgets}
-        isCollapsed={options.isCollapsed}
-        alignVertically={options.alignVertically}
-      />
+      <div>
+        <CollapsiblePanel
+          header={options.header}
+          widgets={widgets}
+          isCollapsed={options.isCollapsed}
+          alignVertically={options.alignVertically}
+        />
+      </div>
     );
   }
 

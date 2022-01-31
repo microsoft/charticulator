@@ -920,13 +920,17 @@ export class ChartStateManager {
     plotSegmentState.dataRowIndices = filteredIndices.map((i) => [i]);
 
     if (plotSegment.filter) {
-      const filter = new CompiledFilter(
-        plotSegment.filter,
-        this.dataflow.cache
-      );
-      filteredIndices = filteredIndices.filter((i) => {
-        return filter.filter(table.getRowContext(i));
-      });
+      try {
+        const filter = new CompiledFilter(
+          plotSegment.filter,
+          this.dataflow.cache
+        );
+        filteredIndices = filteredIndices.filter((i) => {
+          return filter.filter(table.getRowContext(i));
+        });
+      } catch (e) {
+        //Plot segment empty filter expression
+      }
     }
     if (plotSegment.groupBy) {
       if (plotSegment.groupBy.expression) {
