@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Solver, Specification } from "../../../core";
+import { Prototypes, Solver, Specification } from "../../../core";
 import {
   MappingType,
   SnappingElementMapping,
@@ -74,6 +74,11 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   // eslint-disable-next-line
   REG.add(Actions.AddMarkToGlyph, function (action) {
     this.saveHistory();
+
+    //cant add plot-segment in glyph
+    if (Prototypes.isType(action.classID, "plot-segment")) {
+      return;
+    }
 
     const mark = this.chartManager.createObject(
       action.classID
