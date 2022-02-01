@@ -431,6 +431,7 @@ export class ColumnView extends React.Component<
     ).toString();
   }
 
+  // eslint-disable-next-line max-lines-per-function
   public renderColumnControl(
     label: string,
     icon: string,
@@ -506,7 +507,10 @@ export class ColumnView extends React.Component<
               this.props.table,
               this.applyAggregation(expr, type, metadata.kind),
               type,
-              metadata,
+              {
+                ...metadata,
+                columnName: displayLabel ?? label,
+              },
               rawColumnExpr
                 ? this.applyAggregation(
                     rawColumnExpr,

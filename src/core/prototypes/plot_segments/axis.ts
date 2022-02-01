@@ -42,12 +42,12 @@ import {
   AxisDataBindingType,
   NumericalMode,
   OrderMode,
-  TickFormatType,
 } from "../../specification/types";
 import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
 import {
   getTableColumns,
   parseDerivedColumnsExpression,
+  shouldShowTickFormatForTickExpression,
   transformOrderByExpression,
 } from "./utils";
 import { DataflowManager, DataflowTable } from "../dataflow";
@@ -102,6 +102,7 @@ export class AxisRenderer {
   public valueToPosition: (value: any) => number;
   public oppositeSide: boolean = false;
   public static SCROLL_BAR_SIZE = 10;
+  public static DEFAULT_TICKS_NUMBER = 10;
 
   //axis tick selection
   private plotSegment: Specification.PlotSegment;
@@ -184,7 +185,9 @@ export class AxisRenderer {
               data.domainMax,
               rangeMin,
               rangeMax,
-              data.tickFormat
+              data.tickFormat,
+              data.numberOfTicks,
+              data.autoNumberOfTicks
             );
           }
           if (data.numericalMode == "logarithmic") {
@@ -193,7 +196,9 @@ export class AxisRenderer {
               data.domainMax,
               rangeMin,
               rangeMax,
-              data.tickFormat
+              data.tickFormat,
+              data.numberOfTicks,
+              data.autoNumberOfTicks
             );
           }
           if (data.numericalMode == "temporal") {
@@ -202,7 +207,9 @@ export class AxisRenderer {
               data.domainMax,
               rangeMin,
               rangeMax,
-              data.tickFormat
+              data.tickFormat,
+              data.numberOfTicks,
+              data.autoNumberOfTicks
             );
           }
         }
@@ -229,8 +236,7 @@ export class AxisRenderer {
   public ticksData: { tick: any; value: any }[];
   public setTicksByData(
     ticks: { tick: any; value: any }[],
-    tickFormatString: string,
-    tickFormatType: TickFormatType
+    tickFormatString: string
   ) {
     const position2Tick = new Map<number, string>();
     for (const tick of ticks) {
@@ -239,19 +245,22 @@ export class AxisRenderer {
       const tickFormat = tickFormatString
         ? tickFormatString?.replace(tickFormatParserExpression(), "$1")
         : null;
-
-      if (!tickFormat) {
+      if (!tickFormat || typeof tick.tick == "string") {
         label = <string>tick.tick;
       } else {
-        if (tickFormatType === TickFormatType.Number) {
+        try {
+          //try parse numeric format
           label = getFormat()(tickFormat)(tick.tick);
-        } else if (tickFormatType === TickFormatType.Date) {
-          label = applyDateFormat(new Date(tick.tick), tickFormat);
-        } else {
-          label = <string>tick.tick;
+        } catch (e) {
+          try {
+            //try parse date format
+            label = applyDateFormat(new Date(tick.tick), tickFormat);
+          } catch (ex) {
+            //use string format
+            label = <string>tick.tick;
+          }
         }
       }
-
       position2Tick.set(pos, label);
     }
     this.ticks = [];
@@ -284,16 +293,24 @@ export class AxisRenderer {
     domainMax: number,
     rangeMin: number,
     rangeMax: number,
-    tickFormat: string
+    tickFormat: string,
+    numberOfTicks: number = AxisRenderer.DEFAULT_TICKS_NUMBER,
+    autoTickNumber: boolean = true
   ) {
     const scale = new Scale.LinearScale();
     scale.domainMin = domainMin;
     scale.domainMax = domainMax;
     const rangeLength = Math.abs(rangeMax - rangeMin);
-    const ticks = scale.ticks(Math.round(Math.min(10, rangeLength / 40)));
-    const defaultFormat = scale.tickFormat(
-      Math.round(Math.min(10, rangeLength / 40))
-    );
+    let tickNumber = numberOfTicks;
+    if (autoTickNumber) {
+      tickNumber = Math.round(Math.min(10, rangeLength / 40));
+      if (this.data) {
+        this.data.numberOfTicks = tickNumber;
+      }
+    }
+    const ticks = scale.ticks(tickNumber);
+
+    const defaultFormat = scale.tickFormat(tickNumber);
 
     const resolvedFormat = AxisRenderer.getTickFormat(
       tickFormat,
@@ -327,16 +344,23 @@ export class AxisRenderer {
     domainMax: number,
     rangeMin: number,
     rangeMax: number,
-    tickFormat: string
+    tickFormat: string,
+    numberOfTicks: number = AxisRenderer.DEFAULT_TICKS_NUMBER,
+    autoTickNumber: boolean = true
   ) {
     const scale = new Scale.LogarithmicScale();
     scale.domainMin = domainMin;
     scale.domainMax = domainMax;
     const rangeLength = Math.abs(rangeMax - rangeMin);
-    const ticks = scale.ticks(Math.round(Math.min(10, rangeLength / 40)));
-    const defaultFormat = scale.tickFormat(
-      Math.round(Math.min(10, rangeLength / 40))
-    );
+    let tickNumber = numberOfTicks;
+    if (autoTickNumber) {
+      tickNumber = Math.round(Math.min(10, rangeLength / 40));
+      if (this.data) {
+        this.data.numberOfTicks = tickNumber;
+      }
+    }
+    const ticks = scale.ticks(tickNumber);
+    const defaultFormat = scale.tickFormat(tickNumber);
 
     const resolvedFormat = AxisRenderer.getTickFormat(
       tickFormat,
@@ -371,16 +395,24 @@ export class AxisRenderer {
     domainMax: number,
     rangeMin: number,
     rangeMax: number,
-    tickFormatString: string
+    tickFormatString: string,
+    numberOfTicks: number = AxisRenderer.DEFAULT_TICKS_NUMBER,
+    autoTickNumber: boolean = true
   ) {
     const scale = new Scale.DateScale();
     scale.domainMin = domainMin;
     scale.domainMax = domainMax;
     const rangeLength = Math.abs(rangeMax - rangeMin);
-    const ticksCount = Math.round(Math.min(10, rangeLength / 40));
-    const ticks = scale.ticks(ticksCount);
+    let tickNumber = numberOfTicks;
+    if (autoTickNumber) {
+      tickNumber = Math.round(Math.min(10, rangeLength / 40));
+      if (this.data) {
+        this.data.numberOfTicks = tickNumber;
+      }
+    }
+    const ticks = scale.ticks(tickNumber);
     const tickFormat = scale.tickFormat(
-      ticksCount,
+      tickNumber,
       tickFormatString?.replace(tickFormatParserExpression(), "$1")
     );
     const r: TickDescription[] = [];
@@ -1402,6 +1434,8 @@ export function buildAxisAppearanceWidgets(
                   },
                   {
                     label: strings.objects.axes.offSet,
+                    showUpdown: true,
+                    updownTick: 10,
                   }
                 )
               : null,
@@ -1476,6 +1510,8 @@ export function buildAxisAppearanceWidgets(
               },
               {
                 label: strings.objects.axes.ticksize,
+                showUpdown: true,
+                updownTick: 1,
               }
             ),
             manager.inputFontFamily(
@@ -1656,6 +1692,13 @@ export function buildAxisWidgets(
           onChange
         )
       : [];
+    const tickFormatAndTickDataFields = getTickDataAndTickFormatFields(
+      data,
+      axisProperty,
+      manager
+    );
+    const categoricalTickFormatAndTickDataFields =
+      data.valueType === "date" ? tickFormatAndTickDataFields : [];
     switch (data.type) {
       case "numerical":
         {
@@ -1757,48 +1800,7 @@ export function buildAxisWidgets(
                       }
                     )
                   : null,
-                manager.inputSelect(
-                  { property: axisProperty, field: "tickFormatType" },
-                  {
-                    options: [
-                      TickFormatType.None,
-                      TickFormatType.Date,
-                      TickFormatType.Number,
-                    ],
-                    labels: [
-                      strings.objects.axes.tickDataFormatTypeNone,
-                      strings.objects.axes.tickDataFormatTypeDate,
-                      strings.objects.axes.tickDataFormatTypeNumber,
-                    ],
-                    showLabel: true,
-                    type: "dropdown",
-                    label: strings.objects.axes.tickDataFormatType,
-                  }
-                ),
-                data.tickFormatType !== TickFormatType.None
-                  ? manager.inputExpression(
-                      {
-                        property: axisProperty,
-                        field: "tickDataExpression",
-                      },
-                      {
-                        label: strings.objects.axes.tickData,
-                      }
-                    )
-                  : null,
-                manager.inputFormat(
-                  {
-                    property: axisProperty,
-                    field: "tickFormat",
-                  },
-                  {
-                    blank: strings.core.auto,
-                    isDateField:
-                      data.numericalMode === NumericalMode.Temporal ||
-                      data.valueType === DataType.Date,
-                    label: strings.objects.axes.tickFormat,
-                  }
-                ),
+                ...tickFormatAndTickDataFields,
                 ...scrollingWidgets,
               ]
             )
@@ -1862,32 +1864,7 @@ export function buildAxisWidgets(
                     label: "Gap",
                   }
                 ),
-                data.valueType === "date"
-                  ? (manager.inputExpression(
-                      {
-                        property: axisProperty,
-                        field: "tickDataExpression",
-                      },
-                      {
-                        label: strings.objects.axes.tickData,
-                      }
-                    ),
-                    manager.row(
-                      strings.objects.axes.tickFormat,
-                      manager.inputFormat(
-                        {
-                          property: axisProperty,
-                          field: "tickFormat",
-                        },
-                        {
-                          blank: strings.core.auto,
-                          isDateField:
-                            data.numericalMode === NumericalMode.Temporal ||
-                            data.valueType === DataType.Date,
-                        }
-                      )
-                    ))
-                  : null,
+                ...categoricalTickFormatAndTickDataFields,
                 ...scrollingWidgets,
                 // )
               ]
@@ -2099,17 +2076,6 @@ export function buildAxisProperties(
       target: {
         property: {
           property,
-          field: "tickFormatType",
-        },
-      },
-      type: Specification.AttributeType.Enum,
-      default: TickFormatType.None,
-    },
-    {
-      objectID: plotSegment._id,
-      target: {
-        property: {
-          property,
           field: "tickDataExpression",
         },
       },
@@ -2126,6 +2092,28 @@ export function buildAxisProperties(
       },
       type: Specification.AttributeType.Number,
       default: 0,
+    },
+    {
+      objectID: plotSegment._id,
+      target: {
+        property: {
+          property,
+          field: "numberOfTicks",
+        },
+      },
+      type: Specification.AttributeType.Number,
+      default: 10,
+    },
+    {
+      objectID: plotSegment._id,
+      target: {
+        property: {
+          property,
+          field: "autoNumberOfTicks",
+        },
+      },
+      type: Specification.AttributeType.Boolean,
+      default: true,
     },
   ];
 }
@@ -2334,5 +2322,91 @@ function getOrderByAnotherColumnWidgets(
       )
     )
   );
+  return widgets;
+}
+
+function getTickDataAndTickFormatFields(
+  data: Specification.Types.AxisDataBinding,
+  axisProperty: string,
+  manager: Controls.WidgetManager
+) {
+  const showInputFormat = shouldShowTickFormatForTickExpression(data, manager);
+
+  const widgets = [];
+  widgets.push(
+    manager.label(strings.objects.axes.tickData),
+    manager.styledHorizontal(
+      {
+        alignItems: "start",
+      },
+      [1, 0],
+      manager.inputExpression(
+        {
+          property: axisProperty,
+          field: "tickDataExpression",
+        },
+        {
+          allowNull: true,
+          placeholder: strings.core.default,
+          dropzone: {
+            type: "tick-data-binding",
+            prompt: strings.objects.dropTickData,
+          },
+          noLineHeight: true,
+        }
+      )
+    )
+  );
+  if (showInputFormat) {
+    widgets.push(
+      manager.inputFormat(
+        {
+          property: axisProperty,
+          field: "tickFormat",
+        },
+        {
+          blank: strings.core.auto,
+          label: strings.objects.axes.tickFormat,
+          isDateField:
+            data.numericalMode === NumericalMode.Temporal ||
+            data.valueType === DataType.Date,
+          allowNull: true,
+        }
+      )
+    );
+  }
+  if (!data.tickDataExpression) {
+    widgets.push(
+      manager.inputBoolean(
+        {
+          property: axisProperty,
+          field: "autoNumberOfTicks",
+        },
+        {
+          type: "checkbox",
+          label: strings.objects.axes.autoNumberOfTicks,
+          styles: {
+            marginTop: "0.5rem",
+          },
+        }
+      )
+    );
+    if (!data.autoNumberOfTicks) {
+      widgets.push(
+        manager.inputNumber(
+          {
+            property: axisProperty,
+            field: "numberOfTicks",
+          },
+          {
+            label: strings.objects.axes.numberOfTicks,
+            showUpdown: true,
+            updownTick: 1,
+            minimum: 2,
+          }
+        )
+      );
+    }
+  }
   return widgets;
 }

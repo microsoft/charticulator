@@ -233,8 +233,11 @@ export interface ScrollListOptions {
 export interface InputExpressionOptions {
   table?: string;
   label?: string;
+  allowNull?: boolean;
+  placeholder?: string;
+  noLineHeight?: boolean;
   dropzone?: {
-    type: "axis-data-binding";
+    type: "axis-data-binding" | "tick-data-binding";
     prompt?: string;
     property?: string;
     defineCategories?: boolean;
@@ -243,17 +246,20 @@ export interface InputExpressionOptions {
 
 export interface InputFormatOptions {
   blank?: string;
+  allowNull?: boolean;
 }
 
 export interface InputFormatOptions {
   blank?: string;
   label?: string;
+  allowNull?: boolean;
 }
 
 export interface InputFormatOptions {
   blank?: string;
   isDateField?: boolean;
   label?: string;
+  allowNull?: boolean;
 }
 
 export interface ReOrderWidgetOptions {

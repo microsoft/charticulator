@@ -35,7 +35,7 @@ import {
   DataflowTable,
   DataflowTableGroupedContext,
 } from "../prototypes/dataflow";
-import { getFormat, Specification } from "..";
+import { applyDateFormat, getFormat, Specification } from "..";
 
 export type PatternReplacer = (expr: Expression) => Expression | void;
 
@@ -117,11 +117,15 @@ export class TextExpression {
             try {
               return getFormat()(part.format)(+val);
             } catch (ex) {
-              // try to handle specific format
-              if (part.format.match(/^%raw$/).length > 0) {
-                return getFormattedValue(context, val, part.expression);
-              } else {
-                throw ex;
+              try {
+                return applyDateFormat(new Date(+val), part.format);
+              } catch (ex) {
+                // try to handle specific format
+                if (part.format.match(/^%raw$/).length > 0) {
+                  return getFormattedValue(context, val, part.expression);
+                } else {
+                  throw ex;
+                }
               }
             }
           } else {

@@ -408,6 +408,7 @@ export const strings = {
     roundX: "Round X",
     roundY: "Round Y",
     dropData: "drop here to assign data",
+    dropTickData: "Tick data: drop here to assign tick data",
     axes: {
       data: "Data",
       numericalSuffix: ": Numerical",
@@ -434,6 +435,8 @@ export const strings = {
       verticalText: "Vertical text",
       offSet: "Offset",
       orderBy: "Order by",
+      numberOfTicks: "Number of Ticks",
+      autoNumberOfTicks: "Auto Number of Ticks",
     },
     plotSegment: {
       subLayout: "Sub-layout",

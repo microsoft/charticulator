@@ -3,7 +3,7 @@
 
 import { Controls } from "../common";
 import { deepClone } from "../../common";
-import { Dataset, Expression } from "../../index";
+import { Dataset, Expression, Specification } from "../../index";
 import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/types";
 
 export function getTableColumns(
@@ -63,4 +63,36 @@ export function transformOrderByExpression(expression: string): string {
       ? "`" + expression + "`"
       : expression
     : expression;
+}
+
+export function shouldShowTickFormatForTickExpression(
+  data: Specification.Types.AxisDataBinding,
+  manager: Controls.WidgetManager
+): boolean {
+  let showInputFormat = true;
+  try {
+    //check tick data type
+    if (data.tickDataExpression) {
+      const extendedManager = manager as Controls.WidgetManager &
+        CharticulatorPropertyAccessors;
+      const chartManager = extendedManager.store.chartManager;
+      const table = chartManager.getTable(
+        extendedManager.store.getTables()[0].name
+      );
+      const tickDataExpression = chartManager.dataflow.cache.parse(
+        data.tickDataExpression
+      );
+
+      const c = table.getRowContext(0);
+      const tickData = tickDataExpression.getValue(c);
+      //if string -> hide input format
+      if (typeof tickData === "string") {
+        showInputFormat = false;
+      }
+    }
+  } catch (ex) {
+    console.log(ex);
+    showInputFormat = true;
+  }
+  return showInputFormat;
 }
