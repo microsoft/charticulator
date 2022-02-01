@@ -242,7 +242,7 @@ export function renderSVGDefs(element: Graphics.Element): JSX.Element {
             id={text.style.backgroundColorId}
           >
             <feFlood
-              flood-color={renderColor(
+              floodColor={renderColor(
                 text.style.backgroundColor,
                 text.style.colorFilter
               )}
@@ -262,8 +262,12 @@ export function renderSVGDefs(element: Graphics.Element): JSX.Element {
       const group = element as Graphics.Group;
       return (
         <>
-          {group.elements?.map((x) => {
-            return renderSVGDefs(x);
+          {group.elements?.map((x, idx) => {
+            return (
+              <React.Fragment key={`SVGDefs-${idx}`}>
+                {renderSVGDefs(x)}
+              </React.Fragment>
+            );
           })}
         </>
       );

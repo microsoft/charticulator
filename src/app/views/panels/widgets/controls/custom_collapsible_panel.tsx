@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-import { CSSProperties, useState } from "react";
+import { CSSProperties, useMemo, useState } from "react";
 import { DefaultButton, Label } from "@fluentui/react";
 import { PanelHeaderStyles } from "./fluentui_customized_components";
 
@@ -20,17 +20,33 @@ export const CustomCollapsiblePanel = ({
 }: CollapsiblePanelProps): JSX.Element => {
   const [collapsed, setCollapsed] = useState(false);
 
+  const renderAttributes = useMemo(() => {
+    return !collapsed
+      ? widgets.map((widget, idx) => {
+          if (Array.isArray(widget)) {
+            return widget.map((item, innerIdx) => (
+              <div key={`inner-widget-${innerIdx}`}>{item}</div>
+            ));
+          }
+          return <div key={`widget-${idx}`}>{widget}</div>;
+        })
+      : null;
+  }, [widgets, collapsed]);
+
   const panelHeader = header ?? "";
 
   return (
-    <>
+    <div key={`panel-${panelHeader}`}>
       <PanelHeader
         header={panelHeader}
         setCollapsed={setCollapsed}
         collapsed={collapsed}
+        key={`panelHeader-${panelHeader}`}
       />
-      <div style={styles}>{!collapsed ? widgets : null}</div>
-    </>
+      <div style={styles} key={`panelWidgets-${panelHeader}`}>
+        {renderAttributes}
+      </div>
+    </div>
   );
 };
 

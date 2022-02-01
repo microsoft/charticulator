@@ -205,6 +205,7 @@ export interface GroupByEditorOptions {
   };
   value: Specification.Types.GroupBy;
   mode: PanelMode;
+  key: string;
 }
 
 export interface NestedChartEditorOptions {

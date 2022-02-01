@@ -201,6 +201,7 @@ export abstract class PlotSegmentClass<
               target: { plotSegment: this.object },
               value: this.object.groupBy,
               mode: PanelMode.Button,
+              key: "groupByEditor",
             }),
           ]
         )
