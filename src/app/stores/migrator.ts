@@ -980,115 +980,107 @@ export class Migrator {
               element.properties.yData.autoNumberOfTicks = true;
             }
           }
-          if (
-            Prototypes.isType(item.chartElement.classID, "plot-segment.polar")
-          ) {
-            const element = item.chartElement as PlotSegment<PolarProperties>;
-            if (element.properties.xData) {
-              element.properties.xData = this.updateAxis(
-                element.properties.xData
-              );
-              if (element.properties.xData.numberOfTicks == undefined) {
-                element.properties.xData.numberOfTicks =
-                  AxisRenderer.DEFAULT_TICKS_NUMBER;
-              }
-              if (element.properties.xData.autoNumberOfTicks == undefined) {
-                element.properties.xData.autoNumberOfTicks = true;
-              }
+        }
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.polar")
+        ) {
+          const element = item.chartElement as PlotSegment<PolarProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+            if (element.properties.xData.numberOfTicks == undefined) {
+              element.properties.xData.numberOfTicks =
+                AxisRenderer.DEFAULT_TICKS_NUMBER;
             }
-            if (element.properties.xData === undefined) {
-              element.properties.xData = null;
-            }
-            if (element.properties.yData) {
-              element.properties.yData = this.updateAxis(
-                element.properties.yData
-              );
-              if (element.properties.yData.numberOfTicks == undefined) {
-                element.properties.yData.numberOfTicks =
-                  AxisRenderer.DEFAULT_TICKS_NUMBER;
-              }
-              if (element.properties.yData.autoNumberOfTicks == undefined) {
-                element.properties.yData.autoNumberOfTicks = true;
-              }
-            }
-            if (element.properties.yData === undefined) {
-              element.properties.yData = null;
+            if (element.properties.xData.autoNumberOfTicks == undefined) {
+              element.properties.xData.autoNumberOfTicks = true;
             }
           }
-          if (
-            Prototypes.isType(item.chartElement.classID, "plot-segment.line")
-          ) {
-            const element = item.chartElement as PlotSegment<
-              LineGuideProperties
-            >;
-            if (element.properties.axis) {
-              element.properties.axis = this.updateAxis(
-                element.properties.axis
-              );
-              if (element.properties.axis.numberOfTicks == undefined) {
-                element.properties.axis.numberOfTicks =
-                  AxisRenderer.DEFAULT_TICKS_NUMBER;
-              }
-              if (element.properties.axis.autoNumberOfTicks == undefined) {
-                element.properties.axis.autoNumberOfTicks = true;
-              }
+          if (element.properties.xData === undefined) {
+            element.properties.xData = null;
+          }
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+            if (element.properties.yData.numberOfTicks == undefined) {
+              element.properties.yData.numberOfTicks =
+                AxisRenderer.DEFAULT_TICKS_NUMBER;
+            }
+            if (element.properties.yData.autoNumberOfTicks == undefined) {
+              element.properties.yData.autoNumberOfTicks = true;
             }
           }
-          if (
-            Prototypes.isType(item.chartElement.classID, "plot-segment.curve")
-          ) {
-            const element = item.chartElement as PlotSegment<CurveProperties>;
-            if (element.properties.xData) {
-              element.properties.xData = this.updateAxis(
-                element.properties.xData
-              );
-              if (element.properties.xData.numberOfTicks == undefined) {
-                element.properties.xData.numberOfTicks =
-                  AxisRenderer.DEFAULT_TICKS_NUMBER;
-              }
-              if (element.properties.xData.autoNumberOfTicks == undefined) {
-                element.properties.xData.autoNumberOfTicks = true;
-              }
+          if (element.properties.yData === undefined) {
+            element.properties.yData = null;
+          }
+        }
+        if (Prototypes.isType(item.chartElement.classID, "plot-segment.line")) {
+          const element = item.chartElement as PlotSegment<LineGuideProperties>;
+          if (element.properties.axis) {
+            element.properties.axis = this.updateAxis(element.properties.axis);
+            if (element.properties.axis.numberOfTicks == undefined) {
+              element.properties.axis.numberOfTicks =
+                AxisRenderer.DEFAULT_TICKS_NUMBER;
             }
-            if (element.properties.xData === undefined) {
-              element.properties.xData = null;
-            }
-            if (element.properties.yData) {
-              element.properties.yData = this.updateAxis(
-                element.properties.yData
-              );
-              if (element.properties.yData.numberOfTicks == undefined) {
-                element.properties.yData.numberOfTicks =
-                  AxisRenderer.DEFAULT_TICKS_NUMBER;
-              }
-              if (element.properties.yData.autoNumberOfTicks == undefined) {
-                element.properties.yData.autoNumberOfTicks = true;
-              }
-            }
-            if (element.properties.yData === undefined) {
-              element.properties.yData = null;
+            if (element.properties.axis.autoNumberOfTicks == undefined) {
+              element.properties.axis.autoNumberOfTicks = true;
             }
           }
-          if (Prototypes.isType(item.chartElement.classID, "mark.data-axis")) {
-            // eslint-disable-next-line @typescript-eslint/ban-types
-            const element = (item.chartElement as unknown) as Object<
-              DataAxisProperties
-            >;
-            if (element.properties.axis) {
-              element.properties.axis = this.updateAxis(
-                element.properties.axis
-              );
-              if (element.properties.axis.numberOfTicks == undefined) {
-                element.properties.axis.numberOfTicks =
-                  AxisRenderer.DEFAULT_TICKS_NUMBER;
-              }
-              if (element.properties.axis.autoNumberOfTicks == undefined) {
-                element.properties.axis.autoNumberOfTicks = true;
-              }
+        }
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.curve")
+        ) {
+          const element = item.chartElement as PlotSegment<CurveProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+            if (element.properties.xData.numberOfTicks == undefined) {
+              element.properties.xData.numberOfTicks =
+                AxisRenderer.DEFAULT_TICKS_NUMBER;
             }
-            if (element.properties.axis === undefined) {
-              element.properties.axis = null;
+            if (element.properties.xData.autoNumberOfTicks == undefined) {
+              element.properties.xData.autoNumberOfTicks = true;
             }
+          }
+          if (element.properties.xData === undefined) {
+            element.properties.xData = null;
+          }
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+            if (element.properties.yData.numberOfTicks == undefined) {
+              element.properties.yData.numberOfTicks =
+                AxisRenderer.DEFAULT_TICKS_NUMBER;
+            }
+            if (element.properties.yData.autoNumberOfTicks == undefined) {
+              element.properties.yData.autoNumberOfTicks = true;
+            }
+          }
+          if (element.properties.yData === undefined) {
+            element.properties.yData = null;
+          }
+        }
+        if (Prototypes.isType(item.chartElement.classID, "mark.data-axis")) {
+          // eslint-disable-next-line @typescript-eslint/ban-types
+          const element = (item.chartElement as unknown) as Object<
+            DataAxisProperties
+          >;
+          if (element.properties.axis) {
+            element.properties.axis = this.updateAxis(element.properties.axis);
+            if (element.properties.axis.numberOfTicks == undefined) {
+              element.properties.axis.numberOfTicks =
+                AxisRenderer.DEFAULT_TICKS_NUMBER;
+            }
+            if (element.properties.axis.autoNumberOfTicks == undefined) {
+              element.properties.axis.autoNumberOfTicks = true;
+            }
+          }
+          if (element.properties.axis === undefined) {
+            element.properties.axis = null;
           }
         }
       }
