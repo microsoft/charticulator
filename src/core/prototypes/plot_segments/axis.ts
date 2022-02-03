@@ -49,6 +49,10 @@ import {
   parseDerivedColumnsExpression,
   shouldShowTickFormatForTickExpression,
   transformOrderByExpression,
+  CategoryItemsWithIds,
+  getOnConfirmFunction,
+  transformOnResetCategories,
+  updateWidgetCategoriesByExpression,
 } from "./utils";
 import { DataflowManager, DataflowTable } from "../dataflow";
 import * as Expression from "../../expression";
@@ -2240,47 +2244,27 @@ function getOrderByAnotherColumnWidgets(
     groupByExpression = parseDerivedColumnsExpression(groupByExpression);
   }
 
+  const isOriginalColumn = groupByExpression === data.orderByExpression;
+  console.log(isOriginalColumn);
   const vectorData = getExpressionVector(data.orderByExpression, table, {
     expression: groupByExpression,
   });
   const items = vectorData.map((item) => [...new Set(item)]);
 
-  const items_idx = items.map((item, idx) => [item, idx]);
+  const items_idx: CategoryItemsWithIds = items.map((item, idx) => [item, idx]);
   const axisData = getExpressionVector(data.expression, table, {
     expression: groupByExpression,
   }).map((item, idx) => [item, idx]);
 
-  const rawAxisData = items_idx.map((item) =>
-    Array.isArray(item[0]) ? item[0].join(", ") : item[0].toString()
-  );
+  const isNumberValueType = Array.isArray(items_idx[0][0])
+    ? typeof items_idx[0][0][0] === "number"
+    : typeof items_idx[0][0] === "number";
+
+  const onResetAxisCategories = transformOnResetCategories(items_idx);
 
   const onConfirm = (items: string[]) => {
     try {
-      const newData = [...axisData];
-      const new_order = [];
-
-      for (let i = 0; i < items.length; i++) {
-        const currentItemIndex = items_idx.findIndex(
-          (item) =>
-            (Array.isArray(item[0])
-              ? item[0].join(", ")
-              : item[0].toString()) == items[i]
-        );
-        const foundItem = newData.find(
-          (item) => item[1] === items_idx[currentItemIndex]?.[1]
-        );
-        new_order.push(foundItem);
-        items_idx.splice(currentItemIndex, 1);
-      }
-      const getItem = (item: any) => {
-        if (data.valueType == DataType.Number) {
-          return "" + item;
-        }
-        return item;
-      };
-      data.order = new_order.map((item) => getItem(item[0]));
-      data.orderMode = OrderMode.order;
-      data.categories = new_order.map((item) => getItem(item[0]));
+      getOnConfirmFunction(axisData, items, items_idx, data);
     } catch (e) {
       console.log(e);
     }
@@ -2291,10 +2275,8 @@ function getOrderByAnotherColumnWidgets(
       expression: groupByExpression,
     });
     const items = vectorData.map((item) => [...new Set(item)]);
-    const newData = items.map((item) =>
-      Array.isArray(item) ? item.join(", ") : item
-    );
-    data.orderByCategories = newData;
+    const newData = updateWidgetCategoriesByExpression(items);
+    data.orderByCategories = [...new Set(newData)];
   };
 
   widgets.push(
@@ -2315,9 +2297,10 @@ function getOrderByAnotherColumnWidgets(
       manager.reorderByAnotherColumnWidget(
         { property: axisProperty, field: "orderByCategories" },
         {
-          allowReset: true,
+          allowReset: isNumberValueType == false,
           onConfirmClick: onConfirm,
-          onResetCategories: rawAxisData,
+          onResetCategories: onResetAxisCategories,
+          allowDragItems: isNumberValueType == false,
         }
       )
     )

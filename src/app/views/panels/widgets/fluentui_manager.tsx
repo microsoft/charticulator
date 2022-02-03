@@ -25,7 +25,7 @@ import {
 import { Actions, DragData } from "../../../actions";
 import { ButtonRaised } from "../../../components";
 import { SVGImageIcon } from "../../../components/icons";
-import { getAlignment, PopupView } from "../../../controllers";
+import { getAlignment, PopupAlignment, PopupView } from "../../../controllers";
 import {
   DragContext,
   DragModifiers,
@@ -117,6 +117,7 @@ import { FluentUIReorderStringsValue } from "./controls/fluentui_reorder_string_
 import { InputColorGradient } from "./controls/input_gradient";
 import { dropdownStyles, onRenderOption, onRenderTitle } from "./styles";
 import { getDropzoneAcceptTables } from "./utils";
+import { EditorType } from "../../../stores/app_store";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -1781,7 +1782,13 @@ export class FluentUIWidgetManager
                   </PopupView>
                 );
               },
-              { anchor: container }
+              {
+                anchor: container,
+                alignX:
+                  this.store.editorType == EditorType.Embedded
+                    ? PopupAlignment.EndInner
+                    : PopupAlignment.EndOuter,
+              }
             );
           }}
         />

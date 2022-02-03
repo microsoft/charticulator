@@ -5,9 +5,10 @@ import * as React from "react";
 import { ReorderListView } from "../../object_list_editor";
 import { ButtonRaised } from "../../../../components";
 import { strings } from "../../../../../strings";
-import { DefaultButton } from "@fluentui/react";
+import { DefaultButton, TooltipHost } from "@fluentui/react";
 import { defultComponentsHeight } from "./fluentui_customized_components";
 import { getRandomNumber } from "../../../../../core";
+import { DataType } from "../../../../../core/specification";
 
 interface ReorderStringsValueProps {
   items: string[];
@@ -18,6 +19,8 @@ interface ReorderStringsValueProps {
   ) => void;
   allowReset?: boolean;
   onReset?: () => string[];
+  itemsDataType?: DataType.Number | DataType.String;
+  allowDragItems?: boolean;
 }
 
 interface ReorderStringsValueState {
@@ -43,7 +46,7 @@ export class FluentUIReorderStringsValue extends React.Component<
       <div className="charticulator__widget-popup-reorder-widget">
         <div className="el-row el-list-view">
           <ReorderListView
-            enabled={true}
+            enabled={this.props.allowDragItems ?? true}
             onReorder={(a, b) => {
               ReorderListView.ReorderArray(items, a, b);
               this.setState({ items, customOrder: true, sortOrder: false });
@@ -51,32 +54,12 @@ export class FluentUIReorderStringsValue extends React.Component<
           >
             {items.map((x) => (
               <div key={x + getRandomNumber()} className="el-item">
-                {x}
+                <TooltipHost content={x}>{x}</TooltipHost>
               </div>
             ))}
           </ReorderListView>
         </div>
         <div className="el-row">
-          <DefaultButton
-            iconProps={{
-              iconName: "Sort",
-            }}
-            styles={{
-              root: {
-                minWidth: "unset",
-                ...defultComponentsHeight,
-                padding: 0,
-                marginRight: 5,
-              },
-            }}
-            text={strings.reOrder.reverse}
-            onClick={() => {
-              this.setState({
-                items: this.state.items.reverse(),
-                customOrder: true,
-              });
-            }}
-          />
           <DefaultButton
             iconProps={{
               iconName: "SortLines",
@@ -96,6 +79,26 @@ export class FluentUIReorderStringsValue extends React.Component<
                 padding: 0,
                 marginRight: 5,
               },
+            }}
+          />
+          <DefaultButton
+            iconProps={{
+              iconName: "Sort",
+            }}
+            styles={{
+              root: {
+                minWidth: "unset",
+                ...defultComponentsHeight,
+                padding: 0,
+                marginRight: 5,
+              },
+            }}
+            text={strings.reOrder.reverse}
+            onClick={() => {
+              this.setState({
+                items: this.state.items.reverse(),
+                customOrder: true,
+              });
             }}
           />
           {this.props.allowReset && (

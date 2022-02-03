@@ -1803,7 +1803,8 @@
         font-size: 14px;
         padding: 0 10px;
         min-width: 100px;
-
+        max-height: 700px;
+        max-width: 500px;
         .el-row {
           margin: 10px 0;
         }
