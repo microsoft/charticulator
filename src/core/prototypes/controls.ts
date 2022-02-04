@@ -7,6 +7,7 @@ import * as Specification from "../specification";
 import * as Dataset from "../dataset";
 import { CSSProperties } from "react";
 import { ICheckboxStyles, IDropdownOption } from "@fluentui/react";
+import { DataType } from "../specification";
 
 export type Widget = any;
 
@@ -269,6 +270,11 @@ export interface ReOrderWidgetOptions {
   items?: string[];
   onConfirmClick?: (items: string[]) => void;
   onResetCategories?: string[];
+  sortedCategories?: string[];
+  itemsDataType?: DataType.Number | DataType.String;
+  allowDragItems?: boolean;
+  onReorderHandler?: () => void;
+  onButtonHandler?: () => void;
 }
 
 export interface InputFormatOptions {

@@ -5,9 +5,10 @@ import * as React from "react";
 import { ReorderListView } from "../../object_list_editor";
 import { ButtonRaised } from "../../../../components";
 import { strings } from "../../../../../strings";
-import { DefaultButton } from "@fluentui/react";
+import { DefaultButton, TooltipHost } from "@fluentui/react";
 import { defultComponentsHeight } from "./fluentui_customized_components";
 import { getRandomNumber } from "../../../../../core";
+import { DataType } from "../../../../../core/specification";
 
 interface ReorderStringsValueProps {
   items: string[];
@@ -16,8 +17,13 @@ interface ReorderStringsValueProps {
     customOrder: boolean,
     sortOrder: boolean
   ) => void;
+  sortedCategories?: string[];
   allowReset?: boolean;
   onReset?: () => string[];
+  itemsDataType?: DataType.Number | DataType.String;
+  allowDragItems?: boolean;
+  onReorderHandler?: () => void;
+  onButtonHandler?: () => void;
 }
 
 interface ReorderStringsValueState {
@@ -43,20 +49,48 @@ export class FluentUIReorderStringsValue extends React.Component<
       <div className="charticulator__widget-popup-reorder-widget">
         <div className="el-row el-list-view">
           <ReorderListView
-            enabled={true}
+            enabled={this.props.allowDragItems ?? true}
             onReorder={(a, b) => {
               ReorderListView.ReorderArray(items, a, b);
               this.setState({ items, customOrder: true, sortOrder: false });
+              if (this.props.onReorderHandler) {
+                this.props.onReorderHandler();
+              }
             }}
           >
             {items.map((x) => (
               <div key={x + getRandomNumber()} className="el-item">
-                {x}
+                <TooltipHost content={x}>{x}</TooltipHost>
               </div>
             ))}
           </ReorderListView>
         </div>
         <div className="el-row">
+          <DefaultButton
+            iconProps={{
+              iconName: "SortLines",
+            }}
+            text={strings.reOrder.sort}
+            onClick={() => {
+              this.setState({
+                items:
+                  [...this.props.sortedCategories] ?? this.state.items.sort(),
+                customOrder: false,
+                sortOrder: true,
+              });
+              if (this.props.onButtonHandler) {
+                this.props.onButtonHandler();
+              }
+            }}
+            styles={{
+              root: {
+                minWidth: "unset",
+                ...defultComponentsHeight,
+                padding: 0,
+                marginRight: 5,
+              },
+            }}
+          />
           <DefaultButton
             iconProps={{
               iconName: "Sort",
@@ -75,27 +109,9 @@ export class FluentUIReorderStringsValue extends React.Component<
                 items: this.state.items.reverse(),
                 customOrder: true,
               });
-            }}
-          />
-          <DefaultButton
-            iconProps={{
-              iconName: "SortLines",
-            }}
-            text={strings.reOrder.sort}
-            onClick={() => {
-              this.setState({
-                items: this.state.items.sort(),
-                customOrder: false,
-                sortOrder: true,
-              });
-            }}
-            styles={{
-              root: {
-                minWidth: "unset",
-                ...defultComponentsHeight,
-                padding: 0,
-                marginRight: 5,
-              },
+              if (this.props.onButtonHandler) {
+                this.props.onButtonHandler();
+              }
             }}
           />
           {this.props.allowReset && (
@@ -120,6 +136,9 @@ export class FluentUIReorderStringsValue extends React.Component<
                       customOrder: false,
                       sortOrder: false,
                     });
+                    if (this.props.onButtonHandler) {
+                      this.props.onButtonHandler();
+                    }
                   }
                 }}
               />
