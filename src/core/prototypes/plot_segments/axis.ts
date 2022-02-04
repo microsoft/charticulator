@@ -41,7 +41,6 @@ import {
   AxisDataBinding,
   AxisDataBindingType,
   NumericalMode,
-  OrderMode,
 } from "../../specification/types";
 import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
 import {
