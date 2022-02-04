@@ -270,8 +270,11 @@ export interface ReOrderWidgetOptions {
   items?: string[];
   onConfirmClick?: (items: string[]) => void;
   onResetCategories?: string[];
+  sortedCategories?: string[];
   itemsDataType?: DataType.Number | DataType.String;
   allowDragItems?: boolean;
+  onReorderHandler?: () => void;
+  onButtonHandler?: () => void;
 }
 
 export interface InputFormatOptions {

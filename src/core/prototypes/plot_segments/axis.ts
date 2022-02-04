@@ -53,6 +53,7 @@ import {
   getOnConfirmFunction,
   transformOnResetCategories,
   updateWidgetCategoriesByExpression,
+  getSortedCategories,
 } from "./utils";
 import { DataflowManager, DataflowTable } from "../dataflow";
 import * as Expression from "../../expression";
@@ -2156,6 +2157,7 @@ function applySelectionFilter(
   }
   return filteredIndices;
 }
+let orderChanged = false;
 
 function getOrderByAnotherColumnWidgets(
   data: Specification.Types.AxisDataBinding,
@@ -2168,7 +2170,7 @@ function getOrderByAnotherColumnWidgets(
     manager as Controls.WidgetManager & CharticulatorPropertyAccessors
   );
 
-  const columnsDisplayNames = tableColumns
+  let columnsDisplayNames = tableColumns
     .filter((item) => !item.metadata?.isRaw)
     .map((column) => column.displayName);
   const columnsNames = tableColumns
@@ -2245,7 +2247,6 @@ function getOrderByAnotherColumnWidgets(
   }
 
   const isOriginalColumn = groupByExpression === data.orderByExpression;
-  console.log(isOriginalColumn);
   const vectorData = getExpressionVector(data.orderByExpression, table, {
     expression: groupByExpression,
   });
@@ -2261,6 +2262,7 @@ function getOrderByAnotherColumnWidgets(
     : typeof items_idx[0][0] === "number";
 
   const onResetAxisCategories = transformOnResetCategories(items_idx);
+  const sortedCategories = getSortedCategories(items_idx);
 
   const onConfirm = (items: string[]) => {
     try {
@@ -2278,6 +2280,16 @@ function getOrderByAnotherColumnWidgets(
     const newData = updateWidgetCategoriesByExpression(items);
     data.orderByCategories = [...new Set(newData)];
   };
+
+  if (orderChanged) {
+    columnsDisplayNames = columnsDisplayNames.map((name) => {
+      if (isOriginalColumn && name == data.orderByExpression) {
+        return "Custom";
+      } else {
+        return name;
+      }
+    });
+  }
 
   widgets.push(
     manager.label(strings.objects.axes.orderBy),
@@ -2300,7 +2312,18 @@ function getOrderByAnotherColumnWidgets(
           allowReset: isNumberValueType == false,
           onConfirmClick: onConfirm,
           onResetCategories: onResetAxisCategories,
+          sortedCategories: sortedCategories,
           allowDragItems: isNumberValueType == false,
+          onReorderHandler: isOriginalColumn
+            ? () => {
+                orderChanged = true;
+              }
+            : undefined,
+          onButtonHandler: isOriginalColumn
+            ? () => {
+                orderChanged = false;
+              }
+            : undefined,
         }
       )
     )

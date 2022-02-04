@@ -166,7 +166,7 @@ export function getOnConfirmFunction(
         const item = itemsWithIds[j];
         const stringSortedValue = getStingValueFromCategoryItemsWithIds(item);
         if (stringSortedValue === items[i]) {
-          idxForItem.push(j);
+          idxForItem.push(item[1]);
         }
       }
 
@@ -207,4 +207,21 @@ export function updateWidgetCategoriesByExpression(
     newWidgetData.push(stringValueForItem);
   });
   return newWidgetData;
+}
+
+export function getSortedCategories(itemsWithIds: CategoryItemsWithIds) {
+  let sortedData: string[];
+  if (itemsWithIds[0] && isNumbers(itemsWithIds[0][0])) {
+    sortedData = transformOnResetCategories(
+      itemsWithIds.sort((firstItem, secondItem) => {
+        if (isNumbers(firstItem[0]) && isNumbers(secondItem[0])) {
+          return firstItem[0][0] - secondItem[0][0];
+        }
+        return 0;
+      })
+    );
+  } else {
+    sortedData = transformOnResetCategories(itemsWithIds).sort();
+  }
+  return sortedData;
 }

@@ -17,10 +17,13 @@ interface ReorderStringsValueProps {
     customOrder: boolean,
     sortOrder: boolean
   ) => void;
+  sortedCategories?: string[];
   allowReset?: boolean;
   onReset?: () => string[];
   itemsDataType?: DataType.Number | DataType.String;
   allowDragItems?: boolean;
+  onReorderHandler?: () => void;
+  onButtonHandler?: () => void;
 }
 
 interface ReorderStringsValueState {
@@ -50,6 +53,9 @@ export class FluentUIReorderStringsValue extends React.Component<
             onReorder={(a, b) => {
               ReorderListView.ReorderArray(items, a, b);
               this.setState({ items, customOrder: true, sortOrder: false });
+              if (this.props.onReorderHandler) {
+                this.props.onReorderHandler();
+              }
             }}
           >
             {items.map((x) => (
@@ -67,10 +73,14 @@ export class FluentUIReorderStringsValue extends React.Component<
             text={strings.reOrder.sort}
             onClick={() => {
               this.setState({
-                items: this.state.items.sort(),
+                items:
+                  [...this.props.sortedCategories] ?? this.state.items.sort(),
                 customOrder: false,
                 sortOrder: true,
               });
+              if (this.props.onButtonHandler) {
+                this.props.onButtonHandler();
+              }
             }}
             styles={{
               root: {
@@ -99,6 +109,9 @@ export class FluentUIReorderStringsValue extends React.Component<
                 items: this.state.items.reverse(),
                 customOrder: true,
               });
+              if (this.props.onButtonHandler) {
+                this.props.onButtonHandler();
+              }
             }}
           />
           {this.props.allowReset && (
@@ -123,6 +136,9 @@ export class FluentUIReorderStringsValue extends React.Component<
                       customOrder: false,
                       sortOrder: false,
                     });
+                    if (this.props.onButtonHandler) {
+                      this.props.onButtonHandler();
+                    }
                   }
                 }}
               />
