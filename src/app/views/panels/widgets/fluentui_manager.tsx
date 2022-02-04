@@ -1787,7 +1787,7 @@ export class FluentUIWidgetManager
                 alignX:
                   this.store.editorType == EditorType.Embedded
                     ? PopupAlignment.EndInner
-                    : PopupAlignment.EndOuter,
+                    : PopupAlignment.StartInner,
               }
             );
           }}
