@@ -209,9 +209,11 @@ export class FluentValueEditor extends ContextedComponent<
                     } else {
                       this.emitSetValue(color);
                     }
-                    this.setState({ open: !this.state.open });
                   }}
                   parent={this}
+                  closePicker={() => {
+                    this.setState({ open: !this.state.open });
+                  }}
                 />
               </Callout>
             )}

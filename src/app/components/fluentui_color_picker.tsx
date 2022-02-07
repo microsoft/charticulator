@@ -36,6 +36,7 @@ export interface ColorPickerProps {
   onPick?: (color: Color) => void;
   store?: AppStore;
   parent?: React.Component;
+  closePicker?: () => void;
 }
 
 export interface ColorPickerState {
@@ -160,6 +161,9 @@ export class ColorPicker extends React.Component<
             onClick={(c) => {
               this.props.onPick(c);
               this.setState({ currentColor: c });
+              if (this.props.closePicker) {
+                this.props.closePicker();
+              }
             }}
           />
         ) : null}
