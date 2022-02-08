@@ -20,7 +20,6 @@ import {
   Prototypes,
   refineColumnName,
   Specification,
-  uuid,
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
 import { ButtonRaised } from "../../../components";
@@ -1409,7 +1408,7 @@ export class FluentUIWidgetManager
         {widgets.map((x, id) => (
           <span
             className={`el-layout-item el-layout-item-col-${cols[id]}`}
-            key={`horizontal-${id}-${uuid()}`}
+            key={`horizontal-${id}`}
           >
             {x}
           </span>

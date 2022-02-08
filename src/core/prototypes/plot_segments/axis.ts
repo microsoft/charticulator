@@ -34,7 +34,12 @@ import {
 } from "../../graphics/renderer/text_measurer";
 import { Graphics, Prototypes, Specification } from "../../index";
 import { Controls, strokeStyleToDashArray } from "../common";
-import { AttributeMap, DataType } from "../../specification";
+import {
+  AttributeMap,
+  DataType,
+  MappingType,
+  ParentMapping,
+} from "../../specification";
 import { strings } from "../../../strings";
 import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
 import {
@@ -44,21 +49,22 @@ import {
 } from "../../specification/types";
 import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
 import {
+  CategoryItemsWithIds,
+  getOnConfirmFunction,
+  getSortedCategories,
   getTableColumns,
   parseDerivedColumnsExpression,
   shouldShowTickFormatForTickExpression,
-  transformOrderByExpression,
-  CategoryItemsWithIds,
-  getOnConfirmFunction,
   transformOnResetCategories,
+  transformOrderByExpression,
   updateWidgetCategoriesByExpression,
-  getSortedCategories,
 } from "./utils";
 import { DataflowManager, DataflowTable } from "../dataflow";
 import * as Expression from "../../expression";
 import { CompiledGroupBy } from "../group_by";
 import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/types";
 import { type2DerivedColumns } from "../../../app/views/dataset/common";
+import { CartesianPlotSegment } from "../plot_segments/region_2d";
 import React = require("react");
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
@@ -107,6 +113,7 @@ export class AxisRenderer {
   public oppositeSide: boolean = false;
   public static SCROLL_BAR_SIZE = 10;
   public static DEFAULT_TICKS_NUMBER = 10;
+  public static DEFAULT_Y_LABEL_GAP = 15;
 
   //axis tick selection
   private plotSegment: Specification.PlotSegment;
@@ -289,6 +296,38 @@ export class AxisRenderer {
           return getFormat()(spec)(value);
         });
       };
+    }
+  }
+
+  private chartMarginForYLabel: number = null;
+  public setCartesianChartMargin(plotSegment: CartesianPlotSegment) {
+    try {
+      const mappings = plotSegment.object?.mappings;
+      const side = plotSegment.object?.properties?.yData?.side;
+
+      if (side === "default") {
+        if (
+          mappings.x1.type === MappingType.parent &&
+          (mappings.x1 as ParentMapping).parentAttribute == "x1"
+        ) {
+          this.chartMarginForYLabel = plotSegment.parent.state.attributes
+            ?.marginLeft as number;
+        } else {
+          this.chartMarginForYLabel = null;
+        }
+      } else {
+        if (
+          mappings.x2.type === MappingType.parent &&
+          (mappings.x2 as ParentMapping).parentAttribute == "x2"
+        ) {
+          this.chartMarginForYLabel = plotSegment.parent.state.attributes
+            ?.marginRight as number;
+        } else {
+          this.chartMarginForYLabel = null;
+        }
+      }
+    } catch (ex) {
+      this.chartMarginForYLabel = null;
     }
   }
 
@@ -537,7 +576,7 @@ export class AxisRenderer {
     y: number,
     angle: number,
     side: number,
-    offset?: number
+    axisOffset?: number
   ): Group {
     const g = makeGroup([]);
     const style = this.style;
@@ -620,9 +659,26 @@ export class AxisRenderer {
           (typeof tick.label === "string" &&
             splitStringByNewLine(tick.label).length > 1)
         ) {
-          let textContent: string[] = splitByWidth(
+          let textContent: string[];
+          let textWidth: number;
+          if (this.chartMarginForYLabel != null) {
+            if (this.oppositeSide) {
+              textWidth =
+                this.chartMarginForYLabel -
+                AxisRenderer.DEFAULT_Y_LABEL_GAP -
+                (axisOffset ?? 0);
+            } else {
+              textWidth =
+                this.chartMarginForYLabel -
+                AxisRenderer.DEFAULT_Y_LABEL_GAP +
+                (axisOffset ?? 0);
+            }
+          } else {
+            textWidth = maxTickDistance;
+          }
+          textContent = splitByWidth(
             replaceSymbolByTab(replaceSymbolByNewLine(tick.label)),
-            maxTickDistance,
+            textWidth,
             10000,
             style.fontFamily,
             style.fontSize
@@ -952,10 +1008,10 @@ export class AxisRenderer {
       }
     }
 
-    if (offset) {
+    if (axisOffset) {
       g.transform = {
-        x: angle == 90 ? offset : 0,
-        y: angle == 90 ? 0 : offset,
+        x: angle == 90 ? axisOffset : 0,
+        y: angle == 90 ? 0 : axisOffset,
         angle: 0,
       };
     }
