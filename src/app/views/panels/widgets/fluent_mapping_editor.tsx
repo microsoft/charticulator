@@ -279,6 +279,8 @@ export class FluentMappingEditor extends React.Component<
                 } else {
                   this.setValueMapping(color);
                 }
+              }}
+              closePicker={() => {
                 this.changeColorPickerState();
               }}
               parent={this}

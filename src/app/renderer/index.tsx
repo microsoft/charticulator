@@ -503,7 +503,6 @@ export function renderGraphicalElementSVG(
             style={style}
             x={text.cx}
             y={-text.cy}
-            filter={filter}
           >
             {text.text}
           </text>

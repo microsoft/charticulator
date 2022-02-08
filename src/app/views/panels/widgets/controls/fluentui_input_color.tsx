@@ -193,10 +193,12 @@ export class FluentInputColor extends React.Component<
                 } else {
                   this.props.onEnter(color);
                 }
-                this.setState({ open: !this.state.open });
               }}
               defaultValue={colorFromHTMLColor(hex)}
               parent={this}
+              closePicker={() => {
+                this.setState({ open: !this.state.open });
+              }}
             />
           </Callout>
         )}
