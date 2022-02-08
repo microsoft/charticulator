@@ -409,6 +409,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           props.yData.tickFormat
         );
       }
+      axisRenderer.setCartesianChartMargin(this);
       g.elements.push(
         axisRenderer.renderCartesian(
           props.yData.side != "default" ? attrs.x2 : attrs.x1,
