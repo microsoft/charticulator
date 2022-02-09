@@ -511,6 +511,13 @@ export const strings = {
       curveness: "Curveness",
       closeLink: "Close Link",
     },
+    arrows: {
+      arrowType: "Arrows",
+      noArrowNoArrow: "No-Arrow No-Arrow",
+      noArrowArrow: "No-Arrow Arrow",
+      ArrowNoArrow: "Arrow No-Arrow",
+      ArrowArrow: "Arrow Arrow",
+    },
     line: {
       lineStyle: "Line Style",
     },

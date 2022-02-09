@@ -37,6 +37,7 @@ import { parseDerivedColumnsExpression } from "../../core/prototypes/plot_segmen
 import { OrientationType } from "../../core/prototypes/legends/types";
 import { NumericalColorLegendClass } from "../../core/prototypes/legends/color_legend";
 import { AxisRenderer } from "../../core/prototypes/plot_segments/axis";
+import { ArrowType, LinksProperties } from "../../core/prototypes/links";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -184,6 +185,13 @@ export class Migrator {
       compareVersion(targetVersion, "2.1.5") >= 0
     ) {
       state = this.setMissedLegendProperties(state);
+    }
+
+    if (
+      compareVersion(state.version, "2.1.6") < 0 &&
+      compareVersion(targetVersion, "2.1.6") >= 0
+    ) {
+      state = this.setMissedLinksProperty(state);
     }
 
     // After migration, set version to targetVersion
@@ -1103,6 +1111,19 @@ export class Migrator {
         }
       }
     }
+    return state;
+  }
+
+  public setMissedLinksProperty(state: AppStoreState) {
+    for (const element of state.chart.elements) {
+      if (Prototypes.isType(element.classID, "links")) {
+        const link = element as ChartElement<LinksProperties>;
+        if (link) {
+          link.properties.arrowType = ArrowType.NO_ARROW_NO_ARROW;
+        }
+      }
+    }
+
     return state;
   }
 }

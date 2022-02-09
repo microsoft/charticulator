@@ -27,6 +27,7 @@ import { ReorderListView } from "./object_list_editor";
 import { PanelRadioControl } from "./radio_control";
 import { MappingType } from "../../../core/specification";
 import { PrimaryButton } from "@fluentui/react";
+import { ArrowType } from "../../../core/prototypes/links";
 
 export interface LinkCreationPanelProps {
   onFinish?: () => void;
@@ -559,6 +560,7 @@ export class LinkCreationPanel extends ContextedComponent<
             },
             curveness: 30,
             closeLink: false,
+            arrowType: ArrowType.NO_ARROW_NO_ARROW,
           } as Prototypes.Links.LinksProperties,
         };
 
@@ -604,6 +606,7 @@ export class LinkCreationPanel extends ContextedComponent<
             },
             curveness: 30,
             closeLink: false,
+            arrowType: ArrowType.NO_ARROW_NO_ARROW,
           } as Prototypes.Links.LinksProperties,
         };
 
@@ -653,6 +656,7 @@ export class LinkCreationPanel extends ContextedComponent<
             },
             curveness: 30,
             closeLink: false,
+            arrowType: ArrowType.NO_ARROW_NO_ARROW,
           } as Prototypes.Links.LinksProperties,
         };
 

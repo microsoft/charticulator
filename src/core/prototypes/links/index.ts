@@ -4,6 +4,7 @@ import {
   Color,
   Geometry,
   getById,
+  getRandomNumber,
   indexOf,
   MultistringHashMap,
   Point,
@@ -11,15 +12,15 @@ import {
 } from "../../common";
 import * as Expression from "../../expression";
 import * as Graphics from "../../graphics";
+import { PointDirection } from "../../graphics";
 import * as Specification from "../../specification";
+import { MappingType } from "../../specification";
 import { ChartElementClass } from "../chart_element";
 import { Controls, ObjectClassMetadata, TemplateParameters } from "../common";
 import { DataflowTable } from "../dataflow";
 import { ChartStateManager } from "../state";
 import { AttributeDescription, ObjectClasses } from "../object";
 import { PlotSegmentClass } from "../plot_segments";
-import { PointDirection } from "../../graphics";
-import { MappingType } from "../../specification";
 import { strings } from "../../../strings";
 import { shouldShowCloseLink } from "./utils";
 
@@ -66,6 +67,15 @@ export interface LinksProperties extends Specification.AttributeMap {
   curveness: number;
 
   closeLink?: boolean;
+
+  arrowType?: ArrowType;
+}
+
+export enum ArrowType {
+  NO_ARROW_NO_ARROW = "NO_ARROW_NO_ARROW",
+  NO_ARROW_ARROW = "NO_ARROW_ARROW",
+  ARROW_NO_ARROW = "ARROW_NO_ARROW",
+  ARROW_ARROW = "ARROW_ARROW",
 }
 
 export interface LinksObject extends Specification.Links {
@@ -508,8 +518,10 @@ export abstract class LinksClass extends ChartElementClass {
     anchorGroups: AnchorAttributes[][][],
     strokeDashArray?: LinkMarkType
   ): Graphics.Group {
+    const props = this.object.properties;
     switch (linkGraphics) {
       case "line": {
+        const arrowType = props.arrowType ?? ArrowType.NO_ARROW_NO_ARROW;
         return Graphics.makeGroup(
           anchorGroups.map((anchors) => {
             const lines: Graphics.Element[] = [];
@@ -519,7 +531,10 @@ export abstract class LinksClass extends ChartElementClass {
                 strokeOpacity: anchors[i][0].opacity,
                 strokeWidth: anchors[i][0].strokeWidth,
                 strokeDasharray: strokeDashArray,
+                startArrowColorId: `start-arrow-color-id-${getRandomNumber()}`,
+                endArrowColorId: `end-arrow-color-id-${getRandomNumber()}`,
               });
+              path.setArrowType(arrowType);
               LinksClass.LinkPath(
                 path,
                 linkGraphics,
@@ -649,6 +664,7 @@ export abstract class LinksClass extends ChartElementClass {
     return null;
   }
 
+  // eslint-disable-next-line max-lines-per-function
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
@@ -679,7 +695,30 @@ export abstract class LinksClass extends ChartElementClass {
         }
       ),
     ];
-
+    if (props.linkType == "line") {
+      widgets.push(
+        manager.inputSelect(
+          { property: "arrowType" },
+          {
+            type: "dropdown",
+            showLabel: true,
+            options: [
+              ArrowType.NO_ARROW_NO_ARROW,
+              ArrowType.NO_ARROW_ARROW,
+              ArrowType.ARROW_NO_ARROW,
+              ArrowType.ARROW_ARROW,
+            ],
+            labels: [
+              strings.objects.arrows.noArrowNoArrow,
+              strings.objects.arrows.noArrowArrow,
+              strings.objects.arrows.ArrowNoArrow,
+              strings.objects.arrows.ArrowArrow,
+            ],
+            label: strings.objects.arrows.arrowType,
+          }
+        )
+      );
+    }
     if (shouldShowCloseLink(this.parent, props)) {
       widgets.push(
         manager.inputBoolean(
@@ -811,6 +850,8 @@ export class SeriesLinksClass extends LinksClass {
   public static defaultProperties: Specification.AttributeMap = {
     visible: true,
     closeLink: false,
+    showArrow: false,
+    arrowType: ArrowType.NO_ARROW_NO_ARROW,
   };
 
   /** Get the graphics that represent this layout */
@@ -928,6 +969,7 @@ export class LayoutsLinksClass extends LinksClass {
   public static defaultProperties: Specification.AttributeMap = {
     visible: true,
     closeLink: false,
+    arrowType: ArrowType.NO_ARROW_NO_ARROW,
   };
 
   /** Get the graphics that represent this layout */
@@ -1034,6 +1076,7 @@ export class TableLinksClass extends LinksClass {
 
   public static defaultProperties: Specification.AttributeMap = {
     visible: true,
+    arrowType: ArrowType.NO_ARROW_NO_ARROW,
   };
 
   /** Get the graphics that represent this layout */

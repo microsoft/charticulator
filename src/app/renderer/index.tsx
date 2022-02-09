@@ -3,12 +3,12 @@
 import * as React from "react";
 
 import {
-  Graphics,
   Color,
-  shallowClone,
   getColorConverter,
-  uniqueID,
+  Graphics,
   hexToRgb,
+  shallowClone,
+  uniqueID,
 } from "../../core";
 import { toSVGNumber } from "../utils";
 import {
@@ -16,6 +16,7 @@ import {
   GlyphEventHandler,
 } from "../../container/chart_component";
 import { ColorFilter, NumberModifier } from "../../core/graphics";
+import { ArrowType } from "../../core/prototypes/links";
 
 // adapted from https://stackoverflow.com/a/20820649
 // probably useful
@@ -225,6 +226,46 @@ class TextOnPath extends React.PureComponent<{
   }
 }
 
+function renderEndSVGArrow(element: Graphics.Path) {
+  return (
+    <marker
+      id={element.style.endArrowColorId}
+      viewBox="0 0 10 10"
+      refX="9"
+      refY="5"
+      markerUnits="strokeWidth"
+      markerWidth="10"
+      markerHeight="10"
+      orient="auto"
+    >
+      <path
+        d="M 0 0 L 10 5 L 0 10 z"
+        fill={renderColor(element.style.strokeColor, element.style.colorFilter)}
+      />
+    </marker>
+  );
+}
+
+function renderStartSVGArrow(element: Graphics.Path) {
+  return (
+    <marker
+      id={element.style.startArrowColorId}
+      viewBox="0 0 10 10"
+      refX="1"
+      refY="5"
+      markerUnits="strokeWidth"
+      markerWidth="10"
+      markerHeight="10"
+      orient="auto"
+    >
+      <path
+        d="M 10 0 L 10 10 L 0 5 z"
+        fill={renderColor(element.style.strokeColor, element.style.colorFilter)}
+      />
+    </marker>
+  );
+}
+
 export function renderSVGDefs(element: Graphics.Element): JSX.Element {
   if (!element) {
     return null;
@@ -257,6 +298,28 @@ export function renderSVGDefs(element: Graphics.Element): JSX.Element {
       } else {
         return null;
       }
+    }
+    case "path": {
+      const path = element as Graphics.Path;
+      if (path.arrowType == ArrowType.NO_ARROW_NO_ARROW) {
+        return null;
+      }
+      if (path.arrowType == ArrowType.NO_ARROW_ARROW) {
+        return renderEndSVGArrow(path);
+      }
+      if (path.arrowType == ArrowType.ARROW_NO_ARROW) {
+        return renderStartSVGArrow(path);
+      }
+      if (path.arrowType == ArrowType.ARROW_ARROW) {
+        return (
+          <>
+            {renderEndSVGArrow(path)}
+            {renderStartSVGArrow(path)}
+          </>
+        );
+      }
+
+      return null;
     }
     case "group": {
       const group = element as Graphics.Group;
@@ -449,6 +512,16 @@ export function renderGraphicalElementSVG(
     case "path": {
       const path = element as Graphics.Path;
       const d = renderSVGPath(path.cmds);
+      const markerStart =
+        path.arrowType == ArrowType.ARROW_NO_ARROW ||
+        path.arrowType == ArrowType.ARROW_ARROW
+          ? `url(#${path.style.startArrowColorId})`
+          : null;
+      const markerEnd =
+        path.arrowType == ArrowType.NO_ARROW_ARROW ||
+        path.arrowType == ArrowType.ARROW_ARROW
+          ? `url(#${path.style.endArrowColorId})`
+          : null;
       return (
         <path
           key={options.key}
@@ -457,6 +530,8 @@ export function renderGraphicalElementSVG(
           style={style}
           d={d}
           transform={path.transform}
+          markerEnd={markerEnd}
+          markerStart={markerStart}
         />
       );
     }
