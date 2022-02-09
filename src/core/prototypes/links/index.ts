@@ -850,7 +850,6 @@ export class SeriesLinksClass extends LinksClass {
   public static defaultProperties: Specification.AttributeMap = {
     visible: true,
     closeLink: false,
-    showArrow: false,
     arrowType: ArrowType.NO_ARROW_NO_ARROW,
   };
 
