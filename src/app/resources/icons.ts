@@ -350,3 +350,7 @@ addSVGIcon("scale/scale", require("resources/icons/icons_scale.svg"));
 addSVGIcon("scale/color", require("resources/icons/icons_scale-color.svg"));
 
 addSVGIcon("loading", require("resources/icons/loading-01.svg"));
+addSVGIcon("line", require("resources/icons/icons_line.svg"));
+addSVGIcon("double-arrow", require("resources/icons/icons_double_arrow.svg"));
+addSVGIcon("right-arrow", require("resources/icons/icons_right_arrow.svg"));
+addSVGIcon("left-arrow", require("resources/icons/icons_left_arrow.svg"));

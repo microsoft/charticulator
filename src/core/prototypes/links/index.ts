@@ -690,8 +690,14 @@ export abstract class LinksClass extends ChartElementClass {
           type: "dropdown",
           showLabel: true,
           options: ["", "8", "1 10"],
-          labels: ["Solid", "Dashed", "Dotted"],
+          labels: [
+            strings.objects.links.solid,
+            strings.objects.links.dashed,
+            strings.objects.links.dotted,
+          ],
           label: strings.objects.links.linkMarkType,
+          icons: ["line", "stroke/dashed", "stroke/dotted"],
+          isLocalIcons: true,
         }
       ),
     ];
@@ -715,6 +721,8 @@ export abstract class LinksClass extends ChartElementClass {
               strings.objects.arrows.ArrowArrow,
             ],
             label: strings.objects.arrows.arrowType,
+            icons: ["line", "right-arrow", "left-arrow", "double-arrow"],
+            isLocalIcons: true,
           }
         )
       );
