@@ -329,6 +329,7 @@ export const strings = {
     text: "Text",
     textbox: "Textbox",
     triangle: "Triangle",
+    comet: "Comet",
   },
   typeDisplayNames: <{ [key in DataType]: string }>{
     boolean: "Boolean",
@@ -567,6 +568,7 @@ export const strings = {
         rectangle: "Rectangle",
         triangle: "Triangle",
         ellipse: "Ellipse",
+        comet: "Comet",
       },
     },
     derivedColumns: {

@@ -15,7 +15,7 @@ import {
   ChartComponent,
   GlyphEventHandler,
 } from "../../container/chart_component";
-import { ColorFilter, NumberModifier } from "../../core/graphics";
+import { ColorFilter, makePath, NumberModifier } from "../../core/graphics";
 
 // adapted from https://stackoverflow.com/a/20820649
 // probably useful
@@ -651,6 +651,50 @@ export function renderGraphicalElementSVG(
               selection: options.selection,
             });
           })}
+        </g>
+      );
+    }
+    case "comet": {
+      const comet = element as Graphics.Comet;
+      const halfWidth = Math.min(
+        Math.abs(comet.x1 - comet.x2) / 2,
+        Math.abs(comet.y1 - comet.y2) / 2
+      );
+      const halfYWidth = Math.abs(comet.y1 - comet.y2) / 2;
+      const maxYPosition = Math.max(comet.y1, comet.y2);
+      const minYPosition = Math.min(comet.y1, comet.y2);
+      const circle = {
+        cx: halfWidth,
+        cy: maxYPosition - halfWidth,
+        r: halfWidth,
+      };
+
+      const path = makePath();
+      path.moveTo(Math.min(comet.x1, comet.x2), maxYPosition - halfWidth);
+      path.lineTo(Math.min(comet.x1, comet.x2) + halfWidth, minYPosition);
+      path.lineTo(Math.max(comet.x1, comet.x2), maxYPosition - halfWidth);
+      path.closePath();
+      const d = renderSVGPath(path.path.cmds);
+
+      return (
+        <g>
+          <circle
+            key={options.key}
+            {...mouseEvents}
+            className={options.className || null}
+            style={style}
+            cx={Math.min(comet.x1, comet.x2) + circle.cx}
+            cy={-circle.cy}
+            r={circle.r}
+          />
+          <path
+            key={options.key}
+            {...mouseEvents}
+            className={options.className || null}
+            style={style}
+            d={d}
+            transform={path.path.transform}
+          />
         </g>
       );
     }

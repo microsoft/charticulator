@@ -8,6 +8,7 @@
 
 import {
   Element,
+  makeComet,
   makeLine,
   makePath,
   makeRect,
@@ -275,6 +276,27 @@ export class CoordinateSystemHelper {
     const cs = this.coordinateSystem;
     if (cs instanceof CartesianCoordinates) {
       return makeRect(x1, y1, x2, y2, style, rx, ry);
+    } else {
+      const path = makePath(style);
+      this.lineTo(path, x1, y1, x1, y2, true);
+      this.lineTo(path, x1, y2, x2, y2, false);
+      this.lineTo(path, x2, y2, x2, y1, false);
+      this.lineTo(path, x2, y1, x1, y1, false);
+      path.closePath();
+      return path.path;
+    }
+  }
+
+  public comet(
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    style: Style = {}
+  ): Element {
+    const cs = this.coordinateSystem;
+    if (cs instanceof CartesianCoordinates) {
+      return makeComet(x1, y1, x2, y2, style);
     } else {
       const path = makePath(style);
       this.lineTo(path, x1, y1, x1, y2, true);

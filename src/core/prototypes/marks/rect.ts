@@ -35,6 +35,7 @@ export enum ShapeType {
   Rectangle = "rectangle",
   Triangle = "triangle",
   Ellips = "ellipse",
+  Comet = "comet",
 }
 
 export class RectElementClass extends EmphasizableMarkClass<
@@ -221,16 +222,23 @@ export class RectElementClass extends EmphasizableMarkClass<
               type: "dropdown",
               showLabel: true,
               label: strings.objects.rect.shape,
-              icons: ["RectangleShape", "TriangleShape", "Ellipse"],
+              icons: [
+                "RectangleShape",
+                "TriangleShape",
+                "Ellipse",
+                "Precipitation",
+              ],
               labels: [
                 strings.objects.rect.shapes.rectangle,
                 strings.objects.rect.shapes.triangle,
                 strings.objects.rect.shapes.ellipse,
+                strings.objects.rect.shapes.comet,
               ],
               options: [
                 ShapeType.Rectangle,
                 ShapeType.Triangle,
                 ShapeType.Ellips,
+                ShapeType.Comet,
               ],
             }
           ),
@@ -239,6 +247,9 @@ export class RectElementClass extends EmphasizableMarkClass<
             {
               type: "checkbox",
               label: strings.objects.rect.flipping,
+              styles: {
+                marginTop: 5,
+              },
             }
           ),
           manager.mappingEditor(
@@ -483,6 +494,24 @@ export class RectElementClass extends EmphasizableMarkClass<
         };
         return path;
       }
+      case ShapeType.Comet:
+        return helper.comet(
+          attrs.x1 + offset.x,
+          attrs.y1 + offset.y,
+          attrs.x2 + offset.x,
+          attrs.y2 + offset.y,
+          {
+            strokeColor: attrs.stroke,
+            strokeWidth: attrs.strokeWidth,
+            strokeLinejoin: "miter",
+            strokeDasharray: strokeStyleToDashArray(
+              this.object.properties.strokeStyle
+            ),
+            fillColor: attrs.fill,
+            opacity: attrs.opacity,
+            ...this.generateEmphasisStyle(empasized),
+          }
+        );
       case ShapeType.Rectangle:
       default: {
         return helper.rect(
