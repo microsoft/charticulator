@@ -507,21 +507,32 @@ export class RectElementClass extends EmphasizableMarkClass<
         const pathMaker = new Graphics.PathMaker();
         pathMaker.moveTo(Math.min(x1, x2), maxYPosition - minHalfWidth);
 
-        pathMaker.arcTo(
+        helper.arcTo(
+          pathMaker,
           halfXWidth,
           minHalfWidth,
-          0,
-          0,
-          1,
+          Math.min(x1, x2),
+          maxYPosition - minHalfWidth,
           Math.max(x1, x2),
           maxYPosition - minHalfWidth
         );
-        pathMaker.lineTo(
-          Math.min(x1, x2) + Math.abs(x1 - x2) / 2,
-          minYPosition
-        );
-        pathMaker.lineTo(Math.min(x1, x2), maxYPosition - minHalfWidth);
 
+        helper.lineTo(
+          pathMaker,
+          Math.max(x1, x2),
+          maxYPosition - minHalfWidth,
+          Math.min(x1, x2) + Math.abs(x1 - x2) / 2,
+          minYPosition,
+          false
+        );
+        helper.lineTo(
+          pathMaker,
+          Math.min(x1, x2) + Math.abs(x1 - x2) / 2,
+          minYPosition,
+          Math.min(x1, x2),
+          maxYPosition - minHalfWidth,
+          false
+        );
         pathMaker.closePath();
         const path = pathMaker.path;
         path.style = {

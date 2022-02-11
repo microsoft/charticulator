@@ -405,4 +405,24 @@ export class CoordinateSystemHelper {
       }
     }
   }
+
+  public arcTo(
+    path: PathMaker,
+    rx: number,
+    ry: number,
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number
+  ) {
+    const cs = this.coordinateSystem;
+    if (cs instanceof CartesianCoordinates) {
+      path.arcTo(rx, ry, 0, 0, 1, x2, y2);
+      return path.path;
+    } else {
+      //IGNORE NOW. TODO: handle arc for CartesianCoordinates and BezierCurveCoordinates
+      this.lineTo(path, x1, y1, x2, y2, true);
+      return path.path;
+    }
+  }
 }
