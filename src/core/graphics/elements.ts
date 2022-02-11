@@ -160,14 +160,6 @@ export interface Ellipse extends Element {
   y2: number;
 }
 
-export interface Comet extends Element {
-  type: "comet";
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
-}
-
 export interface Text extends Element {
   type: "text";
   cx: number;
@@ -239,16 +231,6 @@ export function makeEllipse(
   style?: Style
 ): Ellipse {
   return { type: "ellipse", x1, x2, y1, y2, style };
-}
-
-export function makeComet(
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number,
-  style?: Style
-): Comet {
-  return { type: "comet", x1, x2, y1, y2, style };
 }
 
 export function makeGroup(elements: Element[]): Group {

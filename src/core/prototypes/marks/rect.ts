@@ -494,24 +494,49 @@ export class RectElementClass extends EmphasizableMarkClass<
         };
         return path;
       }
-      case ShapeType.Comet:
-        return helper.comet(
-          attrs.x1 + offset.x,
-          attrs.y1 + offset.y,
-          attrs.x2 + offset.x,
-          attrs.y2 + offset.y,
-          {
-            strokeColor: attrs.stroke,
-            strokeWidth: attrs.strokeWidth,
-            strokeLinejoin: "miter",
-            strokeDasharray: strokeStyleToDashArray(
-              this.object.properties.strokeStyle
-            ),
-            fillColor: attrs.fill,
-            opacity: attrs.opacity,
-            ...this.generateEmphasisStyle(empasized),
-          }
+      case ShapeType.Comet: {
+        const x1 = attrs.x1 + offset.x;
+        const x2 = attrs.x2 + offset.x;
+        const y1 = attrs.y1 + offset.y;
+        const y2 = attrs.y2 + offset.y;
+        const halfYWidth = Math.abs(y1 - y2) / 2;
+        const halfXWidth = Math.abs(x1 - x2) / 2;
+        const minHalfWidth = Math.min(halfYWidth, halfXWidth);
+        const maxYPosition = Math.max(y1, y2);
+        const minYPosition = Math.min(y1, y2);
+        const pathMaker = new Graphics.PathMaker();
+        pathMaker.moveTo(Math.min(x1, x2), maxYPosition - minHalfWidth);
+
+        pathMaker.arcTo(
+          halfXWidth,
+          minHalfWidth,
+          0,
+          0,
+          1,
+          Math.max(x1, x2),
+          maxYPosition - minHalfWidth
         );
+        pathMaker.lineTo(
+          Math.min(x1, x2) + Math.abs(x1 - x2) / 2,
+          minYPosition
+        );
+        pathMaker.lineTo(Math.min(x1, x2), maxYPosition - minHalfWidth);
+
+        pathMaker.closePath();
+        const path = pathMaker.path;
+        path.style = {
+          strokeColor: attrs.stroke,
+          strokeWidth: attrs.strokeWidth,
+          strokeLinejoin: "miter",
+          strokeDasharray: strokeStyleToDashArray(
+            this.object.properties.strokeStyle
+          ),
+          fillColor: attrs.fill,
+          opacity: attrs.opacity,
+          ...this.generateEmphasisStyle(empasized),
+        };
+        return path;
+      }
       case ShapeType.Rectangle:
       default: {
         return helper.rect(
