@@ -763,7 +763,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
           attribute: "image",
         },
         type: Specification.AttributeType.Image,
-        default: this.state.attributes.image.src,
+        default: this.state.attributes.image?.src,
       });
     }
     if (
