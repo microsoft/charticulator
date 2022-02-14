@@ -147,7 +147,8 @@ export interface Path extends Element {
   type: "path";
   cmds: { cmd: string; args: number[] }[];
   transform: string;
-  arrowType?: ArrowType;
+  beginArrowType?: ArrowType;
+  endArrowType?: ArrowType;
 }
 
 export interface Circle extends Element {
@@ -293,8 +294,11 @@ export class PathMaker {
     this.path.transform = `rotate(${angle} ${x} ${y})`;
   }
 
-  public setArrowType(arrowType: ArrowType) {
-    this.path.arrowType = arrowType;
+  public setBeginArrowType(arrowType: ArrowType) {
+    this.path.beginArrowType = arrowType;
+  }
+  public setEndArrowType(arrowType: ArrowType) {
+    this.path.endArrowType = arrowType;
   }
 
   public cubicBezierCurveTo(

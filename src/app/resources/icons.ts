@@ -351,6 +351,26 @@ addSVGIcon("scale/color", require("resources/icons/icons_scale-color.svg"));
 
 addSVGIcon("loading", require("resources/icons/loading-01.svg"));
 addSVGIcon("line", require("resources/icons/icons_line.svg"));
-addSVGIcon("double-arrow", require("resources/icons/icons_double_arrow.svg"));
-addSVGIcon("right-arrow", require("resources/icons/icons_right_arrow.svg"));
-addSVGIcon("left-arrow", require("resources/icons/icons_left_arrow.svg"));
+
+addSVGIcon("noArrow", require("resources/icons/icons_arrows_noArrow.svg"));
+addSVGIcon(
+  "beginArrow",
+  require("resources/icons/icons_arrows_beginArrow.svg")
+);
+addSVGIcon(
+  "beginDiamondArrow",
+  require("resources/icons/icons_arrows_beginDiamondArrow.svg")
+);
+addSVGIcon(
+  "beginOvalArrow",
+  require("resources/icons/icons_arrows_beginOvalArrow.svg")
+);
+addSVGIcon("endArrow", require("resources/icons/icons_arrows_endArrow.svg"));
+addSVGIcon(
+  "endDiamondArrow",
+  require("resources/icons/icons_arrows_endDiamondArrow.svg")
+);
+addSVGIcon(
+  "endOvalArrow",
+  require("resources/icons/icons_arrows_endOvalArrow.svg")
+);

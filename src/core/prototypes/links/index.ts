@@ -68,14 +68,15 @@ export interface LinksProperties extends Specification.AttributeMap {
 
   closeLink?: boolean;
 
-  arrowType?: ArrowType;
+  beginArrowType?: ArrowType;
+  endArrowType?: ArrowType;
 }
 
 export enum ArrowType {
-  NO_ARROW_NO_ARROW = "NO_ARROW_NO_ARROW",
-  NO_ARROW_ARROW = "NO_ARROW_ARROW",
-  ARROW_NO_ARROW = "ARROW_NO_ARROW",
-  ARROW_ARROW = "ARROW_ARROW",
+  NO_ARROW = "NO_ARROW",
+  ARROW = "ARROW",
+  DIAMOND_ARROW = "DIAMOND_ARROW",
+  OVAL_ARROW = "OVAL_ARROW",
 }
 
 export interface LinksObject extends Specification.Links {
@@ -521,7 +522,8 @@ export abstract class LinksClass extends ChartElementClass {
     const props = this.object.properties;
     switch (linkGraphics) {
       case "line": {
-        const arrowType = props.arrowType ?? ArrowType.NO_ARROW_NO_ARROW;
+        const beginArrowType = props.beginArrowType ?? ArrowType.NO_ARROW;
+        const endArrowType = props.endArrowType ?? ArrowType.NO_ARROW;
         return Graphics.makeGroup(
           anchorGroups.map((anchors) => {
             const lines: Graphics.Element[] = [];
@@ -531,10 +533,12 @@ export abstract class LinksClass extends ChartElementClass {
                 strokeOpacity: anchors[i][0].opacity,
                 strokeWidth: anchors[i][0].strokeWidth,
                 strokeDasharray: strokeDashArray,
+                strokeLinecap: "butt",
                 startArrowColorId: `start-arrow-color-id-${getRandomNumber()}`,
                 endArrowColorId: `end-arrow-color-id-${getRandomNumber()}`,
               });
-              path.setArrowType(arrowType);
+              path.setBeginArrowType(beginArrowType);
+              path.setEndArrowType(endArrowType);
               LinksClass.LinkPath(
                 path,
                 linkGraphics,
@@ -704,24 +708,53 @@ export abstract class LinksClass extends ChartElementClass {
     if (props.linkType == "line") {
       widgets.push(
         manager.inputSelect(
-          { property: "arrowType" },
+          { property: "beginArrowType" },
           {
             type: "dropdown",
             showLabel: true,
             options: [
-              ArrowType.NO_ARROW_NO_ARROW,
-              ArrowType.NO_ARROW_ARROW,
-              ArrowType.ARROW_NO_ARROW,
-              ArrowType.ARROW_ARROW,
+              ArrowType.NO_ARROW,
+              ArrowType.ARROW,
+              ArrowType.DIAMOND_ARROW,
+              ArrowType.OVAL_ARROW,
             ],
             labels: [
-              strings.objects.arrows.noArrowNoArrow,
-              strings.objects.arrows.noArrowArrow,
-              strings.objects.arrows.ArrowNoArrow,
-              strings.objects.arrows.ArrowArrow,
+              strings.objects.arrows.noArrow,
+              strings.objects.arrows.arrow,
+              strings.objects.arrows.diamondArrow,
+              strings.objects.arrows.ovalArrow,
             ],
-            label: strings.objects.arrows.arrowType,
-            icons: ["line", "right-arrow", "left-arrow", "double-arrow"],
+            label: strings.objects.arrows.beginArrowType,
+            icons: [
+              "noArrow",
+              "beginArrow",
+              "beginDiamondArrow",
+              "beginOvalArrow",
+            ],
+            isLocalIcons: true,
+          }
+        )
+      );
+      widgets.push(
+        manager.inputSelect(
+          { property: "endArrowType" },
+          {
+            type: "dropdown",
+            showLabel: true,
+            options: [
+              ArrowType.NO_ARROW,
+              ArrowType.ARROW,
+              ArrowType.DIAMOND_ARROW,
+              ArrowType.OVAL_ARROW,
+            ],
+            labels: [
+              strings.objects.arrows.noArrow,
+              strings.objects.arrows.arrow,
+              strings.objects.arrows.diamondArrow,
+              strings.objects.arrows.ovalArrow,
+            ],
+            label: strings.objects.arrows.endArrowType,
+            icons: ["noArrow", "endArrow", "endDiamondArrow", "endOvalArrow"],
             isLocalIcons: true,
           }
         )
@@ -858,7 +891,9 @@ export class SeriesLinksClass extends LinksClass {
   public static defaultProperties: Specification.AttributeMap = {
     visible: true,
     closeLink: false,
-    arrowType: ArrowType.NO_ARROW_NO_ARROW,
+
+    beginArrowType: ArrowType.NO_ARROW,
+    endArrowType: ArrowType.NO_ARROW,
   };
 
   /** Get the graphics that represent this layout */
@@ -976,7 +1011,9 @@ export class LayoutsLinksClass extends LinksClass {
   public static defaultProperties: Specification.AttributeMap = {
     visible: true,
     closeLink: false,
-    arrowType: ArrowType.NO_ARROW_NO_ARROW,
+
+    beginArrowType: ArrowType.NO_ARROW,
+    endArrowType: ArrowType.NO_ARROW,
   };
 
   /** Get the graphics that represent this layout */
@@ -1083,7 +1120,8 @@ export class TableLinksClass extends LinksClass {
 
   public static defaultProperties: Specification.AttributeMap = {
     visible: true,
-    arrowType: ArrowType.NO_ARROW_NO_ARROW,
+    beginArrowType: ArrowType.NO_ARROW,
+    endArrowType: ArrowType.NO_ARROW,
   };
 
   /** Get the graphics that represent this layout */

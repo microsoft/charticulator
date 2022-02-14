@@ -227,6 +227,47 @@ class TextOnPath extends React.PureComponent<{
 }
 
 function renderEndSVGArrow(element: Graphics.Path) {
+  let arrowElement;
+  switch (element.endArrowType) {
+    case ArrowType.NO_ARROW:
+      return;
+    case ArrowType.DIAMOND_ARROW:
+      arrowElement = (
+        <path
+          d="M 5 0 L 10 5 L 5 10 L 0 5 z"
+          fill={renderColor(
+            element.style.strokeColor,
+            element.style.colorFilter
+          )}
+        />
+      );
+      break;
+    case ArrowType.OVAL_ARROW:
+      arrowElement = (
+        <circle
+          cx="5"
+          cy="5"
+          r="5"
+          fill={renderColor(
+            element.style.strokeColor,
+            element.style.colorFilter
+          )}
+        />
+      );
+      break;
+    case ArrowType.ARROW:
+    default:
+      arrowElement = (
+        <path
+          d="M 0 0 L 10 5 L 0 10 z"
+          fill={renderColor(
+            element.style.strokeColor,
+            element.style.colorFilter
+          )}
+        />
+      );
+      break;
+  }
   return (
     <marker
       id={element.style.endArrowColorId}
@@ -238,15 +279,54 @@ function renderEndSVGArrow(element: Graphics.Path) {
       markerHeight="10"
       orient="auto"
     >
-      <path
-        d="M 0 0 L 10 5 L 0 10 z"
-        fill={renderColor(element.style.strokeColor, element.style.colorFilter)}
-      />
+      {arrowElement}
     </marker>
   );
 }
 
 function renderStartSVGArrow(element: Graphics.Path) {
+  let arrowElement;
+  switch (element.beginArrowType) {
+    case ArrowType.NO_ARROW:
+      return;
+    case ArrowType.DIAMOND_ARROW:
+      arrowElement = (
+        <path
+          d="M 5 0 L 10 5 L 5 10 L 0 5 z"
+          fill={renderColor(
+            element.style.strokeColor,
+            element.style.colorFilter
+          )}
+        />
+      );
+      break;
+    case ArrowType.OVAL_ARROW:
+      arrowElement = (
+        <circle
+          cx="5"
+          cy="5"
+          r="5"
+          fill={renderColor(
+            element.style.strokeColor,
+            element.style.colorFilter
+          )}
+        />
+      );
+      break;
+    case ArrowType.ARROW:
+    default:
+      arrowElement = (
+        <path
+          d="M 10 0 L 10 10 L 0 5 z"
+          fill={renderColor(
+            element.style.strokeColor,
+            element.style.colorFilter
+          )}
+        />
+      );
+      break;
+  }
+
   return (
     <marker
       id={element.style.startArrowColorId}
@@ -258,10 +338,7 @@ function renderStartSVGArrow(element: Graphics.Path) {
       markerHeight="10"
       orient="auto"
     >
-      <path
-        d="M 10 0 L 10 10 L 0 5 z"
-        fill={renderColor(element.style.strokeColor, element.style.colorFilter)}
-      />
+      {arrowElement}
     </marker>
   );
 }
@@ -301,26 +378,14 @@ export function renderSVGDefs(element: Graphics.Element): JSX.Element {
     }
     case "path": {
       const path = element as Graphics.Path;
-      if (path.arrowType == ArrowType.NO_ARROW_NO_ARROW) {
-        return null;
-      }
-      if (path.arrowType == ArrowType.NO_ARROW_ARROW) {
-        return renderEndSVGArrow(path);
-      }
-      if (path.arrowType == ArrowType.ARROW_NO_ARROW) {
-        return renderStartSVGArrow(path);
-      }
-      if (path.arrowType == ArrowType.ARROW_ARROW) {
-        return (
-          <>
-            {renderEndSVGArrow(path)}
-            {renderStartSVGArrow(path)}
-          </>
-        );
-      }
-
-      return null;
+      return (
+        <>
+          {renderEndSVGArrow(path)}
+          {renderStartSVGArrow(path)}
+        </>
+      );
     }
+
     case "group": {
       const group = element as Graphics.Group;
       return (
@@ -513,13 +578,11 @@ export function renderGraphicalElementSVG(
       const path = element as Graphics.Path;
       const d = renderSVGPath(path.cmds);
       const markerStart =
-        path.arrowType == ArrowType.ARROW_NO_ARROW ||
-        path.arrowType == ArrowType.ARROW_ARROW
+        path.beginArrowType != ArrowType.NO_ARROW
           ? `url(#${path.style.startArrowColorId})`
           : null;
       const markerEnd =
-        path.arrowType == ArrowType.NO_ARROW_ARROW ||
-        path.arrowType == ArrowType.ARROW_ARROW
+        path.endArrowType != ArrowType.NO_ARROW
           ? `url(#${path.style.endArrowColorId})`
           : null;
       return (

@@ -560,7 +560,8 @@ export class LinkCreationPanel extends ContextedComponent<
             },
             curveness: 30,
             closeLink: false,
-            arrowType: ArrowType.NO_ARROW_NO_ARROW,
+            beginArrowType: ArrowType.NO_ARROW,
+            endArrowType: ArrowType.NO_ARROW,
           } as Prototypes.Links.LinksProperties,
         };
 
@@ -606,7 +607,8 @@ export class LinkCreationPanel extends ContextedComponent<
             },
             curveness: 30,
             closeLink: false,
-            arrowType: ArrowType.NO_ARROW_NO_ARROW,
+            beginArrowType: ArrowType.NO_ARROW,
+            endArrowType: ArrowType.NO_ARROW,
           } as Prototypes.Links.LinksProperties,
         };
 
@@ -656,7 +658,8 @@ export class LinkCreationPanel extends ContextedComponent<
             },
             curveness: 30,
             closeLink: false,
-            arrowType: ArrowType.NO_ARROW_NO_ARROW,
+            beginArrowType: ArrowType.NO_ARROW,
+            endArrowType: ArrowType.NO_ARROW,
           } as Prototypes.Links.LinksProperties,
         };
 

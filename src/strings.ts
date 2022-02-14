@@ -512,11 +512,12 @@ export const strings = {
       closeLink: "Close Link",
     },
     arrows: {
-      arrowType: "Arrows",
-      noArrowNoArrow: "No-Arrow No-Arrow",
-      noArrowArrow: "No-Arrow Arrow",
-      ArrowNoArrow: "Arrow No-Arrow",
-      ArrowArrow: "Arrow Arrow",
+      beginArrowType: "Begin Arrow Type",
+      endArrowType: "End Arrow Type",
+      noArrow: "No Arrow",
+      arrow: "Arrow",
+      diamondArrow: "Diamond Arrow",
+      ovalArrow: "Oval Arrow",
     },
     line: {
       lineStyle: "Line Style",

@@ -1119,7 +1119,8 @@ export class Migrator {
       if (Prototypes.isType(element.classID, "links")) {
         const link = element as ChartElement<LinksProperties>;
         if (link) {
-          link.properties.arrowType = ArrowType.NO_ARROW_NO_ARROW;
+          link.properties.beginArrowType = ArrowType.NO_ARROW;
+          link.properties.endArrowType = ArrowType.NO_ARROW;
         }
       }
     }
