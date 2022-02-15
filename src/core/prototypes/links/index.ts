@@ -4,6 +4,7 @@ import {
   Color,
   Geometry,
   getById,
+  getRandomNumber,
   indexOf,
   MultistringHashMap,
   Point,
@@ -11,15 +12,15 @@ import {
 } from "../../common";
 import * as Expression from "../../expression";
 import * as Graphics from "../../graphics";
+import { PointDirection } from "../../graphics";
 import * as Specification from "../../specification";
+import { MappingType } from "../../specification";
 import { ChartElementClass } from "../chart_element";
 import { Controls, ObjectClassMetadata, TemplateParameters } from "../common";
 import { DataflowTable } from "../dataflow";
 import { ChartStateManager } from "../state";
 import { AttributeDescription, ObjectClasses } from "../object";
 import { PlotSegmentClass } from "../plot_segments";
-import { PointDirection } from "../../graphics";
-import { MappingType } from "../../specification";
 import { strings } from "../../../strings";
 import { shouldShowCloseLink } from "./utils";
 
@@ -66,6 +67,16 @@ export interface LinksProperties extends Specification.AttributeMap {
   curveness: number;
 
   closeLink?: boolean;
+
+  beginArrowType?: ArrowType;
+  endArrowType?: ArrowType;
+}
+
+export enum ArrowType {
+  NO_ARROW = "NO_ARROW",
+  ARROW = "ARROW",
+  DIAMOND_ARROW = "DIAMOND_ARROW",
+  OVAL_ARROW = "OVAL_ARROW",
 }
 
 export interface LinksObject extends Specification.Links {
@@ -508,8 +519,11 @@ export abstract class LinksClass extends ChartElementClass {
     anchorGroups: AnchorAttributes[][][],
     strokeDashArray?: LinkMarkType
   ): Graphics.Group {
+    const props = this.object.properties;
     switch (linkGraphics) {
       case "line": {
+        const beginArrowType = props.beginArrowType ?? ArrowType.NO_ARROW;
+        const endArrowType = props.endArrowType ?? ArrowType.NO_ARROW;
         return Graphics.makeGroup(
           anchorGroups.map((anchors) => {
             const lines: Graphics.Element[] = [];
@@ -519,7 +533,12 @@ export abstract class LinksClass extends ChartElementClass {
                 strokeOpacity: anchors[i][0].opacity,
                 strokeWidth: anchors[i][0].strokeWidth,
                 strokeDasharray: strokeDashArray,
+                strokeLinecap: "butt",
+                startArrowColorId: `start-arrow-color-id-${getRandomNumber()}`,
+                endArrowColorId: `end-arrow-color-id-${getRandomNumber()}`,
               });
+              path.setBeginArrowType(beginArrowType);
+              path.setEndArrowType(endArrowType);
               LinksClass.LinkPath(
                 path,
                 linkGraphics,
@@ -649,6 +668,7 @@ export abstract class LinksClass extends ChartElementClass {
     return null;
   }
 
+  // eslint-disable-next-line max-lines-per-function
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
@@ -674,12 +694,72 @@ export abstract class LinksClass extends ChartElementClass {
           type: "dropdown",
           showLabel: true,
           options: ["", "8", "1 10"],
-          labels: ["Solid", "Dashed", "Dotted"],
+          labels: [
+            strings.objects.links.solid,
+            strings.objects.links.dashed,
+            strings.objects.links.dotted,
+          ],
           label: strings.objects.links.linkMarkType,
+          icons: ["line", "stroke/dashed", "stroke/dotted"],
+          isLocalIcons: true,
         }
       ),
     ];
-
+    if (props.linkType == "line") {
+      widgets.push(
+        manager.inputSelect(
+          { property: "beginArrowType" },
+          {
+            type: "dropdown",
+            showLabel: true,
+            options: [
+              ArrowType.NO_ARROW,
+              ArrowType.ARROW,
+              ArrowType.DIAMOND_ARROW,
+              ArrowType.OVAL_ARROW,
+            ],
+            labels: [
+              strings.objects.arrows.noArrow,
+              strings.objects.arrows.arrow,
+              strings.objects.arrows.diamondArrow,
+              strings.objects.arrows.ovalArrow,
+            ],
+            label: strings.objects.arrows.beginArrowType,
+            icons: [
+              "noArrow",
+              "beginArrow",
+              "beginDiamondArrow",
+              "beginOvalArrow",
+            ],
+            isLocalIcons: true,
+          }
+        )
+      );
+      widgets.push(
+        manager.inputSelect(
+          { property: "endArrowType" },
+          {
+            type: "dropdown",
+            showLabel: true,
+            options: [
+              ArrowType.NO_ARROW,
+              ArrowType.ARROW,
+              ArrowType.DIAMOND_ARROW,
+              ArrowType.OVAL_ARROW,
+            ],
+            labels: [
+              strings.objects.arrows.noArrow,
+              strings.objects.arrows.arrow,
+              strings.objects.arrows.diamondArrow,
+              strings.objects.arrows.ovalArrow,
+            ],
+            label: strings.objects.arrows.endArrowType,
+            icons: ["noArrow", "endArrow", "endDiamondArrow", "endOvalArrow"],
+            isLocalIcons: true,
+          }
+        )
+      );
+    }
     if (shouldShowCloseLink(this.parent, props)) {
       widgets.push(
         manager.inputBoolean(
@@ -811,6 +891,9 @@ export class SeriesLinksClass extends LinksClass {
   public static defaultProperties: Specification.AttributeMap = {
     visible: true,
     closeLink: false,
+
+    beginArrowType: ArrowType.NO_ARROW,
+    endArrowType: ArrowType.NO_ARROW,
   };
 
   /** Get the graphics that represent this layout */
@@ -928,6 +1011,9 @@ export class LayoutsLinksClass extends LinksClass {
   public static defaultProperties: Specification.AttributeMap = {
     visible: true,
     closeLink: false,
+
+    beginArrowType: ArrowType.NO_ARROW,
+    endArrowType: ArrowType.NO_ARROW,
   };
 
   /** Get the graphics that represent this layout */
@@ -1034,6 +1120,8 @@ export class TableLinksClass extends LinksClass {
 
   public static defaultProperties: Specification.AttributeMap = {
     visible: true,
+    beginArrowType: ArrowType.NO_ARROW,
+    endArrowType: ArrowType.NO_ARROW,
   };
 
   /** Get the graphics that represent this layout */

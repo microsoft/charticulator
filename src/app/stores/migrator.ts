@@ -37,6 +37,7 @@ import { parseDerivedColumnsExpression } from "../../core/prototypes/plot_segmen
 import { OrientationType } from "../../core/prototypes/legends/types";
 import { NumericalColorLegendClass } from "../../core/prototypes/legends/color_legend";
 import { AxisRenderer } from "../../core/prototypes/plot_segments/axis";
+import { ArrowType, LinksProperties } from "../../core/prototypes/links";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -1114,6 +1115,15 @@ export class Migrator {
   }
 
   public setMissedProperties_2_1_6(state: AppStoreState) {
+    for (const element of state.chart.elements) {
+      if (Prototypes.isType(element.classID, "links")) {
+        const link = element as ChartElement<LinksProperties>;
+        if (link) {
+          link.properties.beginArrowType = ArrowType.NO_ARROW;
+          link.properties.endArrowType = ArrowType.NO_ARROW;
+        }
+      }
+    }
     for (const item of forEachObject(state.chart)) {
       if (item.kind == "mark") {
         if (Prototypes.isType(item.mark.classID, "mark.rect")) {

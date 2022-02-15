@@ -568,7 +568,6 @@ export class ChartEditorView
           {
             mode = "rectangle";
             onCreate = (x1, y1, x2, y2) => {
-              console.log(x1, y1, x2, y2);
               const width = Math.abs(x2[0] - x1[0]);
               const height = Math.abs(y2[0] - y1[0]);
               const centerX = Math.min(x2[0], x1[0]) + width / 2;

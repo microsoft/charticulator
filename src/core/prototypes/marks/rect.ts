@@ -303,7 +303,8 @@ export class RectElementClass extends EmphasizableMarkClass<
                   type: "dropdown",
                   showLabel: true,
                   label: "Line Style",
-                  icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
+                  icons: ["line", "stroke/dashed", "stroke/dotted"],
+                  isLocalIcons: true,
                   labels: [
                     strings.objects.links.solid,
                     strings.objects.links.dashed,
