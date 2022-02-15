@@ -29,6 +29,7 @@ import * as React from "react";
 import { Color, Geometry, Point } from "../common";
 import * as Specification from "../specification";
 import * as Dataset from "../dataset";
+import { ArrowType } from "../../core/prototypes/links";
 
 export interface PointDirection extends Point {
   direction: Point;
@@ -78,6 +79,9 @@ export interface Style {
 
   /** Text anchor position */
   textAnchor?: "start" | "middle" | "end";
+
+  startArrowColorId?: string;
+  endArrowColorId?: string;
 }
 
 export interface Interactable {
@@ -143,6 +147,8 @@ export interface Path extends Element {
   type: "path";
   cmds: { cmd: string; args: number[] }[];
   transform: string;
+  beginArrowType?: ArrowType;
+  endArrowType?: ArrowType;
 }
 
 export interface Circle extends Element {
@@ -286,6 +292,13 @@ export class PathMaker {
   }
   public transformRotation(angle: number, x: number = 0, y: number = 0) {
     this.path.transform = `rotate(${angle} ${x} ${y})`;
+  }
+
+  public setBeginArrowType(arrowType: ArrowType) {
+    this.path.beginArrowType = arrowType;
+  }
+  public setEndArrowType(arrowType: ArrowType) {
+    this.path.endArrowType = arrowType;
   }
 
   public cubicBezierCurveTo(

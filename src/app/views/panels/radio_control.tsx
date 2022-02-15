@@ -2,8 +2,10 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-import { classNames } from "../../utils";
 import { DefaultButton } from "@fluentui/react";
+import { SVGImageIcon } from "../../../app/components";
+import * as R from "../../../app/resources";
+import { defultComponentsHeight } from "../../../app/views/panels/widgets/controls/fluentui_customized_components";
 
 export interface PanelRadioControlProps {
   options: string[];
@@ -20,18 +22,12 @@ export class PanelRadioControl extends React.Component<
   Record<string, unknown>
 > {
   public render() {
-    const mainClass = this.props.asList
-      ? "charticulator-panel-list-view"
-      : "charticulator-panel-list-view is-inline";
     return (
-      <span className={mainClass}>
+      <span>
         {this.props.options.map((option, index) => {
           return (
             <DefaultButton
-              className={classNames("el-item", [
-                "is-active",
-                this.props.value == option,
-              ])}
+              checked={this.props.value == option}
               title={this.props.labels[index]}
               key={option}
               onClick={() => {
@@ -51,6 +47,20 @@ export class PanelRadioControl extends React.Component<
                   ? this.props.labels[index]
                   : null
               }
+              styles={{
+                root: {
+                  marginRight: 5,
+                  marginLeft: 5,
+                  ...defultComponentsHeight,
+                },
+              }}
+              onRenderIcon={() => {
+                return this.props.icons ? (
+                  <span style={{ marginRight: "0.3rem" }}>
+                    <SVGImageIcon url={R.getSVGIcon(this.props.icons[index])} />
+                  </span>
+                ) : null;
+              }}
             />
           );
         })}
