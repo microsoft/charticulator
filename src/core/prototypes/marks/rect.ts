@@ -62,7 +62,7 @@ export class RectElementClass extends EmphasizableMarkClass<
     allowFlipping: true,
     rx: 0,
     ry: 0,
-    orientation: OrientationType.HORIZONTAL,
+    orientation: OrientationType.VERTICAL,
   };
 
   public static defaultMappingValues: Partial<RectElementAttributes> = {
@@ -252,7 +252,7 @@ export class RectElementClass extends EmphasizableMarkClass<
                 {
                   type: "radio",
                   showLabel: false,
-                  icons: ["AlignHorizontalCenter", "AlignVerticalCenter"],
+                  icons: ["GripperBarVertical", "GripperBarHorizontal"],
                   labels: [
                     strings.objects.legend.vertical,
                     strings.objects.legend.horizontal,
@@ -477,7 +477,7 @@ export class RectElementClass extends EmphasizableMarkClass<
       }
       case ShapeType.Triangle: {
         const pathMaker = new Graphics.PathMaker();
-        if (this.object.properties.orientation == OrientationType.VERTICAL) {
+        if (this.object.properties.orientation == OrientationType.HORIZONTAL) {
           helper.lineTo(
             pathMaker,
             attrs.x1 + offset.x,

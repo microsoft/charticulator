@@ -296,7 +296,7 @@ export class CategoricalLegendClass extends LegendClass {
             {
               type: "radio",
               showLabel: false,
-              icons: ["AlignHorizontalCenter", "AlignVerticalCenter"],
+              icons: ["GripperBarVertical", "GripperBarHorizontal"],
               labels: [
                 strings.objects.legend.vertical,
                 strings.objects.legend.horizontal,
