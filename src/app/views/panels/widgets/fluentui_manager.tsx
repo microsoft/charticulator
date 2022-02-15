@@ -562,6 +562,7 @@ export class FluentUIWidgetManager
     options: Prototypes.Controls.InputSelectOptions
   ) {
     const theme = getTheme();
+    const isLocalIcons = options.isLocalIcons ?? false;
     if (options.type == "dropdown") {
       return (
         <Dropdown
@@ -583,6 +584,7 @@ export class FluentUIWidgetManager
                 iconStyles: {
                   stroke: "gray",
                 },
+                isLocalIcons,
               },
             };
           })}

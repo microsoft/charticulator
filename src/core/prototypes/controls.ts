@@ -37,6 +37,7 @@ export interface InputSelectOptions {
   labelPosition?: LabelPosition;
   options: string[];
   icons?: string[];
+  isLocalIcons?: boolean;
   labels?: string[];
   tooltip?: string;
   label?: string;

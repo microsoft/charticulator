@@ -11,6 +11,8 @@ import { Prototypes } from "../../../../core";
 import { Icon } from "@fluentui/react/lib/Icon";
 import * as React from "react";
 import { CSSProperties } from "react";
+import { SVGImageIcon } from "../../../../app/components";
+import * as R from "../../../../app/resources";
 
 export const dropdownStyles = (
   options: Prototypes.Controls.InputSelectOptions
@@ -36,12 +38,18 @@ export const onRenderOption = (option: IDropdownOption): JSX.Element => {
     <>
       {option.data && option.data.icon && (
         <FluentDropdown>
-          <Icon
-            style={iconStyles}
-            iconName={option.data.icon}
-            aria-hidden="true"
-            title={option.data.icon}
-          />
+          {option.data.isLocalIcons ? (
+            <span style={iconStyles}>
+              <SVGImageIcon url={R.getSVGIcon(option.data.icon)} />
+            </span>
+          ) : (
+            <Icon
+              style={iconStyles}
+              iconName={option.data.icon}
+              aria-hidden="true"
+              title={option.data.icon}
+            />
+          )}
         </FluentDropdown>
       )}
       <span>{option.text}</span>
@@ -56,12 +64,18 @@ export const onRenderTitle = (options: IDropdownOption[]): JSX.Element => {
     <FluentDropdownWrapper>
       {option.data && option.data.icon && (
         <FluentDropdown>
-          <Icon
-            style={iconStyles}
-            iconName={option.data.icon}
-            aria-hidden="true"
-            title={option.data.icon}
-          />
+          {option.data.isLocalIcons ? (
+            <span style={iconStyles}>
+              <SVGImageIcon url={R.getSVGIcon(option.data.icon)} />
+            </span>
+          ) : (
+            <Icon
+              style={iconStyles}
+              iconName={option.data.icon}
+              aria-hidden="true"
+              title={option.data.icon}
+            />
+          )}
         </FluentDropdown>
       )}
       <span>{option.text}</span>

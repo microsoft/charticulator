@@ -138,6 +138,7 @@ export abstract class PlotSegmentClass<
             {
               type: "dropdown",
               showLabel: true,
+              isLocalIcons: true,
               icons: [
                 "ChromeClose",
                 "stroke/solid",
