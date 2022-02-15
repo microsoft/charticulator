@@ -156,6 +156,43 @@ export class FluentUIWidgetManager
     return `${property?.property}-${property?.field?.toString()}`;
   }
 
+  private searchString: string = "";
+
+  public searchInput(options: InputTextOptions = {}) {
+    return (
+      <TextField
+        styles={{
+          ...(defaultStyle as any),
+          field: {
+            ...defaultStyle.field,
+            height: null,
+          },
+          icon: {
+            top: 2,
+          },
+          root: {
+            marginBottom: 5,
+            marginTop: 5,
+          },
+        }}
+        placeholder={options.placeholder}
+        label={options.label}
+        disabled={options.disabled}
+        onRenderLabel={labelRender}
+        onChange={(event, value) => {
+          this.searchString = value;
+        }}
+        type="text"
+        underlined={options.underline ?? false}
+        borderless={options.borderless ?? false}
+        style={options.styles}
+        iconProps={{
+          iconName: "Search",
+        }}
+      />
+    );
+  }
+
   public mappingEditor(
     name: string,
     attribute: string,
