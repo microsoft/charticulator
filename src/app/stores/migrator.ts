@@ -186,6 +186,13 @@ export class Migrator {
       state = this.setMissedLegendProperties(state);
     }
 
+    if (
+      compareVersion(state.version, "2.1.6") < 0 &&
+      compareVersion(targetVersion, "2.1.6") >= 0
+    ) {
+      state = this.setMissedProperties_2_1_6(state);
+    }
+
     // After migration, set version to targetVersion
     state.version = targetVersion;
 
@@ -1100,6 +1107,18 @@ export class Migrator {
           if (element.properties.axis === undefined) {
             element.properties.axis = null;
           }
+        }
+      }
+    }
+    return state;
+  }
+
+  public setMissedProperties_2_1_6(state: AppStoreState) {
+    for (const item of forEachObject(state.chart)) {
+      if (item.kind == "mark") {
+        if (Prototypes.isType(item.mark.classID, "mark.rect")) {
+          (item.mark.properties as RectElementProperties).orientation =
+            OrientationType.HORIZONTAL;
         }
       }
     }

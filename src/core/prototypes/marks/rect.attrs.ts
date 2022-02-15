@@ -7,6 +7,7 @@ import { AttributeMap } from "../../specification/index";
 import { AttrBuilder } from "../attrs";
 import { StrokeStyle } from "../common";
 import { ShapeType } from "./rect";
+import { OrientationType } from "../../prototypes/legends/types";
 
 export const rectAttributes: AttributeDescriptions = {
   ...AttrBuilder.line(),
@@ -63,4 +64,5 @@ export interface RectElementProperties extends AttributeMap {
   allowFlipping: boolean;
   rx: number;
   ry: number;
+  orientation: OrientationType;
 }

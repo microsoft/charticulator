@@ -28,6 +28,7 @@ import {
 } from "./rect.attrs";
 import { strings } from "../../../strings";
 import { RectangleGlyph } from "../glyphs";
+import { OrientationType } from "../legends/types";
 
 export { RectElementAttributes, RectElementProperties };
 
@@ -61,6 +62,7 @@ export class RectElementClass extends EmphasizableMarkClass<
     allowFlipping: true,
     rx: 0,
     ry: 0,
+    orientation: OrientationType.HORIZONTAL,
   };
 
   public static defaultMappingValues: Partial<RectElementAttributes> = {
@@ -239,8 +241,30 @@ export class RectElementClass extends EmphasizableMarkClass<
             {
               type: "checkbox",
               label: strings.objects.rect.flipping,
+              styles: {
+                marginTop: 5,
+              },
             }
           ),
+          this.object.properties.shape === ShapeType.Triangle
+            ? manager.inputSelect(
+                { property: "orientation" },
+                {
+                  type: "radio",
+                  showLabel: false,
+                  icons: ["AlignHorizontalCenter", "AlignVerticalCenter"],
+                  labels: [
+                    strings.objects.legend.vertical,
+                    strings.objects.legend.horizontal,
+                  ],
+                  options: [
+                    OrientationType.VERTICAL,
+                    OrientationType.HORIZONTAL,
+                  ],
+                  label: strings.objects.legend.orientation,
+                }
+              )
+            : null,
           manager.mappingEditor(
             strings.objects.visibleOn.visibility,
             "visible",
@@ -452,22 +476,41 @@ export class RectElementClass extends EmphasizableMarkClass<
       }
       case ShapeType.Triangle: {
         const pathMaker = new Graphics.PathMaker();
-        helper.lineTo(
-          pathMaker,
-          attrs.x1 + offset.x,
-          attrs.y1 + offset.y,
-          (attrs.x1 + attrs.x2) / 2 + offset.x,
-          attrs.y2 + offset.y,
-          true
-        );
-        helper.lineTo(
-          pathMaker,
-          (attrs.x1 + attrs.x2) / 2 + offset.x,
-          attrs.y2 + offset.y,
-          attrs.x2 + offset.x,
-          attrs.y1 + offset.y,
-          false
-        );
+        if (this.object.properties.orientation == OrientationType.VERTICAL) {
+          helper.lineTo(
+            pathMaker,
+            attrs.x1 + offset.x,
+            attrs.y1 + offset.y,
+            attrs.x1 + offset.x,
+            attrs.y2 + offset.y,
+            true
+          );
+          helper.lineTo(
+            pathMaker,
+            attrs.x1 + offset.x,
+            attrs.y2 + offset.y,
+            attrs.x2 + offset.x,
+            (attrs.y1 + attrs.y2) / 2 + offset.y,
+            false
+          );
+        } else {
+          helper.lineTo(
+            pathMaker,
+            attrs.x1 + offset.x,
+            attrs.y1 + offset.y,
+            (attrs.x1 + attrs.x2) / 2 + offset.x,
+            attrs.y2 + offset.y,
+            true
+          );
+          helper.lineTo(
+            pathMaker,
+            (attrs.x1 + attrs.x2) / 2 + offset.x,
+            attrs.y2 + offset.y,
+            attrs.x2 + offset.x,
+            attrs.y1 + offset.y,
+            false
+          );
+        }
         pathMaker.closePath();
         const path = pathMaker.path;
         path.style = {
