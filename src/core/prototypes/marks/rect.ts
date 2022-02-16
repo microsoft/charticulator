@@ -834,18 +834,35 @@ export class RectElementClass extends EmphasizableMarkClass<
 
     if (properties.orientation == OrientationType.HORIZONTAL) {
       if (properties.cometMark == true) {
-        //
+        pathMaker.moveTo(
+          x2 > x1 ? x1 + minHalfWidth : x1 - minHalfWidth,
+          Math.max(y1, y2)
+        );
+        helper.arcTo(
+          pathMaker,
+          minHalfWidth,
+          halfYWidth,
+          x2 > x1 ? x1 + minHalfWidth : x1 - minHalfWidth,
+          Math.max(y1, y2),
+          x2 > x1 ? x1 + minHalfWidth : x1 - minHalfWidth,
+          Math.min(y1, y2),
+          x2 > x1 ? 0 : 1
+        );
+
+        helper.lineTo(
+          pathMaker,
+          x2 > x1 ? x1 + minHalfWidth : x1 - minHalfWidth,
+          Math.max(y1, y2),
+          x2,
+          (y1 + y2) / 2,
+          false
+        );
       } else {
         helper.lineTo(pathMaker, x1, y1, x1, y2, true);
         helper.lineTo(pathMaker, x1, y2, x2, (y1 + y2) / 2, false);
       }
     } else {
       if (properties.cometMark == true) {
-        console.log(x1);
-        console.log(x2);
-        console.log(y1);
-        console.log(y2);
-        console.log("\n");
         pathMaker.moveTo(
           Math.max(x1, x2),
           y2 > y1 ? y1 + minHalfWidth : y1 - minHalfWidth
