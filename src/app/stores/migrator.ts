@@ -1128,7 +1128,8 @@ export class Migrator {
       if (item.kind == "mark") {
         if (Prototypes.isType(item.mark.classID, "mark.rect")) {
           (item.mark.properties as RectElementProperties).orientation =
-            OrientationType.HORIZONTAL;
+            OrientationType.VERTICAL;
+          (item.mark.properties as RectElementProperties).cometMark = false;
         }
       }
     }

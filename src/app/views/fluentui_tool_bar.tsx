@@ -25,6 +25,7 @@ import { getSVGIcon } from "../resources";
 import { EditorType } from "../stores/app_store";
 import { useState } from "react";
 import { useEffect } from "react";
+import { Icon } from "@fluentui/react/lib/Icon";
 
 const minWidthToColapseButtons = Object.freeze({
   guides: 1090,
@@ -822,11 +823,7 @@ export class MultiObjectButton extends ContextedComponent<
         onDragEnd={() => this.setState({ dragging: false })}
         renderDragElement={() => {
           return [
-            <SVGImageIcon
-              url={getSVGIcon(currentTool.icon)}
-              width={24}
-              height={24}
-            />,
+            <Icon iconName={currentTool.icon} aria-hidden="true" />,
             { x: 16, y: 16 },
           ];
         }}

@@ -63,6 +63,7 @@ export class RectElementClass extends EmphasizableMarkClass<
     rx: 0,
     ry: 0,
     orientation: OrientationType.VERTICAL,
+    cometMark: false,
   };
 
   public static defaultMappingValues: Partial<RectElementAttributes> = {
@@ -246,6 +247,18 @@ export class RectElementClass extends EmphasizableMarkClass<
               },
             }
           ),
+          this.object.properties.shape === ShapeType.Triangle
+            ? manager.inputBoolean(
+                { property: "cometMark" },
+                {
+                  type: "checkbox",
+                  label: strings.objects.rect.shapes.comet,
+                  styles: {
+                    marginTop: 5,
+                  },
+                }
+              )
+            : null,
           this.object.properties.shape === ShapeType.Triangle
             ? manager.inputSelect(
                 { property: "orientation" },
@@ -476,55 +489,7 @@ export class RectElementClass extends EmphasizableMarkClass<
         );
       }
       case ShapeType.Triangle: {
-        const pathMaker = new Graphics.PathMaker();
-        if (this.object.properties.orientation == OrientationType.HORIZONTAL) {
-          helper.lineTo(
-            pathMaker,
-            attrs.x1 + offset.x,
-            attrs.y1 + offset.y,
-            attrs.x1 + offset.x,
-            attrs.y2 + offset.y,
-            true
-          );
-          helper.lineTo(
-            pathMaker,
-            attrs.x1 + offset.x,
-            attrs.y2 + offset.y,
-            attrs.x2 + offset.x,
-            (attrs.y1 + attrs.y2) / 2 + offset.y,
-            false
-          );
-        } else {
-          helper.lineTo(
-            pathMaker,
-            attrs.x1 + offset.x,
-            attrs.y1 + offset.y,
-            (attrs.x1 + attrs.x2) / 2 + offset.x,
-            attrs.y2 + offset.y,
-            true
-          );
-          helper.lineTo(
-            pathMaker,
-            (attrs.x1 + attrs.x2) / 2 + offset.x,
-            attrs.y2 + offset.y,
-            attrs.x2 + offset.x,
-            attrs.y1 + offset.y,
-            false
-          );
-        }
-        pathMaker.closePath();
-        const path = pathMaker.path;
-        path.style = {
-          strokeColor: attrs.stroke,
-          strokeWidth: attrs.strokeWidth,
-          strokeLinejoin: "miter",
-          strokeDasharray: strokeStyleToDashArray(
-            this.object.properties.strokeStyle
-          ),
-          fillColor: attrs.fill,
-          opacity: attrs.opacity,
-          ...this.generateEmphasisStyle(empasized),
-        };
+        const path = this.drawTriangleOrCometMarks(helper, offset, empasized);
         return path;
       }
       case ShapeType.Rectangle:
@@ -846,5 +811,80 @@ export class RectElementClass extends EmphasizableMarkClass<
       <SnappingGuides.Axis>{ type: "y", value: y2, attribute: "y2" },
       <SnappingGuides.Axis>{ type: "y", value: cy, attribute: "cy" },
     ];
+  }
+
+  private drawTriangleOrCometMarks(
+    helper: Graphics.CoordinateSystemHelper,
+    offset: Point,
+    empasized?: boolean
+  ) {
+    const pathMaker = new Graphics.PathMaker();
+    const properties = this.object.properties;
+    const attrs = this.state.attributes;
+
+    // normalized coordinates
+    const x1 = attrs.x1 + offset.x;
+    const x2 = attrs.x2 + offset.x;
+    const y1 = attrs.y1 + offset.y;
+    const y2 = attrs.y2 + offset.y;
+
+    const halfYWidth = Math.abs(y1 - y2) / 2;
+    const halfXWidth = Math.abs(x1 - x2) / 2;
+    const minHalfWidth = Math.min(halfYWidth, halfXWidth);
+
+    if (properties.orientation == OrientationType.HORIZONTAL) {
+      if (properties.cometMark == true) {
+        //
+      } else {
+        helper.lineTo(pathMaker, x1, y1, x1, y2, true);
+        helper.lineTo(pathMaker, x1, y2, x2, (y1 + y2) / 2, false);
+      }
+    } else {
+      if (properties.cometMark == true) {
+        console.log(x1);
+        console.log(x2);
+        console.log(y1);
+        console.log(y2);
+        console.log("\n");
+        pathMaker.moveTo(
+          Math.max(x1, x2),
+          y2 > y1 ? y1 + minHalfWidth : y1 - minHalfWidth
+        );
+        helper.arcTo(
+          pathMaker,
+          halfXWidth,
+          minHalfWidth,
+          Math.max(x1, x2),
+          y2 > y1 ? y1 + minHalfWidth : y1 - minHalfWidth,
+          Math.min(x1, x2),
+          y2 > y1 ? y1 + minHalfWidth : y1 - minHalfWidth,
+          y2 > y1 ? 1 : 0
+        );
+
+        helper.lineTo(
+          pathMaker,
+          Math.max(x1, x2),
+          y2 > y1 ? y1 + minHalfWidth : y1 - minHalfWidth,
+          (x1 + x2) / 2,
+          y2,
+          false
+        );
+      } else {
+        helper.lineTo(pathMaker, x1, y1, (x1 + x2) / 2, y2, true);
+        helper.lineTo(pathMaker, (x1 + x2) / 2, y2, x2, y1, false);
+      }
+    }
+    pathMaker.closePath();
+    const path = pathMaker.path;
+    path.style = {
+      strokeColor: attrs.stroke,
+      strokeWidth: attrs.strokeWidth,
+      strokeLinejoin: "miter",
+      strokeDasharray: strokeStyleToDashArray(properties.strokeStyle),
+      fillColor: attrs.fill,
+      opacity: attrs.opacity,
+      ...this.generateEmphasisStyle(empasized),
+    };
+    return path;
   }
 }

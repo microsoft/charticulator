@@ -65,4 +65,5 @@ export interface RectElementProperties extends AttributeMap {
   rx: number;
   ry: number;
   orientation: OrientationType;
+  cometMark: boolean;
 }
