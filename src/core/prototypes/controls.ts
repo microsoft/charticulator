@@ -405,6 +405,10 @@ export interface WidgetManager {
     widgets: Widget[],
     options: CustomCollapsiblePanelOptions
   ): Widget;
+
+  searchInput(options: InputTextOptions): Widget;
+
+  searchWrapper(options: SearchWrapperOptions, ...widgets: Widget[]): Widget;
 }
 
 export interface PopupEditor {
@@ -415,4 +419,8 @@ export interface PopupEditor {
 export interface LabelOptions {
   addMargins: boolean;
   key?: string;
+}
+
+export interface SearchWrapperOptions {
+  searchPattern: string[];
 }

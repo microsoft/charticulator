@@ -190,6 +190,7 @@ export class AppStore extends BaseStore {
   };
   public currentTool: string;
   public currentToolOptions: string;
+  public searchString: string = "";
 
   public chartManager: Prototypes.ChartStateManager;
 

@@ -188,7 +188,7 @@ export class AttributePanel extends React.Component<
               />
             </div>
             {manager.searchInput({
-              placeholder: "Search attributes",
+              placeholder: "Search",
             })}
             {manager.vertical(...objectClass.getAttributePanelWidgets(manager))}
           </section>

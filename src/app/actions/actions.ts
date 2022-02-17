@@ -977,3 +977,13 @@ export class OpenNestedEditor extends Action {
     return { name: "OpenNestedEditor" };
   }
 }
+
+export class SearchUpdated extends Action {
+  constructor(public searchString: string) {
+    super();
+  }
+
+  public digest(): { name: string } {
+    return { name: "SearchUpdated" };
+  }
+}

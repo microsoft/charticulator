@@ -432,4 +432,9 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     };
     window.addEventListener("message", listener);
   });
+
+  REG.add(Actions.SearchUpdated, function (action) {
+    this.searchString = action.searchString;
+    this.emit(AppStore.EVENT_GRAPHICS);
+  });
 }

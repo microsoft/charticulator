@@ -312,10 +312,16 @@ export class TextElementClass extends EmphasizableMarkClass<
           header: strings.objects.general,
         },
         [
-          manager.mappingEditor(strings.toolbar.text, "text", {}),
-          manager.mappingEditor(strings.objects.font, "fontFamily", {
-            defaultValue: defaultFont,
-          }),
+          manager.searchWrapper(
+            { searchPattern: [strings.toolbar.text] },
+            manager.mappingEditor(strings.toolbar.text, "text", {})
+          ),
+          manager.searchWrapper(
+            { searchPattern: [strings.objects.font] },
+            manager.mappingEditor(strings.objects.font, "fontFamily", {
+              defaultValue: defaultFont,
+            })
+          ),
           manager.mappingEditor(strings.objects.size, "fontSize", {
             hints: { rangeNumber: [0, 36] },
             defaultValue: defaultFontSize,

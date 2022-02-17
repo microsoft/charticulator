@@ -92,6 +92,7 @@ import {
   InputTextOptions,
   ObserverConfig,
   PanelMode,
+  SearchWrapperOptions,
 } from "../../../../core/prototypes/controls";
 
 import { mergeStyles } from "@fluentui/merge-styles";
@@ -166,13 +167,14 @@ export class FluentUIWidgetManager
           field: {
             ...defaultStyle.field,
             height: null,
-          },
-          icon: {
-            top: 2,
+            padding: "unset",
           },
           root: {
             marginBottom: 5,
             marginTop: 5,
+          },
+          prefix: {
+            backgroundColor: "unset",
           },
         }}
         placeholder={options.placeholder}
@@ -181,15 +183,43 @@ export class FluentUIWidgetManager
         onRenderLabel={labelRender}
         onChange={(event, value) => {
           this.searchString = value;
+          this.store.dispatcher.dispatch(new Actions.SearchUpdated(value));
         }}
         type="text"
         underlined={options.underline ?? false}
         borderless={options.borderless ?? false}
         style={options.styles}
-        iconProps={{
-          iconName: "Search",
+        prefix=""
+        onRenderPrefix={() => {
+          return <FontIcon aria-label="Search" iconName="Search" />;
         }}
       />
+    );
+  }
+
+  public searchWrapper(
+    options: SearchWrapperOptions,
+    ...widgets: JSX.Element[]
+  ) {
+    const searchStings = options.searchPattern;
+    const searchString = this.store.searchString;
+    if (searchString?.length != 0 && searchStings.length >= 0) {
+      if (
+        !searchStings.some(
+          (value) =>
+            value && value?.toUpperCase().includes(searchString?.toUpperCase())
+        )
+      ) {
+        return;
+      }
+    }
+
+    return (
+      <>
+        {widgets.map((x, id) => (
+          <React.Fragment key={`search-${id}`}>{x}</React.Fragment>
+        ))}
+      </>
     );
   }
 
