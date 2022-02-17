@@ -59,7 +59,7 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
         }}
         selectionMode={SelectionMode.none}
         items={widgets
-          .filter((w) => w !== null)
+          .filter((w) => w != null)
           .map((w, i) => ({
             key: i,
             item: w,
