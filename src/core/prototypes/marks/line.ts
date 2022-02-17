@@ -354,6 +354,7 @@ export class LineElementClass extends EmphasizableMarkClass<
               type: "dropdown",
               showLabel: true,
               icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
+              isLocalIcons: true,
               labels: ["Solid", "Dashed", "Dotted"],
               options: ["solid", "dashed", "dotted"],
               label: strings.objects.line.lineStyle,

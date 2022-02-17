@@ -413,7 +413,11 @@ export class GuideClass extends ChartElementClass<
         strings.alignment.middle,
         strings.alignment.bottom,
       ];
-      icons = ["AlignVerticalTop", "align/y-middle", "AlignVerticalBottom"];
+      icons = [
+        "AlignVerticalTop",
+        "AlignVerticalCenter",
+        "AlignVerticalBottom",
+      ];
     }
     widgets.push(
       manager.inputSelect(
