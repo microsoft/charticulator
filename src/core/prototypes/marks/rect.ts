@@ -29,6 +29,7 @@ import {
 import { strings } from "../../../strings";
 import { RectangleGlyph } from "../glyphs";
 import { OrientationType } from "../legends/types";
+import { CartesianCoordinates } from "../../graphics";
 
 export { RectElementAttributes, RectElementProperties };
 
@@ -832,7 +833,10 @@ export class RectElementClass extends EmphasizableMarkClass<
     const halfXWidth = Math.abs(x1 - x2) / 2;
     const minHalfWidth = Math.min(halfYWidth, halfXWidth);
 
-    if (properties.orientation == OrientationType.HORIZONTAL) {
+    if (
+      properties.orientation == OrientationType.HORIZONTAL &&
+      helper.coordinateSystem instanceof CartesianCoordinates
+    ) {
       if (properties.cometMark == true) {
         pathMaker.moveTo(
           x2 > x1 ? x1 + minHalfWidth : x1 - minHalfWidth,
@@ -862,7 +866,10 @@ export class RectElementClass extends EmphasizableMarkClass<
         helper.lineTo(pathMaker, x1, y2, x2, (y1 + y2) / 2, false);
       }
     } else {
-      if (properties.cometMark == true) {
+      if (
+        properties.cometMark == true &&
+        helper.coordinateSystem instanceof CartesianCoordinates
+      ) {
         pathMaker.moveTo(
           Math.max(x1, x2),
           y2 > y1 ? y1 + minHalfWidth : y1 - minHalfWidth
