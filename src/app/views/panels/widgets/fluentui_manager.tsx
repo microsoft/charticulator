@@ -190,6 +190,7 @@ export class FluentUIWidgetManager
         onRenderPrefix={() => {
           return <FontIcon aria-label="Search" iconName="Search" />;
         }}
+        autoComplete="off"
       />
     );
   }
@@ -225,7 +226,7 @@ export class FluentUIWidgetManager
     attribute: string,
     options: Prototypes.Controls.MappingEditorOptions
   ): JSX.Element {
-    if (!this.shouldDrawComponent([name])) {
+    if (!this.shouldDrawComponent([name, options?.searchSection])) {
       return;
     }
 
@@ -378,7 +379,7 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputFormatOptions = {}
   ) {
-    if (!this.shouldDrawComponent([options.label])) {
+    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
       return;
     }
     return (
@@ -433,7 +434,7 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputNumberOptions = {}
   ) {
-    if (!this.shouldDrawComponent([options.label])) {
+    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
       return;
     }
     const value = this.getPropertyValue(property) as number;
@@ -475,7 +476,7 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputDateOptions = {}
   ) {
-    if (!this.shouldDrawComponent([options.label])) {
+    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
       return;
     }
     const value = this.getPropertyValue(property) as number;
@@ -509,7 +510,7 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: InputTextOptions
   ) {
-    if (!this.shouldDrawComponent([options.label])) {
+    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
       return;
     }
     let prevKey: string = options.value ?? "";
@@ -562,7 +563,7 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: InputFontComboboxOptions
   ) {
-    if (!this.shouldDrawComponent([options.label])) {
+    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
       return;
     }
     return (
@@ -582,7 +583,7 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputComboboxOptions
   ) {
-    if (!this.shouldDrawComponent([options.label])) {
+    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
       return;
     }
     return (
@@ -610,7 +611,7 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputSelectOptions
   ) {
-    if (!this.shouldDrawComponent([options.label])) {
+    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
       return;
     }
     const theme = getTheme();
@@ -700,7 +701,7 @@ export class FluentUIWidgetManager
     properties: Prototypes.Controls.Property | Prototypes.Controls.Property[],
     options: Prototypes.Controls.InputBooleanOptions
   ) {
-    if (!this.shouldDrawComponent([options.label])) {
+    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
       return;
     }
     const property: Prototypes.Controls.Property =
@@ -797,7 +798,7 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputExpressionOptions = {}
   ) {
-    if (!this.shouldDrawComponent([options.label])) {
+    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
       return;
     }
     const value = this.getPropertyValue(property) as string;
@@ -887,7 +888,7 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputColorOptions
   ): JSX.Element {
-    if (!this.shouldDrawComponent([options.label])) {
+    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
       return;
     }
     const color = this.getPropertyValue(property) as Color;
@@ -1396,7 +1397,7 @@ export class FluentUIWidgetManager
     widget?: JSX.Element,
     options: Prototypes.Controls.RowOptions = {}
   ) {
-    if (!this.shouldDrawComponent([title])) {
+    if (!this.shouldDrawComponent([title, options?.searchSection])) {
       return;
     }
     this.director.setBuilder(new MenuItemBuilder());
@@ -1550,7 +1551,7 @@ export class FluentUIWidgetManager
     options: Prototypes.Controls.FilterEditorOptions
   ): JSX.Element {
     const filterText = strings.filter.filterBy;
-    if (!this.shouldDrawComponent([filterText])) {
+    if (!this.shouldDrawComponent([filterText, options?.searchSection])) {
       return;
     }
     return (
@@ -1570,7 +1571,7 @@ export class FluentUIWidgetManager
   ): JSX.Element {
     let button: HTMLElement;
     let text = strings.objects.plotSegment.groupBy;
-    if (!this.shouldDrawComponent([text])) {
+    if (!this.shouldDrawComponent([text, options?.searchSection])) {
       return;
     }
     const getControl = () => {
@@ -1655,7 +1656,9 @@ export class FluentUIWidgetManager
     options: Prototypes.Controls.NestedChartEditorOptions
   ) {
     const editNestedChartText = strings.menuBar.editNestedChart;
-    if (!this.shouldDrawComponent([editNestedChartText])) {
+    if (
+      !this.shouldDrawComponent([editNestedChartText, options?.searchSection])
+    ) {
       return;
     }
     return (
