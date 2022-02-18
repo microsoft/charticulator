@@ -410,6 +410,8 @@ export const strings = {
     roundY: "Round Y",
     dropData: "drop here to assign data",
     dropTickData: "Tick data: drop here to assign tick data",
+    toolTips: "Tooltips",
+    selection: "Selection",
     axes: {
       data: "Data",
       numericalSuffix: ": Numerical",
