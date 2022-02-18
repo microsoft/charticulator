@@ -31,6 +31,12 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
   const [groupState, setIsCollapsed] = React.useState<boolean>(
     isCollapsed === undefined ? false : isCollapsed
   );
+
+  //filter empty widgets
+  if (widgets.filter((widget) => widget).length == 0) {
+    return <></>;
+  }
+
   return (
     <FluentGroupedList marginLeft={alignVertically ? 0 : null}>
       <GroupedList

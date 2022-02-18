@@ -157,8 +157,6 @@ export class FluentUIWidgetManager
     return `${property?.property}-${property?.field?.toString()}`;
   }
 
-  private searchString: string = "";
-
   public searchInput(options: InputTextOptions = {}) {
     return (
       <TextField
@@ -182,7 +180,6 @@ export class FluentUIWidgetManager
         disabled={options.disabled}
         onRenderLabel={labelRender}
         onChange={(event, value) => {
-          this.searchString = value;
           this.store.dispatcher.dispatch(new Actions.SearchUpdated(value));
         }}
         type="text"
@@ -228,6 +225,10 @@ export class FluentUIWidgetManager
     attribute: string,
     options: Prototypes.Controls.MappingEditorOptions
   ): JSX.Element {
+    if (!this.shouldDrawComponent([name])) {
+      return;
+    }
+
     const objectClass = this.objectClass;
     const info = objectClass.attributes[attribute];
     if (options.defaultValue == null) {
@@ -377,6 +378,9 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputFormatOptions = {}
   ) {
+    if (!this.shouldDrawComponent([options.label])) {
+      return;
+    }
     return (
       <FluentInputFormat
         label={options.label}
@@ -429,6 +433,9 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputNumberOptions = {}
   ) {
+    if (!this.shouldDrawComponent([options.label])) {
+      return;
+    }
     const value = this.getPropertyValue(property) as number;
     return (
       <FluentInputNumber
@@ -468,6 +475,9 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputDateOptions = {}
   ) {
+    if (!this.shouldDrawComponent([options.label])) {
+      return;
+    }
     const value = this.getPropertyValue(property) as number;
     const format = this.getDateFormat(property) as string;
 
@@ -499,6 +509,9 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: InputTextOptions
   ) {
+    if (!this.shouldDrawComponent([options.label])) {
+      return;
+    }
     let prevKey: string = options.value ?? "";
     return (
       <TextField
@@ -549,6 +562,9 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: InputFontComboboxOptions
   ) {
+    if (!this.shouldDrawComponent([options.label])) {
+      return;
+    }
     return (
       <FluentComboBoxFontFamily
         key={this.getKeyFromProperty(property)}
@@ -566,6 +582,9 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputComboboxOptions
   ) {
+    if (!this.shouldDrawComponent([options.label])) {
+      return;
+    }
     return (
       <ComboBox
         styles={defaultStyle as any}
@@ -591,6 +610,9 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputSelectOptions
   ) {
+    if (!this.shouldDrawComponent([options.label])) {
+      return;
+    }
     const theme = getTheme();
     const isLocalIcons = options.isLocalIcons ?? false;
     if (options.type == "dropdown") {
@@ -678,6 +700,9 @@ export class FluentUIWidgetManager
     properties: Prototypes.Controls.Property | Prototypes.Controls.Property[],
     options: Prototypes.Controls.InputBooleanOptions
   ) {
+    if (!this.shouldDrawComponent([options.label])) {
+      return;
+    }
     const property: Prototypes.Controls.Property =
       properties instanceof Array ? properties[0] : properties;
     switch (options.type) {
@@ -772,6 +797,9 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputExpressionOptions = {}
   ) {
+    if (!this.shouldDrawComponent([options.label])) {
+      return;
+    }
     const value = this.getPropertyValue(property) as string;
 
     const inputExpression = (
@@ -859,6 +887,9 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputColorOptions
   ): JSX.Element {
+    if (!this.shouldDrawComponent([options.label])) {
+      return;
+    }
     const color = this.getPropertyValue(property) as Color;
     return (
       <FluentInputColor
@@ -885,6 +916,7 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     inline: boolean = false
   ): JSX.Element {
+    //aAAAA
     const gradient = (this.getPropertyValue(property) as any) as ColorGradient;
     if (inline) {
       return (
@@ -974,6 +1006,9 @@ export class FluentUIWidgetManager
     icon?: string,
     text?: string
   ) {
+    if (!this.shouldDrawComponent([text])) {
+      return;
+    }
     return (
       <DefaultButton
         key={this.getKeyFromProperty(property)}
@@ -989,6 +1024,9 @@ export class FluentUIWidgetManager
   }
 
   public scaleEditor(attribute: string, text: string) {
+    if (!this.shouldDrawComponent([text])) {
+      return;
+    }
     let mappingButton: Element = null;
 
     const objectClass = this.objectClass;
@@ -1358,6 +1396,9 @@ export class FluentUIWidgetManager
     widget?: JSX.Element,
     options: Prototypes.Controls.RowOptions = {}
   ) {
+    if (!this.shouldDrawComponent([title])) {
+      return;
+    }
     this.director.setBuilder(new MenuItemBuilder());
     if (options.dropzone && options.dropzone.type == "axis-data-binding") {
       const current = this.getPropertyValue({
@@ -1508,13 +1549,17 @@ export class FluentUIWidgetManager
   public filterEditor(
     options: Prototypes.Controls.FilterEditorOptions
   ): JSX.Element {
+    const filterText = strings.filter.filterBy;
+    if (!this.shouldDrawComponent([filterText])) {
+      return;
+    }
     return (
       <FilterPanel
         key={options.key}
         options={{
           ...options,
         }}
-        text={strings.filter.filterBy}
+        text={filterText}
         manager={this}
       />
     );
@@ -1525,6 +1570,9 @@ export class FluentUIWidgetManager
   ): JSX.Element {
     let button: HTMLElement;
     let text = strings.objects.plotSegment.groupBy;
+    if (!this.shouldDrawComponent([text])) {
+      return;
+    }
     const getControl = () => {
       switch (options.mode) {
         case PanelMode.Button:
@@ -1606,12 +1654,16 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.NestedChartEditorOptions
   ) {
+    const editNestedChartText = strings.menuBar.editNestedChart;
+    if (!this.shouldDrawComponent([editNestedChartText])) {
+      return;
+    }
     return (
       <React.Fragment key={this.getKeyFromProperty(property)}>
         {this.vertical(
           <NestedChartButtonsWrapper>
             <ButtonRaised
-              text="Edit Nested Chart..."
+              text={editNestedChartText}
               onClick={() => {
                 this.store.dispatcher.dispatch(
                   new OpenNestedEditor(
@@ -1625,7 +1677,7 @@ export class FluentUIWidgetManager
           </NestedChartButtonsWrapper>,
           <NestedChartButtonsWrapper>
             <ButtonRaised
-              text="Import Template..."
+              text={strings.menuBar.importTemplate}
               onClick={async () => {
                 const file = await showOpenFileDialog(["tmplt", "json"]);
                 const str = await readFileAsString(file);
@@ -1862,6 +1914,24 @@ export class FluentUIWidgetManager
         />
       </FluentButton>
     );
+  }
+
+  public shouldDrawComponent(options: string[]): boolean {
+    const searchString = this.store.searchString;
+    //remove null values
+    const componentStings = options.filter((value) => value != undefined);
+
+    if (searchString?.length != 0 && componentStings.length >= 0) {
+      if (
+        !componentStings.some(
+          (value) =>
+            value && value?.toUpperCase().includes(searchString?.toUpperCase())
+        )
+      ) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 

@@ -268,6 +268,7 @@ export const strings = {
     cancel: "Cancel",
     savedButton: "Saved",
     saveNested: "Save Nested Chart",
+    editNestedChart: "Edit Nested Chart...",
     closeNested: "Close",
     undo: "Undo (Ctrl-Z)",
   },
