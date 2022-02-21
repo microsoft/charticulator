@@ -587,52 +587,71 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     return [
-      manager.sectionHeader(strings.objects.guides.guideCoordinator),
-      manager.inputNumber(
-        { property: "angularGuidesCount" },
-        {
-          showUpdown: true,
-          updownTick: 1,
-          updownRange: [1, 100],
-          minimum: 2,
-          maximum: 100,
-          label: strings.objects.guides.angular,
-        }
+      manager.verticalGroup(
+        { header: strings.objects.guides.guideCoordinator },
+        [
+          manager.inputNumber(
+            { property: "angularGuidesCount" },
+            {
+              showUpdown: true,
+              updownTick: 1,
+              updownRange: [1, 100],
+              minimum: 2,
+              maximum: 100,
+              label: strings.objects.guides.angular,
+              searchSection: strings.objects.guides.guideCoordinator,
+            }
+          ),
+          // uncomment to allow configure count of guides in different radiuses
+          // manager.row(
+          //   strings.objects.guides.radial,
+          //   manager.inputNumber(
+          //     { property: "radialGuidesCount" },
+          //     {
+          //       showUpdown: true,
+          //       updownTick: 1,
+          //       updownRange: [1, 100],
+          //       minimum: 1,
+          //       maximum: 100,
+          //     }
+          //   )
+          // ),
+          manager.searchWrapper(
+            {
+              searchPattern: [
+                strings.objects.guides.angle,
+                strings.objects.guides.guideCoordinator,
+              ],
+            },
+            manager.vertical(
+              manager.label(strings.objects.guides.angle),
+              manager.horizontal(
+                [1, 0, 1],
+                manager.inputNumber(
+                  { property: "startAngle" },
+                  { ignoreSearch: true }
+                ),
+                manager.label("-"),
+                manager.inputNumber(
+                  { property: "endAngle" },
+                  { ignoreSearch: true }
+                )
+              )
+            )
+          ),
+          // uncomment to allow configure raito
+          // manager.row(
+          //   strings.objects.guides.radius,
+          //   manager.horizontal(
+          //     [0, 1, 0, 1],
+          //     manager.label("Inner:"),
+          //     manager.inputNumber({ property: "innerRatio" }),
+          //     manager.label("Outer:"),
+          //     manager.inputNumber({ property: "outerRatio" })
+          //   )
+          // ),
+        ]
       ),
-      // uncomment to allow configure count of guides in different radiuses
-      // manager.row(
-      //   strings.objects.guides.radial,
-      //   manager.inputNumber(
-      //     { property: "radialGuidesCount" },
-      //     {
-      //       showUpdown: true,
-      //       updownTick: 1,
-      //       updownRange: [1, 100],
-      //       minimum: 1,
-      //       maximum: 100,
-      //     }
-      //   )
-      // ),
-      manager.vertical(
-        manager.label(strings.objects.guides.angle),
-        manager.horizontal(
-          [1, 0, 1],
-          manager.inputNumber({ property: "startAngle" }),
-          manager.label("-"),
-          manager.inputNumber({ property: "endAngle" })
-        )
-      ),
-      // uncomment to allow configure raito
-      // manager.row(
-      //   strings.objects.guides.radius,
-      //   manager.horizontal(
-      //     [0, 1, 0, 1],
-      //     manager.label("Inner:"),
-      //     manager.inputNumber({ property: "innerRatio" }),
-      //     manager.label("Outer:"),
-      //     manager.inputNumber({ property: "outerRatio" })
-      //   )
-      // ),
     ];
   }
 }

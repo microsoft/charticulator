@@ -191,6 +191,7 @@ export class FluentUIWidgetManager
           return <FontIcon aria-label="Search" iconName="Search" />;
         }}
         autoComplete="off"
+        defaultValue={this.store.searchString}
       />
     );
   }
@@ -434,7 +435,10 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputNumberOptions = {}
   ) {
-    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
+    if (
+      !options.ignoreSearch &&
+      !this.shouldDrawComponent([options.label, options?.searchSection])
+    ) {
       return;
     }
     const value = this.getPropertyValue(property) as number;
@@ -611,7 +615,10 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputSelectOptions
   ) {
-    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
+    if (
+      !options.ignoreSearch &&
+      !this.shouldDrawComponent([options.label, options?.searchSection])
+    ) {
       return;
     }
     const theme = getTheme();
@@ -701,7 +708,13 @@ export class FluentUIWidgetManager
     properties: Prototypes.Controls.Property | Prototypes.Controls.Property[],
     options: Prototypes.Controls.InputBooleanOptions
   ) {
-    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
+    if (
+      !this.shouldDrawComponent([
+        options.label,
+        options.headerLabel,
+        options?.searchSection,
+      ])
+    ) {
       return;
     }
     const property: Prototypes.Controls.Property =
@@ -1363,7 +1376,9 @@ export class FluentUIWidgetManager
   }
 
   public label(title: string, options?: Prototypes.Controls.LabelOptions) {
-    // return <span className="charticulator__widget-label">{title}</span>;
+    if (!this.shouldDrawComponent([options?.searchSection])) {
+      return;
+    }
     return (
       <FluentLabelHeader
         key={title}
@@ -1656,8 +1671,13 @@ export class FluentUIWidgetManager
     options: Prototypes.Controls.NestedChartEditorOptions
   ) {
     const editNestedChartText = strings.menuBar.editNestedChart;
+    const importTemplate = strings.menuBar.importTemplate;
     if (
-      !this.shouldDrawComponent([editNestedChartText, options?.searchSection])
+      !this.shouldDrawComponent([
+        editNestedChartText,
+        importTemplate,
+        options.searchSection,
+      ])
     ) {
       return;
     }
@@ -1680,7 +1700,7 @@ export class FluentUIWidgetManager
           </NestedChartButtonsWrapper>,
           <NestedChartButtonsWrapper>
             <ButtonRaised
-              text={strings.menuBar.importTemplate}
+              text={importTemplate}
               onClick={async () => {
                 const file = await showOpenFileDialog(["tmplt", "json"]);
                 const str = await readFileAsString(file);

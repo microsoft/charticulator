@@ -303,6 +303,7 @@ export class CategoricalLegendClass extends LegendClass {
               ],
               options: [OrientationType.VERTICAL, OrientationType.HORIZONTAL],
               label: strings.objects.legend.orientation,
+              searchSection: strings.objects.legend.categoricalLegend,
             }
           ),
         ]

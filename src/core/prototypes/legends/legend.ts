@@ -197,7 +197,10 @@ export abstract class LegendClass extends ChartElementClass {
         [
           manager.inputFontFamily(
             { property: "fontFamily" },
-            { label: strings.objects.font }
+            {
+              label: strings.objects.font,
+              searchSection: strings.objects.legend.labels,
+            }
           ),
           manager.inputNumber(
             { property: "fontSize" },
@@ -206,6 +209,7 @@ export abstract class LegendClass extends ChartElementClass {
               updownStyle: "font",
               updownTick: 2,
               label: strings.objects.size,
+              searchSection: strings.objects.legend.labels,
             }
           ),
           manager.inputColor(
@@ -214,43 +218,56 @@ export abstract class LegendClass extends ChartElementClass {
               label: strings.objects.color,
               labelKey: strings.objects.color,
               allowNull: true,
-            }
-          ),
-          manager.inputSelect(
-            { property: "markerShape" },
-            {
-              type: "dropdown",
-              showLabel: true,
-              icons: ["RectangleShape", "TriangleShape", "Ellipse"],
-              labels: [
-                strings.toolbar.rectangle,
-                strings.toolbar.triangle,
-                strings.toolbar.ellipse,
-              ],
-              options: ["rectangle", "triangle", "circle"],
-              label: strings.objects.legend.markerShape,
+              searchSection: strings.objects.legend.labels,
             }
           ),
           this.object.classID === "legend.categorical"
-            ? manager.label(strings.objects.legend.ordering)
+            ? manager.inputSelect(
+                { property: "markerShape" },
+                {
+                  type: "dropdown",
+                  showLabel: true,
+                  icons: ["RectangleShape", "TriangleShape", "Ellipse"],
+                  labels: [
+                    strings.toolbar.rectangle,
+                    strings.toolbar.triangle,
+                    strings.toolbar.ellipse,
+                  ],
+                  options: ["rectangle", "triangle", "circle"],
+                  label: strings.objects.legend.markerShape,
+                  searchSection: strings.objects.legend.labels,
+                }
+              )
             : null,
           this.object.classID === "legend.categorical"
-            ? manager.reorderWidget(
+            ? manager.searchWrapper(
                 {
-                  property: "order",
+                  searchPattern: [
+                    strings.objects.legend.ordering,
+                    strings.objects.legend.labels,
+                  ],
                 },
-                {
-                  items: this.getOrderingObjects(),
-                  onConfirm: (items: string[]) => {
-                    manager.emitSetProperty(
-                      {
-                        property: "order",
-                        field: null,
+                [
+                  manager.label(strings.objects.legend.ordering),
+
+                  manager.reorderWidget(
+                    {
+                      property: "order",
+                    },
+                    {
+                      items: this.getOrderingObjects(),
+                      onConfirm: (items: string[]) => {
+                        manager.emitSetProperty(
+                          {
+                            property: "order",
+                            field: null,
+                          },
+                          items
+                        );
                       },
-                      items
-                    );
-                  },
-                }
+                    }
+                  ),
+                ]
               )
             : null,
         ]
@@ -260,46 +277,56 @@ export abstract class LegendClass extends ChartElementClass {
           header: strings.objects.legend.layout,
         },
         [
-          manager.vertical(
-            manager.label(strings.alignment.alignment),
-            manager.horizontal(
-              [0, 0],
-              manager.inputSelect(
-                { property: "alignX" },
-                {
-                  type: "radio",
-                  icons: [
-                    "AlignHorizontalLeft",
-                    "AlignHorizontalCenter",
-                    "AlignHorizontalRight",
-                  ],
-                  labels: [
-                    strings.alignment.left,
-                    strings.alignment.middle,
-                    strings.alignment.right,
-                  ],
-                  options: ["start", "middle", "end"],
-                }
+          manager.searchWrapper(
+            {
+              searchPattern: [
+                strings.alignment.align,
+                strings.objects.legend.layout,
+              ],
+            },
+            [
+              manager.label(strings.alignment.alignment),
+              manager.horizontal(
+                [0, 0],
+                manager.inputSelect(
+                  { property: "alignX" },
+                  {
+                    type: "radio",
+                    icons: [
+                      "AlignHorizontalLeft",
+                      "AlignHorizontalCenter",
+                      "AlignHorizontalRight",
+                    ],
+                    labels: [
+                      strings.alignment.left,
+                      strings.alignment.middle,
+                      strings.alignment.right,
+                    ],
+                    options: ["start", "middle", "end"],
+                    ignoreSearch: true,
+                  }
+                ),
+                manager.inputSelect(
+                  { property: "alignY" },
+                  {
+                    type: "radio",
+                    options: ["start", "middle", "end"],
+                    icons: [
+                      "AlignVerticalBottom",
+                      "AlignVerticalCenter",
+                      "AlignVerticalTop",
+                    ],
+                    labels: [
+                      strings.alignment.bottom,
+                      strings.alignment.middle,
+                      strings.alignment.top,
+                    ],
+                    ignoreSearch: true,
+                  }
+                ),
+                null
               ),
-              manager.inputSelect(
-                { property: "alignY" },
-                {
-                  type: "radio",
-                  options: ["start", "middle", "end"],
-                  icons: [
-                    "AlignVerticalBottom",
-                    "AlignVerticalCenter",
-                    "AlignVerticalTop",
-                  ],
-                  labels: [
-                    strings.alignment.bottom,
-                    strings.alignment.middle,
-                    strings.alignment.top,
-                  ],
-                }
-              ),
-              null
-            )
+            ]
           ),
         ]
       ),

@@ -524,6 +524,8 @@ export const strings = {
     },
     line: {
       lineStyle: "Line Style",
+      xSpan: "X Span",
+      ySpan: "Y Span",
     },
     anchor: {
       label: "(drag the anchor in the glyph editor)",
@@ -592,6 +594,9 @@ export const strings = {
       minute: "Minute",
       second: "Second",
       menuSuffix: " Derived columns ",
+    },
+    nestedChart: {
+      sizeAnsShape: "Size & Shape",
     },
   },
   reOrder: {

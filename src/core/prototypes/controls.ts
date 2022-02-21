@@ -420,6 +420,7 @@ export interface PopupEditor {
 export interface LabelOptions {
   addMargins: boolean;
   key?: string;
+  searchSection?: string;
 }
 
 export interface SearchWrapperOptions {
@@ -428,4 +429,5 @@ export interface SearchWrapperOptions {
 
 export interface SearchSection {
   searchSection?: string;
+  ignoreSearch?: boolean;
 }
