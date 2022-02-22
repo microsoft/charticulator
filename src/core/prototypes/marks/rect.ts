@@ -837,7 +837,7 @@ export class RectElementClass extends EmphasizableMarkClass<
       properties.orientation == OrientationType.HORIZONTAL &&
       helper.coordinateSystem instanceof CartesianCoordinates
     ) {
-      const xPosition = x2 > x1 ? x1 + minHalfWidth : x1 - minHalfWidth;
+      const xPosition = x1;
       if (properties.cometMark == true) {
         pathMaker.moveTo(xPosition, Math.max(y1, y2));
         helper.arcTo(
@@ -868,7 +868,7 @@ export class RectElementClass extends EmphasizableMarkClass<
         properties.cometMark == true &&
         helper.coordinateSystem instanceof CartesianCoordinates
       ) {
-        const yPosition = y2 > y1 ? y1 + minHalfWidth : y1 - minHalfWidth;
+        const yPosition = y1;
         pathMaker.moveTo(Math.max(x1, x2), yPosition);
         helper.arcTo(
           pathMaker,
