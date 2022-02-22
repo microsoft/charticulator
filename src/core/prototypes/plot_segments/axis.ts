@@ -1449,6 +1449,7 @@ export function buildAxisAppearanceWidgets(
         {
           type: "checkbox",
           label: strings.objects.axes.verticalText,
+          searchSection: strings.objects.style,
         }
       );
     }
@@ -1465,6 +1466,7 @@ export function buildAxisAppearanceWidgets(
               {
                 type: "checkbox",
                 label: strings.objects.visibleOn.visible,
+                searchSection: strings.objects.visibilityAndPosition,
               }
             ),
             options.isOnTop
@@ -1473,6 +1475,7 @@ export function buildAxisAppearanceWidgets(
                   {
                     type: "checkbox",
                     label: strings.objects.onTop,
+                    searchSection: strings.objects.visibilityAndPosition,
                   }
                 )
               : null,
@@ -1484,6 +1487,7 @@ export function buildAxisAppearanceWidgets(
                 label: strings.objects.position,
                 options: ["default", "opposite"],
                 labels: [strings.objects.default, strings.objects.opposite],
+                searchSection: strings.objects.visibilityAndPosition,
               }
             ),
             options.isOffset
@@ -1496,6 +1500,7 @@ export function buildAxisAppearanceWidgets(
                     label: strings.objects.axes.offSet,
                     showUpdown: true,
                     updownTick: 10,
+                    searchSection: strings.objects.visibilityAndPosition,
                   }
                 )
               : null,
@@ -1515,6 +1520,7 @@ export function buildAxisAppearanceWidgets(
                 label: strings.objects.axes.lineColor,
                 labelKey: strings.objects.axes.lineColor,
                 allowNull: true,
+                searchSection: strings.objects.style,
               }
             ),
             manager.inputBoolean(
@@ -1527,6 +1533,7 @@ export function buildAxisAppearanceWidgets(
                     marginTop: 5,
                   },
                 },
+                searchSection: strings.objects.style,
               }
             ),
             manager.inputBoolean(
@@ -1539,6 +1546,7 @@ export function buildAxisAppearanceWidgets(
                     marginTop: 5,
                   },
                 },
+                searchSection: strings.objects.style,
               }
             ),
             manager.inputColor(
@@ -1550,6 +1558,7 @@ export function buildAxisAppearanceWidgets(
                 label: strings.objects.axes.tickColor,
                 labelKey: strings.objects.axes.tickColor,
                 allowNull: true,
+                searchSection: strings.objects.style,
               }
             ),
             manager.inputColor(
@@ -1561,6 +1570,7 @@ export function buildAxisAppearanceWidgets(
                 label: strings.objects.axes.tickTextBackgroudColor,
                 labelKey: strings.objects.axes.tickTextBackgroudColor,
                 allowNull: true,
+                searchSection: strings.objects.style,
               }
             ),
             manager.inputNumber(
@@ -1572,6 +1582,7 @@ export function buildAxisAppearanceWidgets(
                 label: strings.objects.axes.ticksize,
                 showUpdown: true,
                 updownTick: 1,
+                searchSection: strings.objects.style,
               }
             ),
             manager.inputFontFamily(
@@ -1581,6 +1592,7 @@ export function buildAxisAppearanceWidgets(
               },
               {
                 label: strings.objects.font,
+                searchSection: strings.objects.style,
               }
             ),
             manager.inputNumber(
@@ -1591,6 +1603,7 @@ export function buildAxisAppearanceWidgets(
                 updownTick: 2,
                 label: strings.objects.fontSize,
                 minimum: 1,
+                searchSection: strings.objects.style,
               }
             ),
             manager.inputBoolean(
@@ -1599,6 +1612,7 @@ export function buildAxisAppearanceWidgets(
                 type: "checkbox",
                 headerLabel: strings.objects.text.textDisplaying,
                 label: strings.objects.text.wrapText,
+                searchSection: strings.objects.style,
               }
             ),
             vertical,
@@ -1617,6 +1631,7 @@ export function buildAxisAppearanceWidgets(
           {
             type: "checkbox",
             label: strings.objects.visibleOn.visible,
+            searchSection: strings.objects.visibilityAndPosition,
           }
         ),
       ]
@@ -1630,14 +1645,15 @@ function buildInteractivityGroup(
 ) {
   return manager.verticalGroup(
     {
-      header: "Interactivity",
+      header: strings.objects.interactivity,
     },
     [
       manager.inputBoolean(
         { property: axisProperty, field: "enableSelection" },
         {
           type: "checkbox",
-          label: "Selection",
+          label: strings.objects.selection,
+          searchSection: strings.objects.interactivity,
         }
       ),
     ]
@@ -1664,7 +1680,6 @@ function buildScrollingAxisWidgets(
   onChange?: () => void
 ) {
   return [
-    manager.label(strings.objects.dataAxis.scrolling),
     manager.inputBoolean(
       {
         property: axisProperty,
@@ -1673,6 +1688,7 @@ function buildScrollingAxisWidgets(
       {
         type: "checkbox",
         label: strings.objects.dataAxis.allowScrolling,
+        headerLabel: strings.objects.dataAxis.scrolling,
         observerConfig: {
           isObserver: true,
           properties: {
@@ -1681,6 +1697,7 @@ function buildScrollingAxisWidgets(
           },
           value: 10,
         },
+        searchSection: strings.objects.general,
         onChange: onChange,
       }
     ),
@@ -1694,6 +1711,7 @@ function buildScrollingAxisWidgets(
             maximum: 1000000,
             minimum: 1,
             label: strings.objects.dataAxis.windowSize,
+            searchSection: strings.objects.general,
           }
         )
       : null,
@@ -1707,6 +1725,7 @@ function buildScrollingAxisWidgets(
             maximum: 1000000,
             minimum: -1000000,
             label: strings.objects.dataAxis.barOffset,
+            searchSection: strings.objects.general,
           }
         )
       : null,
@@ -1730,6 +1749,7 @@ export function buildAxisWidgets(
       prompt: axisName + ": " + strings.objects.dropData,
     },
     noLineHeight: true,
+    ignoreSearch: true,
   };
   const makeAppearance = () => {
     return buildAxisAppearanceWidgets(axisProperty, manager, {
@@ -1768,47 +1788,66 @@ export function buildAxisWidgets(
                 header: strings.objects.general,
               },
               [
-                // manager.sectionHeader(
-                //   axisName + strings.objects.axes.numericalSuffix,
-                //   manager.clearButton({ property: axisProperty }, null, true),
-                //   dropzoneOptions
-                // ),
-                manager.label(strings.objects.axes.data),
-                manager.styledHorizontal(
+                manager.searchWrapper(
                   {
-                    alignItems: "start",
+                    searchPattern: [
+                      strings.objects.axes.data,
+                      strings.objects.general,
+                    ],
                   },
-                  [1, 0],
-                  manager.sectionHeader(
-                    null,
-                    manager.inputExpression(
+                  [
+                    manager.label(strings.objects.axes.data),
+                    manager.styledHorizontal(
                       {
-                        property: axisProperty,
-                        field: "expression",
+                        alignItems: "start",
                       },
-                      {}
+                      [1, 0],
+                      manager.sectionHeader(
+                        null,
+                        manager.inputExpression(
+                          {
+                            property: axisProperty,
+                            field: "expression",
+                          },
+                          {
+                            ignoreSearch: true,
+                          }
+                        ),
+                        dropzoneOptions
+                      ),
+                      manager.clearButton(
+                        { property: axisProperty },
+                        null,
+                        true,
+                        {
+                          marginTop: "1px",
+                        }
+                      )
                     ),
-                    dropzoneOptions
-                  ),
-                  manager.clearButton({ property: axisProperty }, null, true, {
-                    marginTop: "1px",
-                  })
+                  ]
                 ),
-                data.valueType === "date"
-                  ? manager.label(strings.objects.dataAxis.range)
-                  : null,
-                data.valueType === "date"
-                  ? manager.inputDate(
-                      { property: axisProperty, field: "domainMin" },
-                      { label: strings.objects.dataAxis.start }
+                data.valueType == "date"
+                  ? manager.searchWrapper(
+                      {
+                        searchPattern: [
+                          strings.objects.dataAxis.range,
+                          strings.objects.general,
+                        ],
+                      },
+                      [
+                        manager.label(strings.objects.dataAxis.range),
+                        manager.inputDate(
+                          { property: axisProperty, field: "domainMin" },
+                          { label: strings.objects.dataAxis.start }
+                        ),
+                        manager.inputDate(
+                          { property: axisProperty, field: "domainMax" },
+                          { label: strings.objects.dataAxis.end }
+                        ),
+                      ]
                     )
                   : null,
-                data.valueType === "date"
-                  ? manager.inputDate(
-                      { property: axisProperty, field: "domainMax" },
-                      { label: strings.objects.dataAxis.end }
-                    )
-                  : null,
+
                 data.valueType !== "date"
                   ? manager.label(strings.objects.dataAxis.range)
                   : null,
@@ -1856,7 +1895,8 @@ export function buildAxisWidgets(
                         ],
                         showLabel: true,
                         type: "dropdown",
-                        label: "Mode",
+                        label: strings.objects.scales.mode,
+                        searchSection: strings.objects.general,
                       }
                     )
                   : null,
@@ -1876,38 +1916,52 @@ export function buildAxisWidgets(
                 header: strings.objects.general,
               },
               [
-                // manager.sectionHeader(
-                //   strings.objects.axes.data,
-                //   manager.clearButton({ property: axisProperty }, null, true),
-                //   dropzoneOptions
-                // ),
-                // manager.vertical(
-                manager.label(strings.objects.axes.data),
-                manager.styledHorizontal(
+                manager.searchWrapper(
                   {
-                    alignItems: "start",
+                    searchPattern: [
+                      strings.objects.axes.data,
+                      strings.objects.general,
+                    ],
                   },
-                  [1, 0],
-                  manager.sectionHeader(
-                    null,
-                    manager.inputExpression(
+                  [
+                    manager.label(strings.objects.axes.data, {
+                      addMargins: false,
+                      ignoreSearch: true,
+                    }),
+                    manager.styledHorizontal(
                       {
-                        property: axisProperty,
-                        field: "expression",
+                        alignItems: "start",
                       },
-                      {}
-                    ),
-                    dropzoneOptions
-                  ),
-                  isDateExpression
-                    ? manager.reorderWidget(
-                        { property: axisProperty, field: "categories" },
-                        { allowReset: true }
+                      [1, 0],
+                      manager.sectionHeader(
+                        null,
+                        manager.inputExpression(
+                          {
+                            property: axisProperty,
+                            field: "expression",
+                          },
+                          {
+                            ignoreSearch: true,
+                          }
+                        ),
+                        dropzoneOptions
+                      ),
+                      isDateExpression
+                        ? manager.reorderWidget(
+                            { property: axisProperty, field: "categories" },
+                            { allowReset: true }
+                          )
+                        : null,
+                      manager.clearButton(
+                        { property: axisProperty },
+                        null,
+                        true,
+                        {
+                          marginTop: "1px",
+                        }
                       )
-                    : null,
-                  manager.clearButton({ property: axisProperty }, null, true, {
-                    marginTop: "1px",
-                  })
+                    ),
+                  ]
                 ),
 
                 !isDateExpression
@@ -1921,7 +1975,8 @@ export function buildAxisWidgets(
                     maximum: 1,
                     percentage: true,
                     showSlider: true,
-                    label: "Gap",
+                    label: strings.objects.axes.gap,
+                    searchSection: strings.objects.general,
                   }
                 ),
                 ...categoricalTickFormatAndTickDataFields,
@@ -1973,6 +2028,8 @@ export function buildAxisWidgets(
             {
               type: "checkbox",
               label: strings.objects.dataAxis.autoMin,
+              searchSection:
+                axisName + strings.objects.dataAxis.exportProperties,
             }
           ),
           manager.inputBoolean(
@@ -1983,6 +2040,8 @@ export function buildAxisWidgets(
             {
               type: "checkbox",
               label: strings.objects.dataAxis.autoMax,
+              searchSection:
+                axisName + strings.objects.dataAxis.exportProperties,
             }
           ),
         ]
@@ -2000,22 +2059,36 @@ export function buildAxisWidgets(
           header: strings.objects.general,
         },
         [
-          manager.label(strings.objects.axes.data),
-          manager.horizontal(
-            [1, 0, 0, 0],
-            manager.sectionHeader(
-              null,
-              manager.inputText(
-                {
-                  property: null,
-                },
-                {
-                  disabled: true,
-                  value: strings.core.none,
-                }
+          manager.searchWrapper(
+            {
+              searchPattern: [
+                strings.objects.general,
+                strings.objects.axes.data,
+              ],
+            },
+            [
+              manager.label(strings.objects.axes.data, {
+                addMargins: false,
+                ignoreSearch: true,
+              }),
+              manager.horizontal(
+                [1, 0, 0, 0],
+                manager.sectionHeader(
+                  null,
+                  manager.inputText(
+                    {
+                      property: null,
+                    },
+                    {
+                      disabled: true,
+                      value: strings.core.none,
+                      ignoreSearch: true,
+                    }
+                  ),
+                  dropzoneOptions
+                )
               ),
-              dropzoneOptions
-            )
+            ]
           ),
         ]
       )
@@ -2347,40 +2420,50 @@ function getOrderByAnotherColumnWidgets(
   }
 
   widgets.push(
-    manager.label(strings.objects.axes.orderBy),
-
-    manager.horizontal(
-      [1, 0],
-      manager.inputSelect(
-        { property: axisProperty, field: "orderByExpression" },
-        {
-          type: "dropdown",
-          showLabel: true,
-          labels: columnsDisplayNames,
-          options: columnsNames,
-          onChange: onChange,
-        }
-      ),
-      manager.reorderByAnotherColumnWidget(
-        { property: axisProperty, field: "orderByCategories" },
-        {
-          allowReset: isNumberValueType == false,
-          onConfirmClick: onConfirm,
-          onResetCategories: onResetAxisCategories,
-          sortedCategories: sortedCategories,
-          allowDragItems: isNumberValueType == false,
-          onReorderHandler: isOriginalColumn
-            ? () => {
-                orderChanged = true;
-              }
-            : undefined,
-          onButtonHandler: isOriginalColumn
-            ? () => {
-                orderChanged = false;
-              }
-            : undefined,
-        }
-      )
+    manager.searchWrapper(
+      {
+        searchPattern: [strings.objects.axes.orderBy, strings.objects.general],
+      },
+      [
+        manager.label(strings.objects.axes.orderBy, {
+          addMargins: false,
+          ignoreSearch: true,
+        }),
+        manager.horizontal(
+          [1, 0],
+          manager.inputSelect(
+            { property: axisProperty, field: "orderByExpression" },
+            {
+              type: "dropdown",
+              showLabel: true,
+              labels: columnsDisplayNames,
+              options: columnsNames,
+              onChange: onChange,
+              ignoreSearch: true,
+            }
+          ),
+          manager.reorderByAnotherColumnWidget(
+            { property: axisProperty, field: "orderByCategories" },
+            {
+              allowReset: isNumberValueType == false,
+              onConfirmClick: onConfirm,
+              onResetCategories: onResetAxisCategories,
+              sortedCategories: sortedCategories,
+              allowDragItems: isNumberValueType == false,
+              onReorderHandler: isOriginalColumn
+                ? () => {
+                    orderChanged = true;
+                  }
+                : undefined,
+              onButtonHandler: isOriginalColumn
+                ? () => {
+                    orderChanged = false;
+                  }
+                : undefined,
+            }
+          )
+        ),
+      ]
     )
   );
   return widgets;
@@ -2395,7 +2478,7 @@ function getTickDataAndTickFormatFields(
 
   const widgets = [];
   widgets.push(
-    manager.label(strings.objects.axes.tickData),
+    // manager.label(strings.objects.axes.tickData),
     manager.styledHorizontal(
       {
         alignItems: "start",
@@ -2414,6 +2497,8 @@ function getTickDataAndTickFormatFields(
             prompt: strings.objects.dropTickData,
           },
           noLineHeight: true,
+          label: strings.objects.axes.tickData,
+          searchSection: strings.objects.general,
         }
       )
     )
@@ -2432,6 +2517,7 @@ function getTickDataAndTickFormatFields(
             data.numericalMode === NumericalMode.Temporal ||
             data.valueType === DataType.Date,
           allowNull: true,
+          searchSection: strings.objects.general,
         }
       )
     );
@@ -2449,6 +2535,7 @@ function getTickDataAndTickFormatFields(
           styles: {
             marginTop: "0.5rem",
           },
+          searchSection: strings.objects.general,
         }
       )
     );

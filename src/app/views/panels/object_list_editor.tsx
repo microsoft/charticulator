@@ -81,10 +81,12 @@ export class ObjectListEditor extends ContextedComponent<
                 ])}
                 onClick={() => {
                   this.dispatch(new Actions.SelectChartElement(element));
+                  this.dispatch(new Actions.SearchUpdated(""));
                 }}
                 onKeyPress={(e) => {
                   if (e.key === "Enter") {
                     this.dispatch(new Actions.SelectChartElement(element));
+                    this.dispatch(new Actions.SearchUpdated(""));
                   }
                 }}
                 key={element._id}

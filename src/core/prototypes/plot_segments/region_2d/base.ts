@@ -2509,6 +2509,7 @@ export class Region2DConstraintBuilder {
                 strings.alignment.top,
               ],
               tooltip: strings.canvas.alignItemsOnY,
+              ignoreSearch: true,
             }
           )
         );
@@ -2531,33 +2532,89 @@ export class Region2DConstraintBuilder {
                 strings.alignment.right,
               ],
               tooltip: strings.canvas.alignItemsOnX,
+              ignoreSearch: true,
             }
           )
         );
       }
 
       extra.push(
-        m.vertical(
-          m.label(strings.alignment.alignment),
-          m.horizontal([0, 0, 0], ...alignmentWidgets.reverse(), null)
+        m.searchWrapper(
+          {
+            searchPattern: [
+              strings.alignment.alignment,
+              strings.objects.plotSegment.subLayout,
+            ],
+          },
+          [
+            m.vertical(
+              m.label(strings.alignment.alignment, {
+                ignoreSearch: true,
+                addMargins: false,
+              }),
+              m.horizontal([0, 0, 0], ...alignmentWidgets.reverse(), null)
+            ),
+          ]
         )
       );
       if (type == Region2DSublayoutType.Grid) {
         extra.push(
-          m.vertical(
-            m.label(strings.objects.axes.gap),
-            m.vertical(
-              m.label(strings.coordinateSystem.x),
-              m.inputNumber(
-                { property: "sublayout", field: "ratioX" },
-                { minimum: 0, maximum: 1, percentage: true, showSlider: true }
+          m.searchWrapper(
+            {
+              searchPattern: [
+                strings.objects.axes.gap,
+                strings.objects.plotSegment.subLayout,
+                strings.coordinateSystem.x,
+                strings.coordinateSystem.y,
+              ],
+            },
+            [
+              m.label(strings.objects.axes.gap, { ignoreSearch: true }),
+              m.searchWrapper(
+                {
+                  searchPattern: [
+                    strings.coordinateSystem.x,
+                    strings.objects.axes.gap,
+                    strings.objects.plotSegment.subLayout,
+                  ],
+                },
+                [
+                  m.inputNumber(
+                    { property: "sublayout", field: "ratioX" },
+                    {
+                      minimum: 0,
+                      maximum: 1,
+                      percentage: true,
+                      showSlider: true,
+                      label: strings.coordinateSystem.x,
+                      ignoreSearch: true,
+                    }
+                  ),
+                ]
               ),
-              m.label(strings.coordinateSystem.y),
-              m.inputNumber(
-                { property: "sublayout", field: "ratioY" },
-                { minimum: 0, maximum: 1, percentage: true, showSlider: true }
-              )
-            )
+              m.searchWrapper(
+                {
+                  searchPattern: [
+                    strings.coordinateSystem.y,
+                    strings.objects.axes.gap,
+                    strings.objects.plotSegment.subLayout,
+                  ],
+                },
+                [
+                  m.inputNumber(
+                    { property: "sublayout", field: "ratioY" },
+                    {
+                      minimum: 0,
+                      maximum: 1,
+                      percentage: true,
+                      showSlider: true,
+                      label: strings.coordinateSystem.y,
+                      ignoreSearch: true,
+                    }
+                  ),
+                ]
+              ),
+            ]
           )
         );
       } else {
@@ -2573,6 +2630,7 @@ export class Region2DConstraintBuilder {
               percentage: true,
               showSlider: true,
               label: strings.objects.axes.gap,
+              searchSection: strings.objects.plotSegment.subLayout,
             }
           )
         );
@@ -2580,51 +2638,45 @@ export class Region2DConstraintBuilder {
       if (type == Region2DSublayoutType.Grid) {
         const { terminology } = this.config;
         extra.push(
-          m.vertical(
-            m.label(strings.objects.plotSegment.orientation),
-            m.horizontal(
-              [0, 0, 1],
-              m.inputSelect(
-                { property: "sublayout", field: ["grid", "direction"] },
-                {
-                  type: "radio",
-                  options: [GridDirection.X, GridDirection.Y],
-                  icons: ["GripperBarHorizontal", "GripperBarVertical"],
-                  labels: [
-                    terminology.gridDirectionX,
-                    terminology.gridDirectionY,
-                  ],
-                }
-              )
-            ),
-            m.inputSelect(
-              {
-                property: "sublayout",
-                field: ["grid", "gridStartPosition"],
-              },
-              {
-                type: "radio",
-                icons: [
-                  "ArrowTallDownRight",
-                  "ArrowTallDownLeft",
-                  "ArrowTallUpLeft",
-                  "ArrowTallUpRight",
-                ],
-                options: [
-                  GridStartPosition.LeftTop,
-                  GridStartPosition.RightTop,
-                  GridStartPosition.LeftBottom,
-                  GridStartPosition.RigtBottom,
-                ],
-                labels: [
-                  strings.objects.plotSegment.directionDownRight,
-                  strings.objects.plotSegment.directionDownLeft,
-                  strings.objects.plotSegment.directionUpLeft,
-                  strings.objects.plotSegment.directionUpRight,
-                ],
-                label: strings.objects.plotSegment.direction,
-              }
-            )
+          m.inputSelect(
+            { property: "sublayout", field: ["grid", "direction"] },
+            {
+              type: "radio",
+              options: [GridDirection.X, GridDirection.Y],
+              icons: ["GripperBarHorizontal", "GripperBarVertical"],
+              labels: [terminology.gridDirectionX, terminology.gridDirectionY],
+              label: strings.objects.plotSegment.orientation,
+              searchSection: strings.objects.plotSegment.subLayout,
+            }
+          ),
+          m.inputSelect(
+            {
+              property: "sublayout",
+              field: ["grid", "gridStartPosition"],
+            },
+            {
+              type: "radio",
+              icons: [
+                "ArrowTallDownRight",
+                "ArrowTallDownLeft",
+                "ArrowTallUpLeft",
+                "ArrowTallUpRight",
+              ],
+              options: [
+                GridStartPosition.LeftTop,
+                GridStartPosition.RightTop,
+                GridStartPosition.LeftBottom,
+                GridStartPosition.RigtBottom,
+              ],
+              labels: [
+                strings.objects.plotSegment.directionDownRight,
+                strings.objects.plotSegment.directionDownLeft,
+                strings.objects.plotSegment.directionUpLeft,
+                strings.objects.plotSegment.directionUpRight,
+              ],
+              label: strings.objects.plotSegment.direction,
+              searchSection: strings.objects.plotSegment.subLayout,
+            }
           ),
           m.inputNumber(
             {
@@ -2636,57 +2688,109 @@ export class Region2DConstraintBuilder {
             },
             {
               label: strings.objects.axes.count,
+              searchSection: strings.objects.plotSegment.subLayout,
+              placeholder: strings.core.auto,
             }
           )
         );
       }
       if (type != Region2DSublayoutType.Overlap) {
         extra.push(
-          m.vertical(
-            m.label(strings.objects.plotSegment.order),
-            m.horizontal(
-              [0, 0],
-              m.orderByWidget(
-                { property: "sublayout", field: "order" },
-                { table: this.plotSegment.object.table, shiftCallout: 15 }
+          m.searchWrapper(
+            {
+              searchPattern: [
+                strings.objects.plotSegment.order,
+                strings.objects.plotSegment.subLayout,
+              ],
+            },
+            [
+              m.label(strings.objects.plotSegment.order, {
+                ignoreSearch: true,
+                addMargins: false,
+              }),
+              m.horizontal(
+                [0, 0],
+                m.orderByWidget(
+                  { property: "sublayout", field: "order" },
+                  { table: this.plotSegment.object.table, shiftCallout: 15 }
+                ),
+                m.inputBoolean(
+                  { property: "sublayout", field: "orderReversed" },
+                  { type: "highlight", icon: "Sort", ignoreSearch: true }
+                )
               ),
-              m.inputBoolean(
-                { property: "sublayout", field: "orderReversed" },
-                { type: "highlight", icon: "Sort" }
-              )
-            )
+            ]
           )
         );
       }
     }
     if (type == Region2DSublayoutType.Packing) {
       extra.push(
-        m.vertical(
-          m.label(strings.objects.plotSegment.gravity),
-          m.inputNumber(
-            { property: "sublayout", field: ["packing", "gravityX"] },
-            { minimum: 0.1, maximum: 15, label: "X" }
-          ),
-          m.inputNumber(
-            { property: "sublayout", field: ["packing", "gravityY"] },
-            { minimum: 0.1, maximum: 15, label: "Y" }
-          )
+        m.searchWrapper(
+          {
+            searchPattern: [
+              strings.objects.plotSegment.subLayout,
+              strings.objects.plotSegment.gravity,
+              strings.coordinateSystem.x,
+              strings.coordinateSystem.y,
+            ],
+          },
+          [
+            m.label(strings.objects.plotSegment.gravity, {
+              ignoreSearch: true,
+            }),
+            m.inputNumber(
+              { property: "sublayout", field: ["packing", "gravityX"] },
+              {
+                minimum: 0.1,
+                maximum: 15,
+                label: strings.coordinateSystem.x,
+                ignoreSearch: true,
+              }
+            ),
+            m.inputNumber(
+              { property: "sublayout", field: ["packing", "gravityY"] },
+              {
+                minimum: 0.1,
+                maximum: 15,
+                label: strings.coordinateSystem.y,
+                ignoreSearch: true,
+              }
+            ),
+          ]
         )
       );
     }
     if (type == Region2DSublayoutType.Jitter) {
-      extra.push(m.label(strings.objects.plotSegment.distribution));
       extra.push(
-        m.horizontal(
-          [0, 1, 1],
-          m.inputBoolean(
-            { property: "sublayout", field: ["jitter", "horizontal"] },
-            { type: "highlight", icon: "HorizontalDistributeCenter" }
-          ),
-          m.inputBoolean(
-            { property: "sublayout", field: ["jitter", "vertical"] },
-            { type: "highlight", icon: "VerticalDistributeCenter" }
-          )
+        m.searchWrapper(
+          {
+            searchPattern: [
+              strings.objects.plotSegment.distribution,
+              strings.objects.plotSegment.subLayout,
+            ],
+          },
+          [
+            m.label(strings.objects.plotSegment.distribution, {
+              ignoreSearch: true,
+            }),
+            m.inputBoolean(
+              { property: "sublayout", field: ["jitter", "horizontal"] },
+              {
+                type: "highlight",
+                icon: "HorizontalDistributeCenter",
+                ignoreSearch: true,
+              }
+            ),
+            m.inputBoolean(
+              { property: "sublayout", field: ["jitter", "vertical"] },
+              {
+                type: "highlight",
+                icon: "VerticalDistributeCenter",
+                ignoreSearch: true,
+              }
+            ),
+          ]
         )
       );
     }
@@ -2697,30 +2801,16 @@ export class Region2DConstraintBuilder {
           header: strings.objects.plotSegment.subLayout,
         },
         [
-          m.vertical(
-            m.horizontal(
-              [0, 0],
-              m.inputSelect(
-                { property: "sublayout", field: "type" },
-                {
-                  type: "radio",
-                  options: options.map((x) => x.value),
-                  icons: options.map((x) => x.icon),
-                  labels: options.map((x) => x.label),
-                  label: strings.objects.plotSegment.type,
-                }
-              ),
-              // for alignment
-              m.inputSelect(
-                { property: "sublayout", field: "type" },
-                {
-                  type: "radio",
-                  options: [],
-                  icons: [],
-                  labels: [],
-                }
-              )
-            )
+          m.inputSelect(
+            { property: "sublayout", field: "type" },
+            {
+              type: "radio",
+              options: options.map((x) => x.value),
+              icons: options.map((x) => x.icon),
+              labels: options.map((x) => x.label),
+              label: strings.objects.plotSegment.type,
+              searchSection: strings.objects.plotSegment.subLayout,
+            }
           ),
           ...extra,
         ]

@@ -148,6 +148,7 @@ export abstract class PlotSegmentClass<
               options: ["none", "solid", "dashed", "dotted"],
               labels: ["None", "Solid", "Dashed", "Dotted"],
               label: strings.objects.style,
+              searchSection: strings.objects.plotSegment.gridline,
             }
           ),
           manager.inputColor(
@@ -158,6 +159,7 @@ export abstract class PlotSegmentClass<
             {
               label: strings.objects.color,
               labelKey: strings.objects.color,
+              searchSection: strings.objects.plotSegment.gridline,
             }
           ),
           manager.inputNumber(
@@ -170,6 +172,7 @@ export abstract class PlotSegmentClass<
               maximum: 100,
               showUpdown: true,
               label: strings.objects.width,
+              searchSection: strings.objects.plotSegment.gridline,
             }
           ),
         ]
@@ -186,6 +189,7 @@ export abstract class PlotSegmentClass<
         manager.label("Data", {
           addMargins: true,
           key: "Data",
+          ignoreSearch: true,
         }),
         manager.horizontal(
           [1],
@@ -196,6 +200,7 @@ export abstract class PlotSegmentClass<
               value: this.object.filter,
               mode: PanelMode.Button,
               key: "filterEditor",
+              ignoreSearch: true,
             }),
             manager.groupByEditor({
               table: this.object.table,
@@ -203,6 +208,7 @@ export abstract class PlotSegmentClass<
               value: this.object.groupBy,
               mode: PanelMode.Button,
               key: "groupByEditor",
+              ignoreSearch: true,
             }),
           ]
         )

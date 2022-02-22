@@ -673,7 +673,9 @@ export abstract class LinksClass extends ChartElementClass {
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     const props = this.object.properties;
-    const widgets = [
+    const lineWidgets = [];
+    const widgets = [];
+    lineWidgets.push(
       manager.inputSelect(
         { property: "interpolationType" },
         {
@@ -686,27 +688,31 @@ export abstract class LinksClass extends ChartElementClass {
             strings.objects.links.arc,
           ],
           label: strings.objects.links.type,
+          searchSection: strings.objects.general,
         }
       ),
-      manager.inputSelect(
-        { property: "linkMarkType" },
-        {
-          type: "dropdown",
-          showLabel: true,
-          options: ["", "8", "1 10"],
-          labels: [
-            strings.objects.links.solid,
-            strings.objects.links.dashed,
-            strings.objects.links.dotted,
-          ],
-          label: strings.objects.links.linkMarkType,
-          icons: ["line", "stroke/dashed", "stroke/dotted"],
-          isLocalIcons: true,
-        }
-      ),
-    ];
+      props.linkType == "line"
+        ? manager.inputSelect(
+            { property: "linkMarkType" },
+            {
+              type: "dropdown",
+              showLabel: true,
+              options: ["", "8", "1 10"],
+              labels: [
+                strings.objects.links.solid,
+                strings.objects.links.dashed,
+                strings.objects.links.dotted,
+              ],
+              label: strings.objects.links.linkMarkType,
+              icons: ["line", "stroke/dashed", "stroke/dotted"],
+              isLocalIcons: true,
+              searchSection: strings.objects.general,
+            }
+          )
+        : null
+    );
     if (props.linkType == "line") {
-      widgets.push(
+      lineWidgets.push(
         manager.inputSelect(
           { property: "beginArrowType" },
           {
@@ -732,10 +738,11 @@ export abstract class LinksClass extends ChartElementClass {
               "beginOvalArrow",
             ],
             isLocalIcons: true,
+            searchSection: strings.objects.general,
           }
         )
       );
-      widgets.push(
+      lineWidgets.push(
         manager.inputSelect(
           { property: "endArrowType" },
           {
@@ -756,12 +763,13 @@ export abstract class LinksClass extends ChartElementClass {
             label: strings.objects.arrows.endArrowType,
             icons: ["noArrow", "endArrow", "endDiamondArrow", "endOvalArrow"],
             isLocalIcons: true,
+            searchSection: strings.objects.general,
           }
         )
       );
     }
     if (shouldShowCloseLink(this.parent, props)) {
-      widgets.push(
+      lineWidgets.push(
         manager.inputBoolean(
           { property: "closeLink" },
           {
@@ -772,12 +780,13 @@ export abstract class LinksClass extends ChartElementClass {
                 marginTop: 5,
               },
             },
+            searchSection: strings.objects.general,
           }
         )
       );
     }
     if (props.interpolationType == "bezier") {
-      widgets.push(
+      lineWidgets.push(
         manager.inputNumber(
           { property: "curveness" },
           {
@@ -785,36 +794,44 @@ export abstract class LinksClass extends ChartElementClass {
             minimum: 0,
             sliderRange: [0, 500],
             label: strings.objects.links.curveness,
+            searchSection: strings.objects.general,
           }
         )
       );
     }
-    widgets.push(manager.sectionHeader(strings.objects.style));
     widgets.push(
-      manager.mappingEditor(strings.objects.color, "color", {
-        table: props.linkTable && props.linkTable.table,
-        acceptLinksTable: !!(props.linkTable && props.linkTable.table),
-      })
+      manager.verticalGroup({ header: strings.objects.general }, lineWidgets)
     );
-    // if (props.linkType == "line") {
+
     widgets.push(
-      manager.mappingEditor(strings.objects.width, "strokeWidth", {
-        hints: { rangeNumber: [0, 5] },
-        defaultValue: 1,
-        numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
-        table: props.linkTable && props.linkTable.table,
-        acceptLinksTable: !!(props.linkTable && props.linkTable.table),
-      })
-    );
-    // }
-    widgets.push(
-      manager.mappingEditor(strings.objects.opacity, "opacity", {
-        hints: { rangeNumber: [0, 1] },
-        defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1, step: 0.1 },
-        table: props.linkTable && props.linkTable.table,
-        acceptLinksTable: !!(props.linkTable && props.linkTable.table),
-      })
+      manager.verticalGroup({ header: strings.objects.style }, [
+        manager.mappingEditor(strings.objects.color, "color", {
+          table: props.linkTable && props.linkTable.table,
+          acceptLinksTable: !!(props.linkTable && props.linkTable.table),
+          searchSection: strings.objects.style,
+        }),
+        manager.mappingEditor(strings.objects.width, "strokeWidth", {
+          hints: { rangeNumber: [0, 5] },
+          defaultValue: 1,
+          numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
+          table: props.linkTable && props.linkTable.table,
+          acceptLinksTable: !!(props.linkTable && props.linkTable.table),
+          searchSection: strings.objects.style,
+        }),
+        manager.mappingEditor(strings.objects.opacity, "opacity", {
+          hints: { rangeNumber: [0, 1] },
+          defaultValue: 1,
+          numberOptions: {
+            showSlider: true,
+            minimum: 0,
+            maximum: 1,
+            step: 0.1,
+          },
+          table: props.linkTable && props.linkTable.table,
+          acceptLinksTable: !!(props.linkTable && props.linkTable.table),
+          searchSection: strings.objects.style,
+        }),
+      ])
     );
     return widgets;
   }

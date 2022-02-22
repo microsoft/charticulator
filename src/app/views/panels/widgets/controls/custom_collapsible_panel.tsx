@@ -22,14 +22,16 @@ export const CustomCollapsiblePanel = ({
 
   const renderAttributes = useMemo(() => {
     return !collapsed
-      ? widgets.map((widget, idx) => {
-          if (Array.isArray(widget)) {
-            return widget.map((item, innerIdx) => (
-              <div key={`inner-widget-${innerIdx}`}>{item}</div>
-            ));
-          }
-          return <div key={`widget-${idx}`}>{widget}</div>;
-        })
+      ? widgets
+          .filter((w) => (Array.isArray(w) ? w?.[0] != null : w != null))
+          .map((widget, idx) => {
+            if (Array.isArray(widget)) {
+              return widget.map((item, innerIdx) => (
+                <div key={`inner-widget-${innerIdx}`}>{item}</div>
+              ));
+            }
+            return <div key={`widget-${idx}`}>{widget}</div>;
+          })
       : null;
   }, [widgets, collapsed]);
 

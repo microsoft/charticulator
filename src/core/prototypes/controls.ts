@@ -151,6 +151,7 @@ export interface InputNumberOptions extends SearchSection {
 
   observerConfig?: ObserverConfig;
   styles?: CSSProperties;
+  placeholder?: string;
 }
 
 export interface InputDateOptions extends SearchSection {
@@ -417,10 +418,9 @@ export interface PopupEditor {
   widgets: Widget[];
 }
 
-export interface LabelOptions {
-  addMargins: boolean;
+export interface LabelOptions extends SearchSection {
+  addMargins?: boolean;
   key?: string;
-  searchSection?: string;
 }
 
 export interface SearchWrapperOptions {

@@ -32,11 +32,6 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
     isCollapsed === undefined ? false : isCollapsed
   );
 
-  //filter empty widgets
-  if (widgets.filter((widget) => widget).length == 0) {
-    return <></>;
-  }
-
   return (
     <FluentGroupedList marginLeft={alignVertically ? 0 : null}>
       <GroupedList
@@ -65,7 +60,7 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
         }}
         selectionMode={SelectionMode.none}
         items={widgets
-          .filter((w) => w != null)
+          .filter((w) => (Array.isArray(w) ? w?.[0] != null : w != null))
           .map((w, i) => ({
             key: i,
             item: w,
@@ -78,7 +73,10 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
           },
           itemIndex?: number
         ) => {
-          return item && typeof itemIndex === "number" && itemIndex > -1 ? (
+          return item &&
+            item.item &&
+            typeof itemIndex === "number" &&
+            itemIndex > -1 ? (
             <div
               className="charticulator__widget-collapsible-panel-item"
               key={itemIndex}

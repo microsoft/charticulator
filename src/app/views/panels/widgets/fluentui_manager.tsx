@@ -180,7 +180,11 @@ export class FluentUIWidgetManager
         disabled={options.disabled}
         onRenderLabel={labelRender}
         onChange={(event, value) => {
-          this.store.dispatcher.dispatch(new Actions.SearchUpdated(value));
+          let newValue = "";
+          if (value?.length > 0) {
+            newValue = value.trim();
+          }
+          this.store.dispatcher.dispatch(new Actions.SearchUpdated(newValue));
         }}
         type="text"
         underlined={options.underline ?? false}
@@ -447,6 +451,7 @@ export class FluentUIWidgetManager
         {...options}
         key={this.getKeyFromProperty(property)}
         defaultValue={value}
+        placeholder={options.placeholder}
         onEnter={(value) => {
           if (value == null) {
             this.emitSetProperty(property, null);
@@ -480,7 +485,10 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputDateOptions = {}
   ) {
-    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
+    if (
+      !options.ignoreSearch &&
+      !this.shouldDrawComponent([options.label, options?.searchSection])
+    ) {
       return;
     }
     const value = this.getPropertyValue(property) as number;
@@ -514,7 +522,10 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: InputTextOptions
   ) {
-    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
+    if (
+      !options.ignoreSearch &&
+      !this.shouldDrawComponent([options.label, options?.searchSection])
+    ) {
       return;
     }
     let prevKey: string = options.value ?? "";
@@ -709,6 +720,7 @@ export class FluentUIWidgetManager
     options: Prototypes.Controls.InputBooleanOptions
   ) {
     if (
+      !options.ignoreSearch &&
       !this.shouldDrawComponent([
         options.label,
         options.headerLabel,
@@ -811,7 +823,10 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputExpressionOptions = {}
   ) {
-    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
+    if (
+      !options.ignoreSearch &&
+      !this.shouldDrawComponent([options.label, options?.searchSection])
+    ) {
       return;
     }
     const value = this.getPropertyValue(property) as string;
@@ -1376,7 +1391,10 @@ export class FluentUIWidgetManager
   }
 
   public label(title: string, options?: Prototypes.Controls.LabelOptions) {
-    if (!this.shouldDrawComponent([options?.searchSection])) {
+    if (
+      !options?.ignoreSearch &&
+      !this.shouldDrawComponent([options?.searchSection])
+    ) {
       return;
     }
     return (
@@ -1412,7 +1430,10 @@ export class FluentUIWidgetManager
     widget?: JSX.Element,
     options: Prototypes.Controls.RowOptions = {}
   ) {
-    if (!this.shouldDrawComponent([title, options?.searchSection])) {
+    if (
+      !options.ignoreSearch &&
+      !this.shouldDrawComponent([title, options?.searchSection])
+    ) {
       return;
     }
     this.director.setBuilder(new MenuItemBuilder());
@@ -1566,7 +1587,14 @@ export class FluentUIWidgetManager
     options: Prototypes.Controls.FilterEditorOptions
   ): JSX.Element {
     const filterText = strings.filter.filterBy;
-    if (!this.shouldDrawComponent([filterText, options?.searchSection])) {
+    if (
+      !options.ignoreSearch &&
+      !this.shouldDrawComponent([
+        filterText,
+        options?.searchSection,
+        strings.objects.axes.data,
+      ])
+    ) {
       return;
     }
     return (
@@ -1586,7 +1614,14 @@ export class FluentUIWidgetManager
   ): JSX.Element {
     let button: HTMLElement;
     let text = strings.objects.plotSegment.groupBy;
-    if (!this.shouldDrawComponent([text, options?.searchSection])) {
+    if (
+      !options.ignoreSearch &&
+      !this.shouldDrawComponent([
+        text,
+        options?.searchSection,
+        strings.objects.axes.data,
+      ])
+    ) {
       return;
     }
     const getControl = () => {
@@ -1760,6 +1795,12 @@ export class FluentUIWidgetManager
     options: Prototypes.Controls.VerticalGroupOptions,
     widgets: JSX.Element[]
   ) {
+    if (
+      widgets.filter((widget) => (Array.isArray(widget) ? widget?.[0] : widget))
+        .length == 0
+    ) {
+      return null;
+    }
     return (
       <div>
         <CollapsiblePanel
@@ -1826,6 +1867,13 @@ export class FluentUIWidgetManager
     widgets: JSX.Element[],
     options: Prototypes.Controls.CustomCollapsiblePanelOptions = {}
   ): JSX.Element {
+    console.log(widgets, options.header);
+    if (
+      widgets.filter((widget) => (Array.isArray(widget) ? widget?.[0] : widget))
+        .length == 0
+    ) {
+      return <></>;
+    }
     return (
       <CustomCollapsiblePanel
         widgets={widgets}
