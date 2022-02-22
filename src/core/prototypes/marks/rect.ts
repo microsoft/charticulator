@@ -28,6 +28,8 @@ import {
 } from "./rect.attrs";
 import { strings } from "../../../strings";
 import { RectangleGlyph } from "../glyphs";
+import { OrientationType } from "../legends/types";
+import { CartesianCoordinates } from "../../graphics";
 
 export { RectElementAttributes, RectElementProperties };
 
@@ -61,6 +63,8 @@ export class RectElementClass extends EmphasizableMarkClass<
     allowFlipping: true,
     rx: 0,
     ry: 0,
+    orientation: OrientationType.VERTICAL,
+    cometMark: false,
   };
 
   public static defaultMappingValues: Partial<RectElementAttributes> = {
@@ -239,8 +243,42 @@ export class RectElementClass extends EmphasizableMarkClass<
             {
               type: "checkbox",
               label: strings.objects.rect.flipping,
+              styles: {
+                marginTop: 5,
+              },
             }
           ),
+          this.object.properties.shape === ShapeType.Triangle
+            ? manager.inputBoolean(
+                { property: "cometMark" },
+                {
+                  type: "checkbox",
+                  label: strings.objects.rect.shapes.comet,
+                  styles: {
+                    marginTop: 5,
+                  },
+                }
+              )
+            : null,
+          this.object.properties.shape === ShapeType.Triangle
+            ? manager.inputSelect(
+                { property: "orientation" },
+                {
+                  type: "radio",
+                  showLabel: false,
+                  icons: ["GripperBarVertical", "GripperBarHorizontal"],
+                  labels: [
+                    strings.objects.legend.vertical,
+                    strings.objects.legend.horizontal,
+                  ],
+                  options: [
+                    OrientationType.VERTICAL,
+                    OrientationType.HORIZONTAL,
+                  ],
+                  label: strings.objects.legend.orientation,
+                }
+              )
+            : null,
           manager.mappingEditor(
             strings.objects.visibleOn.visibility,
             "visible",
@@ -452,36 +490,7 @@ export class RectElementClass extends EmphasizableMarkClass<
         );
       }
       case ShapeType.Triangle: {
-        const pathMaker = new Graphics.PathMaker();
-        helper.lineTo(
-          pathMaker,
-          attrs.x1 + offset.x,
-          attrs.y1 + offset.y,
-          (attrs.x1 + attrs.x2) / 2 + offset.x,
-          attrs.y2 + offset.y,
-          true
-        );
-        helper.lineTo(
-          pathMaker,
-          (attrs.x1 + attrs.x2) / 2 + offset.x,
-          attrs.y2 + offset.y,
-          attrs.x2 + offset.x,
-          attrs.y1 + offset.y,
-          false
-        );
-        pathMaker.closePath();
-        const path = pathMaker.path;
-        path.style = {
-          strokeColor: attrs.stroke,
-          strokeWidth: attrs.strokeWidth,
-          strokeLinejoin: "miter",
-          strokeDasharray: strokeStyleToDashArray(
-            this.object.properties.strokeStyle
-          ),
-          fillColor: attrs.fill,
-          opacity: attrs.opacity,
-          ...this.generateEmphasisStyle(empasized),
-        };
+        const path = this.drawTriangleOrCometMarks(helper, offset, empasized);
         return path;
       }
       case ShapeType.Rectangle:
@@ -803,5 +812,99 @@ export class RectElementClass extends EmphasizableMarkClass<
       <SnappingGuides.Axis>{ type: "y", value: y2, attribute: "y2" },
       <SnappingGuides.Axis>{ type: "y", value: cy, attribute: "cy" },
     ];
+  }
+
+  private drawTriangleOrCometMarks(
+    helper: Graphics.CoordinateSystemHelper,
+    offset: Point,
+    empasized?: boolean
+  ) {
+    const pathMaker = new Graphics.PathMaker();
+    const properties = this.object.properties;
+    const attrs = this.state.attributes;
+
+    // normalized coordinates
+    const x1 = attrs.x1 + offset.x;
+    const x2 = attrs.x2 + offset.x;
+    const y1 = attrs.y1 + offset.y;
+    const y2 = attrs.y2 + offset.y;
+
+    const halfYWidth = Math.abs(y1 - y2) / 2;
+    const halfXWidth = Math.abs(x1 - x2) / 2;
+    const minHalfWidth = Math.min(halfYWidth, halfXWidth);
+
+    if (
+      properties.orientation == OrientationType.HORIZONTAL &&
+      helper.coordinateSystem instanceof CartesianCoordinates
+    ) {
+      const xPosition = x1;
+      if (properties.cometMark == true) {
+        pathMaker.moveTo(xPosition, Math.max(y1, y2));
+        helper.arcTo(
+          pathMaker,
+          minHalfWidth,
+          halfYWidth,
+          xPosition,
+          Math.max(y1, y2),
+          xPosition,
+          Math.min(y1, y2),
+          x2 > x1 ? 0 : 1
+        );
+
+        helper.lineTo(
+          pathMaker,
+          xPosition,
+          Math.max(y1, y2),
+          x2,
+          (y1 + y2) / 2,
+          false
+        );
+      } else {
+        helper.lineTo(pathMaker, x1, y1, x1, y2, true);
+        helper.lineTo(pathMaker, x1, y2, x2, (y1 + y2) / 2, false);
+      }
+    } else {
+      if (
+        properties.cometMark == true &&
+        helper.coordinateSystem instanceof CartesianCoordinates
+      ) {
+        const yPosition = y1;
+        pathMaker.moveTo(Math.max(x1, x2), yPosition);
+        helper.arcTo(
+          pathMaker,
+          halfXWidth,
+          minHalfWidth,
+          Math.max(x1, x2),
+          yPosition,
+          Math.min(x1, x2),
+          yPosition,
+          y2 > y1 ? 1 : 0
+        );
+
+        helper.lineTo(
+          pathMaker,
+          Math.max(x1, x2),
+          yPosition,
+          (x1 + x2) / 2,
+          y2,
+          false
+        );
+      } else {
+        helper.lineTo(pathMaker, x1, y1, (x1 + x2) / 2, y2, true);
+        helper.lineTo(pathMaker, (x1 + x2) / 2, y2, x2, y1, false);
+      }
+    }
+    pathMaker.closePath();
+    const path = pathMaker.path;
+    path.style = {
+      strokeColor: attrs.stroke,
+      strokeWidth: attrs.strokeWidth,
+      strokeLinejoin: "miter",
+      strokeDasharray: strokeStyleToDashArray(properties.strokeStyle),
+      fillColor: attrs.fill,
+      opacity: attrs.opacity,
+      ...this.generateEmphasisStyle(empasized),
+    };
+    return path;
   }
 }

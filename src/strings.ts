@@ -575,6 +575,7 @@ export const strings = {
         rectangle: "Rectangle",
         triangle: "Triangle",
         ellipse: "Ellipse",
+        comet: "Rounded base",
       },
     },
     derivedColumns: {
