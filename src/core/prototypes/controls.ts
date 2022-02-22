@@ -178,7 +178,7 @@ export interface InputColorOptions extends SearchSection {
 // eslint-disable-next-line
 export interface TableOptions {}
 
-export interface VerticalGroupOptions {
+export interface VerticalGroupOptions extends SearchSection {
   isCollapsed?: boolean;
   header: string;
   alignVertically?: boolean;
@@ -389,6 +389,7 @@ export interface WidgetManager {
   ): Widget;
   verticalGroup(options: VerticalGroupOptions, ...widgets: Widget[]): Widget;
   vertical(...widgets: Widget[]): Widget;
+  styledVertical(styles: CSSProperties, ...widgets: Widget[]): Widget;
   table(rows: Widget[][], options?: TableOptions): Widget;
   scrollList(widgets: Widget[], options?: ScrollListOptions): Widget;
 

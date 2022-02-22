@@ -1796,7 +1796,9 @@ export function buildAxisWidgets(
                     ],
                   },
                   [
-                    manager.label(strings.objects.axes.data),
+                    manager.label(strings.objects.axes.data, {
+                      ignoreSearch: true,
+                    }),
                     manager.styledHorizontal(
                       {
                         alignItems: "start",
@@ -1832,58 +1834,122 @@ export function buildAxisWidgets(
                         searchPattern: [
                           strings.objects.dataAxis.range,
                           strings.objects.general,
+                          strings.objects.dataAxis.start,
+                          strings.objects.dataAxis.end,
                         ],
                       },
                       [
                         manager.label(strings.objects.dataAxis.range),
-                        manager.inputDate(
-                          { property: axisProperty, field: "domainMin" },
-                          { label: strings.objects.dataAxis.start }
+                        manager.searchWrapper(
+                          {
+                            searchPattern: [
+                              strings.objects.dataAxis.range,
+                              strings.objects.general,
+                              strings.objects.dataAxis.start,
+                            ],
+                          },
+                          [
+                            manager.inputDate(
+                              { property: axisProperty, field: "domainMin" },
+                              {
+                                label: strings.objects.dataAxis.start,
+                                ignoreSearch: true,
+                              }
+                            ),
+                          ]
                         ),
-                        manager.inputDate(
-                          { property: axisProperty, field: "domainMax" },
-                          { label: strings.objects.dataAxis.end }
+                        manager.searchWrapper(
+                          {
+                            searchPattern: [
+                              strings.objects.dataAxis.range,
+                              strings.objects.general,
+                              strings.objects.dataAxis.end,
+                            ],
+                          },
+                          [
+                            manager.inputDate(
+                              { property: axisProperty, field: "domainMax" },
+                              {
+                                label: strings.objects.dataAxis.end,
+                                ignoreSearch: true,
+                              }
+                            ),
+                          ]
                         ),
                       ]
                     )
                   : null,
 
                 data.valueType !== "date"
-                  ? manager.label(strings.objects.dataAxis.range)
-                  : null,
-                data.valueType !== "date"
-                  ? manager.inputNumber(
-                      { property: axisProperty, field: "domainMin" },
+                  ? manager.searchWrapper(
                       {
-                        label: strings.objects.axes.from,
-                        observerConfig: {
-                          isObserver: true,
-                          properties: {
-                            property: axisProperty,
-                            field: "autoDomainMin",
+                        searchPattern: [
+                          strings.objects.dataAxis.range,
+                          strings.objects.general,
+                          strings.objects.axes.from,
+                          strings.objects.axes.to,
+                        ],
+                      },
+                      [
+                        manager.label(strings.objects.dataAxis.range, {
+                          ignoreSearch: true,
+                        }),
+                        manager.searchWrapper(
+                          {
+                            searchPattern: [
+                              strings.objects.axes.from,
+                              strings.objects.dataAxis.range,
+                              strings.objects.general,
+                            ],
                           },
+                          [
+                            manager.inputNumber(
+                              { property: axisProperty, field: "domainMin" },
+                              {
+                                label: strings.objects.axes.from,
+                                observerConfig: {
+                                  isObserver: true,
+                                  properties: {
+                                    property: axisProperty,
+                                    field: "autoDomainMin",
+                                  },
+                                  value: false,
+                                },
+                                ignoreSearch: true,
+                              }
+                            ),
+                          ]
+                        ),
+                        manager.searchWrapper(
+                          {
+                            searchPattern: [
+                              strings.objects.axes.to,
+                              strings.objects.dataAxis.range,
+                              strings.objects.general,
+                            ],
+                          },
+                          [
+                            manager.inputNumber(
+                              { property: axisProperty, field: "domainMax" },
+                              {
+                                label: strings.objects.axes.to,
+                                observerConfig: {
+                                  isObserver: true,
+                                  properties: {
+                                    property: axisProperty,
+                                    field: "autoDomainMax",
+                                  },
+                                  value: false,
+                                },
+                                ignoreSearch: true,
+                              }
+                            ),
+                          ]
+                        ),
+                      ]
+                    )
+                  : null,
 
-                          value: false,
-                        },
-                      }
-                    )
-                  : null,
-                data.valueType !== "date"
-                  ? manager.inputNumber(
-                      { property: axisProperty, field: "domainMax" },
-                      {
-                        label: strings.objects.axes.to,
-                        observerConfig: {
-                          isObserver: true,
-                          properties: {
-                            property: axisProperty,
-                            field: "autoDomainMax",
-                          },
-                          value: false,
-                        },
-                      }
-                    )
-                  : null,
                 data.numericalMode != "temporal"
                   ? manager.inputSelect(
                       { property: axisProperty, field: "numericalMode" },
@@ -1914,6 +1980,7 @@ export function buildAxisWidgets(
             manager.verticalGroup(
               {
                 header: strings.objects.general,
+                searchSection: axisName,
               },
               [
                 manager.searchWrapper(
@@ -1992,23 +2059,27 @@ export function buildAxisWidgets(
       case "default":
         {
           widgets.push(
-            manager.sectionHeader(
-              axisName + strings.objects.axes.stackingSuffix,
-              manager.clearButton({ property: axisProperty }, null, true),
-              {
-                ...dropzoneOptions,
-                noLineHeight: false,
-              }
-            ),
-            manager.inputNumber(
-              { property: axisProperty, field: "gapRatio" },
-              {
-                minimum: 0,
-                maximum: 1,
-                percentage: true,
-                showSlider: true,
-                label: "Gap",
-              }
+            manager.styledVertical(
+              { marginLeft: 19, marginBottom: 5 },
+              manager.sectionHeader(
+                axisName + strings.objects.axes.stackingSuffix,
+                manager.clearButton({ property: axisProperty }, null, true),
+                {
+                  ...dropzoneOptions,
+                  noLineHeight: false,
+                }
+              ),
+              manager.inputNumber(
+                { property: axisProperty, field: "gapRatio" },
+                {
+                  minimum: 0,
+                  maximum: 1,
+                  percentage: true,
+                  showSlider: true,
+                  label: strings.objects.axes.gap,
+                  searchSection: axisName + strings.objects.axes.stackingSuffix,
+                }
+              )
             )
           );
         }

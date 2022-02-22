@@ -138,7 +138,8 @@ export class FluentUIWidgetManager
   implements Prototypes.Controls.WidgetManager, CharticulatorPropertyAccessors {
   constructor(
     public store: AppStore,
-    public objectClass: Prototypes.ObjectClass
+    public objectClass: Prototypes.ObjectClass,
+    public ignoreSearch: boolean = false
   ) {
     this.director = new Director();
     this.director.setBuilder(new MenuItemBuilder());
@@ -1791,6 +1792,18 @@ export class FluentUIWidgetManager
     );
   }
 
+  public styledVertical(styles: CSSProperties, ...widgets: JSX.Element[]) {
+    return (
+      <div className="charticulator__widget-vertical" style={styles}>
+        {widgets.map((x, id) => (
+          <span className="el-layout-item" key={id}>
+            {x}
+          </span>
+        ))}
+      </div>
+    );
+  }
+
   public verticalGroup(
     options: Prototypes.Controls.VerticalGroupOptions,
     widgets: JSX.Element[]
@@ -1867,12 +1880,11 @@ export class FluentUIWidgetManager
     widgets: JSX.Element[],
     options: Prototypes.Controls.CustomCollapsiblePanelOptions = {}
   ): JSX.Element {
-    console.log(widgets, options.header);
     if (
       widgets.filter((widget) => (Array.isArray(widget) ? widget?.[0] : widget))
         .length == 0
     ) {
-      return <></>;
+      return null;
     }
     return (
       <CustomCollapsiblePanel
@@ -1991,6 +2003,10 @@ export class FluentUIWidgetManager
     const searchString = this.store.searchString;
     //remove null values
     const componentStings = options.filter((value) => value != undefined);
+
+    if (this.ignoreSearch) {
+      return true;
+    }
 
     if (searchString?.length != 0 && componentStings.length >= 0) {
       if (

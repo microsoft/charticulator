@@ -590,14 +590,30 @@ export class CurvePlotSegment extends PlotSegmentClass<
           header: strings.objects.plotSegment.curveCoordinates,
         },
         [
-          manager.vertical(
-            manager.label(strings.objects.plotSegment.normal),
-            manager.horizontal(
-              [1, 0, 1],
-              manager.inputNumber({ property: "normalStart" }),
-              manager.label("-"),
-              manager.inputNumber({ property: "normalEnd" })
-            )
+          manager.searchWrapper(
+            {
+              searchPattern: [
+                strings.objects.plotSegment.normal,
+                strings.objects.plotSegment.curveCoordinates,
+              ],
+            },
+            [
+              manager.label(strings.objects.plotSegment.normal, {
+                ignoreSearch: true,
+              }),
+              manager.horizontal(
+                [1, 0, 1],
+                manager.inputNumber(
+                  { property: "normalStart" },
+                  { ignoreSearch: true }
+                ),
+                manager.label("-", { ignoreSearch: true }),
+                manager.inputNumber(
+                  { property: "normalEnd" },
+                  { ignoreSearch: true }
+                )
+              ),
+            ]
           ),
         ]
       ),

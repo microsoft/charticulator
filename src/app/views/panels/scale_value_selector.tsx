@@ -61,7 +61,11 @@ export class ScaleValueSelector extends React.Component<
   public render() {
     const { scale, store, scaleMapping } = this.props;
     const scaleClass = store.chartManager.getClassById(scale._id);
-    const manager = new FluentUIWidgetManager(this.props.store, scaleClass);
+    const manager = new FluentUIWidgetManager(
+      this.props.store,
+      scaleClass,
+      true
+    );
     manager.onEditMappingHandler = (
       attribute: string,
       mapping: Specification.Mapping
