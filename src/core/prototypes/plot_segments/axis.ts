@@ -615,9 +615,10 @@ export class AxisRenderer {
       g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
     }
     // Ticks
-    const ticksData = this.ticks.map((x) => x.position);
-    const visibleTicks = ticksData.concat([rangeMin, rangeMax]);
-
+    const visibleTicks = this.ticks.map((x) => x.position);
+    if (style.showBaseline) {
+      visibleTicks.push(rangeMin, rangeMax);
+    }
     if (style.showTicks) {
       for (const tickPosition of visibleTicks) {
         const tx = x + tickPosition * cos;
