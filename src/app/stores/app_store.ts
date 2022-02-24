@@ -1989,6 +1989,9 @@ export class AppStore extends BaseStore {
               );
             }
           }
+          //reset tick data for categorical data
+          dataBinding.tickFormat = null;
+          dataBinding.tickDataExpression = null;
 
           break;
         case Specification.DataKind.Numerical:
