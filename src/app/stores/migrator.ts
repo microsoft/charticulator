@@ -191,7 +191,7 @@ export class Migrator {
       compareVersion(state.version, "2.1.6") < 0 &&
       compareVersion(targetVersion, "2.1.6") >= 0
     ) {
-      state = this.setMissedLinksProperty(state);
+      state = this.setMissedProperties_2_1_6(state);
     }
 
     // After migration, set version to targetVersion
@@ -1114,7 +1114,7 @@ export class Migrator {
     return state;
   }
 
-  public setMissedLinksProperty(state: AppStoreState) {
+  public setMissedProperties_2_1_6(state: AppStoreState) {
     for (const element of state.chart.elements) {
       if (Prototypes.isType(element.classID, "links")) {
         const link = element as ChartElement<LinksProperties>;
@@ -1124,7 +1124,15 @@ export class Migrator {
         }
       }
     }
-
+    for (const item of forEachObject(state.chart)) {
+      if (item.kind == "mark") {
+        if (Prototypes.isType(item.mark.classID, "mark.rect")) {
+          (item.mark.properties as RectElementProperties).orientation =
+            OrientationType.VERTICAL;
+          (item.mark.properties as RectElementProperties).cometMark = false;
+        }
+      }
+    }
     return state;
   }
 }
