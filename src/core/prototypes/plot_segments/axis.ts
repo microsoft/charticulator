@@ -1514,7 +1514,7 @@ export function buildAxisAppearanceWidgets(
               },
               {
                 label: strings.objects.axes.lineColor,
-                labelKey: strings.objects.axes.lineColor,
+                labelKey: `line-color-${axisProperty}`,
                 allowNull: true,
               }
             ),
@@ -1549,7 +1549,7 @@ export function buildAxisAppearanceWidgets(
               },
               {
                 label: strings.objects.axes.tickColor,
-                labelKey: strings.objects.axes.tickColor,
+                labelKey: `tick-color-${axisProperty}`,
                 allowNull: true,
               }
             ),
@@ -1560,7 +1560,7 @@ export function buildAxisAppearanceWidgets(
               },
               {
                 label: strings.objects.axes.tickTextBackgroudColor,
-                labelKey: strings.objects.axes.tickTextBackgroudColor,
+                labelKey: `tick-text-background-color-${axisProperty}`,
                 allowNull: true,
               }
             ),
