@@ -232,7 +232,10 @@ export class FluentUIWidgetManager
     attribute: string,
     options: Prototypes.Controls.MappingEditorOptions
   ): JSX.Element {
-    if (!this.shouldDrawComponent([name, options?.searchSection])) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (!this.shouldDrawComponent([name, ...searchSections])) {
       return;
     }
 
@@ -385,7 +388,10 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputFormatOptions = {}
   ) {
-    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (!this.shouldDrawComponent([options.label, ...searchSections])) {
       return;
     }
     return (
@@ -440,9 +446,12 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputNumberOptions = {}
   ) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
     if (
       !options.ignoreSearch &&
-      !this.shouldDrawComponent([options.label, options?.searchSection])
+      !this.shouldDrawComponent([options.label, ...searchSections])
     ) {
       return;
     }
@@ -486,9 +495,12 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputDateOptions = {}
   ) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
     if (
       !options.ignoreSearch &&
-      !this.shouldDrawComponent([options.label, options?.searchSection])
+      !this.shouldDrawComponent([options.label, ...searchSections])
     ) {
       return;
     }
@@ -523,9 +535,12 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: InputTextOptions
   ) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
     if (
       !options.ignoreSearch &&
-      !this.shouldDrawComponent([options.label, options?.searchSection])
+      !this.shouldDrawComponent([options.label, ...searchSections])
     ) {
       return;
     }
@@ -579,7 +594,10 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: InputFontComboboxOptions
   ) {
-    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (!this.shouldDrawComponent([options.label, ...searchSections])) {
       return;
     }
     return (
@@ -599,7 +617,10 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputComboboxOptions
   ) {
-    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (!this.shouldDrawComponent([options.label, ...searchSections])) {
       return;
     }
     return (
@@ -627,9 +648,12 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputSelectOptions
   ) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
     if (
       !options.ignoreSearch &&
-      !this.shouldDrawComponent([options.label, options?.searchSection])
+      !this.shouldDrawComponent([options.label, ...searchSections])
     ) {
       return;
     }
@@ -720,12 +744,15 @@ export class FluentUIWidgetManager
     properties: Prototypes.Controls.Property | Prototypes.Controls.Property[],
     options: Prototypes.Controls.InputBooleanOptions
   ) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
     if (
       !options.ignoreSearch &&
       !this.shouldDrawComponent([
         options.label,
         options.headerLabel,
-        options?.searchSection,
+        ...searchSections,
       ])
     ) {
       return;
@@ -824,9 +851,12 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputExpressionOptions = {}
   ) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
     if (
       !options.ignoreSearch &&
-      !this.shouldDrawComponent([options.label, options?.searchSection])
+      !this.shouldDrawComponent([options.label, ...searchSections])
     ) {
       return;
     }
@@ -917,7 +947,10 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputColorOptions
   ): JSX.Element {
-    if (!this.shouldDrawComponent([options.label, options?.searchSection])) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (!this.shouldDrawComponent([options.label, ...searchSections])) {
       return;
     }
     const color = this.getPropertyValue(property) as Color;
@@ -1392,10 +1425,10 @@ export class FluentUIWidgetManager
   }
 
   public label(title: string, options?: Prototypes.Controls.LabelOptions) {
-    if (
-      !options?.ignoreSearch &&
-      !this.shouldDrawComponent([options?.searchSection])
-    ) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (!options?.ignoreSearch && !this.shouldDrawComponent(searchSections)) {
       return;
     }
     return (
@@ -1431,9 +1464,12 @@ export class FluentUIWidgetManager
     widget?: JSX.Element,
     options: Prototypes.Controls.RowOptions = {}
   ) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
     if (
       !options.ignoreSearch &&
-      !this.shouldDrawComponent([title, options?.searchSection])
+      !this.shouldDrawComponent([title, ...searchSections])
     ) {
       return;
     }
@@ -1588,11 +1624,14 @@ export class FluentUIWidgetManager
     options: Prototypes.Controls.FilterEditorOptions
   ): JSX.Element {
     const filterText = strings.filter.filterBy;
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
     if (
       !options.ignoreSearch &&
       !this.shouldDrawComponent([
         filterText,
-        options?.searchSection,
+        ...searchSections,
         strings.objects.axes.data,
       ])
     ) {
@@ -1615,11 +1654,14 @@ export class FluentUIWidgetManager
   ): JSX.Element {
     let button: HTMLElement;
     let text = strings.objects.plotSegment.groupBy;
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
     if (
       !options.ignoreSearch &&
       !this.shouldDrawComponent([
         text,
-        options?.searchSection,
+        ...searchSections,
         strings.objects.axes.data,
       ])
     ) {
@@ -1708,11 +1750,14 @@ export class FluentUIWidgetManager
   ) {
     const editNestedChartText = strings.menuBar.editNestedChart;
     const importTemplate = strings.menuBar.importTemplate;
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
     if (
       !this.shouldDrawComponent([
         editNestedChartText,
         importTemplate,
-        options.searchSection,
+        ...searchSections,
       ])
     ) {
       return;

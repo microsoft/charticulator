@@ -1434,6 +1434,7 @@ interface AxisAppearanceWidgets {
   wordWrap: boolean;
   isOffset: boolean;
   isOnTop: boolean;
+  mainCollapsePanelHeader?: string;
 }
 
 export function buildAxisAppearanceWidgets(
@@ -1449,7 +1450,10 @@ export function buildAxisAppearanceWidgets(
         {
           type: "checkbox",
           label: strings.objects.axes.verticalText,
-          searchSection: strings.objects.style,
+          searchSection: [
+            strings.objects.style,
+            options.mainCollapsePanelHeader,
+          ],
         }
       );
     }
@@ -1466,7 +1470,10 @@ export function buildAxisAppearanceWidgets(
               {
                 type: "checkbox",
                 label: strings.objects.visibleOn.visible,
-                searchSection: strings.objects.visibilityAndPosition,
+                searchSection: [
+                  strings.objects.visibilityAndPosition,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             options.isOnTop
@@ -1475,7 +1482,10 @@ export function buildAxisAppearanceWidgets(
                   {
                     type: "checkbox",
                     label: strings.objects.onTop,
-                    searchSection: strings.objects.visibilityAndPosition,
+                    searchSection: [
+                      strings.objects.visibilityAndPosition,
+                      options.mainCollapsePanelHeader,
+                    ],
                   }
                 )
               : null,
@@ -1487,7 +1497,10 @@ export function buildAxisAppearanceWidgets(
                 label: strings.objects.position,
                 options: ["default", "opposite"],
                 labels: [strings.objects.default, strings.objects.opposite],
-                searchSection: strings.objects.visibilityAndPosition,
+                searchSection: [
+                  strings.objects.visibilityAndPosition,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             options.isOffset
@@ -1500,7 +1513,10 @@ export function buildAxisAppearanceWidgets(
                     label: strings.objects.axes.offSet,
                     showUpdown: true,
                     updownTick: 10,
-                    searchSection: strings.objects.visibilityAndPosition,
+                    searchSection: [
+                      strings.objects.visibilityAndPosition,
+                      options.mainCollapsePanelHeader,
+                    ],
                   }
                 )
               : null,
@@ -1520,7 +1536,10 @@ export function buildAxisAppearanceWidgets(
                 label: strings.objects.axes.lineColor,
                 labelKey: strings.objects.axes.lineColor,
                 allowNull: true,
-                searchSection: strings.objects.style,
+                searchSection: [
+                  strings.objects.style,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             manager.inputBoolean(
@@ -1533,7 +1552,10 @@ export function buildAxisAppearanceWidgets(
                     marginTop: 5,
                   },
                 },
-                searchSection: strings.objects.style,
+                searchSection: [
+                  strings.objects.style,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             manager.inputBoolean(
@@ -1546,7 +1568,10 @@ export function buildAxisAppearanceWidgets(
                     marginTop: 5,
                   },
                 },
-                searchSection: strings.objects.style,
+                searchSection: [
+                  strings.objects.style,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             manager.inputColor(
@@ -1558,7 +1583,10 @@ export function buildAxisAppearanceWidgets(
                 label: strings.objects.axes.tickColor,
                 labelKey: strings.objects.axes.tickColor,
                 allowNull: true,
-                searchSection: strings.objects.style,
+                searchSection: [
+                  strings.objects.style,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             manager.inputColor(
@@ -1570,7 +1598,10 @@ export function buildAxisAppearanceWidgets(
                 label: strings.objects.axes.tickTextBackgroudColor,
                 labelKey: strings.objects.axes.tickTextBackgroudColor,
                 allowNull: true,
-                searchSection: strings.objects.style,
+                searchSection: [
+                  strings.objects.style,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             manager.inputNumber(
@@ -1582,7 +1613,10 @@ export function buildAxisAppearanceWidgets(
                 label: strings.objects.axes.ticksize,
                 showUpdown: true,
                 updownTick: 1,
-                searchSection: strings.objects.style,
+                searchSection: [
+                  strings.objects.style,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             manager.inputFontFamily(
@@ -1592,7 +1626,10 @@ export function buildAxisAppearanceWidgets(
               },
               {
                 label: strings.objects.font,
-                searchSection: strings.objects.style,
+                searchSection: [
+                  strings.objects.style,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             manager.inputNumber(
@@ -1603,7 +1640,10 @@ export function buildAxisAppearanceWidgets(
                 updownTick: 2,
                 label: strings.objects.fontSize,
                 minimum: 1,
-                searchSection: strings.objects.style,
+                searchSection: [
+                  strings.objects.style,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             manager.inputBoolean(
@@ -1612,7 +1652,10 @@ export function buildAxisAppearanceWidgets(
                 type: "checkbox",
                 headerLabel: strings.objects.text.textDisplaying,
                 label: strings.objects.text.wrapText,
-                searchSection: strings.objects.style,
+                searchSection: [
+                  strings.objects.style,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             vertical,
@@ -1631,7 +1674,10 @@ export function buildAxisAppearanceWidgets(
           {
             type: "checkbox",
             label: strings.objects.visibleOn.visible,
-            searchSection: strings.objects.visibilityAndPosition,
+            searchSection: [
+              strings.objects.visibilityAndPosition,
+              options.mainCollapsePanelHeader,
+            ],
           }
         ),
       ]
@@ -1641,7 +1687,8 @@ export function buildAxisAppearanceWidgets(
 
 function buildInteractivityGroup(
   axisProperty: string,
-  manager: Controls.WidgetManager
+  manager: Controls.WidgetManager,
+  mainCollapsePanelHeader: string
 ) {
   return manager.verticalGroup(
     {
@@ -1653,7 +1700,10 @@ function buildInteractivityGroup(
         {
           type: "checkbox",
           label: strings.objects.selection,
-          searchSection: strings.objects.interactivity,
+          searchSection: [
+            strings.objects.interactivity,
+            mainCollapsePanelHeader,
+          ],
         }
       ),
     ]
@@ -1677,7 +1727,8 @@ function buildScrollingAxisWidgets(
   axisProperty: string,
   manager: Controls.WidgetManager,
   axisName: string,
-  onChange?: () => void
+  onChange?: () => void,
+  mainCollapsePanelHeader?: string
 ) {
   return [
     manager.inputBoolean(
@@ -1697,7 +1748,7 @@ function buildScrollingAxisWidgets(
           },
           value: 10,
         },
-        searchSection: strings.objects.general,
+        searchSection: [strings.objects.general, mainCollapsePanelHeader],
         onChange: onChange,
       }
     ),
@@ -1711,7 +1762,7 @@ function buildScrollingAxisWidgets(
             maximum: 1000000,
             minimum: 1,
             label: strings.objects.dataAxis.windowSize,
-            searchSection: strings.objects.general,
+            searchSection: [strings.objects.general, mainCollapsePanelHeader],
           }
         )
       : null,
@@ -1725,7 +1776,7 @@ function buildScrollingAxisWidgets(
             maximum: 1000000,
             minimum: -1000000,
             label: strings.objects.dataAxis.barOffset,
-            searchSection: strings.objects.general,
+            searchSection: [strings.objects.general, mainCollapsePanelHeader],
           }
         )
       : null,
@@ -1751,12 +1802,27 @@ export function buildAxisWidgets(
     noLineHeight: true,
     ignoreSearch: true,
   };
+
+  let axisType = "";
+  if (data) {
+    switch (data.type) {
+      case AxisDataBindingType.Categorical:
+        axisType = strings.objects.axes.categoricalSuffix;
+        break;
+      case AxisDataBindingType.Numerical:
+        axisType = strings.objects.axes.numericalSuffix;
+        break;
+    }
+  }
+  const mainCollapsePanelHeader = axisName + axisType;
+
   const makeAppearance = () => {
     return buildAxisAppearanceWidgets(axisProperty, manager, {
       isVisible: data.visible,
       wordWrap: data.style?.wordWrap ?? false,
       isOffset: axisWidgetsConfig.showOffset,
       isOnTop: axisWidgetsConfig.showOnTop,
+      mainCollapsePanelHeader: mainCollapsePanelHeader,
     });
   };
   if (data != null) {
@@ -1769,13 +1835,16 @@ export function buildAxisWidgets(
           axisProperty,
           manager,
           axisName,
-          onChange
+          onChange,
+          mainCollapsePanelHeader
         )
       : [];
+
     const tickFormatAndTickDataFields = getTickDataAndTickFormatFields(
       data,
       axisProperty,
-      manager
+      manager,
+      mainCollapsePanelHeader
     );
     const categoricalTickFormatAndTickDataFields =
       data.valueType === "date" ? tickFormatAndTickDataFields : [];
@@ -1793,6 +1862,7 @@ export function buildAxisWidgets(
                     searchPattern: [
                       strings.objects.axes.data,
                       strings.objects.general,
+                      mainCollapsePanelHeader,
                     ],
                   },
                   [
@@ -1836,16 +1906,20 @@ export function buildAxisWidgets(
                           strings.objects.general,
                           strings.objects.dataAxis.start,
                           strings.objects.dataAxis.end,
+                          mainCollapsePanelHeader,
                         ],
                       },
                       [
-                        manager.label(strings.objects.dataAxis.range),
+                        manager.label(strings.objects.dataAxis.range, {
+                          ignoreSearch: true,
+                        }),
                         manager.searchWrapper(
                           {
                             searchPattern: [
                               strings.objects.dataAxis.range,
                               strings.objects.general,
                               strings.objects.dataAxis.start,
+                              mainCollapsePanelHeader,
                             ],
                           },
                           [
@@ -1864,6 +1938,7 @@ export function buildAxisWidgets(
                               strings.objects.dataAxis.range,
                               strings.objects.general,
                               strings.objects.dataAxis.end,
+                              mainCollapsePanelHeader,
                             ],
                           },
                           [
@@ -1888,6 +1963,7 @@ export function buildAxisWidgets(
                           strings.objects.general,
                           strings.objects.axes.from,
                           strings.objects.axes.to,
+                          mainCollapsePanelHeader,
                         ],
                       },
                       [
@@ -1900,6 +1976,7 @@ export function buildAxisWidgets(
                               strings.objects.axes.from,
                               strings.objects.dataAxis.range,
                               strings.objects.general,
+                              mainCollapsePanelHeader,
                             ],
                           },
                           [
@@ -1926,6 +2003,7 @@ export function buildAxisWidgets(
                               strings.objects.axes.to,
                               strings.objects.dataAxis.range,
                               strings.objects.general,
+                              mainCollapsePanelHeader,
                             ],
                           },
                           [
@@ -1962,7 +2040,10 @@ export function buildAxisWidgets(
                         showLabel: true,
                         type: "dropdown",
                         label: strings.objects.scales.mode,
-                        searchSection: strings.objects.general,
+                        searchSection: [
+                          strings.objects.general,
+                          mainCollapsePanelHeader,
+                        ],
                       }
                     )
                   : null,
@@ -1980,7 +2061,7 @@ export function buildAxisWidgets(
             manager.verticalGroup(
               {
                 header: strings.objects.general,
-                searchSection: axisName,
+                searchSection: mainCollapsePanelHeader,
               },
               [
                 manager.searchWrapper(
@@ -1988,6 +2069,7 @@ export function buildAxisWidgets(
                     searchPattern: [
                       strings.objects.axes.data,
                       strings.objects.general,
+                      mainCollapsePanelHeader,
                     ],
                   },
                   [
@@ -2032,7 +2114,12 @@ export function buildAxisWidgets(
                 ),
 
                 !isDateExpression
-                  ? getOrderByAnotherColumnWidgets(data, axisProperty, manager)
+                  ? getOrderByAnotherColumnWidgets(
+                      data,
+                      axisProperty,
+                      manager,
+                      mainCollapsePanelHeader
+                    )
                   : null,
 
                 manager.inputNumber(
@@ -2043,7 +2130,10 @@ export function buildAxisWidgets(
                     percentage: true,
                     showSlider: true,
                     label: strings.objects.axes.gap,
-                    searchSection: strings.objects.general,
+                    searchSection: [
+                      strings.objects.general,
+                      mainCollapsePanelHeader,
+                    ],
                   }
                 ),
                 ...categoricalTickFormatAndTickDataFields,
@@ -2052,7 +2142,13 @@ export function buildAxisWidgets(
               ]
             )
           );
-          widgets.push(buildInteractivityGroup(axisProperty, manager));
+          widgets.push(
+            buildInteractivityGroup(
+              axisProperty,
+              manager,
+              mainCollapsePanelHeader
+            )
+          );
           widgets.push(makeAppearance());
         }
         break;
@@ -2077,7 +2173,7 @@ export function buildAxisWidgets(
                   percentage: true,
                   showSlider: true,
                   label: strings.objects.axes.gap,
-                  searchSection: axisName + strings.objects.axes.stackingSuffix,
+                  searchSection: mainCollapsePanelHeader,
                 }
               )
             )
@@ -2099,8 +2195,10 @@ export function buildAxisWidgets(
             {
               type: "checkbox",
               label: strings.objects.dataAxis.autoMin,
-              searchSection:
+              searchSection: [
                 axisName + strings.objects.dataAxis.exportProperties,
+                mainCollapsePanelHeader,
+              ],
             }
           ),
           manager.inputBoolean(
@@ -2111,8 +2209,10 @@ export function buildAxisWidgets(
             {
               type: "checkbox",
               label: strings.objects.dataAxis.autoMax,
-              searchSection:
+              searchSection: [
                 axisName + strings.objects.dataAxis.exportProperties,
+                mainCollapsePanelHeader,
+              ],
             }
           ),
         ]
@@ -2135,6 +2235,7 @@ export function buildAxisWidgets(
               searchPattern: [
                 strings.objects.general,
                 strings.objects.axes.data,
+                mainCollapsePanelHeader,
               ],
             },
             [
@@ -2361,7 +2462,8 @@ let orderChanged = false;
 function getOrderByAnotherColumnWidgets(
   data: Specification.Types.AxisDataBinding,
   axisProperty: string,
-  manager: Controls.WidgetManager
+  manager: Controls.WidgetManager,
+  mainCollapsePanelHeader: string
 ): JSX.Element[] {
   const widgets = [];
 
@@ -2493,7 +2595,11 @@ function getOrderByAnotherColumnWidgets(
   widgets.push(
     manager.searchWrapper(
       {
-        searchPattern: [strings.objects.axes.orderBy, strings.objects.general],
+        searchPattern: [
+          strings.objects.axes.orderBy,
+          strings.objects.general,
+          mainCollapsePanelHeader,
+        ],
       },
       [
         manager.label(strings.objects.axes.orderBy, {
@@ -2543,7 +2649,8 @@ function getOrderByAnotherColumnWidgets(
 function getTickDataAndTickFormatFields(
   data: Specification.Types.AxisDataBinding,
   axisProperty: string,
-  manager: Controls.WidgetManager
+  manager: Controls.WidgetManager,
+  mainCollapsePanelHeader?: string
 ) {
   const showInputFormat = shouldShowTickFormatForTickExpression(data, manager);
 
@@ -2569,7 +2676,7 @@ function getTickDataAndTickFormatFields(
           },
           noLineHeight: true,
           label: strings.objects.axes.tickData,
-          searchSection: strings.objects.general,
+          searchSection: [strings.objects.general, mainCollapsePanelHeader],
         }
       )
     )
@@ -2588,7 +2695,7 @@ function getTickDataAndTickFormatFields(
             data.numericalMode === NumericalMode.Temporal ||
             data.valueType === DataType.Date,
           allowNull: true,
-          searchSection: strings.objects.general,
+          searchSection: [strings.objects.general, mainCollapsePanelHeader],
         }
       )
     );
@@ -2606,7 +2713,7 @@ function getTickDataAndTickFormatFields(
           styles: {
             marginTop: "0.5rem",
           },
-          searchSection: strings.objects.general,
+          searchSection: [strings.objects.general, mainCollapsePanelHeader],
         }
       )
     );
@@ -2622,6 +2729,7 @@ function getTickDataAndTickFormatFields(
             showUpdown: true,
             updownTick: 1,
             minimum: 2,
+            searchSection: [strings.objects.general, mainCollapsePanelHeader],
           }
         )
       );

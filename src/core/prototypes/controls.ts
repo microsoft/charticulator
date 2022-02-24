@@ -429,6 +429,6 @@ export interface SearchWrapperOptions {
 }
 
 export interface SearchSection {
-  searchSection?: string;
+  searchSection?: string | string[];
   ignoreSearch?: boolean;
 }

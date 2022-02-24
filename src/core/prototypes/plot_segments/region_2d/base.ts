@@ -2841,6 +2841,7 @@ export class Region2DConstraintBuilder {
           break;
       }
     }
+    const mainCollapsePanelHeader = axisName + axisType;
 
     return [
       manager.customCollapsiblePanel(
@@ -2857,10 +2858,15 @@ export class Region2DConstraintBuilder {
             },
             this.updatePlotSegment.bind(this)
           ),
-          ...this.plotSegment.buildGridLineWidgets(data, manager, axisProperty),
+          ...this.plotSegment.buildGridLineWidgets(
+            data,
+            manager,
+            axisProperty,
+            mainCollapsePanelHeader
+          ),
         ],
         {
-          header: axisName + axisType,
+          header: mainCollapsePanelHeader,
           styles: {
             marginLeft: 5,
           },
