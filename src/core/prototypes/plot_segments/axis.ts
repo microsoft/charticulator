@@ -615,9 +615,10 @@ export class AxisRenderer {
       g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
     }
     // Ticks
-    const ticksData = this.ticks.map((x) => x.position);
-    const visibleTicks = ticksData.concat([rangeMin, rangeMax]);
-
+    const visibleTicks = this.ticks.map((x) => x.position);
+    if (style.showBaseline) {
+      visibleTicks.push(rangeMin, rangeMax);
+    }
     if (style.showTicks) {
       for (const tickPosition of visibleTicks) {
         const tx = x + tickPosition * cos;
@@ -1534,7 +1535,7 @@ export function buildAxisAppearanceWidgets(
               },
               {
                 label: strings.objects.axes.lineColor,
-                labelKey: strings.objects.axes.lineColor,
+                labelKey: `line-color-${axisProperty}`,
                 allowNull: true,
                 searchSection: [
                   strings.objects.style,
@@ -1581,7 +1582,7 @@ export function buildAxisAppearanceWidgets(
               },
               {
                 label: strings.objects.axes.tickColor,
-                labelKey: strings.objects.axes.tickColor,
+                labelKey: `tick-color-${axisProperty}`,
                 allowNull: true,
                 searchSection: [
                   strings.objects.style,
@@ -1596,7 +1597,7 @@ export function buildAxisAppearanceWidgets(
               },
               {
                 label: strings.objects.axes.tickTextBackgroudColor,
-                labelKey: strings.objects.axes.tickTextBackgroudColor,
+                labelKey: `tick-text-background-color-${axisProperty}`,
                 allowNull: true,
                 searchSection: [
                   strings.objects.style,

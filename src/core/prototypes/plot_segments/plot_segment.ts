@@ -169,7 +169,7 @@ export abstract class PlotSegmentClass<
             },
             {
               label: strings.objects.color,
-              labelKey: strings.objects.color,
+              labelKey: `gridline-color-${axisProperty}`,
               searchSection: [
                 strings.objects.plotSegment.gridline,
                 mainCollapsePanelHeader,
