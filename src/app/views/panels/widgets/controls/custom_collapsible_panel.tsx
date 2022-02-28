@@ -2,14 +2,18 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-import { CSSProperties, useMemo, useState } from "react";
+import { CSSProperties, useCallback, useMemo, useState } from "react";
 import { DefaultButton, Label } from "@fluentui/react";
 import { PanelHeaderStyles } from "./fluentui_customized_components";
+import { AppStore } from "../../../../../app/stores";
+import { getRandomNumber } from "../../../../../core";
+import { ContextMenuCallout } from "./contextMenuCallout";
 
 interface CollapsiblePanelProps {
   widgets: JSX.Element[];
   header?: string;
   styles?: CSSProperties;
+  store?: AppStore;
 }
 
 //Needs to handle tab index in plot segment
@@ -17,8 +21,10 @@ export const CustomCollapsiblePanel = ({
   widgets,
   header,
   styles,
+  store,
 }: CollapsiblePanelProps): JSX.Element => {
   const [collapsed, setCollapsed] = useState(false);
+  const [calloutVisible, setCalloutVisible] = useState(false);
 
   const renderAttributes = useMemo(() => {
     return !collapsed
@@ -37,17 +43,35 @@ export const CustomCollapsiblePanel = ({
 
   const panelHeader = header ?? "";
 
+  const calloutId = `calloutId-${getRandomNumber()}`;
+
+  const onContextMenu = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      setCalloutVisible(!calloutVisible);
+    },
+    [calloutVisible]
+  );
+
   return (
     <div key={`panel-${panelHeader}`}>
-      <PanelHeader
-        header={panelHeader}
-        setCollapsed={setCollapsed}
-        collapsed={collapsed}
-        key={`panelHeader-${panelHeader}`}
-      />
+      <div id={calloutId} onContextMenu={(e) => onContextMenu(e)}>
+        <PanelHeader
+          header={panelHeader}
+          setCollapsed={setCollapsed}
+          collapsed={collapsed}
+          key={`panelHeader-${panelHeader}`}
+        />
+      </div>
       <div style={styles} key={`panelWidgets-${panelHeader}`}>
         {renderAttributes}
       </div>
+      <ContextMenuCallout
+        store={store}
+        calloutId={calloutId}
+        hideCallout={(value) => setCalloutVisible(value)}
+        calloutVisible={calloutVisible}
+      />
     </div>
   );
 };

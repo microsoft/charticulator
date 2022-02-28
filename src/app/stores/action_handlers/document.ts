@@ -437,4 +437,9 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.searchString = action.searchString;
     this.emit(AppStore.EVENT_GRAPHICS);
   });
+
+  REG.add(Actions.ExpandOrCollapsePanelsUpdated, function (action) {
+    this.collapseOrExpandPanelsType = action.type;
+    this.emit(AppStore.EVENT_GRAPHICS);
+  });
 }

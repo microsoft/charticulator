@@ -9,27 +9,59 @@ import {
   SelectionMode,
 } from "@fluentui/react";
 import * as React from "react";
+import { useEffect } from "react";
 import {
   FluentGroupedList,
   groupHeaderStyles,
   groupStyles,
 } from "./fluentui_customized_components";
+import { AppStore } from "../../../../../app/stores";
+import { Actions } from "../../../../../app";
+import { CollapseOrExpandPanels } from "../../../../../core/specification/types";
+import { getRandomNumber } from "../../../../../core";
+import { ContextMenuCallout } from "./contextMenuCallout";
 
 interface CollapsiblePanelProps {
   header: string | IRenderFunction<IGroupHeaderProps>;
   widgets: JSX.Element[];
   isCollapsed?: boolean;
   alignVertically?: boolean;
+  store?: AppStore;
 }
 
+// eslint-disable-next-line max-lines-per-function
 export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = ({
   header,
   widgets,
   isCollapsed,
   alignVertically,
+  store,
 }) => {
-  const [groupState, setIsCollapsed] = React.useState<boolean>(
-    isCollapsed === undefined ? false : isCollapsed
+  const collapsePanel = store
+    ? false
+    : isCollapsed === undefined
+    ? false
+    : isCollapsed;
+  const [groupState, setIsCollapsed] = React.useState<boolean>(collapsePanel);
+  const [calloutVisible, setCalloutVisible] = React.useState(false);
+
+  useEffect(() => {
+    const collapsePanel = store
+      ? store.collapseOrExpandPanelsType === CollapseOrExpandPanels.Collapse
+      : isCollapsed === undefined
+      ? false
+      : isCollapsed;
+    setIsCollapsed(collapsePanel);
+  }, [store, store.collapseOrExpandPanelsType, isCollapsed]);
+
+  const calloutId = `calloutId-${getRandomNumber()}`;
+
+  const onContextMenu = React.useCallback(
+    (event) => {
+      event.preventDefault();
+      setCalloutVisible(!calloutVisible);
+    },
+    [calloutVisible]
   );
 
   return (
@@ -44,6 +76,13 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
                 styles={groupHeaderStyles}
                 onToggleCollapse={(group) => {
                   setIsCollapsed(!group.isCollapsed);
+                  if (store) {
+                    store.dispatcher.dispatch(
+                      new Actions.ExpandOrCollapsePanelsUpdated(
+                        CollapseOrExpandPanels.Custom
+                      )
+                    );
+                  }
                 }}
                 onGroupHeaderClick={(group) => {
                   props.onToggleCollapse(group);
@@ -51,7 +90,17 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
                 }}
                 onRenderTitle={
                   typeof header === "string"
-                    ? () => <Label>{header}</Label>
+                    ? () => (
+                        <Label
+                          onContextMenu={onContextMenu}
+                          id={calloutId}
+                          style={{
+                            width: "100%",
+                          }}
+                        >
+                          {header}
+                        </Label>
+                      )
                     : header
                 }
               />
@@ -103,6 +152,12 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
         focusZoneProps={{
           handleTabKey: 1,
         }}
+      />
+      <ContextMenuCallout
+        store={store}
+        calloutId={calloutId}
+        hideCallout={(value) => setCalloutVisible(value)}
+        calloutVisible={calloutVisible}
       />
     </FluentGroupedList>
   );

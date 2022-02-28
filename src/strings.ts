@@ -605,4 +605,8 @@ export const strings = {
     sort: "Sort",
     reset: "Reset",
   },
+  panels: {
+    collapseAllCategories: "Collapse all categories",
+    expandAllCategories: "Expand all categories",
+  },
 };

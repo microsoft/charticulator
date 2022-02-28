@@ -16,6 +16,7 @@ import {
   EventSubscription,
   getById,
   getField,
+  getRandomNumber,
   Point,
   Prototypes,
   refineColumnName,
@@ -221,7 +222,15 @@ export class FluentUIWidgetManager
     return (
       <>
         {widgets.map((x, id) => (
-          <React.Fragment key={`search-${id}`}>{x}</React.Fragment>
+          <React.Fragment key={`search-${id}-${getRandomNumber()}`}>
+            {Array.isArray(x)
+              ? x.map((w) => (
+                  <React.Fragment key={`search-${id}-${getRandomNumber()}`}>
+                    {w}
+                  </React.Fragment>
+                ))
+              : x}
+          </React.Fragment>
         ))}
       </>
     );
@@ -1866,6 +1875,7 @@ export class FluentUIWidgetManager
           widgets={widgets}
           isCollapsed={options.isCollapsed}
           alignVertically={options.alignVertically}
+          store={this.store}
         />
       </div>
     );
@@ -1936,6 +1946,7 @@ export class FluentUIWidgetManager
         widgets={widgets}
         styles={options.styles}
         header={options.header}
+        store={this.store}
       />
     );
   }
