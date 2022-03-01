@@ -43,9 +43,6 @@ export function getColumnNameByExpression(expression: string) {
   const parsed = Expression.parse(expression);
   if (parsed instanceof Expression.FunctionCall) {
     columnName = parsed.args[0].toString();
-    // expression1 = expression?.split("`").join("");
-    //need to provide date.year() etc.
-    // expression1 = this.parseDerivedColumnsExpression(expression);
   }
   return columnName;
 }
