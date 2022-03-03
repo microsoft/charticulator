@@ -28,6 +28,20 @@ export const textAttributes: AttributeDescriptions = {
     defaultRange: [0, 24],
     defaultValue: defaultFontSize,
   },
+  xMargin: {
+    name: "xMargin",
+    type: AttributeType.Number,
+    solverExclude: true,
+    defaultRange: [-100, 100],
+    defaultValue: 0,
+  },
+  yMargin: {
+    name: "yMargin",
+    type: AttributeType.Number,
+    solverExclude: true,
+    defaultRange: [-1000, 1000],
+    defaultValue: 0,
+  },
   color: {
     name: "color",
     type: AttributeType.Color,
@@ -68,6 +82,8 @@ export interface TextElementAttributes extends AttributeMap {
   outline: Color;
   opacity: number;
   visible: boolean;
+  yMargin: number;
+  xMargin: number;
 }
 
 export interface TextElementProperties extends AttributeMap {
