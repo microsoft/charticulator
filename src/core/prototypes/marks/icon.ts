@@ -309,7 +309,9 @@ export class IconElementClass extends EmphasizableMarkClass<
           header: strings.toolbar.icon,
         },
         [
-          manager.mappingEditor(strings.objects.icon.image, "image", {}),
+          manager.mappingEditor(strings.objects.icon.image, "image", {
+            searchSection: strings.toolbar.icon,
+          }),
           manager.mappingEditor(strings.objects.size, "size", {
             acceptKinds: [Specification.DataKind.Numerical],
             hints: { rangeNumber: [0, 100] },
@@ -320,6 +322,7 @@ export class IconElementClass extends EmphasizableMarkClass<
               sliderRange: [0, 3600],
               sliderFunction: "sqrt",
             },
+            searchSection: strings.toolbar.icon,
           }),
           manager.mappingEditor(strings.objects.opacity, "opacity", {
             hints: { rangeNumber: [0, 1] },
@@ -330,12 +333,14 @@ export class IconElementClass extends EmphasizableMarkClass<
               maximum: 1,
               step: 0.1,
             },
+            searchSection: strings.toolbar.icon,
           }),
           manager.mappingEditor(
             strings.objects.visibleOn.visibility,
             "visible",
             {
               defaultValue: true,
+              searchSection: strings.toolbar.icon,
             }
           ),
         ]
@@ -366,6 +371,7 @@ export class IconElementClass extends EmphasizableMarkClass<
                 ],
                 options: ["left", "middle", "right"],
                 label: strings.objects.anchorX,
+                searchSection: strings.objects.anchorAndRotation,
               }
             ),
             props.alignment.x != "middle"
@@ -373,6 +379,7 @@ export class IconElementClass extends EmphasizableMarkClass<
                   { property: "alignment", field: "xMargin" },
                   {
                     label: strings.margins.margin,
+                    searchSection: strings.objects.anchorAndRotation,
                   }
                 )
               : null
@@ -395,6 +402,7 @@ export class IconElementClass extends EmphasizableMarkClass<
                 ],
                 options: ["top", "middle", "bottom"],
                 label: strings.objects.anchorY,
+                searchSection: strings.objects.anchorAndRotation,
               }
             ),
             props.alignment.y != "middle"
@@ -402,6 +410,7 @@ export class IconElementClass extends EmphasizableMarkClass<
                   { property: "alignment", field: "yMargin" },
                   {
                     label: strings.margins.margin,
+                    searchSection: strings.objects.anchorAndRotation,
                   }
                 )
               : null

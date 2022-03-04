@@ -7,10 +7,10 @@ import * as Specification from "../../specification";
 import { ChartElementClass } from "../chart_element";
 import {
   AttributeDescription,
-  Handles,
-  SnappingGuides,
   BoundingBox,
   Controls,
+  Handles,
+  SnappingGuides,
   SnappingGuidesVisualTypes,
 } from "../common";
 import { ObjectClassMetadata } from "../index";
@@ -240,16 +240,22 @@ export class GuideCoordinatorClass extends ChartElementClass<
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     return [
-      manager.inputNumber(
-        { property: "count" },
-        {
-          showUpdown: true,
-          updownTick: 1,
-          updownRange: [1, 100],
-          minimum: 1,
-          maximum: 100,
-          label: strings.objects.guides.count,
-        }
+      manager.verticalGroup(
+        { header: strings.objects.guides.guideCoordinator },
+        [
+          manager.inputNumber(
+            { property: "count" },
+            {
+              showUpdown: true,
+              updownTick: 1,
+              updownRange: [1, 100],
+              minimum: 1,
+              maximum: 100,
+              label: strings.objects.guides.count,
+              searchSection: strings.objects.guides.guideCoordinator,
+            }
+          ),
+        ]
       ),
     ];
   }

@@ -6,13 +6,13 @@ import * as Specification from "../../specification";
 import { ChartElementClass } from "../chart_element";
 import {
   AttributeDescription,
-  Handles,
-  SnappingGuides,
   Controls,
-  TemplateParameters,
-  LinkAnchor,
+  Handles,
   isType,
+  LinkAnchor,
+  SnappingGuides,
   SnappingGuidesVisualTypes,
+  TemplateParameters,
 } from "../common";
 import { ObjectClassMetadata } from "../index";
 import { RectangleGlyph } from "../glyphs";
@@ -384,9 +384,7 @@ export class GuideClass extends ChartElementClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-    const widgets: Controls.Widget[] = [
-      manager.sectionHeader(strings.objects.guides.guide),
-    ];
+    const widgets: Controls.Widget[] = [];
 
     let labels: string[];
     let options: string[];
@@ -420,27 +418,28 @@ export class GuideClass extends ChartElementClass<
       ];
     }
     widgets.push(
-      manager.inputSelect(
-        { property: GuidePropertyNames.baseline },
-        {
-          type: "dropdown",
-          showLabel: true,
-          labels,
-          options,
-          icons,
-          label: strings.objects.guides.baseline,
-        }
-      )
-    );
-
-    widgets.push(
-      manager.mappingEditor(
-        strings.objects.guides.offset,
-        GuideAttributeNames.value,
-        {
-          defaultValue: this.state.attributes.value,
-        }
-      )
+      manager.verticalGroup({ header: strings.objects.guides.guide }, [
+        manager.inputSelect(
+          { property: GuidePropertyNames.baseline },
+          {
+            type: "dropdown",
+            showLabel: true,
+            labels,
+            options,
+            icons,
+            label: strings.objects.guides.baseline,
+            searchSection: strings.objects.guides.guide,
+          }
+        ),
+        manager.mappingEditor(
+          strings.objects.guides.offset,
+          GuideAttributeNames.value,
+          {
+            defaultValue: this.state.attributes.value,
+            searchSection: strings.objects.guides.guide,
+          }
+        ),
+      ])
     );
 
     return widgets;

@@ -213,11 +213,13 @@ export class RectElementClass extends EmphasizableMarkClass<
             hints: { autoRange: true, startWithZero: "always" },
             acceptKinds: [DataKind.Numerical],
             defaultAuto: true,
+            searchSection: strings.objects.general,
           }),
           manager.mappingEditor(strings.objects.height, "height", {
             hints: { autoRange: true, startWithZero: "always" },
             acceptKinds: [DataKind.Numerical],
             defaultAuto: true,
+            searchSection: strings.objects.general,
           }),
           manager.inputSelect(
             { property: "shape" },
@@ -236,6 +238,7 @@ export class RectElementClass extends EmphasizableMarkClass<
                 ShapeType.Triangle,
                 ShapeType.Ellips,
               ],
+              searchSection: strings.objects.general,
             }
           ),
           manager.inputBoolean(
@@ -243,6 +246,7 @@ export class RectElementClass extends EmphasizableMarkClass<
             {
               type: "checkbox",
               label: strings.objects.rect.flipping,
+              searchSection: strings.objects.general,
               styles: {
                 marginTop: 5,
               },
@@ -257,6 +261,7 @@ export class RectElementClass extends EmphasizableMarkClass<
                   styles: {
                     marginTop: 5,
                   },
+                  searchSection: strings.objects.general,
                 }
               )
             : null,
@@ -276,6 +281,7 @@ export class RectElementClass extends EmphasizableMarkClass<
                     OrientationType.HORIZONTAL,
                   ],
                   label: strings.objects.legend.orientation,
+                  searchSection: strings.objects.general,
                 }
               )
             : null,
@@ -284,6 +290,7 @@ export class RectElementClass extends EmphasizableMarkClass<
             "visible",
             {
               defaultValue: true,
+              searchSection: strings.objects.general,
             }
           ),
         ]
@@ -293,8 +300,12 @@ export class RectElementClass extends EmphasizableMarkClass<
           header: strings.objects.style,
         },
         [
-          manager.mappingEditor(strings.objects.fill, "fill", {}),
-          manager.mappingEditor(strings.objects.stroke, "stroke", {}),
+          manager.mappingEditor(strings.objects.fill, "fill", {
+            searchSection: strings.objects.style,
+          }),
+          manager.mappingEditor(strings.objects.stroke, "stroke", {
+            searchSection: strings.objects.style,
+          }),
           this.object.mappings.stroke != null
             ? manager.mappingEditor(
                 strings.objects.strokeWidth,
@@ -307,6 +318,7 @@ export class RectElementClass extends EmphasizableMarkClass<
                     sliderRange: [0, 5],
                     minimum: 0,
                   },
+                  searchSection: strings.objects.style,
                 }
               )
             : null,
@@ -316,7 +328,7 @@ export class RectElementClass extends EmphasizableMarkClass<
                 {
                   type: "dropdown",
                   showLabel: true,
-                  label: "Line Style",
+                  label: strings.objects.line.lineStyle,
                   icons: ["line", "stroke/dashed", "stroke/dotted"],
                   isLocalIcons: true,
                   labels: [
@@ -325,6 +337,7 @@ export class RectElementClass extends EmphasizableMarkClass<
                     strings.objects.links.dotted,
                   ],
                   options: ["solid", "dashed", "dotted"],
+                  searchSection: strings.objects.style,
                 }
               )
             : null,
@@ -337,6 +350,7 @@ export class RectElementClass extends EmphasizableMarkClass<
               maximum: 1,
               step: 0.1,
             },
+            searchSection: strings.objects.style,
           }),
           this.object.properties.shape === ShapeType.Rectangle
             ? manager.inputNumber(
@@ -348,6 +362,7 @@ export class RectElementClass extends EmphasizableMarkClass<
                   showUpdown: true,
                   updownTick: 1,
                   minimum: 0,
+                  searchSection: strings.objects.style,
                 }
               )
             : null,
@@ -361,6 +376,7 @@ export class RectElementClass extends EmphasizableMarkClass<
                   showUpdown: true,
                   updownTick: 1,
                   minimum: 0,
+                  searchSection: strings.objects.style,
                 }
               )
             : null,

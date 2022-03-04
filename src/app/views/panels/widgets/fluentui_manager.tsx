@@ -16,6 +16,7 @@ import {
   EventSubscription,
   getById,
   getField,
+  getRandomNumber,
   Point,
   Prototypes,
   refineColumnName,
@@ -92,6 +93,7 @@ import {
   InputTextOptions,
   ObserverConfig,
   PanelMode,
+  SearchWrapperOptions,
 } from "../../../../core/prototypes/controls";
 
 import { mergeStyles } from "@fluentui/merge-styles";
@@ -137,7 +139,8 @@ export class FluentUIWidgetManager
   implements Prototypes.Controls.WidgetManager, CharticulatorPropertyAccessors {
   constructor(
     public store: AppStore,
-    public objectClass: Prototypes.ObjectClass
+    public objectClass: Prototypes.ObjectClass,
+    public ignoreSearch: boolean = false
   ) {
     this.director = new Director();
     this.director.setBuilder(new MenuItemBuilder());
@@ -156,11 +159,95 @@ export class FluentUIWidgetManager
     return `${property?.property}-${property?.field?.toString()}`;
   }
 
+  public searchInput(options: InputTextOptions = {}) {
+    return (
+      <TextField
+        styles={{
+          ...(defaultStyle as any),
+          field: {
+            ...defaultStyle.field,
+            height: null,
+            padding: "unset",
+          },
+          root: {
+            marginBottom: 5,
+            marginTop: 5,
+          },
+          prefix: {
+            backgroundColor: "unset",
+          },
+        }}
+        placeholder={options.placeholder}
+        label={options.label}
+        disabled={options.disabled}
+        onRenderLabel={labelRender}
+        onChange={(event, value) => {
+          let newValue = "";
+          if (value?.length > 0) {
+            newValue = value.trim();
+          }
+          this.store.dispatcher.dispatch(new Actions.SearchUpdated(newValue));
+        }}
+        type="text"
+        underlined={options.underline ?? false}
+        borderless={options.borderless ?? false}
+        style={options.styles}
+        prefix=""
+        onRenderPrefix={() => {
+          return <FontIcon aria-label="Search" iconName="Search" />;
+        }}
+        autoComplete="off"
+        defaultValue={this.store.searchString}
+      />
+    );
+  }
+
+  public searchWrapper(
+    options: SearchWrapperOptions,
+    ...widgets: JSX.Element[]
+  ) {
+    const searchStings = options.searchPattern;
+    const searchString = this.store.searchString;
+    if (searchString?.length != 0 && searchStings.length >= 0) {
+      if (
+        !searchStings.some(
+          (value) =>
+            value && value?.toUpperCase().includes(searchString?.toUpperCase())
+        )
+      ) {
+        return;
+      }
+    }
+
+    return (
+      <>
+        {widgets.map((x, id) => (
+          <React.Fragment key={`search-${id}-${getRandomNumber()}`}>
+            {Array.isArray(x)
+              ? x.map((w) => (
+                  <React.Fragment key={`search-${id}-${getRandomNumber()}`}>
+                    {w}
+                  </React.Fragment>
+                ))
+              : x}
+          </React.Fragment>
+        ))}
+      </>
+    );
+  }
+
   public mappingEditor(
     name: string,
     attribute: string,
     options: Prototypes.Controls.MappingEditorOptions
   ): JSX.Element {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (!this.shouldDrawComponent([name, ...searchSections])) {
+      return;
+    }
+
     const objectClass = this.objectClass;
     const info = objectClass.attributes[attribute];
     if (options.defaultValue == null) {
@@ -310,6 +397,12 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputFormatOptions = {}
   ) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (!this.shouldDrawComponent([options.label, ...searchSections])) {
+      return;
+    }
     return (
       <FluentInputFormat
         label={options.label}
@@ -362,12 +455,22 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputNumberOptions = {}
   ) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (
+      !options.ignoreSearch &&
+      !this.shouldDrawComponent([options.label, ...searchSections])
+    ) {
+      return;
+    }
     const value = this.getPropertyValue(property) as number;
     return (
       <FluentInputNumber
         {...options}
         key={this.getKeyFromProperty(property)}
         defaultValue={value}
+        placeholder={options.placeholder}
         onEnter={(value) => {
           if (value == null) {
             this.emitSetProperty(property, null);
@@ -401,6 +504,15 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputDateOptions = {}
   ) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (
+      !options.ignoreSearch &&
+      !this.shouldDrawComponent([options.label, ...searchSections])
+    ) {
+      return;
+    }
     const value = this.getPropertyValue(property) as number;
     const format = this.getDateFormat(property) as string;
 
@@ -432,6 +544,15 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: InputTextOptions
   ) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (
+      !options.ignoreSearch &&
+      !this.shouldDrawComponent([options.label, ...searchSections])
+    ) {
+      return;
+    }
     let prevKey: string = options.value ?? "";
     return (
       <TextField
@@ -482,6 +603,12 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: InputFontComboboxOptions
   ) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (!this.shouldDrawComponent([options.label, ...searchSections])) {
+      return;
+    }
     return (
       <FluentComboBoxFontFamily
         key={this.getKeyFromProperty(property)}
@@ -499,6 +626,12 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputComboboxOptions
   ) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (!this.shouldDrawComponent([options.label, ...searchSections])) {
+      return;
+    }
     return (
       <ComboBox
         styles={defaultStyle as any}
@@ -524,6 +657,15 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputSelectOptions
   ) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (
+      !options.ignoreSearch &&
+      !this.shouldDrawComponent([options.label, ...searchSections])
+    ) {
+      return;
+    }
     const theme = getTheme();
     const isLocalIcons = options.isLocalIcons ?? false;
     if (options.type == "dropdown") {
@@ -611,6 +753,19 @@ export class FluentUIWidgetManager
     properties: Prototypes.Controls.Property | Prototypes.Controls.Property[],
     options: Prototypes.Controls.InputBooleanOptions
   ) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (
+      !options.ignoreSearch &&
+      !this.shouldDrawComponent([
+        options.label,
+        options.headerLabel,
+        ...searchSections,
+      ])
+    ) {
+      return;
+    }
     const property: Prototypes.Controls.Property =
       properties instanceof Array ? properties[0] : properties;
     switch (options.type) {
@@ -705,6 +860,15 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputExpressionOptions = {}
   ) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (
+      !options.ignoreSearch &&
+      !this.shouldDrawComponent([options.label, ...searchSections])
+    ) {
+      return;
+    }
     const value = this.getPropertyValue(property) as string;
 
     const inputExpression = (
@@ -792,6 +956,12 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputColorOptions
   ): JSX.Element {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (!this.shouldDrawComponent([options.label, ...searchSections])) {
+      return;
+    }
     const color = this.getPropertyValue(property) as Color;
     return (
       <FluentInputColor
@@ -818,6 +988,7 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     inline: boolean = false
   ): JSX.Element {
+    //aAAAA
     const gradient = (this.getPropertyValue(property) as any) as ColorGradient;
     if (inline) {
       return (
@@ -907,6 +1078,9 @@ export class FluentUIWidgetManager
     icon?: string,
     text?: string
   ) {
+    if (!this.shouldDrawComponent([text])) {
+      return;
+    }
     return (
       <DefaultButton
         key={this.getKeyFromProperty(property)}
@@ -922,6 +1096,9 @@ export class FluentUIWidgetManager
   }
 
   public scaleEditor(attribute: string, text: string) {
+    if (!this.shouldDrawComponent([text])) {
+      return;
+    }
     let mappingButton: Element = null;
 
     const objectClass = this.objectClass;
@@ -1257,7 +1434,12 @@ export class FluentUIWidgetManager
   }
 
   public label(title: string, options?: Prototypes.Controls.LabelOptions) {
-    // return <span className="charticulator__widget-label">{title}</span>;
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (!options?.ignoreSearch && !this.shouldDrawComponent(searchSections)) {
+      return;
+    }
     return (
       <FluentLabelHeader
         key={title}
@@ -1291,6 +1473,15 @@ export class FluentUIWidgetManager
     widget?: JSX.Element,
     options: Prototypes.Controls.RowOptions = {}
   ) {
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (
+      !options.ignoreSearch &&
+      !this.shouldDrawComponent([title, ...searchSections])
+    ) {
+      return;
+    }
     this.director.setBuilder(new MenuItemBuilder());
     if (options.dropzone && options.dropzone.type == "axis-data-binding") {
       const current = this.getPropertyValue({
@@ -1441,13 +1632,27 @@ export class FluentUIWidgetManager
   public filterEditor(
     options: Prototypes.Controls.FilterEditorOptions
   ): JSX.Element {
+    const filterText = strings.filter.filterBy;
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (
+      !options.ignoreSearch &&
+      !this.shouldDrawComponent([
+        filterText,
+        ...searchSections,
+        strings.objects.axes.data,
+      ])
+    ) {
+      return;
+    }
     return (
       <FilterPanel
         key={options.key}
         options={{
           ...options,
         }}
-        text={strings.filter.filterBy}
+        text={filterText}
         manager={this}
       />
     );
@@ -1458,6 +1663,19 @@ export class FluentUIWidgetManager
   ): JSX.Element {
     let button: HTMLElement;
     let text = strings.objects.plotSegment.groupBy;
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (
+      !options.ignoreSearch &&
+      !this.shouldDrawComponent([
+        text,
+        ...searchSections,
+        strings.objects.axes.data,
+      ])
+    ) {
+      return;
+    }
     const getControl = () => {
       switch (options.mode) {
         case PanelMode.Button:
@@ -1539,12 +1757,26 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.NestedChartEditorOptions
   ) {
+    const editNestedChartText = strings.menuBar.editNestedChart;
+    const importTemplate = strings.menuBar.importTemplate;
+    const searchSections = Array.isArray(options.searchSection)
+      ? options.searchSection
+      : [options.searchSection];
+    if (
+      !this.shouldDrawComponent([
+        editNestedChartText,
+        importTemplate,
+        ...searchSections,
+      ])
+    ) {
+      return;
+    }
     return (
       <React.Fragment key={this.getKeyFromProperty(property)}>
         {this.vertical(
           <NestedChartButtonsWrapper>
             <ButtonRaised
-              text="Edit Nested Chart..."
+              text={editNestedChartText}
               onClick={() => {
                 this.store.dispatcher.dispatch(
                   new OpenNestedEditor(
@@ -1558,7 +1790,7 @@ export class FluentUIWidgetManager
           </NestedChartButtonsWrapper>,
           <NestedChartButtonsWrapper>
             <ButtonRaised
-              text="Import Template..."
+              text={importTemplate}
               onClick={async () => {
                 const file = await showOpenFileDialog(["tmplt", "json"]);
                 const str = await readFileAsString(file);
@@ -1614,10 +1846,28 @@ export class FluentUIWidgetManager
     );
   }
 
+  public styledVertical(styles: CSSProperties, ...widgets: JSX.Element[]) {
+    return (
+      <div className="charticulator__widget-vertical" style={styles}>
+        {widgets.map((x, id) => (
+          <span className="el-layout-item" key={id}>
+            {x}
+          </span>
+        ))}
+      </div>
+    );
+  }
+
   public verticalGroup(
     options: Prototypes.Controls.VerticalGroupOptions,
     widgets: JSX.Element[]
   ) {
+    if (
+      widgets.filter((widget) => (Array.isArray(widget) ? widget?.[0] : widget))
+        .length == 0
+    ) {
+      return null;
+    }
     return (
       <div>
         <CollapsiblePanel
@@ -1625,6 +1875,7 @@ export class FluentUIWidgetManager
           widgets={widgets}
           isCollapsed={options.isCollapsed}
           alignVertically={options.alignVertically}
+          store={this.store}
         />
       </div>
     );
@@ -1684,11 +1935,18 @@ export class FluentUIWidgetManager
     widgets: JSX.Element[],
     options: Prototypes.Controls.CustomCollapsiblePanelOptions = {}
   ): JSX.Element {
+    if (
+      widgets.filter((widget) => (Array.isArray(widget) ? widget?.[0] : widget))
+        .length == 0
+    ) {
+      return null;
+    }
     return (
       <CustomCollapsiblePanel
         widgets={widgets}
         styles={options.styles}
         header={options.header}
+        store={this.store}
       />
     );
   }
@@ -1795,6 +2053,28 @@ export class FluentUIWidgetManager
         />
       </FluentButton>
     );
+  }
+
+  public shouldDrawComponent(options: string[]): boolean {
+    const searchString = this.store.searchString;
+    //remove null values
+    const componentStings = options.filter((value) => value != undefined);
+
+    if (this.ignoreSearch) {
+      return true;
+    }
+
+    if (searchString?.length != 0 && componentStings.length >= 0) {
+      if (
+        !componentStings.some(
+          (value) =>
+            value && value?.toUpperCase().includes(searchString?.toUpperCase())
+        )
+      ) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 

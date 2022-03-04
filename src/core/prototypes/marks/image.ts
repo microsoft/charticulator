@@ -107,17 +107,20 @@ export class ImageElementClass extends EmphasizableMarkClass<
             hints: { autoRange: true, startWithZero: "always" },
             acceptKinds: [Specification.DataKind.Numerical],
             defaultAuto: true,
+            searchSection: strings.objects.general,
           }),
           manager.mappingEditor(strings.objects.height, "height", {
             hints: { autoRange: true, startWithZero: "always" },
             acceptKinds: [Specification.DataKind.Numerical],
             defaultAuto: true,
+            searchSection: strings.objects.general,
           }),
           manager.mappingEditor(
             strings.objects.visibleOn.visibility,
             "visible",
             {
               defaultValue: true,
+              searchSection: strings.objects.general,
             }
           ),
         ]
@@ -128,7 +131,9 @@ export class ImageElementClass extends EmphasizableMarkClass<
           header: strings.toolbar.image,
         },
         [
-          manager.mappingEditor(strings.objects.icon.image, "image", {}),
+          manager.mappingEditor(strings.objects.icon.image, "image", {
+            searchSection: strings.toolbar.image,
+          }),
           manager.inputSelect(
             { property: "imageMode" },
             {
@@ -140,46 +145,57 @@ export class ImageElementClass extends EmphasizableMarkClass<
               ],
               options: ["letterbox", "stretch"],
               label: strings.objects.image.imageMode,
+              searchSection: strings.toolbar.image,
             }
           ),
           ...(this.object.properties.imageMode == "letterbox"
             ? [
-                manager.label(strings.alignment.align),
-                manager.horizontal(
-                  [0, 1],
-                  manager.inputSelect(
-                    { property: "alignX" },
-                    {
-                      type: "radio",
-                      options: ["start", "middle", "end"],
-                      icons: [
-                        "AlignHorizontalLeft",
-                        "AlignHorizontalCenter",
-                        "AlignHorizontalRight",
-                      ],
-                      labels: [
-                        strings.alignment.left,
-                        strings.alignment.middle,
-                        strings.alignment.right,
-                      ],
-                    }
-                  ),
-                  manager.inputSelect(
-                    { property: "alignY" },
-                    {
-                      type: "radio",
-                      options: ["start", "middle", "end"],
-                      icons: [
-                        "AlignVerticalBottom",
-                        "AlignVerticalCenter",
-                        "AlignVerticalTop",
-                      ],
-                      labels: [
-                        strings.alignment.bottom,
-                        strings.alignment.middle,
-                        strings.alignment.top,
-                      ],
-                    }
+                manager.searchWrapper(
+                  {
+                    searchPattern: [
+                      strings.alignment.align,
+                      strings.objects.icon.image,
+                    ],
+                  },
+                  manager.label(strings.alignment.align),
+                  manager.horizontal(
+                    [0, 1],
+                    manager.inputSelect(
+                      { property: "alignX" },
+                      {
+                        type: "radio",
+                        options: ["start", "middle", "end"],
+                        icons: [
+                          "AlignHorizontalLeft",
+                          "AlignHorizontalCenter",
+                          "AlignHorizontalRight",
+                        ],
+                        labels: [
+                          strings.alignment.left,
+                          strings.alignment.middle,
+                          strings.alignment.right,
+                        ],
+                        ignoreSearch: true,
+                      }
+                    ),
+                    manager.inputSelect(
+                      { property: "alignY" },
+                      {
+                        type: "radio",
+                        options: ["start", "middle", "end"],
+                        icons: [
+                          "AlignVerticalBottom",
+                          "AlignVerticalCenter",
+                          "AlignVerticalTop",
+                        ],
+                        labels: [
+                          strings.alignment.bottom,
+                          strings.alignment.middle,
+                          strings.alignment.top,
+                        ],
+                        ignoreSearch: true,
+                      }
+                    )
                   )
                 ),
               ]
@@ -191,20 +207,24 @@ export class ImageElementClass extends EmphasizableMarkClass<
           header: strings.alignment.padding,
         },
         [
-          manager.label(strings.coordinateSystem.x),
+          // manager.label(strings.coordinateSystem.x),
           manager.inputNumber(
             { property: "paddingX" },
             {
               updownTick: 1,
               showUpdown: true,
+              label: strings.coordinateSystem.x,
+              searchSection: strings.alignment.padding,
             }
           ),
-          manager.label(strings.coordinateSystem.y),
+          // manager.label(strings.coordinateSystem.y),
           manager.inputNumber(
             { property: "paddingY" },
             {
               updownTick: 1,
               showUpdown: true,
+              label: strings.coordinateSystem.y,
+              searchSection: strings.alignment.padding,
             }
           ),
         ]
@@ -214,8 +234,12 @@ export class ImageElementClass extends EmphasizableMarkClass<
           header: strings.objects.style,
         },
         [
-          manager.mappingEditor(strings.objects.fill, "fill", {}),
-          manager.mappingEditor(strings.objects.stroke, "stroke", {}),
+          manager.mappingEditor(strings.objects.fill, "fill", {
+            searchSection: strings.objects.style,
+          }),
+          manager.mappingEditor(strings.objects.stroke, "stroke", {
+            searchSection: strings.objects.style,
+          }),
           this.object.mappings.stroke != null
             ? manager.mappingEditor(
                 strings.objects.strokeWidth,
@@ -228,6 +252,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
                     sliderRange: [0, 5],
                     minimum: 0,
                   },
+                  searchSection: strings.objects.style,
                 }
               )
             : null,
@@ -240,6 +265,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
               maximum: 1,
               step: 0.1,
             },
+            searchSection: strings.objects.style,
           }),
         ]
       ),

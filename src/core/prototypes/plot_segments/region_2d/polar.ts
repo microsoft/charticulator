@@ -808,31 +808,71 @@ export class PolarPlotSegment extends PlotSegmentClass<
           header: strings.objects.plotSegment.polarCoordinates,
         },
         [
-          manager.vertical(
-            manager.label(strings.objects.plotSegment.angle),
-            manager.horizontal(
-              [1, 0, 1],
-              manager.inputNumber({ property: "startAngle" }),
-              manager.label("-"),
-              manager.inputNumber({ property: "endAngle" })
-            )
+          manager.searchWrapper(
+            {
+              searchPattern: [
+                strings.objects.plotSegment.polarCoordinates,
+                strings.objects.plotSegment.angle,
+              ],
+            },
+            [
+              manager.label(strings.objects.plotSegment.angle, {
+                ignoreSearch: true,
+              }),
+              manager.horizontal(
+                [1, 0, 1],
+                manager.inputNumber(
+                  { property: "startAngle" },
+                  { ignoreSearch: true }
+                ),
+                manager.label("-", { ignoreSearch: true }),
+                manager.inputNumber(
+                  { property: "endAngle" },
+                  { ignoreSearch: true }
+                )
+              ),
+            ]
           ),
-          manager.vertical(
-            manager.label(strings.objects.plotSegment.radius),
-            manager.horizontal(
-              [0, 1, 0, 1],
-              manager.label(strings.objects.plotSegment.inner),
-              manager.inputNumber({ property: "innerRatio" }),
-              manager.label(strings.objects.plotSegment.outer),
-              manager.inputNumber({ property: "outerRatio" }, { maximum: 1 })
-            )
+          manager.searchWrapper(
+            {
+              searchPattern: [
+                strings.objects.plotSegment.polarCoordinates,
+                strings.objects.plotSegment.radius,
+                strings.objects.plotSegment.inner,
+                strings.objects.plotSegment.outer,
+              ],
+            },
+            [
+              manager.label(strings.objects.plotSegment.radius, {
+                ignoreSearch: true,
+              }),
+              manager.horizontal(
+                [0, 1, 0, 1],
+                manager.label(strings.objects.plotSegment.inner, {
+                  ignoreSearch: true,
+                }),
+                manager.inputNumber(
+                  { property: "innerRatio" },
+                  { ignoreSearch: true }
+                ),
+                manager.label(strings.objects.plotSegment.outer, {
+                  ignoreSearch: true,
+                }),
+                manager.inputNumber(
+                  { property: "outerRatio" },
+                  { maximum: 1, ignoreSearch: true }
+                )
+              ),
+            ]
           ),
+
           manager.inputBoolean(
             { property: "autoAlignment" },
             {
               type: "checkbox",
               label: strings.objects.plotSegment.autoAlignment,
               headerLabel: strings.objects.plotSegment.origin,
+              searchSection: strings.objects.plotSegment.polarCoordinates,
             }
           ),
           manager.inputBoolean(
@@ -841,6 +881,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
               type: "checkbox",
               label: strings.objects.plotSegment.heightToArea,
               headerLabel: strings.objects.plotSegment.equalizeArea,
+              searchSection: strings.objects.plotSegment.polarCoordinates,
             }
           ),
         ]

@@ -268,6 +268,7 @@ export const strings = {
     cancel: "Cancel",
     savedButton: "Saved",
     saveNested: "Save Nested Chart",
+    editNestedChart: "Edit Nested Chart...",
     closeNested: "Close",
     undo: "Undo (Ctrl-Z)",
   },
@@ -409,6 +410,8 @@ export const strings = {
     roundY: "Round Y",
     dropData: "drop here to assign data",
     dropTickData: "Tick data: drop here to assign tick data",
+    toolTips: "Tooltips",
+    selection: "Selection",
     axes: {
       data: "Data",
       numericalSuffix: ": Numerical",
@@ -521,6 +524,8 @@ export const strings = {
     },
     line: {
       lineStyle: "Line Style",
+      xSpan: "X Span",
+      ySpan: "Y Span",
     },
     anchor: {
       label: "(drag the anchor in the glyph editor)",
@@ -591,10 +596,17 @@ export const strings = {
       second: "Second",
       menuSuffix: " Derived columns ",
     },
+    nestedChart: {
+      sizeAndShape: "Size & Shape",
+    },
   },
   reOrder: {
     reverse: "Reverse",
     sort: "Sort",
     reset: "Reset",
+  },
+  panels: {
+    collapseAllCategories: "Collapse all categories",
+    expandAllCategories: "Expand all categories",
   },
 };
