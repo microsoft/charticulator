@@ -42,7 +42,7 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
     : isCollapsed === undefined
     ? false
     : isCollapsed;
-  const [groupState, setIsCollapsed] = React.useState<boolean>(collapsePanel);
+  const [groupState, setGroupState] = React.useState<boolean>(collapsePanel);
   const [calloutVisible, setCalloutVisible] = React.useState(false);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
       : isCollapsed === undefined
       ? false
       : isCollapsed;
-    setIsCollapsed(collapsePanel);
+    setGroupState(collapsePanel);
   }, [store, store.collapseOrExpandPanelsType, isCollapsed]);
 
   const calloutId = `calloutId-${getRandomNumber()}`;
@@ -75,7 +75,7 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
                 {...props}
                 styles={groupHeaderStyles}
                 onToggleCollapse={(group) => {
-                  setIsCollapsed(!group.isCollapsed);
+                  setGroupState(!group.isCollapsed);
                   if (store) {
                     store.dispatcher.dispatch(
                       new Actions.ExpandOrCollapsePanelsUpdated(
@@ -86,7 +86,7 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
                 }}
                 onGroupHeaderClick={(group) => {
                   props.onToggleCollapse(group);
-                  setIsCollapsed(group.isCollapsed);
+                  setGroupState(group.isCollapsed);
                 }}
                 onRenderTitle={
                   typeof header === "string"

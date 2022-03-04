@@ -597,7 +597,7 @@ export const strings = {
       menuSuffix: " Derived columns ",
     },
     nestedChart: {
-      sizeAnsShape: "Size & Shape",
+      sizeAndShape: "Size & Shape",
     },
   },
   reOrder: {

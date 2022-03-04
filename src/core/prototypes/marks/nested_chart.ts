@@ -84,26 +84,26 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
   ): Controls.Widget[] {
     return [
       manager.verticalGroup(
-        { header: strings.objects.nestedChart.sizeAnsShape },
+        { header: strings.objects.nestedChart.sizeAndShape },
         [
           manager.mappingEditor(strings.objects.width, "width", {
             hints: { autoRange: true, startWithZero: "always" },
             acceptKinds: [Specification.DataKind.Numerical],
             defaultAuto: true,
-            searchSection: strings.objects.nestedChart.sizeAnsShape,
+            searchSection: strings.objects.nestedChart.sizeAndShape,
           }),
           manager.mappingEditor(strings.objects.height, "height", {
             hints: { autoRange: true, startWithZero: "always" },
             acceptKinds: [Specification.DataKind.Numerical],
             defaultAuto: true,
-            searchSection: strings.objects.nestedChart.sizeAnsShape,
+            searchSection: strings.objects.nestedChart.sizeAndShape,
           }),
           manager.mappingEditor(
             strings.objects.visibleOn.visibility,
             "visible",
             {
               defaultValue: true,
-              searchSection: strings.objects.nestedChart.sizeAnsShape,
+              searchSection: strings.objects.nestedChart.sizeAndShape,
             }
           ),
           manager.nestedChartEditor(
@@ -114,7 +114,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
               // filterCondition: this.getFilterCondition(),
               width: this.state.attributes.width,
               height: this.state.attributes.height,
-              searchSection: strings.objects.nestedChart.sizeAnsShape,
+              searchSection: strings.objects.nestedChart.sizeAndShape,
             }
           ),
         ]
