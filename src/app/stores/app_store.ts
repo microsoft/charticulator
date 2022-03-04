@@ -64,6 +64,7 @@ import {
   AxisDataBinding,
   AxisDataBindingType,
   AxisRenderingStyle,
+  CollapseOrExpandPanels,
   NumericalMode,
   OrderMode,
   TickFormatType,
@@ -190,6 +191,10 @@ export class AppStore extends BaseStore {
   };
   public currentTool: string;
   public currentToolOptions: string;
+  public searchString: string = "";
+
+  public collapseOrExpandPanelsType: CollapseOrExpandPanels =
+    CollapseOrExpandPanels.Expand;
 
   public chartManager: Prototypes.ChartStateManager;
 

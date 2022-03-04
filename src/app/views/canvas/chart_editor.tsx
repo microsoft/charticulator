@@ -897,6 +897,9 @@ export class ChartEditorView
                   new Actions.SelectChartElement(layout, null).dispatch(
                     this.props.store.dispatcher
                   );
+                  this.props.store.dispatcher.dispatch(
+                    new Actions.SearchUpdated("")
+                  );
                 }}
               />
             );

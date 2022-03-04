@@ -136,6 +136,7 @@ export class NumericalColorLegendClass extends LegendClass {
                 : strings.objects.height,
               updownTick: 10,
               showUpdown: true,
+              searchSection: strings.objects.legend.numericalColorLegend,
             }
           ),
           manager.inputSelect(
@@ -150,6 +151,7 @@ export class NumericalColorLegendClass extends LegendClass {
               ],
               options: [OrientationType.VERTICAL, OrientationType.HORIZONTAL],
               label: strings.objects.legend.orientation,
+              searchSection: strings.objects.legend.numericalColorLegend,
             }
           ),
         ]

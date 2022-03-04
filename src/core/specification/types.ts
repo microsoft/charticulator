@@ -183,3 +183,9 @@ export interface GroupBy extends AttributeMap {
 export interface SortBy extends AttributeMap {
   expression?: Expression;
 }
+
+export enum CollapseOrExpandPanels {
+  Collapse = "collapse",
+  Expand = "expand",
+  Custom = "custom",
+}

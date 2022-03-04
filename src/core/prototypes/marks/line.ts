@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Point, rgbToHex, Color } from "../../common";
+import { Color, Point, rgbToHex } from "../../common";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
+import { DataKind, MappingType } from "../../specification";
 import {
   lineAttributes,
   LineElementAttributes,
@@ -25,7 +26,6 @@ import {
 import * as Graphics from "../../graphics";
 import { EmphasizableMarkClass } from "./emphasis";
 import { ChartStateManager } from "../state";
-import { DataKind, MappingType } from "../../specification";
 import { strings } from "../../../strings";
 import { RectangleGlyph } from "../glyphs";
 
@@ -318,19 +318,26 @@ export class LineElementClass extends EmphasizableMarkClass<
           header: strings.toolbar.line,
         },
         [
-          manager.mappingEditor("X Span", "dx", {
+          manager.mappingEditor(strings.objects.line.xSpan, "dx", {
             hints: { autoRange: true, startWithZero: "always" },
             acceptKinds: [Specification.DataKind.Numerical],
             defaultAuto: true,
+            searchSection: strings.toolbar.line,
           }),
-          manager.mappingEditor("Y Span", "dy", {
+          manager.mappingEditor(strings.objects.line.ySpan, "dy", {
             hints: { autoRange: true, startWithZero: "always" },
             acceptKinds: [Specification.DataKind.Numerical],
             defaultAuto: true,
+            searchSection: strings.toolbar.line,
           }),
-          manager.mappingEditor("Visibility", "visible", {
-            defaultValue: true,
-          }),
+          manager.mappingEditor(
+            strings.objects.visibleOn.visibility,
+            "visible",
+            {
+              defaultValue: true,
+              searchSection: strings.toolbar.line,
+            }
+          ),
         ]
       ),
       manager.verticalGroup(
@@ -338,7 +345,9 @@ export class LineElementClass extends EmphasizableMarkClass<
           header: strings.objects.style,
         },
         [
-          manager.mappingEditor(strings.objects.stroke, "stroke", {}),
+          manager.mappingEditor(strings.objects.stroke, "stroke", {
+            searchSection: strings.objects.style,
+          }),
           manager.mappingEditor(strings.objects.strokeWidth, "strokeWidth", {
             hints: { rangeNumber: [0, 5] },
             defaultValue: 1,
@@ -347,6 +356,7 @@ export class LineElementClass extends EmphasizableMarkClass<
               sliderRange: [0, 10],
               minimum: 0,
             },
+            searchSection: strings.objects.style,
           }),
           manager.inputSelect(
             { property: "strokeStyle" },
@@ -355,9 +365,14 @@ export class LineElementClass extends EmphasizableMarkClass<
               showLabel: true,
               icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
               isLocalIcons: true,
-              labels: ["Solid", "Dashed", "Dotted"],
+              labels: [
+                strings.objects.links.solid,
+                strings.objects.links.dashed,
+                strings.objects.links.dotted,
+              ],
               options: ["solid", "dashed", "dotted"],
               label: strings.objects.line.lineStyle,
+              searchSection: strings.objects.style,
             }
           ),
           manager.mappingEditor(strings.objects.opacity, "opacity", {
@@ -369,6 +384,7 @@ export class LineElementClass extends EmphasizableMarkClass<
               maximum: 1,
               step: 0.1,
             },
+            searchSection: strings.objects.style,
           }),
         ]
       ),
