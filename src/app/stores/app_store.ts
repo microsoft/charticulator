@@ -1888,7 +1888,7 @@ export class AppStore extends BaseStore {
         <string[]>objectProperties?.orderByCategories !== undefined
           ? <string[]>objectProperties?.orderByCategories
           : orderByCategories,
-      orderByExpression: <string>objectProperties?.orderByExpression ?? column,
+      orderByExpression: column,
       numberOfTicks:
         <number>objectProperties?.numberOfTicks !== undefined
           ? <number>objectProperties?.numberOfTicks
@@ -1932,8 +1932,8 @@ export class AppStore extends BaseStore {
     let values: ValueType[] = [];
     if (
       appendToProperty == "dataExpressions" &&
-      dataBinding.domainMax !== undefined &&
-      dataBinding.domainMin !== undefined
+      dataBinding.domainMax != undefined &&
+      dataBinding.domainMin != undefined
     ) {
       // save current range of scale if user adds data
       values = values.concat(dataBinding.domainMax, dataBinding.domainMin);
@@ -1962,15 +1962,7 @@ export class AppStore extends BaseStore {
               dataExpression.valueType,
               values
             );
-            try {
-              dataBinding.orderByCategories = this.getCategoriesForOrderByColumn(
-                dataBinding.orderByExpression,
-                dataBinding.expression,
-                dataBinding
-              );
-            } catch (e) {
-              dataBinding.orderByCategories = deepClone(categories);
-            }
+            dataBinding.orderByCategories = deepClone(categories);
             dataBinding.order = order != undefined ? order : null;
             dataBinding.allCategories = deepClone(categories);
 
