@@ -193,7 +193,16 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
       plotSegmentClass.object.table
     );
     let columnNameMap = this.object.properties.columnNameMap;
-    if (columnNameMap == null) {
+    if (table.columns.length === Object.keys(columnNameMap).length) {
+      if (columnNameMap == null) {
+        columnNameMap = {};
+        for (const c of table.columns) {
+          columnNameMap[c.name] = c.name;
+        }
+        this.object.properties.columnNameMap = columnNameMap;
+      }
+    } else {
+      //update columns
       columnNameMap = {};
       for (const c of table.columns) {
         columnNameMap[c.name] = c.name;

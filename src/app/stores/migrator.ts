@@ -610,8 +610,10 @@ export class Migrator {
             element.properties.xData.offset = 0;
             element.properties.xData.tickFormatType = TickFormatType.None;
             if (element.properties.xData?.style) {
-              element.properties.xData.style.showTicks = true;
-              element.properties.xData.style.showBaseline = true;
+              element.properties.xData.style.showTicks =
+                element.properties.xData.style.showTicks ?? true;
+              element.properties.xData.style.showBaseline =
+                element.properties.xData.style.showBaseline ?? true;
             }
           }
           if (element.properties.yData) {
@@ -624,8 +626,10 @@ export class Migrator {
             element.properties.yData.offset = 0;
             element.properties.yData.tickFormatType = TickFormatType.None;
             if (element.properties.yData?.style) {
-              element.properties.yData.style.showTicks = true;
-              element.properties.yData.style.showBaseline = true;
+              element.properties.yData.style.showTicks =
+                element.properties.yData.style.showTicks ?? true;
+              element.properties.yData.style.showBaseline =
+                element.properties.yData.style.showBaseline ?? true;
             }
           }
         }
@@ -717,8 +721,10 @@ export class Migrator {
               element.properties.xData
             );
             if (element.properties.xData?.style) {
-              element.properties.xData.style.showTicks = true;
-              element.properties.xData.style.showBaseline = true;
+              element.properties.xData.style.showTicks =
+                element.properties.xData.style.showTicks ?? true;
+              element.properties.xData.style.showBaseline =
+                element.properties.xData.style.showBaseline ?? true;
             }
             element.properties.xData.offset = 0;
             element.properties.xData.barOffset = 0;
@@ -742,8 +748,10 @@ export class Migrator {
               element.properties.yData
             );
             if (element.properties.yData?.style) {
-              element.properties.yData.style.showTicks = true;
-              element.properties.yData.style.showBaseline = true;
+              element.properties.yData.style.showTicks =
+                element.properties.yData.style.showTicks ?? true;
+              element.properties.yData.style.showBaseline =
+                element.properties.yData.style.showBaseline ?? true;
             }
             element.properties.yData.offset = 0;
             element.properties.yData.barOffset = 0;
@@ -771,8 +779,10 @@ export class Migrator {
               element.properties.xData
             );
             if (element.properties.xData?.style) {
-              element.properties.xData.style.showTicks = true;
-              element.properties.xData.style.showBaseline = true;
+              element.properties.xData.style.showTicks =
+                element.properties.xData.style.showTicks ?? true;
+              element.properties.xData.style.showBaseline =
+                element.properties.xData.style.showBaseline ?? true;
             }
             element.properties.xData.offset = 0;
             element.properties.xData.barOffset = 0;
@@ -795,8 +805,10 @@ export class Migrator {
               element.properties.yData
             );
             if (element.properties.yData?.style) {
-              element.properties.yData.style.showTicks = true;
-              element.properties.yData.style.showBaseline = true;
+              element.properties.yData.style.showTicks =
+                element.properties.yData.style.showTicks ?? true;
+              element.properties.yData.style.showBaseline =
+                element.properties.yData.style.showBaseline ?? true;
             }
             if (element.properties.yData.orderByCategories == undefined) {
               element.properties.yData.orderByCategories =
@@ -820,8 +832,10 @@ export class Migrator {
           if (element.properties.axis) {
             element.properties.axis = this.updateAxis(element.properties.axis);
             if (element.properties.axis?.style) {
-              element.properties.axis.style.showBaseline = true;
-              element.properties.axis.style.showTicks = true;
+              element.properties.axis.style.showBaseline =
+                element.properties.axis.style.showBaseline ?? true;
+              element.properties.axis.style.showTicks =
+                element.properties.axis.style.showTicks ?? true;
             }
             if (element.properties.axis.orderByCategories == undefined) {
               element.properties.axis.orderByCategories =
@@ -845,8 +859,10 @@ export class Migrator {
               element.properties.xData
             );
             if (element.properties.xData?.style) {
-              element.properties.xData.style.showTicks = true;
-              element.properties.xData.style.showBaseline = true;
+              element.properties.xData.style.showTicks =
+                element.properties.xData.style.showTicks ?? true;
+              element.properties.xData.style.showBaseline =
+                element.properties.xData.style.showBaseline ?? true;
             }
             element.properties.xData.offset = 0;
             element.properties.xData.barOffset = 0;
@@ -869,8 +885,10 @@ export class Migrator {
               element.properties.yData
             );
             if (element.properties.yData?.style) {
-              element.properties.yData.style.showTicks = true;
-              element.properties.yData.style.showBaseline = true;
+              element.properties.yData.style.showTicks =
+                element.properties.yData.style.showTicks ?? true;
+              element.properties.yData.style.showBaseline =
+                element.properties.yData.style.showBaseline ?? true;
             }
             if (element.properties.yData.orderByCategories == undefined) {
               element.properties.yData.orderByCategories =
@@ -909,8 +927,10 @@ export class Migrator {
             element.properties.axis.barOffset = 0;
 
             if (element.properties.axis?.style) {
-              element.properties.axis.style.showBaseline = true;
-              element.properties.axis.style.showTicks = true;
+              element.properties.axis.style.showBaseline =
+                element.properties.axis.style.showBaseline ?? true;
+              element.properties.axis.style.showTicks =
+                element.properties.axis.style.showTicks ?? true;
             }
           }
           if (element.properties.axis === undefined) {
@@ -932,8 +952,10 @@ export class Migrator {
             element.properties.axis.enableSelection = true;
 
             if (element.properties.axis.style) {
-              element.properties.axis.style.showBaseline = true;
-              element.properties.axis.style.showTicks = true;
+              element.properties.axis.style.showBaseline =
+                element.properties.axis.style.showBaseline ?? true;
+              element.properties.axis.style.showTicks =
+                element.properties.axis.style.showTicks ?? true;
             }
           }
           if (element.properties.axis === undefined) {
