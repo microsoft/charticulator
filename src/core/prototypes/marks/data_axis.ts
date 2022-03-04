@@ -415,7 +415,7 @@ export class DataAxisClass extends MarkClass<
                   { table: this.getGlyphClass().object.table }
                 );
                 return React.createElement(
-                  "fragment",
+                  "Fragment",
                   { key: index },
                   expressionInput
                 );
