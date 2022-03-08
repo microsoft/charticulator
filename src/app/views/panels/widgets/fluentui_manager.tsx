@@ -1434,9 +1434,9 @@ export class FluentUIWidgetManager
   }
 
   public label(title: string, options?: Prototypes.Controls.LabelOptions) {
-    const searchSections = Array.isArray(options.searchSection)
-      ? options.searchSection
-      : [options.searchSection];
+    const searchSections = Array.isArray(options?.searchSection)
+      ? options?.searchSection
+      : [options?.searchSection];
     if (!options?.ignoreSearch && !this.shouldDrawComponent(searchSections)) {
       return;
     }
