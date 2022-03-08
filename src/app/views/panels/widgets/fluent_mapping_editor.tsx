@@ -846,36 +846,40 @@ export class FluentMappingEditor extends React.Component<
           }
 
           expression = expression?.split("`").join("");
-          const aggContainer = document.querySelector(
-            "body :last-child.ms-Layer"
-          );
-          const xpath = `//ul//span[contains(text(), "${expression}")]`;
-          const menuItem = document.evaluate(
-            xpath,
-            aggContainer,
-            null,
-            XPathResult.FIRST_ORDERED_NODE_TYPE,
-            null
-          ).singleNodeValue as HTMLSpanElement;
-
-          if (menuItem == null) {
-            const derSubXpath = `//ul//span[contains(text(), "${derivedExpression}")]`;
-            const derElement = document.evaluate(
-              derSubXpath,
-              document,
+          try {
+            const aggContainer = document.querySelector(
+              "body :last-child.ms-Layer"
+            );
+            const xpath = `//ul//span[contains(text(), "${expression}")]`;
+            const menuItem = document.evaluate(
+              xpath,
+              aggContainer,
               null,
               XPathResult.FIRST_ORDERED_NODE_TYPE,
               null
             ).singleNodeValue as HTMLSpanElement;
-            setTimeout(() => {
-              derElement?.click();
-              FluentMappingEditor.menuKeyClick(derivedExpression);
-            });
-          } else {
-            setTimeout(() => {
-              menuItem?.click();
-              FluentMappingEditor.menuKeyClick(derivedExpression);
-            }, 0);
+
+            if (menuItem == null) {
+              const derSubXpath = `//ul//span[contains(text(), "${derivedExpression}")]`;
+              const derElement = document.evaluate(
+                derSubXpath,
+                document,
+                null,
+                XPathResult.FIRST_ORDERED_NODE_TYPE,
+                null
+              ).singleNodeValue as HTMLSpanElement;
+              setTimeout(() => {
+                derElement?.click();
+                FluentMappingEditor.menuKeyClick(derivedExpression);
+              });
+            } else {
+              setTimeout(() => {
+                menuItem?.click();
+                FluentMappingEditor.menuKeyClick(derivedExpression);
+              }, 0);
+            }
+          } catch (e) {
+            console.log(e);
           }
         }
       }, 0);

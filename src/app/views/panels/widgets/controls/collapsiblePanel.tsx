@@ -47,12 +47,12 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
 
   useEffect(() => {
     const collapsePanel = store
-      ? store.collapseOrExpandPanelsType === CollapseOrExpandPanels.Collapse
+      ? store?.collapseOrExpandPanelsType === CollapseOrExpandPanels.Collapse
       : isCollapsed === undefined
       ? false
       : isCollapsed;
     setGroupState(collapsePanel);
-  }, [store, store.collapseOrExpandPanelsType, isCollapsed]);
+  }, [store, store?.collapseOrExpandPanelsType, isCollapsed]);
 
   const calloutId = `calloutId-${getRandomNumber()}`;
 
