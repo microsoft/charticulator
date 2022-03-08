@@ -19,7 +19,7 @@ import {
 } from "../../../core";
 import { Actions, DragData } from "../../actions";
 import { DragContext, Droppable } from "../../controllers";
-import { GraphicalElementDisplay } from "../../renderer";
+import { GraphicalElementDisplay, renderSVGDefs } from "../../renderer";
 import {
   ChartElementSelection,
   AppStore,
@@ -399,8 +399,7 @@ export class ChartEditorView
             );
             const opt = JSON.parse(options);
             for (const key in opt) {
-              // eslint-disable-next-line
-              if (opt.hasOwnProperty(key)) {
+              if (Object.prototype.hasOwnProperty.call(opt, key)) {
                 attributes[key] = opt[key];
               }
             }
@@ -787,8 +786,7 @@ export class ChartEditorView
               const updates = session.getUpdates(session.handleEnd(e));
               if (updates) {
                 for (const name in updates) {
-                  // eslint-disable-next-line
-                  if (!updates.hasOwnProperty(name)) {
+                  if (!Object.prototype.hasOwnProperty.call(updates, name)) {
                     continue;
                   }
                   new Actions.SetChartAttribute(name, {
@@ -1045,7 +1043,7 @@ export class ChartEditorView
                   return null;
                 }
                 return (
-                  <>
+                  <React.Fragment key={`canvas`}>
                     <div
                       className="charticulator__canvas-popup"
                       key={`m${index}`}
@@ -1078,7 +1076,7 @@ export class ChartEditorView
                         ...controls.widgets
                       )}
                     </Callout>
-                  </>
+                  </React.Fragment>
                 );
               }
             }
@@ -1430,6 +1428,7 @@ export class ChartEditorView
             width={width}
             height={height}
           >
+            <defs>{renderSVGDefs(this.state.graphics)}</defs>
             <rect
               className="interaction-handler"
               ref="canvasInteraction"

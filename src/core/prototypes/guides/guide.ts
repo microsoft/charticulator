@@ -369,6 +369,7 @@ export class GuideClass extends ChartElementClass<
         attribute,
         visible: true,
         visualType: SnappingGuidesVisualTypes.Guide,
+        priority: 1,
       };
     };
     const r = [

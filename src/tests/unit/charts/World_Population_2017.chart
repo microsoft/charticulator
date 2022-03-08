@@ -1,0 +1,2852 @@
+{
+  "state": {
+    "version": "2.1.1",
+    "dataset": {
+      "name": "World Population 2017",
+      "tables": [
+        {
+          "name": "world_population_2017",
+          "displayName": "world_population_2017",
+          "columns": [
+            {
+              "name": "Age",
+              "displayName": "Age",
+              "type": "string",
+              "metadata": {
+                "kind": "categorical",
+                "unit": null,
+                "orderMode": "alphabetically",
+                "order": null,
+                "rawColumnName": null,
+                "isRaw": null,
+                "format": null,
+                "examples": null
+              }
+            },
+            {
+              "name": "Female",
+              "displayName": "Female",
+              "type": "number",
+              "metadata": {
+                "kind": "numerical",
+                "unit": null,
+                "order": null,
+                "orderMode": null,
+                "rawColumnName": null,
+                "isRaw": null,
+                "format": null,
+                "examples": null
+              }
+            },
+            {
+              "name": "Male",
+              "displayName": "Male",
+              "type": "number",
+              "metadata": {
+                "kind": "numerical",
+                "unit": null,
+                "order": null,
+                "orderMode": null,
+                "rawColumnName": null,
+                "isRaw": null,
+                "format": null,
+                "examples": null
+              }
+            }
+          ],
+          "rows": [
+            {
+              "_id": "0",
+              "Age": "0-4",
+              "Female": 327601,
+              "Male": 350321
+            },
+            {
+              "_id": "1",
+              "Age": "5-9",
+              "Female": 316714,
+              "Male": 338892
+            },
+            {
+              "_id": "2",
+              "Age": "10-14",
+              "Female": 301011,
+              "Male": 322363
+            },
+            {
+              "_id": "3",
+              "Age": "15-19",
+              "Female": 288482,
+              "Male": 308333
+            },
+            {
+              "_id": "4",
+              "Age": "20-24",
+              "Female": 287820,
+              "Male": 306100
+            },
+            {
+              "_id": "5",
+              "Age": "25-29",
+              "Female": 298802,
+              "Male": 313635
+            },
+            {
+              "_id": "6",
+              "Age": "30-34",
+              "Female": 284628,
+              "Male": 294299
+            },
+            {
+              "_id": "7",
+              "Age": "35-39",
+              "Female": 254272,
+              "Male": 260623
+            },
+            {
+              "_id": "8",
+              "Age": "40-44",
+              "Female": 241212,
+              "Male": 246733
+            },
+            {
+              "_id": "9",
+              "Age": "45-49",
+              "Female": 232150,
+              "Male": 235016
+            },
+            {
+              "_id": "10",
+              "Age": "50-54",
+              "Female": 210913,
+              "Male": 210672
+            },
+            {
+              "_id": "11",
+              "Age": "55-59",
+              "Female": 180543,
+              "Male": 176861
+            },
+            {
+              "_id": "12",
+              "Age": "60-64",
+              "Female": 156485,
+              "Male": 149018
+            },
+            {
+              "_id": "13",
+              "Age": "65-69",
+              "Female": 124190,
+              "Male": 113766
+            },
+            {
+              "_id": "14",
+              "Age": "70-74",
+              "Female": 87781,
+              "Male": 76413
+            },
+            {
+              "_id": "15",
+              "Age": "75-79",
+              "Female": 65132,
+              "Male": 52196
+            },
+            {
+              "_id": "16",
+              "Age": "80-84",
+              "Female": 44715,
+              "Male": 31985
+            },
+            {
+              "_id": "17",
+              "Age": "85-89",
+              "Female": 24933,
+              "Male": 15256
+            },
+            {
+              "_id": "18",
+              "Age": "90-94",
+              "Female": 10710,
+              "Male": 5262
+            },
+            {
+              "_id": "19",
+              "Age": "95-99",
+              "Female": 2851,
+              "Male": 1087
+            },
+            {
+              "_id": "20",
+              "Age": "100+",
+              "Female": 384,
+              "Male": 102
+            }
+          ],
+          "type": "Main",
+          "localeNumberFormat": {
+            "decimal": ",",
+            "remove": "."
+          }
+        }
+      ]
+    },
+    "chart": {
+      "_id": "hog1pzx9oz",
+      "classID": "chart.rectangle",
+      "properties": {
+        "name": "Chart",
+        "backgroundColor": null,
+        "backgroundOpacity": 1,
+        "enableContextMenu": true,
+        "exposed": true
+      },
+      "mappings": {
+        "marginTop": {
+          "type": "value",
+          "value": 80
+        },
+        "width": {
+          "type": "value",
+          "value": 900
+        },
+        "height": {
+          "type": "value",
+          "value": 600
+        },
+        "marginRight": {
+          "type": "value",
+          "value": 100
+        }
+      },
+      "glyphs": [
+        {
+          "_id": "x279xlm506o",
+          "classID": "glyph.rectangle",
+          "properties": {
+            "name": "Glyph"
+          },
+          "table": "world_population_2017",
+          "marks": [
+            {
+              "_id": "lhqan8bywar",
+              "classID": "mark.anchor",
+              "properties": {
+                "name": "Anchor"
+              },
+              "mappings": {
+                "x": {
+                  "type": "parent",
+                  "parentAttribute": "icx"
+                },
+                "y": {
+                  "type": "parent",
+                  "parentAttribute": "icy"
+                }
+              }
+            },
+            {
+              "_id": "77usk1mf1tw",
+              "classID": "mark.data-axis",
+              "properties": {
+                "enableTooltips": true,
+                "enableContextMenu": true,
+                "enableSelection": true,
+                "exposed": true,
+                "dataExpressions": [
+                  {
+                    "name": "jzgl442v0m",
+                    "expression": "avg(Female)"
+                  }
+                ],
+                "axis": {
+                  "type": "numerical",
+                  "expression": "avg(Female)",
+                  "rawExpression": "first(Female)",
+                  "valueType": "number",
+                  "gapRatio": 0.1,
+                  "visible": true,
+                  "side": "default",
+                  "style": {
+                    "tickColor": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "tickTextBackgroudColor": null,
+                    "tickTextBackgroudColorId": null,
+                    "showTicks": true,
+                    "showBaseline": true,
+                    "lineColor": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "fontFamily": "Segoe UI",
+                    "fontSize": 12,
+                    "tickSize": 5,
+                    "wordWrap": false,
+                    "verticalText": false,
+                    "gridlineStyle": "none",
+                    "gridlineColor": {
+                      "r": 234,
+                      "g": 234,
+                      "b": 234
+                    },
+                    "gridlineWidth": 1
+                  },
+                  "numericalMode": "linear",
+                  "dataKind": "numerical",
+                  "order": null,
+                  "orderMode": null,
+                  "autoDomainMax": false,
+                  "autoDomainMin": true,
+                  "tickFormat": null,
+                  "tickDataExpression": null,
+                  "tickFormatType": "none",
+                  "domainMin": 0,
+                  "domainMax": 400000,
+                  "dataDomainMin": null,
+                  "dataDomainMax": null,
+                  "enablePrePostGap": null,
+                  "categories": null,
+                  "allCategories": null,
+                  "scrollPosition": 0,
+                  "allowScrolling": false,
+                  "windowSize": 10,
+                  "barOffset": 0,
+                  "offset": 0,
+                  "onTop": false,
+                  "enableSelection": false
+                },
+                "visible": true,
+                "visibleOn": "first",
+                "name": "DataAxis1"
+              },
+              "mappings": {
+                "x1": {
+                  "type": "parent",
+                  "parentAttribute": "icx"
+                },
+                "y1": {
+                  "type": "parent",
+                  "parentAttribute": "iy1"
+                },
+                "x2": {
+                  "type": "parent",
+                  "parentAttribute": "ix1"
+                },
+                "y2": {
+                  "type": "parent",
+                  "parentAttribute": "iy1"
+                }
+              }
+            },
+            {
+              "_id": "ktdhixyp4sc",
+              "classID": "mark.rect",
+              "properties": {
+                "enableTooltips": true,
+                "enableContextMenu": true,
+                "enableSelection": true,
+                "exposed": true,
+                "visible": true,
+                "strokeStyle": "solid",
+                "shape": "rectangle",
+                "allowFlipping": true,
+                "rx": 0,
+                "ry": 0,
+                "name": "Shape1"
+              },
+              "mappings": {
+                "fill": {
+                  "type": "scale",
+                  "table": "world_population_2017",
+                  "expression": "get(list(get(get(world_population_2017.columns, 1), \"displayName\"), get(get(world_population_2017.columns, 2), \"displayName\")), 0)",
+                  "valueType": "string",
+                  "scale": "1qjs0ine1x6",
+                  "attribute": "fill",
+                  "valueIndex": 0
+                },
+                "strokeWidth": {
+                  "type": "value",
+                  "value": 1
+                },
+                "opacity": {
+                  "type": "value",
+                  "value": 1
+                },
+                "visible": {
+                  "type": "value",
+                  "value": true
+                },
+                "y1": {
+                  "type": "parent",
+                  "parentAttribute": "iy1"
+                },
+                "x2": {
+                  "type": "parent",
+                  "parentAttribute": "icx"
+                },
+                "y2": {
+                  "type": "parent",
+                  "parentAttribute": "iy2"
+                }
+              }
+            },
+            {
+              "_id": "dov2iexjxrn",
+              "classID": "mark.data-axis",
+              "properties": {
+                "enableTooltips": true,
+                "enableContextMenu": true,
+                "enableSelection": true,
+                "exposed": true,
+                "dataExpressions": [
+                  {
+                    "name": "llh27nykwvk",
+                    "expression": "avg(Male)"
+                  }
+                ],
+                "axis": {
+                  "type": "numerical",
+                  "expression": "avg(Male)",
+                  "rawExpression": "first(Male)",
+                  "valueType": "number",
+                  "gapRatio": 0.1,
+                  "visible": true,
+                  "side": "opposite",
+                  "style": {
+                    "tickColor": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "tickTextBackgroudColor": null,
+                    "tickTextBackgroudColorId": null,
+                    "showTicks": true,
+                    "showBaseline": true,
+                    "lineColor": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0
+                    },
+                    "fontFamily": "Segoe UI",
+                    "fontSize": 12,
+                    "tickSize": 5,
+                    "wordWrap": false,
+                    "verticalText": false,
+                    "gridlineStyle": "none",
+                    "gridlineColor": {
+                      "r": 234,
+                      "g": 234,
+                      "b": 234
+                    },
+                    "gridlineWidth": 1
+                  },
+                  "numericalMode": "linear",
+                  "dataKind": "numerical",
+                  "order": null,
+                  "orderMode": null,
+                  "autoDomainMax": true,
+                  "autoDomainMin": true,
+                  "tickFormat": null,
+                  "tickDataExpression": null,
+                  "tickFormatType": "none",
+                  "domainMin": 0,
+                  "domainMax": 400000,
+                  "dataDomainMin": null,
+                  "dataDomainMax": null,
+                  "enablePrePostGap": null,
+                  "categories": null,
+                  "allCategories": null,
+                  "scrollPosition": 0,
+                  "allowScrolling": false,
+                  "windowSize": 10,
+                  "barOffset": 0,
+                  "offset": 0,
+                  "onTop": false,
+                  "enableSelection": false
+                },
+                "visible": true,
+                "visibleOn": "first",
+                "name": "DataAxis2"
+              },
+              "mappings": {
+                "x1": {
+                  "type": "parent",
+                  "parentAttribute": "icx"
+                },
+                "y1": {
+                  "type": "parent",
+                  "parentAttribute": "iy1"
+                },
+                "x2": {
+                  "type": "parent",
+                  "parentAttribute": "ix2"
+                },
+                "y2": {
+                  "type": "parent",
+                  "parentAttribute": "iy1"
+                }
+              }
+            },
+            {
+              "_id": "7fmyltt3cft",
+              "classID": "mark.rect",
+              "properties": {
+                "enableTooltips": true,
+                "enableContextMenu": true,
+                "enableSelection": true,
+                "exposed": true,
+                "visible": true,
+                "strokeStyle": "solid",
+                "shape": "rectangle",
+                "allowFlipping": true,
+                "rx": 0,
+                "ry": 0,
+                "name": "Shape2"
+              },
+              "mappings": {
+                "fill": {
+                  "type": "scale",
+                  "table": "world_population_2017",
+                  "expression": "get(list(get(get(world_population_2017.columns, 1), \"displayName\"), get(get(world_population_2017.columns, 2), \"displayName\")), 1)",
+                  "valueType": "string",
+                  "scale": "1qjs0ine1x6",
+                  "attribute": "fill",
+                  "valueIndex": 0
+                },
+                "strokeWidth": {
+                  "type": "value",
+                  "value": 1
+                },
+                "opacity": {
+                  "type": "value",
+                  "value": 1
+                },
+                "visible": {
+                  "type": "value",
+                  "value": true
+                },
+                "x1": {
+                  "type": "parent",
+                  "parentAttribute": "icx"
+                },
+                "y1": {
+                  "type": "parent",
+                  "parentAttribute": "iy1"
+                },
+                "y2": {
+                  "type": "parent",
+                  "parentAttribute": "iy2"
+                }
+              }
+            }
+          ],
+          "mappings": {},
+          "constraints": [
+            {
+              "type": "snap",
+              "attributes": {
+                "element": "ktdhixyp4sc",
+                "attribute": "x1",
+                "targetElement": "77usk1mf1tw",
+                "targetAttribute": "anchorXjzgl442v0m",
+                "gap": 0
+              }
+            },
+            {
+              "type": "snap",
+              "attributes": {
+                "element": "7fmyltt3cft",
+                "attribute": "x2",
+                "targetElement": "dov2iexjxrn",
+                "targetAttribute": "anchorXllh27nykwvk",
+                "gap": 0
+              }
+            }
+          ]
+        }
+      ],
+      "elements": [
+        {
+          "_id": "szk0fg2a5kl",
+          "classID": "plot-segment.cartesian",
+          "glyph": "x279xlm506o",
+          "table": "world_population_2017",
+          "filter": null,
+          "mappings": {
+            "x1": {
+              "type": "parent",
+              "parentAttribute": "x1"
+            },
+            "y1": {
+              "type": "parent",
+              "parentAttribute": "y1"
+            },
+            "x2": {
+              "type": "parent",
+              "parentAttribute": "x2"
+            },
+            "y2": {
+              "type": "parent",
+              "parentAttribute": "y2"
+            }
+          },
+          "properties": {
+            "name": "PlotSegment1",
+            "visible": true,
+            "marginX1": 0,
+            "marginY1": 0,
+            "marginX2": 0,
+            "marginY2": 0,
+            "sublayout": {
+              "type": "dodge-x",
+              "order": null,
+              "ratioX": 0.1,
+              "ratioY": 0.1,
+              "align": {
+                "x": "start",
+                "y": "start"
+              },
+              "grid": {
+                "direction": "x",
+                "xCount": null,
+                "yCount": null,
+                "gridStartPosition": "LT"
+              },
+              "packing": {
+                "gravityX": 0.1,
+                "gravityY": 0.1
+              },
+              "jitter": {
+                "vertical": true,
+                "horizontal": true
+              }
+            },
+            "yData": {
+              "type": "categorical",
+              "expression": "first(Age)",
+              "rawExpression": "first(Age)",
+              "valueType": "string",
+              "gapRatio": 0.1,
+              "visible": true,
+              "side": "default",
+              "style": {
+                "tickColor": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0
+                },
+                "tickTextBackgroudColor": null,
+                "tickTextBackgroudColorId": null,
+                "showTicks": true,
+                "showBaseline": true,
+                "lineColor": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0
+                },
+                "fontFamily": "Segoe UI",
+                "fontSize": 12,
+                "tickSize": 5,
+                "wordWrap": false,
+                "verticalText": false,
+                "gridlineStyle": "none",
+                "gridlineColor": {
+                  "r": 234,
+                  "g": 234,
+                  "b": 234
+                },
+                "gridlineWidth": 1
+              },
+              "numericalMode": null,
+              "dataKind": "categorical",
+              "order": null,
+              "orderMode": "alphabetically",
+              "autoDomainMax": true,
+              "autoDomainMin": true,
+              "tickFormat": null,
+              "tickDataExpression": null,
+              "tickFormatType": "none",
+              "domainMin": null,
+              "domainMax": null,
+              "dataDomainMin": null,
+              "dataDomainMax": null,
+              "enablePrePostGap": null,
+              "categories": [
+                "100+",
+                "95-99",
+                "90-94",
+                "85-89",
+                "80-84",
+                "75-79",
+                "70-74",
+                "65-69",
+                "60-64",
+                "55-59",
+                "50-54",
+                "45-49",
+                "40-44",
+                "35-39",
+                "30-34",
+                "25-29",
+                "20-24",
+                "15-19",
+                "10-14",
+                "5-9",
+                "0-4"
+              ],
+              "allCategories": [
+                "100+",
+                "95-99",
+                "90-94",
+                "85-89",
+                "80-84",
+                "75-79",
+                "70-74",
+                "65-69",
+                "60-64",
+                "55-59",
+                "50-54",
+                "45-49",
+                "40-44",
+                "35-39",
+                "30-34",
+                "25-29",
+                "20-24",
+                "15-19",
+                "10-14",
+                "5-9",
+                "0-4"
+              ],
+              "scrollPosition": 0,
+              "allowScrolling": false,
+              "windowSize": 10,
+              "barOffset": 0,
+              "offset": 0,
+              "onTop": false,
+              "enableSelection": false
+            }
+          }
+        },
+        {
+          "_id": "kspgfjmd9lk",
+          "classID": "mark.text",
+          "properties": {
+            "name": "Title",
+            "visible": true,
+            "alignment": {
+              "x": "middle",
+              "y": "top",
+              "xMargin": 0,
+              "yMargin": 30
+            },
+            "rotation": 0
+          },
+          "mappings": {
+            "x": {
+              "type": "parent",
+              "parentAttribute": "cx"
+            },
+            "y": {
+              "type": "parent",
+              "parentAttribute": "oy2"
+            },
+            "text": {
+              "type": "value",
+              "value": "World Population 2017"
+            },
+            "fontSize": {
+              "type": "value",
+              "value": 24
+            },
+            "color": {
+              "type": "value",
+              "value": {
+                "r": 0,
+                "g": 0,
+                "b": 0
+              }
+            }
+          }
+        },
+        {
+          "_id": "t180zqcxl6",
+          "classID": "legend.custom",
+          "properties": {
+            "scale": "1qjs0ine1x6",
+            "visible": true,
+            "alignX": "start",
+            "alignY": "end",
+            "fontFamily": "Segoe UI",
+            "fontSize": 10,
+            "textColor": {
+              "r": 0,
+              "g": 0,
+              "b": 0
+            },
+            "dataSource": "columnValues",
+            "dataExpressions": [],
+            "markerShape": "circle",
+            "order": null,
+            "orientation": "vertical",
+            "name": "Legend1"
+          },
+          "mappings": {
+            "x": {
+              "type": "parent",
+              "parentAttribute": "x2"
+            },
+            "y": {
+              "type": "parent",
+              "parentAttribute": "y2"
+            },
+            "mappingOptions": {
+              "type": "scale",
+              "table": "world_population_2017",
+              "expression": "list(get(get(world_population_2017.columns, 1), \"displayName\"),get(get(world_population_2017.columns, 2), \"displayName\"))",
+              "valueType": "string",
+              "scale": "1qjs0ine1x6",
+              "allowSelectValue": true
+            }
+          }
+        }
+      ],
+      "scales": [
+        {
+          "_id": "1qjs0ine1x6",
+          "classID": "scale.categorical<string,color>",
+          "properties": {
+            "enableTooltips": true,
+            "enableContextMenu": true,
+            "enableSelection": true,
+            "exposed": true,
+            "name": "Scale1",
+            "autoDomainMin": true,
+            "autoDomainMax": true,
+            "mapping": {
+              "Female": {
+                "r": 253,
+                "g": 98,
+                "b": 94
+              },
+              "Male": {
+                "r": 17,
+                "g": 141,
+                "b": 255
+              }
+            }
+          },
+          "mappings": {},
+          "inputType": "string",
+          "outputType": "color"
+        }
+      ],
+      "scaleMappings": [
+        {
+          "type": "scale",
+          "table": "world_population_2017",
+          "expression": "get(list(get(get(world_population_2017.columns, 1), \"displayName\"),get(get(world_population_2017.columns, 2), \"displayName\")), 0)",
+          "valueType": "string",
+          "scale": "1qjs0ine1x6",
+          "attribute": "fill",
+          "valueIndex": 0
+        }
+      ],
+      "constraints": [],
+      "resources": []
+    },
+    "chartState": {
+      "elements": [
+        {
+          "attributes": {
+            "x1": -400,
+            "x2": 350,
+            "y1": -250,
+            "y2": 220,
+            "gapX": 4,
+            "gapY": 4,
+            "x": -100,
+            "y": 100
+          },
+          "dataRowIndices": [
+            [
+              0
+            ],
+            [
+              1
+            ],
+            [
+              2
+            ],
+            [
+              3
+            ],
+            [
+              4
+            ],
+            [
+              5
+            ],
+            [
+              6
+            ],
+            [
+              7
+            ],
+            [
+              8
+            ],
+            [
+              9
+            ],
+            [
+              10
+            ],
+            [
+              11
+            ],
+            [
+              12
+            ],
+            [
+              13
+            ],
+            [
+              14
+            ],
+            [
+              15
+            ],
+            [
+              16
+            ],
+            [
+              17
+            ],
+            [
+              18
+            ],
+            [
+              19
+            ],
+            [
+              20
+            ]
+          ],
+          "glyphs": [
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.0000000221463,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -307.12593751813785,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -307.12593751813785,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -153.56296875906892,
+                    "cy": 0,
+                    "width": 307.12593751813785,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.0000000221463,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 328.4259375193958,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 328.4259375193958,
+                    "y2": 10.071428571428568,
+                    "cx": 164.2129687596979,
+                    "cy": 0,
+                    "width": 328.4259375193958,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": -239.92857142857144,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": -250,
+                "x2": 350.000000044289,
+                "y2": -229.85714285714286,
+                "ix1": -375.0000000221463,
+                "iy1": -10.071428571428568,
+                "ix2": 375.0000000221463,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.0000000221463,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -296.9193750175351,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -296.9193750175351,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -148.45968750876756,
+                    "cy": 0,
+                    "width": 296.9193750175351,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.0000000221463,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 317.71125001876305,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 317.71125001876305,
+                    "y2": 10.071428571428568,
+                    "cx": 158.85562500938153,
+                    "cy": 0,
+                    "width": 317.71125001876305,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": -217.4357142857143,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": -227.50714285714287,
+                "x2": 350.000000044289,
+                "y2": -207.36428571428573,
+                "ix1": -375.0000000221463,
+                "iy1": -10.071428571428568,
+                "ix2": 375.0000000221463,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -282.19781251666575,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -282.19781251666575,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -141.09890625833287,
+                    "cy": 0,
+                    "width": 282.19781251666575,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 302.2153125178479,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 302.2153125178479,
+                    "y2": 10.071428571428568,
+                    "cx": 151.10765625892395,
+                    "cy": 0,
+                    "width": 302.2153125178479,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": -194.94285714285715,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": -205.0142857142857,
+                "x2": 350.000000044289,
+                "y2": -184.87142857142857,
+                "ix1": -375.00000002214637,
+                "iy1": -10.071428571428568,
+                "ix2": 375.00000002214637,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.0000000221463,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -270.451875015972,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -270.451875015972,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -135.225937507986,
+                    "cy": 0,
+                    "width": 270.451875015972,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.0000000221463,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 289.0621875170711,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 289.0621875170711,
+                    "y2": 10.071428571428568,
+                    "cx": 144.53109375853555,
+                    "cy": 0,
+                    "width": 289.0621875170711,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": -172.45000000000002,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": -182.52142857142857,
+                "x2": 350.000000044289,
+                "y2": -162.37857142857143,
+                "ix1": -375.0000000221463,
+                "iy1": -10.071428571428568,
+                "ix2": 375.0000000221463,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -269.83125001593544,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -269.83125001593544,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -134.91562500796772,
+                    "cy": 0,
+                    "width": 269.83125001593544,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 286.9687500169475,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 286.9687500169475,
+                    "y2": 10.071428571428568,
+                    "cx": 143.48437500847376,
+                    "cy": 0,
+                    "width": 286.9687500169475,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": -149.95714285714286,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": -160.0285714285714,
+                "x2": 350.000000044289,
+                "y2": -139.88571428571427,
+                "ix1": -375.00000002214637,
+                "iy1": -10.071428571428568,
+                "ix2": 375.00000002214637,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.0000000221463,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -280.1268750165434,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -280.1268750165434,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -140.0634375082717,
+                    "cy": 0,
+                    "width": 280.1268750165434,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.0000000221463,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 294.0328125173647,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 294.0328125173647,
+                    "y2": 10.071428571428568,
+                    "cx": 147.01640625868234,
+                    "cy": 0,
+                    "width": 294.0328125173647,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": -127.46428571428571,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": -137.53571428571428,
+                "x2": 350.000000044289,
+                "y2": -117.39285714285714,
+                "ix1": -375.0000000221463,
+                "iy1": -10.071428571428568,
+                "ix2": 375.0000000221463,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -266.8387500157587,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -266.8387500157587,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -133.41937500787935,
+                    "cy": 0,
+                    "width": 266.8387500157587,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 275.90531251629415,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 275.90531251629415,
+                    "y2": 10.071428571428568,
+                    "cx": 137.95265625814707,
+                    "cy": 0,
+                    "width": 275.90531251629415,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": -104.97142857142858,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": -115.04285714285714,
+                "x2": 350.000000044289,
+                "y2": -94.9,
+                "ix1": -375.00000002214637,
+                "iy1": -10.071428571428568,
+                "ix2": 375.00000002214637,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.0000000221463,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -238.38000001407798,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -238.38000001407798,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -119.19000000703899,
+                    "cy": 0,
+                    "width": 238.38000001407798,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.0000000221463,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 244.3340625144296,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 244.3340625144296,
+                    "y2": 10.071428571428568,
+                    "cx": 122.1670312572148,
+                    "cy": 0,
+                    "width": 244.3340625144296,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": -82.47857142857144,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": -92.55000000000001,
+                "x2": 350.000000044289,
+                "y2": -72.40714285714287,
+                "ix1": -375.0000000221463,
+                "iy1": -10.071428571428568,
+                "ix2": 375.0000000221463,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.0000000221463,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -226.13625001335487,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -226.13625001335487,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -113.06812500667743,
+                    "cy": 0,
+                    "width": 226.13625001335487,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.0000000221463,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 231.31218751366058,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 231.31218751366058,
+                    "y2": 10.071428571428568,
+                    "cx": 115.65609375683029,
+                    "cy": 0,
+                    "width": 231.31218751366058,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": -59.98571428571431,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": -70.05714285714288,
+                "x2": 350.000000044289,
+                "y2": -49.91428571428574,
+                "ix1": -375.0000000221463,
+                "iy1": -10.071428571428568,
+                "ix2": 375.0000000221463,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -217.64062501285318,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -217.64062501285318,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -108.82031250642659,
+                    "cy": 0,
+                    "width": 217.64062501285318,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 220.32750001301187,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 220.32750001301187,
+                    "y2": 10.071428571428568,
+                    "cx": 110.16375000650594,
+                    "cy": 0,
+                    "width": 220.32750001301187,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": -37.49285714285716,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": -47.56428571428573,
+                "x2": 350.000000044289,
+                "y2": -27.421428571428596,
+                "ix1": -375.00000002214637,
+                "iy1": -10.071428571428568,
+                "ix2": 375.00000002214637,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -197.73093751167738,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -197.73093751167738,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -98.86546875583869,
+                    "cy": 0,
+                    "width": 197.73093751167738,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 197.50500001166407,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 197.50500001166407,
+                    "y2": 10.071428571428568,
+                    "cx": 98.75250000583203,
+                    "cy": 0,
+                    "width": 197.50500001166407,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": -15.000000000000016,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": -25.071428571428584,
+                "x2": 350.000000044289,
+                "y2": -4.928571428571448,
+                "ix1": -375.00000002214637,
+                "iy1": -10.071428571428568,
+                "ix2": 375.00000002214637,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -169.25906250999594,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -169.25906250999594,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -84.62953125499797,
+                    "cy": 0,
+                    "width": 169.25906250999594,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 165.80718750979207,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 165.80718750979207,
+                    "y2": 10.071428571428568,
+                    "cx": 82.90359375489604,
+                    "cy": 0,
+                    "width": 165.80718750979207,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": 7.492857142857103,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": -2.5785714285714647,
+                "x2": 350.000000044289,
+                "y2": 17.56428571428567,
+                "ix1": -375.00000002214637,
+                "iy1": -10.071428571428568,
+                "ix2": 375.00000002214637,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -146.70468750866394,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -146.70468750866394,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -73.35234375433197,
+                    "cy": 0,
+                    "width": 146.70468750866394,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 139.70437500825054,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 139.70437500825054,
+                    "y2": 10.071428571428568,
+                    "cx": 69.85218750412527,
+                    "cy": 0,
+                    "width": 139.70437500825054,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": 29.98571428571428,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": 19.91428571428571,
+                "x2": 350.000000044289,
+                "y2": 40.05714285714285,
+                "ix1": -375.00000002214637,
+                "iy1": -10.071428571428568,
+                "ix2": 375.00000002214637,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -116.42812500687589,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -116.42812500687589,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -58.214062503437944,
+                    "cy": 0,
+                    "width": 116.42812500687589,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 106.65562500629875,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 106.65562500629875,
+                    "y2": 10.071428571428568,
+                    "cx": 53.327812503149374,
+                    "cy": 0,
+                    "width": 106.65562500629875,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": 52.47857142857141,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": 42.407142857142844,
+                "x2": 350.000000044289,
+                "y2": 62.54999999999998,
+                "ix1": -375.00000002214637,
+                "iy1": -10.071428571428568,
+                "ix2": 375.00000002214637,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -82.29468750486008,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -82.29468750486008,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -41.14734375243004,
+                    "cy": 0,
+                    "width": 82.29468750486008,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 71.63718750423067,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 71.63718750423067,
+                    "y2": 10.071428571428568,
+                    "cx": 35.81859375211533,
+                    "cy": 0,
+                    "width": 71.63718750423067,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": 74.97142857142853,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": 64.89999999999996,
+                "x2": 350.000000044289,
+                "y2": 85.0428571428571,
+                "ix1": -375.00000002214637,
+                "iy1": -10.071428571428568,
+                "ix2": 375.00000002214637,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -61.06125000360609,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -61.06125000360609,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -30.530625001803045,
+                    "cy": 0,
+                    "width": 61.06125000360609,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 48.93375000288988,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 48.93375000288988,
+                    "y2": 10.071428571428568,
+                    "cx": 24.46687500144494,
+                    "cy": 0,
+                    "width": 48.93375000288988,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": 97.4642857142857,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": 87.39285714285712,
+                "x2": 350.000000044289,
+                "y2": 107.53571428571426,
+                "ix1": -375.00000002214637,
+                "iy1": -10.071428571428568,
+                "ix2": 375.00000002214637,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.0000000221463,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -41.92031250247568,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -41.92031250247568,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -20.96015625123784,
+                    "cy": 0,
+                    "width": 41.92031250247568,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.0000000221463,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 29.985937501770877,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 29.985937501770877,
+                    "y2": 10.071428571428568,
+                    "cx": 14.992968750885439,
+                    "cy": 0,
+                    "width": 29.985937501770877,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": 119.95714285714284,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": 109.88571428571427,
+                "x2": 350.000000044289,
+                "y2": 130.0285714285714,
+                "ix1": -375.0000000221463,
+                "iy1": -10.071428571428568,
+                "ix2": 375.0000000221463,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -23.37468750138044,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -23.37468750138044,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -11.68734375069022,
+                    "cy": 0,
+                    "width": 23.37468750138044,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 14.302500000844663,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 14.302500000844663,
+                    "y2": 10.071428571428568,
+                    "cx": 7.151250000422332,
+                    "cy": 0,
+                    "width": 14.302500000844663,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": 142.44999999999993,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": 132.37857142857138,
+                "x2": 350.000000044289,
+                "y2": 152.52142857142852,
+                "ix1": -375.00000002214637,
+                "iy1": -10.071428571428568,
+                "ix2": 375.00000002214637,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.0000000221463,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -10.040625000592968,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -10.040625000592968,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -5.020312500296484,
+                    "cy": 0,
+                    "width": 10.040625000592968,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.0000000221463,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 4.9331250002913345,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 4.9331250002913345,
+                    "y2": 10.071428571428568,
+                    "cx": 2.4665625001456672,
+                    "cy": 0,
+                    "width": 4.9331250002913345,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": 164.94285714285712,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": 154.87142857142857,
+                "x2": 350.000000044289,
+                "y2": 175.0142857142857,
+                "ix1": -375.0000000221463,
+                "iy1": -10.071428571428568,
+                "ix2": 375.0000000221463,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.0000000221463,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -2.672812500157848,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -2.672812500157848,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -1.336406250078924,
+                    "cy": 0,
+                    "width": 2.672812500157848,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.0000000221463,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 1.0190625000601825,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 1.0190625000601825,
+                    "y2": 10.071428571428568,
+                    "cx": 0.5095312500300913,
+                    "cy": 0,
+                    "width": 1.0190625000601825,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": 187.43571428571425,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": 177.3642857142857,
+                "x2": 350.000000044289,
+                "y2": 197.50714285714284,
+                "ix1": -375.0000000221463,
+                "iy1": -10.071428571428568,
+                "ix2": 375.0000000221463,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": -375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXjzgl442v0m": -0.36000000002126054,
+                    "anchorYjzgl442v0m": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -0.36000000002126054,
+                    "y1": -10.071428571428568,
+                    "x2": 0,
+                    "y2": 10.071428571428568,
+                    "cx": -0.18000000001063027,
+                    "cy": 0,
+                    "width": 0.36000000002126054,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 253,
+                      "g": 98,
+                      "b": 94
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 375.00000002214637,
+                    "y2": -10.071428571428568,
+                    "anchorXllh27nykwvk": 0.09562500000564733,
+                    "anchorYllh27nykwvk": -10.071428571428568
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": 0,
+                    "y1": -10.071428571428568,
+                    "x2": 0.09562500000564733,
+                    "y2": 10.071428571428568,
+                    "cx": 0.047812500002823666,
+                    "cy": 0,
+                    "width": 0.09562500000564733,
+                    "height": 20.142857142857135,
+                    "stroke": null,
+                    "fill": {
+                      "r": 17,
+                      "g": 141,
+                      "b": 255
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": -24.99999997785551,
+                "y": 209.9285714285714,
+                "width": 750.000000044289,
+                "height": 20.142857142857135,
+                "x1": -400,
+                "y1": 199.85714285714283,
+                "x2": 350.000000044289,
+                "y2": 219.99999999999997,
+                "ix1": -375.00000002214637,
+                "iy1": -10.071428571428568,
+                "ix2": 375.00000002214637,
+                "iy2": 10.071428571428568,
+                "icx": 0,
+                "icy": 0
+              }
+            }
+          ]
+        },
+        {
+          "attributes": {
+            "x": -25,
+            "y": 300,
+            "text": "World Population 2017",
+            "fontFamily": "Segoe UI",
+            "fontSize": 24,
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0
+            },
+            "backgroundColor": null,
+            "backgroundColorFilterId": "text-color-filter-392559493203708",
+            "visible": true,
+            "outline": null,
+            "opacity": 1
+          }
+        },
+        {
+          "attributes": {
+            "x": 350,
+            "y": 220
+          }
+        }
+      ],
+      "scales": [
+        {
+          "attributes": {}
+        }
+      ],
+      "scaleMappings": [
+        {
+          "type": "scale",
+          "table": "world_population_2017",
+          "expression": "get(list(get(get(world_population_2017.columns, 1), \"displayName\"),get(get(world_population_2017.columns, 2), \"displayName\")), 0)",
+          "valueType": "string",
+          "scale": "1qjs0ine1x6",
+          "attribute": "fill",
+          "valueIndex": 0
+        }
+      ],
+      "attributes": {
+        "width": 900,
+        "height": 600,
+        "marginLeft": 50,
+        "marginRight": 100,
+        "marginTop": 80,
+        "marginBottom": 50,
+        "cx": -25,
+        "cy": -15,
+        "x1": -400,
+        "y1": -250,
+        "x2": 350,
+        "y2": 220,
+        "ox1": -450,
+        "oy1": -300,
+        "ox2": 450,
+        "oy2": 300
+      }
+    }
+  },
+  "name": "World Population 2017"
+}

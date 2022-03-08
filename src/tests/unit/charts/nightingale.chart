@@ -1,0 +1,2748 @@
+{
+  "state": {
+    "version": "2.0.2",
+    "dataset": {
+      "name": "nightingale",
+      "tables": [
+        {
+          "name": "nightingale",
+          "displayName": "nightingale",
+          "columns": [
+            {
+              "name": "Month",
+              "displayName": "Month",
+              "type": "string",
+              "metadata": {
+                "kind": "ordinal",
+                "order": [
+                  "Jan",
+                  "Feb",
+                  "Mar",
+                  "Apr",
+                  "May",
+                  "Jun",
+                  "Jul",
+                  "Aug",
+                  "Sep",
+                  "Oct",
+                  "Nov",
+                  "Dec"
+                ],
+                "unit": "__month"
+              }
+            },
+            {
+              "name": "Type",
+              "displayName": "Type",
+              "type": "string",
+              "metadata": {
+                "kind": "categorical",
+                "orderMode": "alphabetically"
+              }
+            },
+            {
+              "name": "Death",
+              "displayName": "Death",
+              "type": "number",
+              "metadata": {
+                "kind": "numerical"
+              }
+            }
+          ],
+          "rows": [
+            {
+              "_id": "0",
+              "Month": "Jan",
+              "Type": "Other",
+              "Death": 324
+            },
+            {
+              "_id": "1",
+              "Month": "Jan",
+              "Type": "Wounds",
+              "Death": 83
+            },
+            {
+              "_id": "2",
+              "Month": "Jan",
+              "Type": "Disease",
+              "Death": 2761
+            },
+            {
+              "_id": "3",
+              "Month": "Feb",
+              "Type": "Other",
+              "Death": 361
+            },
+            {
+              "_id": "4",
+              "Month": "Feb",
+              "Type": "Wounds",
+              "Death": 42
+            },
+            {
+              "_id": "5",
+              "Month": "Feb",
+              "Type": "Disease",
+              "Death": 2120
+            },
+            {
+              "_id": "6",
+              "Month": "Mar",
+              "Type": "Other",
+              "Death": 172
+            },
+            {
+              "_id": "7",
+              "Month": "Mar",
+              "Type": "Wounds",
+              "Death": 32
+            },
+            {
+              "_id": "8",
+              "Month": "Mar",
+              "Type": "Disease",
+              "Death": 1205
+            },
+            {
+              "_id": "9",
+              "Month": "Apr",
+              "Type": "Other",
+              "Death": 57
+            },
+            {
+              "_id": "10",
+              "Month": "Apr",
+              "Type": "Wounds",
+              "Death": 48
+            },
+            {
+              "_id": "11",
+              "Month": "Apr",
+              "Type": "Disease",
+              "Death": 477
+            },
+            {
+              "_id": "12",
+              "Month": "May",
+              "Type": "Other",
+              "Death": 37
+            },
+            {
+              "_id": "13",
+              "Month": "May",
+              "Type": "Wounds",
+              "Death": 49
+            },
+            {
+              "_id": "14",
+              "Month": "May",
+              "Type": "Disease",
+              "Death": 508
+            },
+            {
+              "_id": "15",
+              "Month": "Jun",
+              "Type": "Other",
+              "Death": 31
+            },
+            {
+              "_id": "16",
+              "Month": "Jun",
+              "Type": "Wounds",
+              "Death": 209
+            },
+            {
+              "_id": "17",
+              "Month": "Jun",
+              "Type": "Disease",
+              "Death": 802
+            },
+            {
+              "_id": "18",
+              "Month": "Jul",
+              "Type": "Other",
+              "Death": 33
+            },
+            {
+              "_id": "19",
+              "Month": "Jul",
+              "Type": "Wounds",
+              "Death": 134
+            },
+            {
+              "_id": "20",
+              "Month": "Jul",
+              "Type": "Disease",
+              "Death": 382
+            },
+            {
+              "_id": "21",
+              "Month": "Aug",
+              "Type": "Other",
+              "Death": 25
+            },
+            {
+              "_id": "22",
+              "Month": "Aug",
+              "Type": "Wounds",
+              "Death": 164
+            },
+            {
+              "_id": "23",
+              "Month": "Aug",
+              "Type": "Disease",
+              "Death": 483
+            },
+            {
+              "_id": "24",
+              "Month": "Sep",
+              "Type": "Other",
+              "Death": 20
+            },
+            {
+              "_id": "25",
+              "Month": "Sep",
+              "Type": "Wounds",
+              "Death": 276
+            },
+            {
+              "_id": "26",
+              "Month": "Sep",
+              "Type": "Disease",
+              "Death": 189
+            },
+            {
+              "_id": "27",
+              "Month": "Oct",
+              "Type": "Other",
+              "Death": 18
+            },
+            {
+              "_id": "28",
+              "Month": "Oct",
+              "Type": "Wounds",
+              "Death": 53
+            },
+            {
+              "_id": "29",
+              "Month": "Oct",
+              "Type": "Disease",
+              "Death": 128
+            },
+            {
+              "_id": "30",
+              "Month": "Nov",
+              "Type": "Other",
+              "Death": 32
+            },
+            {
+              "_id": "31",
+              "Month": "Nov",
+              "Type": "Wounds",
+              "Death": 33
+            },
+            {
+              "_id": "32",
+              "Month": "Nov",
+              "Type": "Disease",
+              "Death": 178
+            },
+            {
+              "_id": "33",
+              "Month": "Dec",
+              "Type": "Other",
+              "Death": 28
+            },
+            {
+              "_id": "34",
+              "Month": "Dec",
+              "Type": "Wounds",
+              "Death": 18
+            },
+            {
+              "_id": "35",
+              "Month": "Dec",
+              "Type": "Disease",
+              "Death": 91
+            }
+          ],
+          "type": "Main",
+          "localeNumberFormat": {
+            "decimal": ".",
+            "remove": ","
+          }
+        }
+      ]
+    },
+    "chart": {
+      "_id": "xioacgqxzob",
+      "classID": "chart.rectangle",
+      "properties": {
+        "name": "Chart",
+        "backgroundColor": null,
+        "backgroundOpacity": 1,
+        "exposed": true
+      },
+      "mappings": {
+        "marginTop": {
+          "type": "value",
+          "value": 80
+        },
+        "marginRight": {
+          "type": "value",
+          "value": 100
+        },
+        "width": {
+          "type": "value",
+          "value": 700
+        }
+      },
+      "glyphs": [
+        {
+          "_id": "bqa94ifofnf",
+          "classID": "glyph.rectangle",
+          "properties": {
+            "name": "Glyph"
+          },
+          "table": "nightingale",
+          "marks": [
+            {
+              "_id": "mprt6fhnakf",
+              "classID": "mark.anchor",
+              "properties": {
+                "name": "Anchor"
+              },
+              "mappings": {
+                "x": {
+                  "type": "parent",
+                  "parentAttribute": "icx"
+                },
+                "y": {
+                  "type": "parent",
+                  "parentAttribute": "icy"
+                }
+              }
+            },
+            {
+              "_id": "vakkull6drg",
+              "classID": "mark.rect",
+              "properties": {
+                "visible": true,
+                "strokeStyle": "solid",
+                "shape": "rectangle",
+                "name": "Shape1",
+                "allowFlipping": true,
+                "exposed": true
+              },
+              "mappings": {
+                "fill": {
+                  "type": "scale",
+                  "table": "nightingale",
+                  "expression": "first(Type)",
+                  "valueType": "string",
+                  "scale": "uqrai8vam1r",
+                  "attribute": "fill"
+                },
+                "strokeWidth": {
+                  "type": "value",
+                  "value": 1
+                },
+                "opacity": {
+                  "type": "value",
+                  "value": 1
+                },
+                "visible": {
+                  "type": "value",
+                  "value": true
+                },
+                "x1": {
+                  "type": "parent",
+                  "parentAttribute": "ix1"
+                },
+                "y1": {
+                  "type": "parent",
+                  "parentAttribute": "iy1"
+                },
+                "x2": {
+                  "type": "parent",
+                  "parentAttribute": "ix2"
+                },
+                "y2": {
+                  "type": "parent",
+                  "parentAttribute": "iy2"
+                },
+                "height": {
+                  "type": "scale",
+                  "table": "nightingale",
+                  "expression": "avg(Death)",
+                  "valueType": "number",
+                  "scale": "ng2y17u4e4",
+                  "attribute": "height"
+                },
+                "stroke": {
+                  "type": "value",
+                  "value": {
+                    "r": 255,
+                    "g": 255,
+                    "b": 255
+                  }
+                }
+              }
+            }
+          ],
+          "mappings": {},
+          "constraints": []
+        }
+      ],
+      "elements": [
+        {
+          "_id": "8zuckwdayqh",
+          "classID": "plot-segment.polar",
+          "glyph": "bqa94ifofnf",
+          "table": "nightingale",
+          "filter": null,
+          "mappings": {
+            "x1": {
+              "type": "parent",
+              "parentAttribute": "x1"
+            },
+            "x2": {
+              "type": "parent",
+              "parentAttribute": "x2"
+            },
+            "y1": {
+              "type": "parent",
+              "parentAttribute": "y1"
+            },
+            "y2": {
+              "type": "parent",
+              "parentAttribute": "y2"
+            }
+          },
+          "properties": {
+            "name": "PlotSegment1",
+            "visible": true,
+            "sublayout": {
+              "type": "dodge-y",
+              "order": null,
+              "ratioX": 0.1,
+              "ratioY": 0,
+              "align": {
+                "x": "start",
+                "y": "start"
+              },
+              "grid": {
+                "direction": "x",
+                "xCount": null,
+                "yCount": null
+              },
+              "packing": {
+                "gravityX": 0.1,
+                "gravityY": 0.1
+              }
+            },
+            "xData": {
+              "type": "categorical",
+              "expression": "first(Month)",
+              "valueType": "string",
+              "gapRatio": 0,
+              "visible": true,
+              "side": "default",
+              "style": {
+                "tickColor": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0
+                },
+                "lineColor": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0
+                },
+                "fontFamily": "Arial",
+                "fontSize": 12,
+                "tickSize": 5,
+                "wordWrap": false,
+                "gridlineStyle": "none",
+                "gridlineColor": {
+                  "r": 234,
+                  "g": 234,
+                  "b": 234
+                },
+                "gridlineWidth": 1
+              },
+              "dataKind": "ordinal",
+              "order": [
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec"
+              ],
+              "orderMode": "order",
+              "autoDomainMax": true,
+              "autoDomainMin": true,
+              "categories": [
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec"
+              ]
+            },
+            "marginX1": 0,
+            "marginY1": 0,
+            "marginX2": 0,
+            "marginY2": 0,
+            "startAngle": 0,
+            "endAngle": 360,
+            "innerRatio": 0,
+            "outerRatio": 0.9,
+            "curve": [
+              [
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -0.25,
+                  "y": -0.5
+                },
+                {
+                  "x": 0.25,
+                  "y": 0.5
+                },
+                {
+                  "x": 1,
+                  "y": 0
+                }
+              ]
+            ],
+            "normalStart": -0.2,
+            "normalEnd": 0.2,
+            "equalizeArea": true,
+            "exposed": true
+          }
+        },
+        {
+          "_id": "f6lqj5c5eo",
+          "classID": "mark.text",
+          "properties": {
+            "name": "Title",
+            "visible": true,
+            "alignment": {
+              "x": "middle",
+              "y": "top",
+              "xMargin": 0,
+              "yMargin": 29.999999999999993
+            },
+            "rotation": 0,
+            "exposed": true
+          },
+          "mappings": {
+            "x": {
+              "type": "parent",
+              "parentAttribute": "cx"
+            },
+            "y": {
+              "type": "parent",
+              "parentAttribute": "oy2"
+            },
+            "text": {
+              "type": "value",
+              "value": "The Causes of Mortality in the Army in the East"
+            },
+            "fontSize": {
+              "type": "value",
+              "value": 24
+            },
+            "color": {
+              "type": "value",
+              "value": {
+                "r": 0,
+                "g": 0,
+                "b": 0
+              }
+            }
+          }
+        },
+        {
+          "_id": "p8o7ztcv7w",
+          "classID": "legend.categorical",
+          "properties": {
+            "scale": "uqrai8vam1r",
+            "visible": true,
+            "alignX": "start",
+            "alignY": "end",
+            "fontFamily": "Arial",
+            "fontSize": 10,
+            "textColor": {
+              "r": 0,
+              "g": 0,
+              "b": 0
+            },
+            "dataSource": "columnValues",
+            "dataExpressions": [],
+            "markerShape": "circle",
+            "orientation": "vertical",
+            "name": "Legend1",
+            "exposed": true
+          },
+          "mappings": {
+            "x": {
+              "type": "parent",
+              "parentAttribute": "x2"
+            },
+            "y": {
+              "type": "parent",
+              "parentAttribute": "y2"
+            },
+            "mappingOptions": {
+              "type": "scale",
+              "table": "nightingale",
+              "expression": "first(Type)",
+              "valueType": "string",
+              "scale": "uqrai8vam1r",
+              "allowSelectValue": false
+            }
+          }
+        }
+      ],
+      "scales": [
+        {
+          "_id": "ng2y17u4e4",
+          "classID": "scale.linear<number,number>",
+          "properties": {
+            "autoDomainMin": true,
+            "autoDomainMax": true,
+            "name": "Scale1",
+            "domainMin": 0,
+            "domainMax": 2800,
+            "exposed": true
+          },
+          "mappings": {
+            "rangeMin": {
+              "type": "value",
+              "value": 0
+            }
+          },
+          "inputType": "number",
+          "outputType": "number"
+        },
+        {
+          "_id": "uqrai8vam1r",
+          "classID": "scale.categorical<string,color>",
+          "properties": {
+            "name": "Scale2",
+            "mapping": {
+              "Other": {
+                "r": 150,
+                "g": 150,
+                "b": 150
+              },
+              "Wounds": {
+                "r": 107,
+                "g": 174,
+                "b": 214
+              },
+              "Disease": {
+                "r": 239,
+                "g": 59,
+                "b": 44
+              }
+            },
+            "autoDomainMax": true,
+            "autoDomainMin": true
+          },
+          "mappings": {},
+          "inputType": "string",
+          "outputType": "color"
+        }
+      ],
+      "scaleMappings": [
+        {
+          "type": "scale",
+          "table": "nightingale",
+          "expression": "avg(Death)",
+          "valueType": "number",
+          "scale": "ng2y17u4e4",
+          "attribute": "height"
+        },
+        {
+          "type": "scale",
+          "table": "nightingale",
+          "expression": "first(Type)",
+          "valueType": "string",
+          "scale": "uqrai8vam1r",
+          "attribute": "fill"
+        }
+      ],
+      "constraints": [],
+      "resources": []
+    },
+    "chartState": {
+      "elements": [
+        {
+          "attributes": {
+            "angle1": 0,
+            "angle2": 360,
+            "radial1": 0,
+            "radial2": 211.5,
+            "x1": -300,
+            "x2": 250,
+            "y1": -250,
+            "y2": 220,
+            "x": -100,
+            "y": 100,
+            "gapX": 4,
+            "gapY": 4,
+            "cx": -25,
+            "cy": -15,
+            "a1r1x": -25,
+            "a1r1y": -15,
+            "a1r2x": -25,
+            "a1r2y": 196.5,
+            "a2r1x": -25,
+            "a2r1y": -15,
+            "a2r2x": -25.000000000000053,
+            "a2r2y": 196.5
+          },
+          "dataRowIndices": [
+            [
+              0
+            ],
+            [
+              1
+            ],
+            [
+              2
+            ],
+            [
+              3
+            ],
+            [
+              4
+            ],
+            [
+              5
+            ],
+            [
+              6
+            ],
+            [
+              7
+            ],
+            [
+              8
+            ],
+            [
+              9
+            ],
+            [
+              10
+            ],
+            [
+              11
+            ],
+            [
+              12
+            ],
+            [
+              13
+            ],
+            [
+              14
+            ],
+            [
+              15
+            ],
+            [
+              16
+            ],
+            [
+              17
+            ],
+            [
+              18
+            ],
+            [
+              19
+            ],
+            [
+              20
+            ],
+            [
+              21
+            ],
+            [
+              22
+            ],
+            [
+              23
+            ],
+            [
+              24
+            ],
+            [
+              25
+            ],
+            [
+              26
+            ],
+            [
+              27
+            ],
+            [
+              28
+            ],
+            [
+              29
+            ],
+            [
+              30
+            ],
+            [
+              31
+            ],
+            [
+              32
+            ],
+            [
+              33
+            ],
+            [
+              34
+            ],
+            [
+              35
+            ]
+          ],
+          "glyphs": [
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -10.815340915640016,
+                    "x2": 15.00000000011574,
+                    "y2": 10.815340915640016,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 21.630681831280032,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 150,
+                      "g": 150,
+                      "b": 150
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 15.00000000011574,
+                "y": 10.815340915640016,
+                "width": 30.00000000023148,
+                "height": 21.630681831280032,
+                "x1": 0,
+                "y1": 0,
+                "x2": 30.00000000023148,
+                "y2": 21.630681831280032,
+                "ix1": -15.00000000011574,
+                "iy1": -10.815340915640016,
+                "ix2": 15.00000000011574,
+                "iy2": 10.815340915640016,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -2.770596592586794,
+                    "x2": 15.00000000011574,
+                    "y2": 2.770596592586794,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 5.541193185173588,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 107,
+                      "g": 174,
+                      "b": 214
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 15.00000000011574,
+                "y": 24.401278423866824,
+                "width": 30.00000000023148,
+                "height": 5.541193185173588,
+                "x1": 0,
+                "y1": 21.630681831280032,
+                "x2": 30.00000000023148,
+                "y2": 27.17187501645362,
+                "ix1": -15.00000000011574,
+                "iy1": -2.770596592586794,
+                "ix2": 15.00000000011574,
+                "iy2": 2.770596592586794,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -92.1640625558089,
+                    "x2": 15.00000000011574,
+                    "y2": 92.1640625558089,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 184.3281251116178,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 239,
+                      "g": 59,
+                      "b": 44
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 15.00000000011574,
+                "y": 119.33593757226254,
+                "width": 30.00000000023148,
+                "height": 184.3281251116178,
+                "x1": 0,
+                "y1": 27.17187501645362,
+                "x2": 30.00000000023148,
+                "y2": 211.50000012807143,
+                "ix1": -15.00000000011574,
+                "iy1": -92.1640625558089,
+                "ix2": 15.00000000011574,
+                "iy2": 92.1640625558089,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -12.050426143660633,
+                    "x2": 15.00000000011574,
+                    "y2": 12.050426143660633,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 24.100852287321267,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 150,
+                      "g": 150,
+                      "b": 150
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 45.00000000011574,
+                "y": 12.050426143660633,
+                "width": 30.00000000023148,
+                "height": 24.100852287321267,
+                "x1": 30,
+                "y1": 0,
+                "x2": 60.00000000023148,
+                "y2": 24.100852287321267,
+                "ix1": -15.00000000011574,
+                "iy1": -12.050426143660633,
+                "ix2": 15.00000000011574,
+                "iy2": 12.050426143660633,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -1.4019886372125945,
+                    "x2": 15.00000000011574,
+                    "y2": 1.4019886372125945,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 2.803977274425189,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 107,
+                      "g": 174,
+                      "b": 214
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 45.00000000011574,
+                "y": 25.50284092453386,
+                "width": 30.00000000023148,
+                "height": 2.803977274425189,
+                "x1": 30,
+                "y1": 24.100852287321267,
+                "x2": 60.00000000023148,
+                "y2": 26.904829561746453,
+                "ix1": -15.00000000011574,
+                "iy1": -1.4019886372125945,
+                "ix2": 15.00000000011574,
+                "iy2": 1.4019886372125945,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -70.76704549739763,
+                    "x2": 15.00000000011574,
+                    "y2": 70.76704549739763,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 141.53409099479526,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 239,
+                      "g": 59,
+                      "b": 44
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 45.00000000011574,
+                "y": 97.67187505914409,
+                "width": 30.00000000023148,
+                "height": 141.53409099479526,
+                "x1": 30,
+                "y1": 26.904829561746453,
+                "x2": 60.00000000023148,
+                "y2": 168.43892055654172,
+                "ix1": -15.00000000011574,
+                "iy1": -70.76704549739763,
+                "ix2": 15.00000000011574,
+                "iy2": 70.76704549739763,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -5.741477276203959,
+                    "x2": 15.00000000011574,
+                    "y2": 5.741477276203959,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 11.482954552407918,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 150,
+                      "g": 150,
+                      "b": 150
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 75.00000000011573,
+                "y": 5.741477276203959,
+                "width": 30.00000000023148,
+                "height": 11.482954552407918,
+                "x1": 60,
+                "y1": 0,
+                "x2": 90.00000000023148,
+                "y2": 11.482954552407918,
+                "ix1": -15.00000000011574,
+                "iy1": -5.741477276203959,
+                "ix2": 15.00000000011574,
+                "iy2": 5.741477276203959,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -1.0681818188286436,
+                    "x2": 15.00000000011574,
+                    "y2": 1.0681818188286436,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 2.136363637657287,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 107,
+                      "g": 174,
+                      "b": 214
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 75.00000000011573,
+                "y": 12.551136371236561,
+                "width": 30.00000000023148,
+                "height": 2.136363637657287,
+                "x1": 60,
+                "y1": 11.482954552407918,
+                "x2": 90.00000000023148,
+                "y2": 13.619318190065204,
+                "ix1": -15.00000000011574,
+                "iy1": -1.0681818188286436,
+                "ix2": 15.00000000011574,
+                "iy2": 1.0681818188286436,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -40.22372161526611,
+                    "x2": 15.00000000011574,
+                    "y2": 40.22372161526611,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 80.44744323053222,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 239,
+                      "g": 59,
+                      "b": 44
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 75.00000000011573,
+                "y": 53.843039805331316,
+                "width": 30.00000000023148,
+                "height": 80.44744323053222,
+                "x1": 60,
+                "y1": 13.619318190065204,
+                "x2": 90.00000000023148,
+                "y2": 94.06676142059743,
+                "ix1": -15.00000000011574,
+                "iy1": -40.22372161526611,
+                "ix2": 15.00000000011574,
+                "iy2": 40.22372161526611,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -1.9026988647885215,
+                    "x2": 15.00000000011574,
+                    "y2": 1.9026988647885215,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 3.805397729577043,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 150,
+                      "g": 150,
+                      "b": 150
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 105.00000000011573,
+                "y": 1.9026988647885215,
+                "width": 30.00000000023148,
+                "height": 3.805397729577043,
+                "x1": 90,
+                "y1": 0,
+                "x2": 120.00000000023148,
+                "y2": 3.805397729577043,
+                "ix1": -15.00000000011574,
+                "iy1": -1.9026988647885215,
+                "ix2": 15.00000000011574,
+                "iy2": 1.9026988647885215,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -1.6022727282429654,
+                    "x2": 15.00000000011574,
+                    "y2": 1.6022727282429654,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 3.204545456485931,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 107,
+                      "g": 174,
+                      "b": 214
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 105.00000000011573,
+                "y": 5.407670457820008,
+                "width": 30.00000000023148,
+                "height": 3.204545456485931,
+                "x1": 90,
+                "y1": 3.805397729577043,
+                "x2": 120.00000000023148,
+                "y2": 7.009943186062975,
+                "ix1": -15.00000000011574,
+                "iy1": -1.6022727282429654,
+                "ix2": 15.00000000011574,
+                "iy2": 1.6022727282429654,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -15.922585236914466,
+                    "x2": 15.00000000011574,
+                    "y2": 15.922585236914466,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 31.845170473828933,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 239,
+                      "g": 59,
+                      "b": 44
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 105.00000000011573,
+                "y": 22.93252842297744,
+                "width": 30.00000000023148,
+                "height": 31.845170473828933,
+                "x1": 90,
+                "y1": 7.009943186062975,
+                "x2": 120.00000000023148,
+                "y2": 38.855113659891906,
+                "ix1": -15.00000000011574,
+                "iy1": -15.922585236914466,
+                "ix2": 15.00000000011574,
+                "iy2": 15.922585236914466,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -1.235085228020619,
+                    "x2": 15.00000000011574,
+                    "y2": 1.235085228020619,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 2.470170456041238,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 150,
+                      "g": 150,
+                      "b": 150
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 135.00000000011573,
+                "y": 1.235085228020619,
+                "width": 30.00000000023148,
+                "height": 2.470170456041238,
+                "x1": 120,
+                "y1": 0,
+                "x2": 150.00000000023147,
+                "y2": 2.470170456041238,
+                "ix1": -15.00000000011574,
+                "iy1": -1.235085228020619,
+                "ix2": 15.00000000011574,
+                "iy2": 1.235085228020619,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -1.6356534100813607,
+                    "x2": 15.00000000011574,
+                    "y2": 1.6356534100813607,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 3.2713068201627213,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 107,
+                      "g": 174,
+                      "b": 214
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 135.00000000011573,
+                "y": 4.1058238661225985,
+                "width": 30.00000000023148,
+                "height": 3.2713068201627213,
+                "x1": 120,
+                "y1": 2.470170456041238,
+                "x2": 150.00000000023147,
+                "y2": 5.741477276203959,
+                "ix1": -15.00000000011574,
+                "iy1": -1.6356534100813607,
+                "ix2": 15.00000000011574,
+                "iy2": 1.6356534100813607,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -16.95738637390472,
+                    "x2": 15.00000000011574,
+                    "y2": 16.95738637390472,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 33.91477274780944,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 239,
+                      "g": 59,
+                      "b": 44
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 135.00000000011573,
+                "y": 22.698863650108677,
+                "width": 30.00000000023148,
+                "height": 33.91477274780944,
+                "x1": 120,
+                "y1": 5.741477276203959,
+                "x2": 150.00000000023147,
+                "y2": 39.656250024013396,
+                "ix1": -15.00000000011574,
+                "iy1": -16.95738637390472,
+                "ix2": 15.00000000011574,
+                "iy2": 16.95738637390472,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -1.0348011369902483,
+                    "x2": 15.00000000011574,
+                    "y2": 1.0348011369902483,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 2.0696022739804967,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 150,
+                      "g": 150,
+                      "b": 150
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 165.00000000011573,
+                "y": 1.0348011369902483,
+                "width": 30.00000000023148,
+                "height": 2.0696022739804967,
+                "x1": 150,
+                "y1": 0,
+                "x2": 180.00000000023147,
+                "y2": 2.0696022739804967,
+                "ix1": -15.00000000011574,
+                "iy1": -1.0348011369902483,
+                "ix2": 15.00000000011574,
+                "iy2": 1.0348011369902483,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -6.976562504224579,
+                    "x2": 15.00000000011574,
+                    "y2": 6.976562504224579,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 13.953125008449158,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 107,
+                      "g": 174,
+                      "b": 214
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 165.00000000011573,
+                "y": 9.046164778205075,
+                "width": 30.00000000023148,
+                "height": 13.953125008449158,
+                "x1": 150,
+                "y1": 2.0696022739804967,
+                "x2": 180.00000000023147,
+                "y2": 16.022727282429653,
+                "ix1": -15.00000000011574,
+                "iy1": -6.976562504224579,
+                "ix2": 15.00000000011574,
+                "iy2": 6.976562504224579,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -26.771306834392878,
+                    "x2": 15.00000000011574,
+                    "y2": 26.771306834392878,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 53.542613668785755,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 239,
+                      "g": 59,
+                      "b": 44
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 165.00000000011573,
+                "y": 42.79403411682253,
+                "width": 30.00000000023148,
+                "height": 53.542613668785755,
+                "x1": 150,
+                "y1": 16.022727282429653,
+                "x2": 180.00000000023147,
+                "y2": 69.5653409512154,
+                "ix1": -15.00000000011574,
+                "iy1": -26.771306834392878,
+                "ix2": 15.00000000011574,
+                "iy2": 26.771306834392878,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -1.1015625006670386,
+                    "x2": 15.00000000011574,
+                    "y2": 1.1015625006670386,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 2.2031250013340773,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 150,
+                      "g": 150,
+                      "b": 150
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 195.00000000011573,
+                "y": 1.1015625006670386,
+                "width": 30.00000000023148,
+                "height": 2.2031250013340773,
+                "x1": 180,
+                "y1": 0,
+                "x2": 210.00000000023147,
+                "y2": 2.2031250013340773,
+                "ix1": -15.00000000011574,
+                "iy1": -1.1015625006670386,
+                "ix2": 15.00000000011574,
+                "iy2": 1.1015625006670386,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -4.473011366344944,
+                    "x2": 15.00000000011574,
+                    "y2": 4.473011366344944,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 8.946022732689888,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 107,
+                      "g": 174,
+                      "b": 214
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 195.00000000011573,
+                "y": 6.676136367679022,
+                "width": 30.00000000023148,
+                "height": 8.946022732689888,
+                "x1": 180,
+                "y1": 2.2031250013340773,
+                "x2": 210.00000000023147,
+                "y2": 11.149147734023966,
+                "ix1": -15.00000000011574,
+                "iy1": -4.473011366344944,
+                "ix2": 15.00000000011574,
+                "iy2": 4.473011366344944,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -12.751420462266932,
+                    "x2": 15.00000000011574,
+                    "y2": 12.751420462266932,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 25.502840924533864,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 239,
+                      "g": 59,
+                      "b": 44
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 195.00000000011573,
+                "y": 23.9005681962909,
+                "width": 30.00000000023148,
+                "height": 25.502840924533864,
+                "x1": 180,
+                "y1": 11.149147734023966,
+                "x2": 210.00000000023147,
+                "y2": 36.651988658557826,
+                "ix1": -15.00000000011574,
+                "iy1": -12.751420462266932,
+                "ix2": 15.00000000011574,
+                "iy2": 12.751420462266932,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -0.8345170459598777,
+                    "x2": 15.00000000011574,
+                    "y2": 0.8345170459598777,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 1.6690340919197555,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 150,
+                      "g": 150,
+                      "b": 150
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 225.0000000001157,
+                "y": 0.8345170459598777,
+                "width": 30.00000000023148,
+                "height": 1.6690340919197555,
+                "x1": 209.99999999999997,
+                "y1": 0,
+                "x2": 240.00000000023147,
+                "y2": 1.6690340919197555,
+                "ix1": -15.00000000011574,
+                "iy1": -0.8345170459598777,
+                "ix2": 15.00000000011574,
+                "iy2": 0.8345170459598777,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -5.474431821496799,
+                    "x2": 15.00000000011574,
+                    "y2": 5.474431821496799,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 10.948863642993597,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 107,
+                      "g": 174,
+                      "b": 214
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 225.0000000001157,
+                "y": 7.143465913416554,
+                "width": 30.00000000023148,
+                "height": 10.948863642993597,
+                "x1": 209.99999999999997,
+                "y1": 1.6690340919197555,
+                "x2": 240.00000000023147,
+                "y2": 12.617897734913353,
+                "ix1": -15.00000000011574,
+                "iy1": -5.474431821496799,
+                "ix2": 15.00000000011574,
+                "iy2": 5.474431821496799,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -16.122869327944837,
+                    "x2": 15.00000000011574,
+                    "y2": 16.122869327944837,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 32.245738655889674,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 239,
+                      "g": 59,
+                      "b": 44
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 225.0000000001157,
+                "y": 28.74076706285819,
+                "width": 30.00000000023148,
+                "height": 32.245738655889674,
+                "x1": 209.99999999999997,
+                "y1": 12.617897734913353,
+                "x2": 240.00000000023147,
+                "y2": 44.86363639080302,
+                "ix1": -15.00000000011574,
+                "iy1": -16.122869327944837,
+                "ix2": 15.00000000011574,
+                "iy2": 16.122869327944837,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -0.6676136367679022,
+                    "x2": 15.00000000011574,
+                    "y2": 0.6676136367679022,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 1.3352272735358044,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 150,
+                      "g": 150,
+                      "b": 150
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 255.00000000011573,
+                "y": 0.6676136367679022,
+                "width": 30.00000000023148,
+                "height": 1.3352272735358044,
+                "x1": 240,
+                "y1": 0,
+                "x2": 270.00000000023147,
+                "y2": 1.3352272735358044,
+                "ix1": -15.00000000011574,
+                "iy1": -0.6676136367679022,
+                "ix2": 15.00000000011574,
+                "iy2": 0.6676136367679022,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -9.21306818739705,
+                    "x2": 15.00000000011574,
+                    "y2": 9.21306818739705,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 18.4261363747941,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 107,
+                      "g": 174,
+                      "b": 214
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 255.00000000011573,
+                "y": 10.548295460932856,
+                "width": 30.00000000023148,
+                "height": 18.4261363747941,
+                "x1": 240,
+                "y1": 1.3352272735358044,
+                "x2": 270.00000000023147,
+                "y2": 19.761363648329905,
+                "ix1": -15.00000000011574,
+                "iy1": -9.21306818739705,
+                "ix2": 15.00000000011574,
+                "iy2": 9.21306818739705,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -6.308948867456676,
+                    "x2": 15.00000000011574,
+                    "y2": 6.308948867456676,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 12.617897734913353,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 239,
+                      "g": 59,
+                      "b": 44
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 255.00000000011573,
+                "y": 26.07031251578658,
+                "width": 30.00000000023148,
+                "height": 12.617897734913353,
+                "x1": 240,
+                "y1": 19.761363648329905,
+                "x2": 270.00000000023147,
+                "y2": 32.379261383243254,
+                "ix1": -15.00000000011574,
+                "iy1": -6.308948867456676,
+                "ix2": 15.00000000011574,
+                "iy2": 6.308948867456676,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -0.600852273091112,
+                    "x2": 15.00000000011574,
+                    "y2": 0.600852273091112,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 1.201704546182224,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 150,
+                      "g": 150,
+                      "b": 150
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 285.00000000011573,
+                "y": 0.600852273091112,
+                "width": 30.00000000023148,
+                "height": 1.201704546182224,
+                "x1": 270,
+                "y1": 0,
+                "x2": 300.00000000023147,
+                "y2": 1.201704546182224,
+                "ix1": -15.00000000011574,
+                "iy1": -0.600852273091112,
+                "ix2": 15.00000000011574,
+                "iy2": 0.600852273091112,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -1.769176137434941,
+                    "x2": 15.00000000011574,
+                    "y2": 1.769176137434941,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 3.538352274869882,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 107,
+                      "g": 174,
+                      "b": 214
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 285.00000000011573,
+                "y": 2.970880683617165,
+                "width": 30.00000000023148,
+                "height": 3.538352274869882,
+                "x1": 270,
+                "y1": 1.201704546182224,
+                "x2": 300.00000000023147,
+                "y2": 4.740056821052106,
+                "ix1": -15.00000000011574,
+                "iy1": -1.769176137434941,
+                "ix2": 15.00000000011574,
+                "iy2": 1.769176137434941,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -4.272727275314574,
+                    "x2": 15.00000000011574,
+                    "y2": 4.272727275314574,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 8.545454550629149,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 239,
+                      "g": 59,
+                      "b": 44
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 285.00000000011573,
+                "y": 9.01278409636668,
+                "width": 30.00000000023148,
+                "height": 8.545454550629149,
+                "x1": 270,
+                "y1": 4.740056821052106,
+                "x2": 300.00000000023147,
+                "y2": 13.285511371681254,
+                "ix1": -15.00000000011574,
+                "iy1": -4.272727275314574,
+                "ix2": 15.00000000011574,
+                "iy2": 4.272727275314574,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -1.0681818188286436,
+                    "x2": 15.00000000011574,
+                    "y2": 1.0681818188286436,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 2.136363637657287,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 150,
+                      "g": 150,
+                      "b": 150
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 315.00000000011573,
+                "y": 1.0681818188286436,
+                "width": 30.00000000023148,
+                "height": 2.136363637657287,
+                "x1": 300,
+                "y1": 0,
+                "x2": 330.00000000023147,
+                "y2": 2.136363637657287,
+                "ix1": -15.00000000011574,
+                "iy1": -1.0681818188286436,
+                "ix2": 15.00000000011574,
+                "iy2": 1.0681818188286436,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -1.1015625006670386,
+                    "x2": 15.00000000011574,
+                    "y2": 1.1015625006670386,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 2.2031250013340773,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 107,
+                      "g": 174,
+                      "b": 214
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 315.00000000011573,
+                "y": 3.2379261383243256,
+                "width": 30.00000000023148,
+                "height": 2.2031250013340773,
+                "x1": 300,
+                "y1": 2.136363637657287,
+                "x2": 330.00000000023147,
+                "y2": 4.339488638991365,
+                "ix1": -15.00000000011574,
+                "iy1": -1.1015625006670386,
+                "ix2": 15.00000000011574,
+                "iy2": 1.1015625006670386,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -5.94176136723433,
+                    "x2": 15.00000000011574,
+                    "y2": 5.94176136723433,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 11.88352273446866,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 239,
+                      "g": 59,
+                      "b": 44
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 315.00000000011573,
+                "y": 10.281250006225694,
+                "width": 30.00000000023148,
+                "height": 11.88352273446866,
+                "x1": 300,
+                "y1": 4.339488638991365,
+                "x2": 330.00000000023147,
+                "y2": 16.223011373460025,
+                "ix1": -15.00000000011574,
+                "iy1": -5.94176136723433,
+                "ix2": 15.00000000011574,
+                "iy2": 5.94176136723433,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -0.9346590914750631,
+                    "x2": 15.00000000011574,
+                    "y2": 0.9346590914750631,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 1.8693181829501262,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 150,
+                      "g": 150,
+                      "b": 150
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 345.00000000011573,
+                "y": 0.9346590914750631,
+                "width": 30.00000000023148,
+                "height": 1.8693181829501262,
+                "x1": 330,
+                "y1": 0,
+                "x2": 360.00000000023147,
+                "y2": 1.8693181829501262,
+                "ix1": -15.00000000011574,
+                "iy1": -0.9346590914750631,
+                "ix2": 15.00000000011574,
+                "iy2": 0.9346590914750631,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -0.600852273091112,
+                    "x2": 15.00000000011574,
+                    "y2": 0.600852273091112,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 1.201704546182224,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 107,
+                      "g": 174,
+                      "b": 214
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 345.00000000011573,
+                "y": 2.470170456041238,
+                "width": 30.00000000023148,
+                "height": 1.201704546182224,
+                "x1": 330,
+                "y1": 1.8693181829501262,
+                "x2": 360.00000000023147,
+                "y2": 3.07102272913235,
+                "ix1": -15.00000000011574,
+                "iy1": -0.600852273091112,
+                "ix2": 15.00000000011574,
+                "iy2": 0.600852273091112,
+                "icx": 0,
+                "icy": 0
+              }
+            },
+            {
+              "marks": [
+                {
+                  "attributes": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                {
+                  "attributes": {
+                    "x1": -15.00000000011574,
+                    "y1": -3.0376420472939554,
+                    "x2": 15.00000000011574,
+                    "y2": 3.0376420472939554,
+                    "cx": 0,
+                    "cy": 0,
+                    "width": 30.00000000023148,
+                    "height": 6.075284094587911,
+                    "stroke": {
+                      "r": 255,
+                      "g": 255,
+                      "b": 255
+                    },
+                    "fill": {
+                      "r": 239,
+                      "g": 59,
+                      "b": 44
+                    },
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "visible": true
+                  }
+                }
+              ],
+              "attributes": {
+                "x": 345.00000000011573,
+                "y": 6.108664776426306,
+                "width": 30.00000000023148,
+                "height": 6.075284094587911,
+                "x1": 330,
+                "y1": 3.07102272913235,
+                "x2": 360.00000000023147,
+                "y2": 9.146306823720261,
+                "ix1": -15.00000000011574,
+                "iy1": -3.0376420472939554,
+                "ix2": 15.00000000011574,
+                "iy2": 3.0376420472939554,
+                "icx": 0,
+                "icy": 0
+              }
+            }
+          ]
+        },
+        {
+          "attributes": {
+            "x": -25,
+            "y": 300,
+            "text": "The Causes of Mortality in the Army in the East",
+            "fontFamily": "Arial",
+            "fontSize": 24,
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0
+            },
+            "visible": true,
+            "outline": null,
+            "opacity": 1
+          }
+        },
+        {
+          "attributes": {
+            "x": 250,
+            "y": 220
+          }
+        }
+      ],
+      "scales": [
+        {
+          "attributes": {
+            "rangeMin": 0,
+            "rangeMax": 186.93181829501262
+          }
+        },
+        {
+          "attributes": {}
+        }
+      ],
+      "scaleMappings": [
+        {
+          "type": "scale",
+          "table": "nightingale",
+          "expression": "avg(Death)",
+          "valueType": "number",
+          "scale": "ng2y17u4e4",
+          "attribute": "height"
+        },
+        {
+          "type": "scale",
+          "table": "nightingale",
+          "expression": "first(Type)",
+          "valueType": "string",
+          "scale": "uqrai8vam1r",
+          "attribute": "fill"
+        }
+      ],
+      "attributes": {
+        "width": 700,
+        "height": 600,
+        "marginLeft": 50,
+        "marginRight": 100,
+        "marginTop": 80,
+        "marginBottom": 50,
+        "cx": -25,
+        "cy": -15,
+        "x1": -300,
+        "y1": -250,
+        "x2": 250,
+        "y2": 220,
+        "ox1": -350,
+        "oy1": -300,
+        "ox2": 350,
+        "oy2": 300
+      }
+    }
+  },
+  "name": "nightingale"
+}

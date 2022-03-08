@@ -1,8 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types  */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
 import { classNames } from "../../utils";
@@ -20,7 +17,7 @@ export interface PanelRadioControlProps {
 
 export class PanelRadioControl extends React.Component<
   PanelRadioControlProps,
-  {}
+  Record<string, unknown>
 > {
   public render() {
     const mainClass = this.props.asList
@@ -35,6 +32,7 @@ export class PanelRadioControl extends React.Component<
                 "is-active",
                 this.props.value == option,
               ])}
+              title={this.props.labels[index]}
               key={option}
               onClick={() => {
                 if (this.props) {

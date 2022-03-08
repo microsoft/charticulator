@@ -15,6 +15,7 @@ import {
   RenderGraphicalElementSVGOptions,
   DataSelection,
   GraphicalElementEventHandler,
+  renderSVGDefs,
 } from "../app/renderer";
 import { RenderEvents } from "../core/graphics";
 
@@ -284,46 +285,49 @@ export class ChartComponent extends React.Component<
     }) scale(${this.props.scale})`;
 
     const inner = (
-      <g transform={transform}>
-        {this.props.onGlyphClick ? (
-          <rect
-            x={-this.props.viewWidth / 2}
-            y={-this.props.viewHeight / 2}
-            width={this.props.viewWidth}
-            height={this.props.viewHeight}
-            style={{
-              fill: "none",
-              pointerEvents: "all",
-              stroke: "none",
-            }}
-            onClick={() => {
-              this.props.onGlyphClick(null, null);
-            }}
-          />
-        ) : null}
-        {gfx}
-        {this.renderer.renderControls(
-          this.manager.chart,
-          this.manager.chartState,
-          {
-            centerX: 0,
-            centerY: 0,
-            scale: 1,
-          }
-        )}
-        {this.state.working ? (
-          <rect
-            x={-this.props.width / 2}
-            y={-this.props.height / 2}
-            width={this.props.width}
-            height={this.props.height}
-            style={{
-              fill: "rgba(0, 0, 0, 0.1)",
-              stroke: "none",
-            }}
-          />
-        ) : null}
-      </g>
+      <>
+        <defs>{renderSVGDefs(this.state.graphics)}</defs>
+        <g transform={transform}>
+          {this.props.onGlyphClick ? (
+            <rect
+              x={-this.props.viewWidth / 2}
+              y={-this.props.viewHeight / 2}
+              width={this.props.viewWidth}
+              height={this.props.viewHeight}
+              style={{
+                fill: "none",
+                pointerEvents: "all",
+                stroke: "none",
+              }}
+              onClick={() => {
+                this.props.onGlyphClick(null, null);
+              }}
+            />
+          ) : null}
+          {gfx}
+          {this.renderer.renderControls(
+            this.manager.chart,
+            this.manager.chartState,
+            {
+              centerX: 0,
+              centerY: 0,
+              scale: 1,
+            }
+          )}
+          {this.state.working ? (
+            <rect
+              x={-this.props.width / 2}
+              y={-this.props.height / 2}
+              width={this.props.width}
+              height={this.props.height}
+              style={{
+                fill: "rgba(0, 0, 0, 0.1)",
+                stroke: "none",
+              }}
+            />
+          ) : null}
+        </g>
+      </>
     );
     switch (this.props.rootElement) {
       case "svg": {

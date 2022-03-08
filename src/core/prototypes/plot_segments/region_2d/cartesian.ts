@@ -140,6 +140,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
 
   public readonly state: CartesianState;
 
+  public chartManager: ChartStateManager;
+
   public attributeNames: string[] = [
     "x1",
     "x2",
@@ -211,7 +213,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       "y1",
       "y2",
       solver,
-      context
+      context,
+      this.chartManager
     );
     return builder;
   }
@@ -245,25 +248,25 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         type: "x",
         value: x1,
         attribute: "x1",
-        priority: 1,
+        priority: 2,
       },
       <SnappingGuides.Axis>{
         type: "x",
         value: x2,
         attribute: "x2",
-        priority: 1,
+        priority: 2,
       },
       <SnappingGuides.Axis>{
         type: "y",
         value: y1,
         attribute: "y1",
-        priority: 1,
+        priority: 2,
       },
       <SnappingGuides.Axis>{
         type: "y",
         value: y2,
         attribute: "y2",
-        priority: 1,
+        priority: 2,
       },
     ];
   }
@@ -309,6 +312,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
   }
 
   public getGraphics(manager: ChartStateManager): Graphics.Group {
+    this.chartManager = manager;
     const g = Graphics.makeGroup([]);
     const props = this.object.properties;
     if (props.xData && props.xData.visible) {
@@ -328,6 +332,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     axis: Specification.Types.AxisDataBinding,
     manager: ChartStateManager
   ) => {
+    this.chartManager = manager;
     const table = manager.getTable(this.object.table);
     const axisExpression = manager.dataflow.cache.parse(axis.expression);
     const tickDataExpression = manager.dataflow.cache.parse(
@@ -346,6 +351,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
   private getPlotSegmentAxisXDataGraphics(
     manager: ChartStateManager
   ): Graphics.Group {
+    this.chartManager = manager;
     const g = Graphics.makeGroup([]);
     const attrs = this.state.attributes;
     const props = this.object.properties;
@@ -356,7 +362,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         attrs.x2 - attrs.x1,
         false,
         false,
-        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
+        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager),
+        this.object,
+        this.parent.dataflow
       );
       if (props.xData.tickDataExpression) {
         const tickFormatType = props.xData?.tickFormatType;
@@ -381,6 +389,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
   private getPlotSegmentAxisYDataGraphics(
     manager: ChartStateManager
   ): Graphics.Group {
+    this.chartManager = manager;
     const g = Graphics.makeGroup([]);
     const attrs = this.state.attributes;
     const props = this.object.properties;
@@ -392,7 +401,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         attrs.y2 - attrs.y1,
         false,
         true,
-        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
+        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager),
+        this.object,
+        this.parent.dataflow
       );
       if (props.yData.tickDataExpression) {
         const tickFormatType = props.yData?.tickFormatType;
@@ -418,6 +429,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
   public getPlotSegmentBackgroundGraphics(
     manager: ChartStateManager
   ): Graphics.Group {
+    this.chartManager = manager;
     const g = Graphics.makeGroup([]);
     const attrs = this.state.attributes;
     const props = this.object.properties;
@@ -477,6 +489,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     manager: ChartStateManager,
     zoom: ZoomInfo
   ): React.ReactElement<any>[] {
+    this.chartManager = manager;
     const attrs = this.state.attributes;
     const props = this.object.properties;
     const g = [];
@@ -537,8 +550,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
                 .range([props.xData.dataDomainMin, props.xData.dataDomainMax]);
               props.xData.scrollPosition = position;
               const start = scale(position);
-              props.xData.domainMin = start;
-              props.xData.domainMax = start + props.xData.windowSize;
+              props.xData.domainMin = start - props.xData.windowSize;
+              props.xData.domainMax = start;
             }
             manager.remapPlotSegmentGlyphs(this.object);
             manager.solveConstraints();

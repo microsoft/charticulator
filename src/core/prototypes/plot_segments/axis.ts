@@ -9,6 +9,8 @@ import {
   fillDefaults,
   Geometry,
   getFormat,
+  getRandomNumber,
+  makeRange,
   replaceSymbolByNewLine,
   replaceSymbolByTab,
   rgbToHex,
@@ -30,18 +32,37 @@ import {
   splitByWidth,
   TextMeasurer,
 } from "../../graphics/renderer/text_measurer";
-import { Graphics, Specification } from "../../index";
+import { Graphics, Prototypes, Specification } from "../../index";
 import { Controls, strokeStyleToDashArray } from "../common";
 import { AttributeMap, DataType } from "../../specification";
 import { strings } from "../../../strings";
 import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
-import { NumericalMode, TickFormatType } from "../../specification/types";
+import {
+  AxisDataBinding,
+  AxisDataBindingType,
+  NumericalMode,
+  OrderMode,
+  TickFormatType,
+} from "../../specification/types";
 import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
+import {
+  getTableColumns,
+  parseDerivedColumnsExpression,
+  transformOrderByExpression,
+} from "./utils";
+import { DataflowManager, DataflowTable } from "../dataflow";
+import * as Expression from "../../expression";
+import { CompiledGroupBy } from "../group_by";
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/types";
+import { type2DerivedColumns } from "../../../app/views/dataset/common";
 import React = require("react");
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
+  tickTextBackgroudColor: null,
+  tickTextBackgroudColorId: null,
   showTicks: true,
+  showBaseline: true,
   lineColor: { r: 0, g: 0, b: 0 },
   fontFamily: defaultFont,
   fontSize: defaultFontSize,
@@ -82,10 +103,19 @@ export class AxisRenderer {
   public oppositeSide: boolean = false;
   public static SCROLL_BAR_SIZE = 10;
 
+  //axis tick selection
+  private plotSegment: Specification.PlotSegment;
+  private dataFlow: DataflowManager;
+  private data: Specification.Types.AxisDataBinding;
+
   private static textMeasurer = new TextMeasurer();
 
   private scrollRequired: boolean = false;
   private shiftAxis: boolean = true;
+  private hiddenCategoriesRatio: number = 0;
+  private handlerSize: number = 0;
+  private dataType: AxisDataBindingType = AxisDataBindingType.Default;
+  private windowSize: number = 0;
 
   public setStyle(style?: Partial<Specification.Types.AxisRenderingStyle>) {
     if (!style) {
@@ -93,6 +123,8 @@ export class AxisRenderer {
     } else {
       this.style = fillDefaultAxisStyle(deepClone(style));
     }
+    this.style.tickTextBackgroudColorId =
+      "axis-tick-filter-" + getRandomNumber();
     return this;
   }
 
@@ -102,21 +134,47 @@ export class AxisRenderer {
     rangeMax: number,
     enablePrePostGap: boolean,
     reverse: boolean,
-    getTickFormat?: (value: any) => string
+    getTickFormat?: (value: any) => string,
+    plotSegment?: Specification.PlotSegment,
+    dataflow?: DataflowManager
   ) {
     this.rangeMin = rangeMin;
     this.rangeMax = rangeMax;
-
     if (!data) {
       return this;
     }
+    this.plotSegment = plotSegment;
+    this.dataFlow = dataflow;
+    this.data = data;
     this.setStyle(data.style);
     this.oppositeSide = data.side == "opposite";
     this.scrollRequired = data.allowScrolling;
     this.shiftAxis =
+      data.allowScrolling &&
       (data.barOffset == null || data.barOffset === 0) &&
-      ((data.allCategories && data.windowSize < data.allCategories.length) ||
+      ((data.allCategories && data.windowSize < data.allCategories?.length) ||
         Math.abs(data.dataDomainMax - data.dataDomainMin) > data.windowSize);
+
+    this.dataType = data.type;
+    if (this.shiftAxis) {
+      this.hiddenCategoriesRatio =
+        data.windowSize /
+        (data.allCategories
+          ? data.allCategories.length
+          : Math.abs(data.dataDomainMax - data.dataDomainMin));
+      this.handlerSize = rangeMax / this.hiddenCategoriesRatio;
+      if (
+        data.windowSize > data.allCategories?.length ||
+        data.windowSize > Math.abs(data.dataDomainMax - data.dataDomainMin)
+      ) {
+        this.windowSize = data.allCategories
+          ? data.allCategories.length
+          : Math.abs(data.dataDomainMax - data.dataDomainMin);
+      } else {
+        this.windowSize = data.windowSize;
+      }
+    }
+
     switch (data.type) {
       case "numerical":
         {
@@ -399,12 +457,6 @@ export class AxisRenderer {
     const g = makeGroup([]);
     const cos = Math.cos(Geometry.degreesToRadians(angle));
     const sin = Math.sin(Geometry.degreesToRadians(angle));
-    const rangeMin = this.rangeMin;
-    const rangeMax = this.rangeMax;
-    const x1 = x + rangeMin * cos;
-    const y1 = y + rangeMin * sin;
-    const x2 = x + rangeMax * cos;
-    const y2 = y + rangeMax * sin;
     const tickSize = size;
     const lineStyle: Style = {
       strokeLinecap: "round",
@@ -413,12 +465,10 @@ export class AxisRenderer {
       strokeWidth: style.gridlineWidth,
       strokeDasharray: strokeStyleToDashArray(style.gridlineStyle),
     };
-    // Base line
-    g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
+
     // Ticks
-    for (const tickPosition of this.ticks
-      .map((x) => x.position)
-      .concat([rangeMin, rangeMax])) {
+    const ticksData = this.ticks.map((x) => x.position);
+    for (const tickPosition of ticksData) {
       const tx = x + tickPosition * cos;
       const ty = y + tickPosition * sin;
       const dx = -side * tickSize * sin;
@@ -467,6 +517,7 @@ export class AxisRenderer {
     if (this.oppositeSide) {
       side = -side;
     }
+
     //shift axis for scrollbar space
     if (this.scrollRequired && this.shiftAxis) {
       if (angle === 90) {
@@ -483,13 +534,17 @@ export class AxisRenderer {
     const y1 = y + rangeMin * sin;
     const x2 = x + rangeMax * cos;
     const y2 = y + rangeMax * sin;
+
     // Base line
-    g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
+    if (style.showBaseline) {
+      g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
+    }
     // Ticks
+    const ticksData = this.ticks.map((x) => x.position);
+    const visibleTicks = ticksData.concat([rangeMin, rangeMax]);
+
     if (style.showTicks) {
-      for (const tickPosition of this.ticks
-        .map((x) => x.position)
-        .concat([rangeMin, rangeMax])) {
+      for (const tickPosition of visibleTicks) {
         const tx = x + tickPosition * cos;
         const ty = y + tickPosition * sin;
         const dx = side * tickSize * sin;
@@ -565,6 +620,8 @@ export class AxisRenderer {
               style.fontSize,
               {
                 fillColor: style.tickColor,
+                backgroundColor: style.tickTextBackgroudColor,
+                backgroundColorId: style.tickTextBackgroudColorId,
               }
             );
             lines.push(text);
@@ -587,9 +644,31 @@ export class AxisRenderer {
             0
           );
           const gText = makeGroup([
-            makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
-              fillColor: style.tickColor,
-            }),
+            makeText(
+              px,
+              py,
+              tick.label,
+              style.fontFamily,
+              style.fontSize,
+              {
+                fillColor: style.tickColor,
+                backgroundColor: style.tickTextBackgroudColor,
+                backgroundColorId: style.tickTextBackgroudColorId,
+              },
+              this.plotSegment && this.dataFlow
+                ? {
+                    enableSelection: this.data.enableSelection,
+                    glyphIndex: 1,
+                    rowIndices: applySelectionFilter(
+                      this.data,
+                      this.plotSegment.table,
+                      ticks.indexOf(tick),
+                      this.dataFlow
+                    ),
+                    plotSegment: this.plotSegment,
+                  }
+                : undefined
+            ),
           ]);
           gText.transform = {
             x: tx + dx,
@@ -608,9 +687,31 @@ export class AxisRenderer {
           0
         );
         const gText = makeGroup([
-          makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
-            fillColor: style.tickColor,
-          }),
+          makeText(
+            px,
+            py,
+            tick.label,
+            style.fontFamily,
+            style.fontSize,
+            {
+              fillColor: style.tickColor,
+              backgroundColor: style.tickTextBackgroudColor,
+              backgroundColorId: style.tickTextBackgroudColorId,
+            },
+            this.plotSegment && this.dataFlow
+              ? {
+                  enableSelection: this.data.enableSelection,
+                  glyphIndex: 1,
+                  rowIndices: applySelectionFilter(
+                    this.data,
+                    this.plotSegment.table,
+                    ticks.indexOf(tick),
+                    this.dataFlow
+                  ),
+                  plotSegment: this.plotSegment,
+                }
+              : undefined
+          ),
         ]);
         gText.transform = {
           x: tx + dx,
@@ -648,9 +749,31 @@ export class AxisRenderer {
             0
           );
           const gText = makeGroup([
-            makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
-              fillColor: style.tickColor,
-            }),
+            makeText(
+              px,
+              py,
+              tick.label,
+              style.fontFamily,
+              style.fontSize,
+              {
+                fillColor: style.tickColor,
+                backgroundColor: style.tickTextBackgroudColor,
+                backgroundColorId: style.tickTextBackgroudColorId,
+              },
+              this.plotSegment && this.dataFlow
+                ? {
+                    enableSelection: this.data.enableSelection,
+                    glyphIndex: 1,
+                    rowIndices: applySelectionFilter(
+                      this.data,
+                      this.plotSegment.table,
+                      ticks.indexOf(tick),
+                      this.dataFlow
+                    ),
+                    plotSegment: this.plotSegment,
+                  }
+                : undefined
+            ),
           ]);
           gText.transform = {
             x: tx + dx,
@@ -705,7 +828,22 @@ export class AxisRenderer {
                 style.fontSize,
                 {
                   fillColor: style.tickColor,
-                }
+                  backgroundColor: style.tickTextBackgroudColor,
+                  backgroundColorId: style.tickTextBackgroudColorId,
+                },
+                this.plotSegment && this.dataFlow
+                  ? {
+                      enableSelection: this.data.enableSelection,
+                      glyphIndex: 1,
+                      rowIndices: applySelectionFilter(
+                        this.data,
+                        this.plotSegment.table,
+                        ticks.indexOf(tick),
+                        this.dataFlow
+                      ),
+                      plotSegment: this.plotSegment,
+                    }
+                  : undefined
               );
               lines.push(text);
             }
@@ -741,9 +879,31 @@ export class AxisRenderer {
               0
             );
             const gText = makeGroup([
-              makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
-                fillColor: style.tickColor,
-              }),
+              makeText(
+                px,
+                py,
+                tick.label,
+                style.fontFamily,
+                style.fontSize,
+                {
+                  fillColor: style.tickColor,
+                  backgroundColor: style.tickTextBackgroudColor,
+                  backgroundColorId: style.tickTextBackgroudColorId,
+                },
+                this.plotSegment && this.dataFlow
+                  ? {
+                      enableSelection: this.data.enableSelection,
+                      glyphIndex: 1,
+                      rowIndices: applySelectionFilter(
+                        this.data,
+                        this.plotSegment.table,
+                        ticks.indexOf(tick),
+                        this.dataFlow
+                      ),
+                      plotSegment: this.plotSegment,
+                    }
+                  : undefined
+              ),
             ]);
             gText.transform = {
               x: tx + dx,
@@ -793,8 +953,6 @@ export class AxisRenderer {
       return;
     }
     const g = makeGroup([]);
-    const rangeMin = this.rangeMin;
-    const rangeMax = this.rangeMax;
     const gridineArcRotate = 90;
     const lineStyle: Style = {
       strokeLinecap: "round",
@@ -802,9 +960,7 @@ export class AxisRenderer {
       strokeWidth: style.gridlineWidth,
       strokeDasharray: strokeStyleToDashArray(style.gridlineStyle),
     };
-    for (const tickPosition of this.ticks
-      .map((x) => x.position)
-      .concat([rangeMin, rangeMax])) {
+    for (const tickPosition of this.ticks.map((x) => x.position)) {
       const cos = Math.cos(
         Geometry.degreesToRadians(-tickPosition + gridineArcRotate)
       );
@@ -836,8 +992,6 @@ export class AxisRenderer {
     const g = makeGroup([]);
     const startCos = Math.cos(Geometry.degreesToRadians(startAngle));
     const startSin = Math.sin(Geometry.degreesToRadians(startAngle));
-    const rangeMin = this.rangeMin;
-    const rangeMax = this.rangeMax;
     const gridineArcRotate = 90;
     const lineStyle: Style = {
       strokeLinecap: "round",
@@ -846,9 +1000,7 @@ export class AxisRenderer {
       strokeDasharray: strokeStyleToDashArray(style.gridlineStyle),
     };
     let radius = (outerRadius - innerRadius) / this.ticks.length;
-    for (const tickPosition of this.ticks
-      .map((x) => x.position)
-      .concat([rangeMin, rangeMax])) {
+    for (const tickPosition of this.ticks.map((x) => x.position)) {
       const tx1 = x + tickPosition * startCos;
       const ty1 = y + tickPosition * startSin;
       const arc = makePath(lineStyle);
@@ -945,15 +1097,15 @@ export class AxisRenderer {
             style.fontSize,
             {
               fillColor: style.tickColor,
+              backgroundColor: style.tickTextBackgroudColor,
+              backgroundColorId: style.tickTextBackgroudColorId,
             }
           );
           lines.push(gt);
         }
 
-        const gt = makeGroup([
-          makeLine(0, 0, 0, style.tickSize * side, lineStyle),
-          ...lines,
-        ]);
+        const line = makeLine(0, 0, 0, style.tickSize * side, lineStyle);
+        const gt = makeGroup([style.showTicks ? line : null, ...lines]);
 
         gt.transform.angle = -angle;
         gt.transform.x = tx;
@@ -969,10 +1121,13 @@ export class AxisRenderer {
           0,
           2
         );
+        const line = makeLine(0, 0, 0, style.tickSize * side, lineStyle);
         const gt = makeGroup([
-          makeLine(0, 0, 0, style.tickSize * side, lineStyle),
+          style.showTicks ? line : null,
           makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
             fillColor: style.tickColor,
+            backgroundColor: style.tickTextBackgroudColor,
+            backgroundColorId: style.tickTextBackgroudColorId,
           }),
         ]);
 
@@ -1014,10 +1169,13 @@ export class AxisRenderer {
         0,
         2
       );
+      const line = makeLine(0, 0, 0, -style.tickSize * side, lineStyle);
       const gt = makeGroup([
-        makeLine(0, 0, 0, -style.tickSize * side, lineStyle),
+        style.showTicks ? line : null,
         makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
           fillColor: style.tickColor,
+          backgroundColor: style.tickTextBackgroudColor,
+          backgroundColorId: style.tickTextBackgroudColorId,
         }),
       ]);
 
@@ -1093,7 +1251,6 @@ export class AxisRenderer {
 
     let width = 0;
     let height = 0;
-
     if (angle === 90) {
       height += Math.abs(y2 - y1);
       width = AxisRenderer.SCROLL_BAR_SIZE;
@@ -1113,6 +1270,9 @@ export class AxisRenderer {
       initialPosition: handlePosition,
       vertical: angle === 90,
       zoom,
+      scrollBarRatio: this.hiddenCategoriesRatio,
+      windowSize: this.windowSize,
+      dataType: this.dataType,
     });
   }
 }
@@ -1180,6 +1340,8 @@ export function getNumericalInterpolate(
 interface AxisAppearanceWidgets {
   isVisible: boolean;
   wordWrap: boolean;
+  isOffset: boolean;
+  isOnTop: boolean;
 }
 
 export function buildAxisAppearanceWidgets(
@@ -1213,13 +1375,15 @@ export function buildAxisAppearanceWidgets(
                 label: strings.objects.visibleOn.visible,
               }
             ),
-            manager.inputBoolean(
-              { property: axisProperty, field: "onTop" },
-              {
-                type: "checkbox",
-                label: strings.objects.onTop,
-              }
-            ),
+            options.isOnTop
+              ? manager.inputBoolean(
+                  { property: axisProperty, field: "onTop" },
+                  {
+                    type: "checkbox",
+                    label: strings.objects.onTop,
+                  }
+                )
+              : null,
             manager.inputSelect(
               { property: axisProperty, field: "side" },
               {
@@ -1230,15 +1394,17 @@ export function buildAxisAppearanceWidgets(
                 labels: [strings.objects.default, strings.objects.opposite],
               }
             ),
-            manager.inputNumber(
-              {
-                property: axisProperty,
-                field: ["offset"],
-              },
-              {
-                label: strings.objects.axes.offSet,
-              }
-            ),
+            options.isOffset
+              ? manager.inputNumber(
+                  {
+                    property: axisProperty,
+                    field: ["offset"],
+                  },
+                  {
+                    label: strings.objects.axes.offSet,
+                  }
+                )
+              : null,
           ]
         ),
         manager.verticalGroup(
@@ -1254,6 +1420,7 @@ export function buildAxisAppearanceWidgets(
               {
                 label: strings.objects.axes.lineColor,
                 labelKey: strings.objects.axes.lineColor,
+                allowNull: true,
               }
             ),
             manager.inputBoolean(
@@ -1261,6 +1428,18 @@ export function buildAxisAppearanceWidgets(
               {
                 type: "checkbox",
                 label: strings.objects.axes.showTickLine,
+                checkBoxStyles: {
+                  root: {
+                    marginTop: 5,
+                  },
+                },
+              }
+            ),
+            manager.inputBoolean(
+              { property: axisProperty, field: ["style", "showBaseline"] },
+              {
+                type: "checkbox",
+                label: strings.objects.axes.showBaseline,
                 checkBoxStyles: {
                   root: {
                     marginTop: 5,
@@ -1276,6 +1455,18 @@ export function buildAxisAppearanceWidgets(
               {
                 label: strings.objects.axes.tickColor,
                 labelKey: strings.objects.axes.tickColor,
+                allowNull: true,
+              }
+            ),
+            manager.inputColor(
+              {
+                property: axisProperty,
+                field: ["style", "tickTextBackgroudColor"],
+              },
+              {
+                label: strings.objects.axes.tickTextBackgroudColor,
+                labelKey: strings.objects.axes.tickTextBackgroudColor,
+                allowNull: true,
               }
             ),
             manager.inputFormat(
@@ -1348,12 +1539,103 @@ export function buildAxisAppearanceWidgets(
   }
 }
 
+function buildInteractivityGroup(
+  axisProperty: string,
+  manager: Controls.WidgetManager
+) {
+  return manager.verticalGroup(
+    {
+      header: "Interactivity",
+    },
+    [
+      manager.inputBoolean(
+        { property: axisProperty, field: "enableSelection" },
+        {
+          type: "checkbox",
+          label: "Selection",
+        }
+      ),
+    ]
+  );
+}
+
+interface AxisWidgetsConfig {
+  showOffset: boolean;
+  showScrolling: boolean;
+  showOnTop: boolean;
+}
+
+const defaultAxisWidgetsConfig: AxisWidgetsConfig = {
+  showOffset: true,
+  showScrolling: true,
+  showOnTop: true,
+};
+
+function buildScrollingAxisWidgets(
+  data: Specification.Types.AxisDataBinding,
+  axisProperty: string,
+  manager: Controls.WidgetManager,
+  axisName: string,
+  onChange?: () => void
+) {
+  return [
+    manager.label(strings.objects.dataAxis.scrolling),
+    manager.inputBoolean(
+      {
+        property: axisProperty,
+        field: "allowScrolling",
+      },
+      {
+        type: "checkbox",
+        label: strings.objects.dataAxis.allowScrolling,
+        observerConfig: {
+          isObserver: true,
+          properties: {
+            property: axisProperty,
+            field: "windowSize",
+          },
+          value: 10,
+        },
+        onChange: onChange,
+      }
+    ),
+    data.allowScrolling
+      ? manager.inputNumber(
+          {
+            property: axisProperty,
+            field: "windowSize",
+          },
+          {
+            maximum: 1000000,
+            minimum: 1,
+            label: strings.objects.dataAxis.windowSize,
+          }
+        )
+      : null,
+    data.allowScrolling
+      ? manager.inputNumber(
+          {
+            property: axisProperty,
+            field: "barOffset",
+          },
+          {
+            maximum: 1000000,
+            minimum: -1000000,
+            label: strings.objects.dataAxis.barOffset,
+          }
+        )
+      : null,
+  ];
+}
+
 // eslint-disable-next-line
 export function buildAxisWidgets(
   data: Specification.Types.AxisDataBinding,
   axisProperty: string,
   manager: Controls.WidgetManager,
-  axisName: string
+  axisName: string,
+  axisWidgetsConfig: AxisWidgetsConfig = defaultAxisWidgetsConfig,
+  onChange?: () => void
 ): Controls.Widget[] {
   const widgets = [];
   const dropzoneOptions: Controls.RowOptions = {
@@ -1362,14 +1644,29 @@ export function buildAxisWidgets(
       property: axisProperty,
       prompt: axisName + ": " + strings.objects.dropData,
     },
+    noLineHeight: true,
   };
   const makeAppearance = () => {
     return buildAxisAppearanceWidgets(axisProperty, manager, {
       isVisible: data.visible,
-      wordWrap: data.style.wordWrap,
+      wordWrap: data.style?.wordWrap ?? false,
+      isOffset: axisWidgetsConfig.showOffset,
+      isOnTop: axisWidgetsConfig.showOnTop,
     });
   };
   if (data != null) {
+    const isDateExpression = data.expression
+      ? data.expression?.includes("date.")
+      : false;
+    const scrollingWidgets = axisWidgetsConfig.showScrolling
+      ? buildScrollingAxisWidgets(
+          data,
+          axisProperty,
+          manager,
+          axisName,
+          onChange
+        )
+      : [];
     switch (data.type) {
       case "numerical":
         {
@@ -1385,7 +1682,10 @@ export function buildAxisWidgets(
                 //   dropzoneOptions
                 // ),
                 manager.label(strings.objects.axes.data),
-                manager.horizontal(
+                manager.styledHorizontal(
+                  {
+                    alignItems: "start",
+                  },
                   [1, 0],
                   manager.sectionHeader(
                     null,
@@ -1398,7 +1698,9 @@ export function buildAxisWidgets(
                     ),
                     dropzoneOptions
                   ),
-                  manager.clearButton({ property: axisProperty }, null, true)
+                  manager.clearButton({ property: axisProperty }, null, true, {
+                    marginTop: "1px",
+                  })
                 ),
                 data.valueType === "date"
                   ? manager.label(strings.objects.dataAxis.range)
@@ -1508,51 +1810,7 @@ export function buildAxisWidgets(
                     label: strings.objects.axes.tickFormat,
                   }
                 ),
-                manager.label(strings.objects.dataAxis.scrolling),
-                manager.inputBoolean(
-                  {
-                    property: axisProperty,
-                    field: "allowScrolling",
-                  },
-                  {
-                    type: "checkbox",
-                    label: strings.objects.dataAxis.allowScrolling,
-                    observerConfig: {
-                      isObserver: true,
-                      properties: {
-                        property: axisProperty,
-                        field: "windowSize",
-                      },
-                      value: 10,
-                    },
-                  }
-                ),
-                data.allowScrolling
-                  ? manager.inputNumber(
-                      {
-                        property: axisProperty,
-                        field: "windowSize",
-                      },
-                      {
-                        maximum: 1000000,
-                        minimum: 1,
-                        label: strings.objects.dataAxis.windowSize,
-                      }
-                    )
-                  : null,
-                data.allowScrolling
-                  ? manager.inputNumber(
-                      {
-                        property: axisProperty,
-                        field: "barOffset",
-                      },
-                      {
-                        maximum: 1000000,
-                        minimum: -1000000,
-                        label: strings.objects.dataAxis.barOffset,
-                      }
-                    )
-                  : null,
+                ...scrollingWidgets,
               ]
             )
           );
@@ -1574,7 +1832,10 @@ export function buildAxisWidgets(
                 // ),
                 // manager.vertical(
                 manager.label(strings.objects.axes.data),
-                manager.horizontal(
+                manager.styledHorizontal(
+                  {
+                    alignItems: "start",
+                  },
                   [1, 0],
                   manager.sectionHeader(
                     null,
@@ -1587,12 +1848,21 @@ export function buildAxisWidgets(
                     ),
                     dropzoneOptions
                   ),
-                  manager.clearButton({ property: axisProperty }, null, true),
-                  manager.reorderWidget(
-                    { property: axisProperty, field: "categories" },
-                    { allowReset: true }
-                  )
+                  isDateExpression
+                    ? manager.reorderWidget(
+                        { property: axisProperty, field: "categories" },
+                        { allowReset: true }
+                      )
+                    : null,
+                  manager.clearButton({ property: axisProperty }, null, true, {
+                    marginTop: "1px",
+                  })
                 ),
+
+                !isDateExpression
+                  ? getOrderByAnotherColumnWidgets(data, axisProperty, manager)
+                  : null,
+
                 manager.inputNumber(
                   { property: axisProperty, field: "gapRatio" },
                   {
@@ -1629,55 +1899,12 @@ export function buildAxisWidgets(
                       )
                     ))
                   : null,
-                manager.label(strings.objects.dataAxis.scrolling),
-                manager.inputBoolean(
-                  {
-                    property: axisProperty,
-                    field: "allowScrolling",
-                  },
-                  {
-                    type: "checkbox",
-                    label: strings.objects.dataAxis.allowScrolling,
-                    observerConfig: {
-                      isObserver: true,
-                      properties: {
-                        property: axisProperty,
-                        field: "windowSize",
-                      },
-                      value: 10,
-                    },
-                  }
-                ),
-                data.allowScrolling
-                  ? manager.inputNumber(
-                      {
-                        property: axisProperty,
-                        field: "windowSize",
-                      },
-                      {
-                        maximum: 1000000,
-                        minimum: 1,
-                        label: strings.objects.dataAxis.windowSize,
-                      }
-                    )
-                  : null,
-                data.allowScrolling
-                  ? manager.inputNumber(
-                      {
-                        property: axisProperty,
-                        field: "barOffset",
-                      },
-                      {
-                        maximum: 1000000,
-                        minimum: -1000000,
-                        label: strings.objects.dataAxis.barOffset,
-                      }
-                    )
-                  : null,
+                ...scrollingWidgets,
                 // )
               ]
             )
           );
+          widgets.push(buildInteractivityGroup(axisProperty, manager));
           widgets.push(makeAppearance());
         }
         break;
@@ -1687,7 +1914,10 @@ export function buildAxisWidgets(
             manager.sectionHeader(
               axisName + strings.objects.axes.stackingSuffix,
               manager.clearButton({ property: axisProperty }, null, true),
-              dropzoneOptions
+              {
+                ...dropzoneOptions,
+                noLineHeight: false,
+              }
             ),
             manager.inputNumber(
               { property: axisProperty, field: "gapRatio" },
@@ -1909,4 +2139,211 @@ export function buildAxisProperties(
       default: 0,
     },
   ];
+}
+
+function getTable(dataflow: DataflowManager, name: string): DataflowTable {
+  return dataflow.getTable(name);
+}
+
+function applySelectionFilter(
+  data: AxisDataBinding,
+  tableName: string,
+  index: number,
+  dataflow: DataflowManager
+) {
+  const filteredIndices: number[] = [];
+
+  const table = getTable(dataflow, tableName);
+
+  if (
+    data.type === AxisDataBindingType.Default ||
+    data.type === AxisDataBindingType.Numerical
+  ) {
+    return table.rows.map((row, id) => id);
+  }
+  const parsed = (Expression.parse(data?.expression) as Expression.FunctionCall)
+    ?.args[0];
+
+  if (data.type === AxisDataBindingType.Categorical) {
+    for (let i = 0; i < table.rows.length; i++) {
+      const rowContext = table.getRowContext(i);
+
+      if (data.categories[index] == parsed.getStringValue(rowContext)) {
+        filteredIndices.push(i);
+      }
+    }
+  }
+  return filteredIndices;
+}
+
+function getOrderByAnotherColumnWidgets(
+  data: Specification.Types.AxisDataBinding,
+  axisProperty: string,
+  manager: Controls.WidgetManager
+): JSX.Element[] {
+  const widgets = [];
+
+  const tableColumns = getTableColumns(
+    manager as Controls.WidgetManager & CharticulatorPropertyAccessors
+  );
+
+  const columnsDisplayNames = tableColumns
+    .filter((item) => !item.metadata?.isRaw)
+    .map((column) => column.displayName);
+  const columnsNames = tableColumns
+    .filter((item) => !item.metadata?.isRaw)
+    .map((column) => transformOrderByExpression(column.name));
+
+  const derivedColumns = [];
+  const derivedColumnsNames = [];
+  for (let i = 0; i < tableColumns.length; i++) {
+    if (!tableColumns[i].metadata?.isRaw) {
+      derivedColumns.push(type2DerivedColumns[tableColumns[i].type]);
+      derivedColumnsNames.push(tableColumns[i].name);
+    }
+  }
+
+  const removeIdx: number[] = [];
+
+  //remove empty
+  for (let i = 0; i < derivedColumns.length; i++) {
+    if (!Array.isArray(derivedColumns[i])) {
+      removeIdx.push(i);
+    }
+  }
+
+  const filteredDerivedColumns = derivedColumns.filter(
+    (item, idx) => !removeIdx.includes(idx)
+  );
+  const filteredDerivedColumnsNames = derivedColumnsNames.filter(
+    (item, idx) => !removeIdx.includes(idx)
+  );
+
+  //Date columns
+  for (let i = 0; i < filteredDerivedColumns.length; i++) {
+    const currentDerivedColumn = filteredDerivedColumns[i];
+    for (let j = 0; j < currentDerivedColumn?.length; j++) {
+      const currentColumn = currentDerivedColumn[j];
+      const currentColumnName = filteredDerivedColumnsNames[i];
+      columnsDisplayNames.push(currentColumn.displayName ?? currentColumn.name);
+      columnsNames.push(currentColumn.function + `(${currentColumnName})`);
+    }
+  }
+
+  const table = (manager as Controls.WidgetManager &
+    CharticulatorPropertyAccessors).store.getTables()[0].name;
+  const store = (manager as Controls.WidgetManager &
+    CharticulatorPropertyAccessors).store;
+
+  const df = new Prototypes.Dataflow.DataflowManager(store.dataset);
+  const getExpressionVector = (
+    expression: string,
+    table: string,
+    groupBy?: Specification.Types.GroupBy
+  ): any[] => {
+    const newExpression = transformOrderByExpression(expression);
+    groupBy.expression = transformOrderByExpression(groupBy.expression);
+
+    const expr = Expression.parse(newExpression);
+    const tableContext = df.getTable(table);
+    const indices = groupBy
+      ? new CompiledGroupBy(groupBy, df.cache).groupBy(tableContext)
+      : makeRange(0, tableContext.rows.length).map((x) => [x]);
+    return indices.map((is) =>
+      expr.getValue(tableContext.getGroupedContext(is))
+    );
+  };
+
+  const parsed = Expression.parse(data.expression);
+  let groupByExpression: string = null;
+  if (parsed instanceof Expression.FunctionCall) {
+    groupByExpression = parsed.args[0].toString();
+    groupByExpression = groupByExpression?.split("`").join("");
+    //need to provide date.year() etc.
+    groupByExpression = parseDerivedColumnsExpression(groupByExpression);
+  }
+
+  const vectorData = getExpressionVector(data.orderByExpression, table, {
+    expression: groupByExpression,
+  });
+  const items = vectorData.map((item) => [...new Set(item)]);
+
+  const items_idx = items.map((item, idx) => [item, idx]);
+  const axisData = getExpressionVector(data.expression, table, {
+    expression: groupByExpression,
+  }).map((item, idx) => [item, idx]);
+
+  const rawAxisData = items_idx.map((item) =>
+    Array.isArray(item[0]) ? item[0].join(", ") : item[0].toString()
+  );
+
+  const onConfirm = (items: string[]) => {
+    try {
+      const newData = [...axisData];
+      const new_order = [];
+
+      for (let i = 0; i < items.length; i++) {
+        const currentItemIndex = items_idx.findIndex(
+          (item) =>
+            (Array.isArray(item[0])
+              ? item[0].join(", ")
+              : item[0].toString()) == items[i]
+        );
+        const foundItem = newData.find(
+          (item) => item[1] === items_idx[currentItemIndex]?.[1]
+        );
+        new_order.push(foundItem);
+        items_idx.splice(currentItemIndex, 1);
+      }
+      const getItem = (item: any) => {
+        if (data.valueType == DataType.Number) {
+          return "" + item;
+        }
+        return item;
+      };
+      data.order = new_order.map((item) => getItem(item[0]));
+      data.orderMode = OrderMode.order;
+      data.categories = new_order.map((item) => getItem(item[0]));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onChange = () => {
+    const vectorData = getExpressionVector(data.orderByExpression, table, {
+      expression: groupByExpression,
+    });
+    const items = vectorData.map((item) => [...new Set(item)]);
+    const newData = items.map((item) =>
+      Array.isArray(item) ? item.join(", ") : item
+    );
+    data.orderByCategories = newData;
+  };
+
+  widgets.push(
+    manager.label(strings.objects.axes.orderBy),
+
+    manager.horizontal(
+      [1, 0],
+      manager.inputSelect(
+        { property: axisProperty, field: "orderByExpression" },
+        {
+          type: "dropdown",
+          showLabel: true,
+          labels: columnsDisplayNames,
+          options: columnsNames,
+          onChange: onChange,
+        }
+      ),
+      manager.reorderByAnotherColumnWidget(
+        { property: axisProperty, field: "orderByCategories" },
+        {
+          allowReset: true,
+          onConfirmClick: onConfirm,
+          onResetCategories: rawAxisData,
+        }
+      )
+    )
+  );
+  return widgets;
 }

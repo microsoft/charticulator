@@ -84,6 +84,13 @@ export interface AxisDataBinding extends AttributeMap {
 
   /** render axis on top */
   onTop?: boolean;
+
+  /** Order by another column */
+  orderByExpression?: string;
+  orderByCategories?: string[];
+
+  //axis tick selection
+  enableSelection?: boolean;
 }
 
 export interface AxisRenderingStyle extends AttributeMap {
@@ -92,12 +99,15 @@ export interface AxisRenderingStyle extends AttributeMap {
   fontFamily: string;
   fontSize: number;
   tickSize: number;
+  tickTextBackgroudColor: Color;
+  tickTextBackgroudColorId: string;
   wordWrap: boolean;
   gridlineStyle: StrokeStyle;
   gridlineColor: Color;
   gridlineWidth: number;
   verticalText: boolean;
   showTicks: boolean;
+  showBaseline: boolean;
 }
 
 export enum TextAlignmentHorizontal {

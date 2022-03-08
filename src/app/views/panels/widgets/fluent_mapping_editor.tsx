@@ -1,5 +1,4 @@
 /* eslint-disable max-lines-per-function */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
@@ -17,7 +16,7 @@ import { ColorPicker } from "../../../components/fluentui_color_picker";
 import { ContextedComponent } from "../../../context_component";
 import { isKindAcceptable, type2DerivedColumns } from "../../dataset/common";
 import { ScaleEditor } from "../scale_editor";
-import { CharticulatorPropertyAccessors, DropZoneView } from "./manager";
+import { CharticulatorPropertyAccessors, DropZoneView } from "./types";
 import { AppStore } from "../../../stores";
 import { ScaleValueSelector } from "../scale_value_selector";
 import { FunctionCall } from "../../../../core/expression";
@@ -25,23 +24,18 @@ import { FluentValueEditor } from "./fluentui_value_editor";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 import {
   DefaultButton,
-  TextField,
   ActionButton,
   Label,
   IContextualMenuItem,
   Callout,
-  Dropdown,
-  ContextualMenu,
 } from "@fluentui/react";
 import {
   defaultLabelStyle,
-  defaultStyle,
   defultBindButtonSize,
   defultComponentsHeight,
   FluentActionButton,
   FluentButton,
   FluentRowLayout,
-  labelRender,
 } from "./controls/fluentui_customized_components";
 import { ObjectClass } from "../../../../core/prototypes";
 import {
@@ -55,6 +49,7 @@ import {
 } from "../../dataset/data_field_binding_builder";
 import { strings } from "../../../../strings";
 import { MappingType } from "../../../../core/specification";
+import { EmptyMapping } from "./controls/fluentui_empty_mapping";
 
 export interface MappingEditorProps {
   parent: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
@@ -312,42 +307,19 @@ export class FluentMappingEditor extends React.Component<
         if (this.state.showNoneAsValue || alwaysShowNoneAsValue) {
           return this.renderValueEditor(null);
         } else {
-          if (options.defaultAuto) {
-            return (
-              <>
-                {this.renderColorPicker()}
-                <TextField
-                  styles={defaultStyle}
-                  label={this.props.options.label}
-                  onRenderLabel={labelRender}
-                  placeholder={strings.core.auto}
-                  onClick={() => {
-                    if (!mapping || (mapping as any).valueIndex == undefined) {
-                      this.initiateValueEditor();
-                    }
-                  }}
-                />
-              </>
-            );
-          } else {
-            return (
-              <>
-                {this.renderColorPicker()}
-                <TextField
-                  id={`id_${this.props.options.label}`}
-                  styles={defaultStyle}
-                  label={this.props.options.label}
-                  onRenderLabel={labelRender}
-                  placeholder={strings.core.none}
-                  onClick={() => {
-                    if (!mapping || (mapping as any).valueIndex == undefined) {
-                      this.initiateValueEditor();
-                    }
-                  }}
-                />
-              </>
-            );
-          }
+          const onClick = () => {
+            if (!mapping || (mapping as any).valueIndex == undefined) {
+              this.initiateValueEditor();
+            }
+          };
+          return (
+            <EmptyMapping
+              options={options}
+              onClick={onClick.bind(this)}
+              renderColorPicker={this.renderColorPicker.bind(this)}
+              type={this.props.type}
+            />
+          );
         }
       }
     } else {

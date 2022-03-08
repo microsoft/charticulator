@@ -18,16 +18,16 @@ import {
 import { ColorFilter, NumberModifier } from "../../core/graphics";
 
 // adapted from https://stackoverflow.com/a/20820649
-// eslint-disable-next-line
-function desaturate(color: Color, amount: number) {
-  const { r, g, b } = color;
-  const l = 0.3 * r + 0.6 * g + 0.1 * b;
-  return {
-    r: Math.min(r + amount * (l - r), 255),
-    g: Math.min(g + amount * (l - g), 255),
-    b: Math.min(b + amount * (l - b), 255),
-  };
-}
+// probably useful
+// function desaturate(color: Color, amount: number) {
+//   const { r, g, b } = color;
+//   const l = 0.3 * r + 0.6 * g + 0.1 * b;
+//   return {
+//     r: Math.min(r + amount * (l - r), 255),
+//     g: Math.min(g + amount * (l - g), 255),
+//     b: Math.min(b + amount * (l - b), 255),
+//   };
+// }
 
 const srgb2lab = getColorConverter("sRGB", "lab");
 const lab2srgb = getColorConverter("lab", "sRGB");
@@ -222,6 +222,52 @@ class TextOnPath extends React.PureComponent<{
         </text>
       </g>
     );
+  }
+}
+
+export function renderSVGDefs(element: Graphics.Element): JSX.Element {
+  if (!element) {
+    return null;
+  }
+  switch (element.type) {
+    case "text": {
+      const text = element as Graphics.Text;
+      if (text.style.backgroundColor) {
+        return (
+          <filter
+            x="0"
+            y="0"
+            width="1"
+            height="1"
+            id={text.style.backgroundColorId}
+          >
+            <feFlood
+              flood-color={renderColor(
+                text.style.backgroundColor,
+                text.style.colorFilter
+              )}
+              result="bg"
+            />
+            <feMerge>
+              <feMergeNode in="bg" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        );
+      } else {
+        return null;
+      }
+    }
+    case "group": {
+      const group = element as Graphics.Group;
+      return (
+        <>
+          {group.elements?.map((x) => {
+            return renderSVGDefs(x);
+          })}
+        </>
+      );
+    }
   }
 }
 
@@ -427,6 +473,9 @@ export function renderGraphicalElementSVG(
       const text = element as Graphics.Text;
       style.fontFamily = text.fontFamily;
       style.fontSize = text.fontSize + "px";
+      const filter = text.style.backgroundColor
+        ? `url(#${text.style.backgroundColorId})`
+        : null;
       if (style.stroke != "none") {
         const style2 = shallowClone(style);
         style2.fill = style.stroke;
@@ -437,6 +486,7 @@ export function renderGraphicalElementSVG(
             style={style2}
             x={text.cx}
             y={-text.cy}
+            filter={filter}
           >
             {text.text}
           </text>
@@ -449,6 +499,7 @@ export function renderGraphicalElementSVG(
             style={style}
             x={text.cx}
             y={-text.cy}
+            filter={filter}
           >
             {text.text}
           </text>
@@ -468,6 +519,7 @@ export function renderGraphicalElementSVG(
             style={style}
             x={text.cx}
             y={-text.cy}
+            filter={filter}
           >
             {text.text}
           </text>

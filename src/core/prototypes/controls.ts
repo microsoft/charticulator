@@ -6,7 +6,7 @@ import { Point } from "../common";
 import * as Specification from "../specification";
 import * as Dataset from "../dataset";
 import { CSSProperties } from "react";
-import { ICheckboxStyles } from "@fluentui/react";
+import { ICheckboxStyles, IDropdownOption } from "@fluentui/react";
 
 export type Widget = any;
 
@@ -41,6 +41,8 @@ export interface InputSelectOptions {
   label?: string;
   hideBorder?: boolean;
   shiftCallout?: number;
+  observerConfig?: ObserverConfig;
+  onChange?: (value: IDropdownOption) => void;
 }
 
 export interface InputFontComboboxOptions {
@@ -67,6 +69,7 @@ export interface InputBooleanOptions {
   label?: string;
   observerConfig?: ObserverConfig;
   checkBoxStyles?: ICheckboxStyles;
+  onChange?: (value: boolean) => void;
 }
 
 export interface RowOptions {
@@ -76,6 +79,7 @@ export interface RowOptions {
     property?: string;
     defineCategories?: boolean;
   };
+  noLineHeight?: boolean;
 }
 
 export interface DropTargetOptions {
@@ -158,6 +162,9 @@ export interface InputColorOptions {
   width?: number;
   underline?: boolean;
   pickerBeforeTextField?: boolean;
+  styles?: {
+    marginTop?: string;
+  };
 }
 
 // eslint-disable-next-line
@@ -182,6 +189,7 @@ export interface FilterEditorOptions {
   };
   value: Specification.Types.Filter;
   mode: PanelMode;
+  key?: string;
 }
 
 export interface GroupByEditorOptions {
@@ -247,6 +255,8 @@ export interface ReOrderWidgetOptions {
   onConfirm?: (items: string[]) => void;
   onReset?: () => string[];
   items?: string[];
+  onConfirmClick?: (items: string[]) => void;
+  onResetCategories?: string[];
 }
 
 export interface InputFormatOptions {
@@ -299,7 +309,12 @@ export interface WidgetManager {
   inputColorGradient(property: Property, inline?: boolean): Widget;
 
   // A button, once clicked, set the property to null.
-  clearButton(property: Property, icon?: string, isHeader?: boolean): Widget;
+  clearButton(
+    property: Property,
+    icon?: string,
+    isHeader?: boolean,
+    styles?: CSSProperties
+  ): Widget;
   setButton(
     property: Property,
     value: Specification.AttributeValue,
@@ -315,6 +330,12 @@ export interface WidgetManager {
   // Reorder widget: allow user to reorder the items in a property
   reorderWidget(property: Property, options: ReOrderWidgetOptions): Widget;
 
+  // Reorder widget: allow user to reorder the items in a property
+  reorderByAnotherColumnWidget(
+    property: Property,
+    options: ReOrderWidgetOptions
+  ): Widget;
+
   arrayWidget(
     property: Property,
     item: (item: Property, index?: number) => Widget,
@@ -325,17 +346,27 @@ export interface WidgetManager {
 
   // Label and text
   icon(icon: string): Widget;
-  label(title: string, options?: { addMargins: boolean }): Widget;
+
+  label(title: string, options?: LabelOptions): Widget;
+
   text(text: string, align?: "left" | "center" | "right"): Widget;
+
   // Inline separator
   sep(): Widget;
 
   // Layout elements
   sectionHeader(title: string, widget?: Widget, options?: RowOptions): Widget;
+
   row(title?: string, widget?: Widget, options?: RowOptions): Widget;
 
   // Basic layout elements
   horizontal(cols: number[], ...widgets: Widget[]): Widget;
+
+  styledHorizontal(
+    styles: CSSProperties,
+    cols: number[],
+    ...widgets: Widget[]
+  ): Widget;
   verticalGroup(options: VerticalGroupOptions, ...widgets: Widget[]): Widget;
   vertical(...widgets: Widget[]): Widget;
   table(rows: Widget[][], options?: TableOptions): Widget;
@@ -361,4 +392,9 @@ export interface WidgetManager {
 export interface PopupEditor {
   anchor: Point;
   widgets: Widget[];
+}
+
+export interface LabelOptions {
+  addMargins: boolean;
+  key?: string;
 }

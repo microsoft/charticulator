@@ -2,15 +2,9 @@
 // Licensed under the MIT license.
 import * as React from "react";
 
-// eslint-disable-next-line
-export interface SplitPaneViewProps {}
-
-// eslint-disable-next-line
-export interface SplitPaneViewState {}
-
 export class HorizontalSplitPaneView extends React.Component<
-  SplitPaneViewProps,
-  SplitPaneViewState
+  Record<string, unknown>,
+  Record<string, unknown>
 > {
   public render() {
     return (

@@ -3,6 +3,7 @@
 
 // eslint-disable-next-line
 export type ValueType = number | boolean | string | Date | Object;
+const pegjs = require("./parser.pegjs");
 
 export interface Context {
   getVariable(name: string): ValueType;
@@ -14,8 +15,7 @@ export class ShadowContext implements Context {
     public shadows: { [name: string]: ValueType } = {}
   ) {}
   public getVariable(name: string): ValueType {
-    // eslint-disable-next-line
-    if (this.shadows.hasOwnProperty(name)) {
+    if (Object.prototype.hasOwnProperty.call(this.shadows, name)) {
       return this.shadows[name];
     }
     return this.upstream.getVariable(name);
@@ -31,7 +31,6 @@ export class SimpleContext implements Context {
 }
 
 import { constants, functions, operators, precedences } from "./intrinsics";
-import { parse } from "./parser";
 import {
   DataflowTable,
   DataflowTableGroupedContext,
@@ -43,8 +42,7 @@ export type PatternReplacer = (expr: Expression) => Expression | void;
 export function variableReplacer(map: { [name: string]: string }) {
   return (expr: Expression) => {
     if (expr instanceof Variable) {
-      // eslint-disable-next-line
-      if (map.hasOwnProperty(expr.name)) {
+      if (Object.prototype.hasOwnProperty.call(map, expr.name)) {
         return new Variable(map[expr.name]);
       }
     }
@@ -76,7 +74,7 @@ export abstract class Expression {
   }
 
   public static Parse(expr: string): Expression {
-    return <Expression>parse(expr);
+    return pegjs.parse(expr) as Expression;
   }
 
   public replace(replacer: PatternReplacer): Expression {
@@ -153,7 +151,7 @@ export class TextExpression {
   }
 
   public static Parse(expr: string): TextExpression {
-    return <TextExpression>parse(expr, { startRule: "start_text" });
+    return pegjs.parse(expr, { startRule: "start_text" }) as TextExpression;
   }
 
   public replace(r: PatternReplacer): TextExpression {
@@ -244,8 +242,7 @@ export class FunctionCall extends Expression {
     this.args = args;
     let v = <any>functions;
     for (const part of parts) {
-      // eslint-disable-next-line
-      if (v.hasOwnProperty(part)) {
+      if (Object.prototype.hasOwnProperty.call(v, part)) {
         v = v[part];
       } else {
         v = undefined;
@@ -259,7 +256,13 @@ export class FunctionCall extends Expression {
   }
 
   public getValue(c: Context) {
-    return this.function(...this.args.map((arg) => arg.getValue(c)));
+    const data = this.args
+      .map((arg) => arg.getValue(c))
+      ?.filter((item) => item !== undefined);
+    if (!data.length) {
+      return null;
+    }
+    return this.function(...data);
   }
 
   public toString() {

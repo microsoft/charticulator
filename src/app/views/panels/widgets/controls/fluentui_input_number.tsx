@@ -60,9 +60,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
       return "N/A";
     }
     if (props.percentage) {
-      return (
-        prettyNumber(value * 100, props.digits != null ? props.digits : 2) + "%"
-      );
+      return prettyNumber(value * 100, props.digits != null ? props.digits : 2);
     } else {
       return prettyNumber(value, props.digits != null ? props.digits : 2);
     }
@@ -70,7 +68,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
 
   const parseNumber = (str: string) => {
     str = str.trim();
-    if (str == "") {
+    if (str == "" || isNaN(+str)) {
       return null;
     }
     if (props.percentage) {
@@ -222,7 +220,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
                 }
                 onChange={(event, str) => {
                   if (
-                    str.indexOf(".") === str.length - 1 ||
+                    (str != "" && str.indexOf(".") === str.length - 1) ||
                     (str.indexOf("-") === 0 && str.length === 1)
                   ) {
                     setValue(str);
@@ -238,6 +236,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
                     e.stopPropagation();
                   }
                 }}
+                suffix={props.percentage ? "%" : undefined}
               />
             </PlaceholderStyle>
           )}

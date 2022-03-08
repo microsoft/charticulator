@@ -161,6 +161,14 @@ export function createDefaultChart(
         type: MappingType.value,
         value: 80,
       } as Specification.ValueMapping,
+      width: {
+        type: MappingType.value,
+        value: 900,
+      } as Specification.ValueMapping,
+      height: {
+        type: MappingType.value,
+        value: 600,
+      } as Specification.ValueMapping,
     },
     glyphs: [glyph],
     elements: [
@@ -176,6 +184,6 @@ export function createDefaultChart(
 
 export const defaultFont = "Segoe UI";
 export const defaultFontSize = 12;
-export const defaultFontSizeLegend = 10;
+export const defaultFontSizeLegend = 12;
 
 export const defaultVersionOfTemplate = "2.0.3";

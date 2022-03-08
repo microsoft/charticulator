@@ -1,8 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types  */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
 
@@ -13,7 +10,10 @@ export interface CanvasBarProps {
   onReset?: () => void;
 }
 
-export class CanvasBar extends React.Component<CanvasBarProps, {}> {
+export class CanvasBar extends React.Component<
+  CanvasBarProps,
+  Record<string, unknown>
+> {
   public render() {
     const width = this.props.canvasWidth;
     const height = 20;

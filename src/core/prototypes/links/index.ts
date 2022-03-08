@@ -21,6 +21,7 @@ import { PlotSegmentClass } from "../plot_segments";
 import { PointDirection } from "../../graphics";
 import { MappingType } from "../../specification";
 import { strings } from "../../../strings";
+import { shouldShowCloseLink } from "./utils";
 
 export type LinkType = "line" | "band";
 export type InterpolationType = "line" | "bezier" | "circle";
@@ -63,6 +64,8 @@ export interface LinksProperties extends Specification.AttributeMap {
   };
 
   curveness: number;
+
+  closeLink?: boolean;
 }
 
 export interface LinksObject extends Specification.Links {
@@ -676,6 +679,23 @@ export abstract class LinksClass extends ChartElementClass {
         }
       ),
     ];
+
+    if (shouldShowCloseLink(this.parent, props)) {
+      widgets.push(
+        manager.inputBoolean(
+          { property: "closeLink" },
+          {
+            type: "checkbox",
+            label: strings.objects.links.closeLink,
+            checkBoxStyles: {
+              root: {
+                marginTop: 5,
+              },
+            },
+          }
+        )
+      );
+    }
     if (props.interpolationType == "bezier") {
       widgets.push(
         manager.inputNumber(
@@ -787,6 +807,7 @@ export class SeriesLinksClass extends LinksClass {
 
   public static defaultProperties: Specification.AttributeMap = {
     visible: true,
+    closeLink: false,
   };
 
   /** Get the graphics that represent this layout */
@@ -870,6 +891,20 @@ export class SeriesLinksClass extends LinksClass {
       })
     );
 
+    try {
+      if (shouldShowCloseLink(this.parent, props, true)) {
+        for (let i = 0; i < anchors.length; i++) {
+          const currentAnchor = anchors[i];
+          currentAnchor.push([
+            currentAnchor[currentAnchor.length - 1][1],
+            currentAnchor[0][0],
+          ]);
+        }
+      }
+    } catch (e) {
+      //error
+    }
+
     linkGroup.elements.push(
       this.renderLinks(
         props.linkType,
@@ -889,6 +924,7 @@ export class LayoutsLinksClass extends LinksClass {
 
   public static defaultProperties: Specification.AttributeMap = {
     visible: true,
+    closeLink: false,
   };
 
   /** Get the graphics that represent this layout */

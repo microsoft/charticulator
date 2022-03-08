@@ -1,8 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable @typescript-eslint/ban-types  */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
 import * as R from "../../resources";
@@ -30,7 +27,7 @@ export class AttributePanel extends React.Component<
   {
     store: AppStore;
   },
-  {}
+  Record<string, unknown>
 > {
   public tokens: EventSubscription[] = [];
 
@@ -171,7 +168,7 @@ export class AttributePanel extends React.Component<
       return (
         <div className="attribute-editor charticulator__widget-container">
           <section className="attribute-editor-element" key={object._id}>
-            <div className="header">
+            <div className="header" key="header">
               <SVGImageIcon
                 url={getObjectIcon(object.classID)}
                 height={32}

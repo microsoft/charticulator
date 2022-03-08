@@ -151,6 +151,7 @@ export const strings = {
     keyColumnExpression: "Key column expression",
     bindDataValue: "Bind data value",
     remove: "Remove",
+    chooseColor: "Choose color",
   },
   error: {
     imageLoad: (url: string) => `failed to retrieve map image at url ${url}`,
@@ -253,6 +254,7 @@ export const strings = {
     defaultTemplateName: "Charticulator Template",
     export: "Export",
     exportTemplate: "Export template",
+    copyTemplate: "Copy template",
     help: "Help",
     home: "Open file menu",
     importTemplate: "Import template",
@@ -426,9 +428,12 @@ export const strings = {
       dataExpressions: "Data Expressions",
       lineColor: "Line Color",
       tickColor: "Tick Label Color",
+      tickTextBackgroudColor: "Tick background color",
       showTickLine: "Show Tick Line",
+      showBaseline: "Show Baseline",
       verticalText: "Vertical text",
       offSet: "Offset",
+      orderBy: "Order by",
     },
     plotSegment: {
       subLayout: "Sub-layout",
@@ -500,6 +505,7 @@ export const strings = {
       dotted: "Dotted",
       linkMarkType: "Line mark type",
       curveness: "Curveness",
+      closeLink: "Close Link",
     },
     line: {
       lineStyle: "Line Style",

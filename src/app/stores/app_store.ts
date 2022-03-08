@@ -84,6 +84,7 @@ import {
 import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
 import { DataAxisProperties } from "../../core/prototypes/marks/data_axis.attrs";
 import { isBase64Image } from "../../core/dataset/data_types";
+import { getColumnNameByExpression } from "../../core/prototypes/plot_segments/utils";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -585,8 +586,12 @@ export class AppStore extends BaseStore {
     if (!plotSegment) {
       return 0;
     }
-    // eslint-disable-next-line
-    if (this.selectedGlyphIndex.hasOwnProperty(plotSegmentID)) {
+    if (
+      Object.prototype.hasOwnProperty.call(
+        this.selectedGlyphIndex,
+        plotSegmentID
+      )
+    ) {
       const idx = this.selectedGlyphIndex[plotSegmentID];
       if (idx >= plotSegment.state.dataRowIndices.length) {
         this.selectedGlyphIndex[plotSegmentID] = 0;
@@ -768,8 +773,7 @@ export class AppStore extends BaseStore {
 
       const findScale = (mappings: Specification.Mappings) => {
         for (const name in mappings) {
-          // eslint-disable-next-line
-          if (!mappings.hasOwnProperty(name)) {
+          if (!Object.prototype.hasOwnProperty.call(mappings, name)) {
             continue;
           }
           if (mappings[name].type == MappingType.scale) {
@@ -1412,6 +1416,25 @@ export class AppStore extends BaseStore {
           })
         );
       });
+
+      const resetOfScales = this.chart.scales.filter(
+        (other) => !legendScales.find((l) => l === other._id)
+      );
+
+      resetOfScales.forEach((scale) => {
+        if (scale.properties.autoDomainMax || scale.properties.autoDomainMin) {
+          updateScalesInternal(scale._id, chartElements, {
+            chart: this.chart,
+            glyph: null,
+          });
+          this.chart.glyphs.forEach((gl) =>
+            updateScalesInternal(scale._id, gl.marks, {
+              chart: this.chart,
+              glyph: gl,
+            })
+          );
+        }
+      });
     } catch (ex) {
       console.error("Updating of scales failed with error", ex);
     }
@@ -1461,11 +1484,20 @@ export class AppStore extends BaseStore {
                 : this.getDataKindByType(xDataProperty.type),
             orderMode: xDataProperty.orderMode
               ? xDataProperty.orderMode
-              : xDataProperty.valueType === "string"
+              : xDataProperty.valueType === "string" ||
+                xDataProperty.valueType === "number"
               ? OrderMode.order
               : null,
             order:
-              xDataProperty.order !== undefined ? xDataProperty.order : null,
+              xDataProperty.order != undefined
+                ? xDataProperty.order
+                : xDataProperty.orderByCategories
+                ? xDataProperty.orderByCategories
+                : null,
+            orderByExpression:
+              xDataProperty.orderByExpression !== undefined
+                ? xDataProperty.orderByExpression
+                : null,
           },
           xDataProperty.rawExpression as string
         );
@@ -1728,6 +1760,9 @@ export class AppStore extends BaseStore {
         ? ((propertyValue as any).expression as string)
         : groupExpression;
 
+    const column = getColumnNameByExpression(expression);
+
+    const orderByCategories: Array<string> = [];
     let dataBinding: Specification.Types.AxisDataBinding = {
       type: options.type || type,
       // Don't change current expression (use current expression), if user appends data expression ()
@@ -1830,6 +1865,16 @@ export class AppStore extends BaseStore {
         <boolean>objectProperties?.onTop !== undefined
           ? <boolean>objectProperties?.onTop
           : false,
+      enableSelection:
+        <boolean>objectProperties?.enableSelection !== undefined
+          ? <boolean>objectProperties?.enableSelection
+          : false,
+
+      orderByCategories:
+        <string[]>objectProperties?.orderByCategories !== undefined
+          ? <string[]>objectProperties?.orderByCategories
+          : orderByCategories,
+      orderByExpression: <string>objectProperties?.orderByExpression ?? column,
     };
 
     let expressions = [groupExpression];
@@ -1889,15 +1934,24 @@ export class AppStore extends BaseStore {
           {
             dataBinding.type = AxisDataBindingType.Categorical;
             dataBinding.valueType = dataExpression.valueType;
+
             const { categories, order } = this.getCategoriesForDataBinding(
               dataExpression.metadata,
               dataExpression.valueType,
               values
             );
+
+            dataBinding.orderByCategories = deepClone(categories);
             dataBinding.order = order != undefined ? order : null;
             dataBinding.allCategories = deepClone(categories);
-            if (dataBinding.windowSize == null) {
-              dataBinding.windowSize = Math.ceil(categories.length / 10);
+
+            if (
+              dataBinding.windowSize == null ||
+              dataBinding.windowSize > dataBinding.allCategories.length
+            ) {
+              dataBinding.windowSize =
+                dataBinding.allCategories?.length ??
+                Math.ceil(categories.length / 10);
             }
             dataBinding.categories = categories;
             if (dataBinding.allowScrolling) {
@@ -1953,9 +2007,9 @@ export class AppStore extends BaseStore {
             if (dataBinding.windowSize == null) {
               dataBinding.windowSize =
                 (dataBinding.domainMax - dataBinding.domainMin) / 10;
-              dataBinding.dataDomainMin = dataBinding.domainMin;
-              dataBinding.dataDomainMax = dataBinding.domainMax;
             }
+            dataBinding.dataDomainMin = dataBinding.domainMin;
+            dataBinding.dataDomainMax = dataBinding.domainMax;
           }
           break;
         case Specification.DataKind.Temporal:
@@ -2009,6 +2063,18 @@ export class AppStore extends BaseStore {
         }
         if (props.yData && props.yData.type == "numerical") {
           props.sublayout.type = Region2DSublayoutType.Overlap;
+        }
+      }
+
+      //set default sublayout type for Categorical - Categorical data
+      if (
+        props.xData &&
+        props.xData.type == AxisDataBindingType.Categorical &&
+        props.yData &&
+        props.yData.type == AxisDataBindingType.Categorical
+      ) {
+        if (props.sublayout.type == Region2DSublayoutType.Overlap) {
+          props.sublayout.type = Region2DSublayoutType.Grid;
         }
       }
     }
@@ -2106,6 +2172,9 @@ export class AppStore extends BaseStore {
       scale.domain.forEach(
         (index: any, x: any) => (categories[index] = x.toString())
       );
+      if (type === "number") {
+        metadata.order = categories;
+      }
     }
     return { categories, order };
   }

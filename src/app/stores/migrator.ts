@@ -33,6 +33,7 @@ import { replaceUndefinedByNull } from "../utils";
 import { TickFormatType } from "../../core/specification/types";
 import { SymbolElementProperties } from "../../core/prototypes/marks/symbol.attrs";
 import { LinearBooleanScaleMode } from "../../core/prototypes/scales/linear";
+import { parseDerivedColumnsExpression } from "../../core/prototypes/plot_segments/utils";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -159,6 +160,20 @@ export class Migrator {
       compareVersion(targetVersion, "2.1.0") >= 0
     ) {
       state = this.setMissedGlyphRectProperties(state);
+    }
+
+    if (
+      compareVersion(state.version, "2.1.1") < 0 &&
+      compareVersion(targetVersion, "2.1.1") >= 0
+    ) {
+      state = this.setMissedSortProperties(state);
+    }
+
+    if (
+      compareVersion(state.version, "2.1.2") < 0 &&
+      compareVersion(targetVersion, "2.1.2") >= 0
+    ) {
+      state = this.setMissedSortProperties(state);
     }
 
     // After migration, set version to targetVersion
@@ -292,8 +307,7 @@ export class Migrator {
     for (const glyph of state.chart.glyphs) {
       for (const mark of glyph.marks) {
         for (const key in mark.mappings) {
-          // eslint-disable-next-line
-          if (mark.mappings.hasOwnProperty(key)) {
+          if (Object.prototype.hasOwnProperty.call(mark.mappings, key)) {
             const mapping = mark.mappings[key];
             if (mapping.type == MappingType.scale) {
               const scaleMapping = mapping as Specification.ScaleMapping;
@@ -575,7 +589,10 @@ export class Migrator {
             }
             element.properties.xData.offset = 0;
             element.properties.xData.tickFormatType = TickFormatType.None;
-            element.properties.xData.style.showTicks = true;
+            if (element.properties.xData?.style) {
+              element.properties.xData.style.showTicks = true;
+              element.properties.xData.style.showBaseline = true;
+            }
           }
           if (element.properties.yData) {
             element.properties.yData = this.updateAxis(
@@ -586,7 +603,10 @@ export class Migrator {
             }
             element.properties.yData.offset = 0;
             element.properties.yData.tickFormatType = TickFormatType.None;
-            element.properties.yData.style.showTicks = true;
+            if (element.properties.yData?.style) {
+              element.properties.yData.style.showTicks = true;
+              element.properties.yData.style.showBaseline = true;
+            }
           }
         }
       }
@@ -634,6 +654,274 @@ export class Migrator {
       }
     }
 
+    return state;
+  }
+
+  private parseExpression(axisExpression: string) {
+    try {
+      let expression;
+      const parsed = Expression.parse(axisExpression);
+      if (parsed instanceof Expression.FunctionCall) {
+        expression = parsed.args[0].toString();
+        expression = expression?.split("`").join("");
+        //need to provide date.year() etc.
+        expression = parseDerivedColumnsExpression(expression);
+      }
+      return expression;
+    } catch (e) {
+      return axisExpression;
+    }
+  }
+
+  public setMissedSortProperties(state: AppStoreState) {
+    for (const item of forEachObject(state.chart)) {
+      if (item.kind == ObjectItemKind.Mark) {
+        if (Prototypes.isType(item.mark.classID, "mark.rect")) {
+          (item.mark.properties as RectElementProperties).rx = 0;
+          (item.mark.properties as RectElementProperties).ry = 0;
+        }
+        if (Prototypes.isType(item.mark.classID, "mark.symbol")) {
+          (item.mark.properties as SymbolElementProperties).rotation = 0;
+        }
+      }
+      if (item.kind == ObjectItemKind.Chart) {
+        item.object.properties.exposed = true;
+      }
+      if (item.kind == ObjectItemKind.ChartElement) {
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.cartesian")
+        ) {
+          const element = item.chartElement as PlotSegment<CartesianProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+            if (element.properties.xData?.style) {
+              element.properties.xData.style.showTicks = true;
+              element.properties.xData.style.showBaseline = true;
+            }
+            element.properties.xData.offset = 0;
+            element.properties.xData.barOffset = 0;
+            if (element.properties.xData.orderByCategories == undefined) {
+              element.properties.xData.orderByCategories =
+                element.properties.xData.categories;
+            }
+            if (element.properties.xData.orderByExpression == undefined) {
+              element.properties.xData.orderByExpression = this.parseExpression(
+                element.properties.xData.expression
+              );
+            }
+            element.properties.xData.enableSelection = true;
+          }
+          if (element.properties.xData === undefined) {
+            element.properties.xData = null;
+          }
+
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+            if (element.properties.yData?.style) {
+              element.properties.yData.style.showTicks = true;
+              element.properties.yData.style.showBaseline = true;
+            }
+            element.properties.yData.offset = 0;
+            element.properties.yData.barOffset = 0;
+            if (element.properties.yData.orderByCategories == undefined) {
+              element.properties.yData.orderByCategories =
+                element.properties.yData.categories;
+            }
+            if (element.properties.yData.orderByExpression == undefined) {
+              element.properties.yData.orderByExpression = this.parseExpression(
+                element.properties.yData.expression
+              );
+            }
+            element.properties.yData.enableSelection = true;
+          }
+          if (element.properties.yData === undefined) {
+            element.properties.yData = null;
+          }
+        }
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.polar")
+        ) {
+          const element = item.chartElement as PlotSegment<PolarProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+            if (element.properties.xData?.style) {
+              element.properties.xData.style.showTicks = true;
+              element.properties.xData.style.showBaseline = true;
+            }
+            element.properties.xData.offset = 0;
+            element.properties.xData.barOffset = 0;
+            if (element.properties.xData.orderByCategories == undefined) {
+              element.properties.xData.orderByCategories =
+                element.properties.xData.categories;
+            }
+            if (element.properties.xData.orderByExpression == undefined) {
+              element.properties.xData.orderByExpression = this.parseExpression(
+                element.properties.xData.expression
+              );
+            }
+            element.properties.xData.enableSelection = true;
+          }
+          if (element.properties.xData === undefined) {
+            element.properties.xData = null;
+          }
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+            if (element.properties.yData?.style) {
+              element.properties.yData.style.showTicks = true;
+              element.properties.yData.style.showBaseline = true;
+            }
+            if (element.properties.yData.orderByCategories == undefined) {
+              element.properties.yData.orderByCategories =
+                element.properties.yData.categories;
+            }
+            if (element.properties.yData.orderByExpression == undefined) {
+              element.properties.yData.orderByExpression = this.parseExpression(
+                element.properties.yData.expression
+              );
+            }
+            element.properties.yData.offset = 0;
+            element.properties.yData.barOffset = 0;
+            element.properties.yData.enableSelection = true;
+          }
+          if (element.properties.yData === undefined) {
+            element.properties.yData = null;
+          }
+        }
+        if (Prototypes.isType(item.chartElement.classID, "plot-segment.line")) {
+          const element = item.chartElement as PlotSegment<LineGuideProperties>;
+          if (element.properties.axis) {
+            element.properties.axis = this.updateAxis(element.properties.axis);
+            if (element.properties.axis?.style) {
+              element.properties.axis.style.showBaseline = true;
+              element.properties.axis.style.showTicks = true;
+            }
+            if (element.properties.axis.orderByCategories == undefined) {
+              element.properties.axis.orderByCategories =
+                element.properties.axis.categories;
+            }
+            if (element.properties.axis.orderByExpression == undefined) {
+              element.properties.axis.orderByExpression = this.parseExpression(
+                element.properties.axis.expression
+              );
+            }
+            element.properties.axis.enableSelection = true;
+            element.properties.axis.barOffset = 0;
+          }
+        }
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.curve")
+        ) {
+          const element = item.chartElement as PlotSegment<CurveProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+            if (element.properties.xData?.style) {
+              element.properties.xData.style.showTicks = true;
+              element.properties.xData.style.showBaseline = true;
+            }
+            element.properties.xData.offset = 0;
+            element.properties.xData.barOffset = 0;
+            if (element.properties.xData.orderByCategories == undefined) {
+              element.properties.xData.orderByCategories =
+                element.properties.xData.categories;
+            }
+            if (element.properties.xData.orderByExpression == undefined) {
+              element.properties.xData.orderByExpression = this.parseExpression(
+                element.properties.xData.expression
+              );
+            }
+            element.properties.xData.enableSelection = true;
+          }
+          if (element.properties.xData === undefined) {
+            element.properties.xData = null;
+          }
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+            if (element.properties.yData?.style) {
+              element.properties.yData.style.showTicks = true;
+              element.properties.yData.style.showBaseline = true;
+            }
+            if (element.properties.yData.orderByCategories == undefined) {
+              element.properties.yData.orderByCategories =
+                element.properties.yData.categories;
+            }
+            if (element.properties.yData.orderByExpression == undefined) {
+              element.properties.yData.orderByExpression = this.parseExpression(
+                element.properties.yData.expression
+              );
+            }
+            element.properties.yData.offset = 0;
+            element.properties.yData.barOffset = 0;
+            element.properties.yData.enableSelection = true;
+          }
+          if (element.properties.yData === undefined) {
+            element.properties.yData = null;
+          }
+        }
+        if (Prototypes.isType(item.chartElement.classID, "mark.data-axis")) {
+          // eslint-disable-next-line @typescript-eslint/ban-types
+          const element = (item.chartElement as unknown) as Object<
+            DataAxisProperties
+          >;
+          if (element.properties.axis) {
+            element.properties.axis = this.updateAxis(element.properties.axis);
+            if (element.properties.axis.orderByCategories == undefined) {
+              element.properties.axis.orderByCategories =
+                element.properties.axis.categories;
+            }
+            if (element.properties.axis.orderByExpression == undefined) {
+              element.properties.axis.orderByExpression = this.parseExpression(
+                element.properties.axis.expression
+              );
+            }
+            element.properties.axis.enableSelection = true;
+            element.properties.axis.barOffset = 0;
+
+            if (element.properties.axis?.style) {
+              element.properties.axis.style.showBaseline = true;
+              element.properties.axis.style.showTicks = true;
+            }
+          }
+          if (element.properties.axis === undefined) {
+            element.properties.axis = null;
+          }
+        }
+      }
+      if (item.kind == ObjectItemKind.Mark) {
+        if (Prototypes.isType(item.mark.classID, "mark.data-axis")) {
+          // eslint-disable-next-line @typescript-eslint/ban-types
+          const element = (item.mark as unknown) as Object<DataAxisProperties>;
+          if (element.properties.axis) {
+            element.properties.axis = this.updateAxis(element.properties.axis);
+            element.properties.axis.orderByExpression = this.parseExpression(
+              element.properties.axis.expression
+            );
+            element.properties.axis.orderByCategories =
+              element.properties.axis.categories;
+            element.properties.axis.enableSelection = true;
+
+            if (element.properties.axis.style) {
+              element.properties.axis.style.showBaseline = true;
+              element.properties.axis.style.showTicks = true;
+            }
+          }
+          if (element.properties.axis === undefined) {
+            element.properties.axis = null;
+          }
+        }
+      }
+    }
     return state;
   }
 }

@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-/* eslint-disable no-prototype-builtins */
 
 import {
   Dataset,
@@ -72,7 +71,9 @@ export class ChartTemplate {
 
   /** Assign an expression to a data mapping slot */
   public assignColumn(tableName: string, columnName: string, column: string) {
-    if (!this.columnAssignment.hasOwnProperty(tableName)) {
+    if (
+      !Object.prototype.hasOwnProperty.call(this.columnAssignment, tableName)
+    ) {
       this.columnAssignment[tableName] = {};
     }
     this.columnAssignment[tableName][columnName] = column;
@@ -321,8 +322,7 @@ export class ChartTemplate {
 
       // Replace data-mapping expressions with assigned columns
       const mappings = item.object.mappings;
-      // eslint-disable-next-line
-      for (const [attr, mapping] of forEachMapping(mappings)) {
+      for (const [, mapping] of forEachMapping(mappings)) {
         if (mapping.type == MappingType.scale) {
           const scaleMapping = mapping as Specification.ScaleMapping;
           scaleMapping.expression = this.transformExpression(
@@ -479,9 +479,11 @@ export class ChartTemplate {
             scale.inferParameters(vector);
             if (inference.autoDomainMin) {
               axisDataBinding.dataDomainMin = scale.domainMin;
+              axisDataBinding.domainMin = scale.domainMin;
             }
             if (inference.autoDomainMax) {
               axisDataBinding.dataDomainMax = scale.domainMax;
+              axisDataBinding.domainMax = scale.domainMax;
             }
             if (axisDataBinding.allowScrolling) {
               const scrollScale = scaleLinear()

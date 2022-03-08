@@ -406,8 +406,7 @@ export function getDefaultColorGeneratorResetFunction() {
   return defaultColorGeneratorResetFunction;
 }
 
-// eslint-disable-next-line
-export function getDefaultColorPaletteByValue(value: string, count: number) {
+export function getDefaultColorPaletteByValue(value: string) {
   return defaultColorGeneratorFunction?.(value);
 }
 

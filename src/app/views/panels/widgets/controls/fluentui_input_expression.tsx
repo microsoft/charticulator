@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
@@ -36,11 +35,9 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
   props: InputExpressionProps
 ) => {
   const [value, setValue] = React.useState(props.defaultValue);
-  const [errorIndicator, setErrorIndicator] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState(null);
 
   React.useEffect(() => {
-    if (props.value) {
+    if (props.value || props.value == "") {
       setValue(props.value);
     }
   }, [props.value]);
@@ -48,8 +45,6 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
   const doEnter = React.useCallback(() => {
     if (props.allowNull && value?.trim() == "") {
       setValue("");
-      setErrorIndicator(false);
-      setErrorMessage(null);
       props.onEnter?.(null);
     } else {
       const result = props.validate(
@@ -57,22 +52,15 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
       );
       if (result.pass) {
         setValue(result.formatted);
-        setErrorIndicator(false);
-        setErrorMessage(null);
         props.onEnter?.(result.formatted);
-      } else {
-        setErrorIndicator(true);
-        setErrorMessage(result.error);
       }
     }
-  }, [setValue, setErrorIndicator, setErrorMessage, props, value]);
+  }, [setValue, props, value]);
 
   const doCancel = React.useCallback(() => {
     setValue(props.defaultValue || "");
-    setErrorIndicator(false);
-    setErrorMessage(null);
     props.onCancel?.();
-  }, [props, setValue, setErrorIndicator, setErrorMessage]);
+  }, [props, setValue]);
 
   return (
     <span className="charticulator__widget-control-input-expression">
@@ -95,16 +83,14 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
           // Check for parse errors while input
           if (props.allowNull && newValue.trim() == "") {
             setValue(newValue);
-            setErrorIndicator(false);
           } else {
-            const result = Expression.verifyUserExpression(
+            Expression.verifyUserExpression(
               replaceTabBySymbol(replaceNewLineBySymbol(newValue)),
               {
                 textExpression: props.textExpression,
               }
             );
             setValue(newValue);
-            setErrorIndicator(!result.pass);
           }
         }}
         onBlur={() => {

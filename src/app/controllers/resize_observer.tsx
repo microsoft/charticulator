@@ -70,8 +70,7 @@ export class ResizeListeners {
   }
 
   private timerCallback() {
-    // eslint-disable-next-line
-    for (const [element, info] of this.entries) {
+    for (const [, info] of this.entries) {
       info.timerCallback();
     }
   }

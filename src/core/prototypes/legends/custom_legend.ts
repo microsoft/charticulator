@@ -9,7 +9,7 @@ import { LegendProperties, LegendState } from "./legend";
 import { CategoricalLegendClass } from "./categorical_legend";
 import { strings } from "../../../strings";
 
-import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/types";
 
 export type LegendSourceType = "columnNames" | "columnValues";
 

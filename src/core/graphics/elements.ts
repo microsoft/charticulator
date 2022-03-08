@@ -69,6 +69,8 @@ export interface Style {
   colorFilter?: ColorFilter;
 
   fillColor?: Color;
+  backgroundColor?: Color;
+  backgroundColorId?: string;
   fillOpacity?: number;
 
   /** The opacity of this element */
@@ -255,9 +257,19 @@ export function makeText(
   text: string,
   fontFamily: string,
   fontSize: number,
-  style?: Style
+  style?: Style,
+  selectable?: Selectable
 ): Text {
-  return { type: "text", cx, cy, text, fontFamily, fontSize, style };
+  return {
+    type: "text",
+    cx,
+    cy,
+    text,
+    fontFamily,
+    fontSize,
+    style,
+    selectable,
+  };
 }
 
 export class PathMaker {
@@ -275,7 +287,7 @@ export class PathMaker {
   public transformRotation(angle: number, x: number = 0, y: number = 0) {
     this.path.transform = `rotate(${angle} ${x} ${y})`;
   }
-  
+
   public cubicBezierCurveTo(
     c1x: number,
     c1y: number,

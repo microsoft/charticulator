@@ -533,7 +533,9 @@ export class LinkCreationPanel extends ContextedComponent<
           glyph,
           rowToMarkState.get(facets[0][0].join(",")),
           glyph,
-          rowToMarkState.get(facets[0][1].join(","))
+          rowToMarkState.get(
+            facets[0][1] ? facets[0][1].join(",") : facets[0][0].join(",")
+          )
         );
 
         const links: Specification.Links = {
@@ -556,6 +558,7 @@ export class LinkCreationPanel extends ContextedComponent<
               facetExpressions: facetBy,
             },
             curveness: 30,
+            closeLink: false,
           } as Prototypes.Links.LinksProperties,
         };
 
@@ -600,6 +603,7 @@ export class LinkCreationPanel extends ContextedComponent<
               plotSegments: plotSegmentIDs,
             },
             curveness: 30,
+            closeLink: false,
           } as Prototypes.Links.LinksProperties,
         };
 
@@ -648,6 +652,7 @@ export class LinkCreationPanel extends ContextedComponent<
               ],
             },
             curveness: 30,
+            closeLink: false,
           } as Prototypes.Links.LinksProperties,
         };
 

@@ -1,15 +1,26 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "declaration": true,
     "rootDir": "./src",
     "outDir": "./dist/scripts",
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es6",
+    "target": "es5",
+    "downlevelIteration": true,
     "jsx": "react",
     "noImplicitAny": true,
     "sourceMap": true,
-    "lib": [ "es2017", "dom", "esnext.array", ]
-  }
+    "lib": [ "es2017", "dom", "esnext.array", "ES2015.Generator"],
+    "baseUrl": "./src",
+    "paths": {
+      "resources/*": ["resources/*"],
+      "src/*": ["./*"]
+    }
+  },
+  "exclude": ["karma.conf.ts", "node_modules", "dist"],
+  "typeRoots": ["./core/expression", "../node_modules/@types"]
 }
