@@ -35,6 +35,7 @@ import {
   TextboxElementAttributes,
   TextboxElementProperties,
 } from "./textbox.attrs";
+import { RectangleGlyph } from "../glyphs";
 
 export { TextboxElementAttributes, TextboxElementProperties };
 
@@ -122,17 +123,20 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             hints: { autoRange: true, startWithZero: "always" },
             acceptKinds: [Specification.DataKind.Numerical],
             defaultAuto: true,
+            searchSection: strings.objects.general,
           }),
           manager.mappingEditor(strings.objects.height, "height", {
             hints: { autoRange: true, startWithZero: "always" },
             acceptKinds: [Specification.DataKind.Numerical],
             defaultAuto: true,
+            searchSection: strings.objects.general,
           }),
           manager.mappingEditor(
             strings.objects.visibleOn.visibility,
             "visible",
             {
               defaultValue: true,
+              searchSection: strings.objects.general,
             }
           ),
         ]
@@ -142,9 +146,12 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           header: strings.toolbar.text,
         },
         [
-          manager.mappingEditor(strings.toolbar.text, "text", {}),
+          manager.mappingEditor(strings.toolbar.text, "text", {
+            searchSection: strings.toolbar.text,
+          }),
           manager.mappingEditor(strings.objects.font, "fontFamily", {
             defaultValue: defaultFont,
+            searchSection: strings.toolbar.text,
           }),
           manager.mappingEditor(strings.objects.size, "fontSize", {
             hints: { rangeNumber: [0, 36] },
@@ -155,6 +162,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
               minimum: 0,
               updownTick: 2,
             },
+            searchSection: strings.toolbar.text,
           }),
         ]
       ),
@@ -179,6 +187,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
                 strings.alignment.right,
               ],
               label: strings.objects.alignX,
+              searchSection: strings.objects.layout,
             }
           ),
           props.alignX != "middle"
@@ -188,6 +197,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
                   updownTick: 1,
                   showUpdown: true,
                   label: strings.objects.text.margin,
+                  searchSection: strings.objects.layout,
                 }
               )
             : null,
@@ -207,6 +217,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
                 strings.alignment.top,
               ],
               label: strings.objects.alignX,
+              searchSection: strings.objects.layout,
             }
           ),
           props.alignY != "middle"
@@ -216,6 +227,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
                   updownTick: 1,
                   showUpdown: true,
                   label: strings.objects.text.margin,
+                  searchSection: strings.objects.layout,
                 }
               )
             : null,
@@ -225,6 +237,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
               type: "checkbox",
               headerLabel: strings.objects.text.textDisplaying,
               label: strings.objects.text.wrapText,
+              searchSection: strings.objects.layout,
             }
           ),
           props.wordWrap
@@ -233,6 +246,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
                 {
                   type: "checkbox",
                   label: strings.objects.text.overflow,
+                  searchSection: strings.objects.layout,
                 }
               )
             : null,
@@ -253,6 +267,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
                     strings.alignment.top,
                   ],
                   label: strings.alignment.alignment,
+                  searchSection: strings.objects.layout,
                 }
               )
             : null,
@@ -263,10 +278,15 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           header: strings.objects.style,
         },
         [
-          manager.mappingEditor(strings.objects.color, "color", {}),
-          manager.mappingEditor(strings.objects.outline, "outline", {}),
+          manager.mappingEditor(strings.objects.color, "color", {
+            searchSection: strings.objects.style,
+          }),
+          manager.mappingEditor(strings.objects.outline, "outline", {
+            searchSection: strings.objects.style,
+          }),
           manager.mappingEditor(strings.objects.background, "backgroundColor", {
             defaultValue: null,
+            searchSection: strings.objects.style,
           }),
           manager.mappingEditor(strings.objects.opacity, "opacity", {
             hints: { rangeNumber: [0, 1] },
@@ -277,6 +297,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
               maximum: 1,
               step: 0.1,
             },
+            searchSection: strings.objects.style,
           }),
         ]
       ),
@@ -705,7 +726,10 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         p1: { x: x2, y: y1 },
         p2: { x: x1, y: y1 },
         title: "width",
-        accept: { kind: Specification.DataKind.Numerical },
+        accept: {
+          kind: Specification.DataKind.Numerical,
+          table: (this.parent as RectangleGlyph).object.table,
+        },
         dropAction: {
           scaleInference: {
             attribute: "width",
@@ -719,7 +743,10 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         p1: { x: x1, y: y1 },
         p2: { x: x1, y: y2 },
         title: "height",
-        accept: { kind: Specification.DataKind.Numerical },
+        accept: {
+          kind: Specification.DataKind.Numerical,
+          table: (this.parent as RectangleGlyph).object.table,
+        },
         dropAction: {
           scaleInference: {
             attribute: "height",

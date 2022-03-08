@@ -27,6 +27,9 @@ import {
   RectElementProperties,
 } from "./rect.attrs";
 import { strings } from "../../../strings";
+import { RectangleGlyph } from "../glyphs";
+import { OrientationType } from "../legends/types";
+import { CartesianCoordinates } from "../../graphics";
 
 export { RectElementAttributes, RectElementProperties };
 
@@ -60,6 +63,8 @@ export class RectElementClass extends EmphasizableMarkClass<
     allowFlipping: true,
     rx: 0,
     ry: 0,
+    orientation: OrientationType.VERTICAL,
+    cometMark: false,
   };
 
   public static defaultMappingValues: Partial<RectElementAttributes> = {
@@ -208,11 +213,13 @@ export class RectElementClass extends EmphasizableMarkClass<
             hints: { autoRange: true, startWithZero: "always" },
             acceptKinds: [DataKind.Numerical],
             defaultAuto: true,
+            searchSection: strings.objects.general,
           }),
           manager.mappingEditor(strings.objects.height, "height", {
             hints: { autoRange: true, startWithZero: "always" },
             acceptKinds: [DataKind.Numerical],
             defaultAuto: true,
+            searchSection: strings.objects.general,
           }),
           manager.inputSelect(
             { property: "shape" },
@@ -231,6 +238,7 @@ export class RectElementClass extends EmphasizableMarkClass<
                 ShapeType.Triangle,
                 ShapeType.Ellips,
               ],
+              searchSection: strings.objects.general,
             }
           ),
           manager.inputBoolean(
@@ -238,13 +246,51 @@ export class RectElementClass extends EmphasizableMarkClass<
             {
               type: "checkbox",
               label: strings.objects.rect.flipping,
+              searchSection: strings.objects.general,
+              styles: {
+                marginTop: 5,
+              },
             }
           ),
+          this.object.properties.shape === ShapeType.Triangle
+            ? manager.inputBoolean(
+                { property: "cometMark" },
+                {
+                  type: "checkbox",
+                  label: strings.objects.rect.shapes.comet,
+                  styles: {
+                    marginTop: 5,
+                  },
+                  searchSection: strings.objects.general,
+                }
+              )
+            : null,
+          this.object.properties.shape === ShapeType.Triangle
+            ? manager.inputSelect(
+                { property: "orientation" },
+                {
+                  type: "radio",
+                  showLabel: false,
+                  icons: ["GripperBarVertical", "GripperBarHorizontal"],
+                  labels: [
+                    strings.objects.legend.vertical,
+                    strings.objects.legend.horizontal,
+                  ],
+                  options: [
+                    OrientationType.VERTICAL,
+                    OrientationType.HORIZONTAL,
+                  ],
+                  label: strings.objects.legend.orientation,
+                  searchSection: strings.objects.general,
+                }
+              )
+            : null,
           manager.mappingEditor(
             strings.objects.visibleOn.visibility,
             "visible",
             {
               defaultValue: true,
+              searchSection: strings.objects.general,
             }
           ),
         ]
@@ -254,8 +300,12 @@ export class RectElementClass extends EmphasizableMarkClass<
           header: strings.objects.style,
         },
         [
-          manager.mappingEditor(strings.objects.fill, "fill", {}),
-          manager.mappingEditor(strings.objects.stroke, "stroke", {}),
+          manager.mappingEditor(strings.objects.fill, "fill", {
+            searchSection: strings.objects.style,
+          }),
+          manager.mappingEditor(strings.objects.stroke, "stroke", {
+            searchSection: strings.objects.style,
+          }),
           this.object.mappings.stroke != null
             ? manager.mappingEditor(
                 strings.objects.strokeWidth,
@@ -268,6 +318,7 @@ export class RectElementClass extends EmphasizableMarkClass<
                     sliderRange: [0, 5],
                     minimum: 0,
                   },
+                  searchSection: strings.objects.style,
                 }
               )
             : null,
@@ -277,14 +328,16 @@ export class RectElementClass extends EmphasizableMarkClass<
                 {
                   type: "dropdown",
                   showLabel: true,
-                  label: "Line Style",
-                  icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
+                  label: strings.objects.line.lineStyle,
+                  icons: ["line", "stroke/dashed", "stroke/dotted"],
+                  isLocalIcons: true,
                   labels: [
                     strings.objects.links.solid,
                     strings.objects.links.dashed,
                     strings.objects.links.dotted,
                   ],
                   options: ["solid", "dashed", "dotted"],
+                  searchSection: strings.objects.style,
                 }
               )
             : null,
@@ -297,6 +350,7 @@ export class RectElementClass extends EmphasizableMarkClass<
               maximum: 1,
               step: 0.1,
             },
+            searchSection: strings.objects.style,
           }),
           this.object.properties.shape === ShapeType.Rectangle
             ? manager.inputNumber(
@@ -308,6 +362,7 @@ export class RectElementClass extends EmphasizableMarkClass<
                   showUpdown: true,
                   updownTick: 1,
                   minimum: 0,
+                  searchSection: strings.objects.style,
                 }
               )
             : null,
@@ -321,6 +376,7 @@ export class RectElementClass extends EmphasizableMarkClass<
                   showUpdown: true,
                   updownTick: 1,
                   minimum: 0,
+                  searchSection: strings.objects.style,
                 }
               )
             : null,
@@ -450,36 +506,7 @@ export class RectElementClass extends EmphasizableMarkClass<
         );
       }
       case ShapeType.Triangle: {
-        const pathMaker = new Graphics.PathMaker();
-        helper.lineTo(
-          pathMaker,
-          attrs.x1 + offset.x,
-          attrs.y1 + offset.y,
-          (attrs.x1 + attrs.x2) / 2 + offset.x,
-          attrs.y2 + offset.y,
-          true
-        );
-        helper.lineTo(
-          pathMaker,
-          (attrs.x1 + attrs.x2) / 2 + offset.x,
-          attrs.y2 + offset.y,
-          attrs.x2 + offset.x,
-          attrs.y1 + offset.y,
-          false
-        );
-        pathMaker.closePath();
-        const path = pathMaker.path;
-        path.style = {
-          strokeColor: attrs.stroke,
-          strokeWidth: attrs.strokeWidth,
-          strokeLinejoin: "miter",
-          strokeDasharray: strokeStyleToDashArray(
-            this.object.properties.strokeStyle
-          ),
-          fillColor: attrs.fill,
-          opacity: attrs.opacity,
-          ...this.generateEmphasisStyle(empasized),
-        };
+        const path = this.drawTriangleOrCometMarks(helper, offset, empasized);
         return path;
       }
       case ShapeType.Rectangle:
@@ -650,7 +677,10 @@ export class RectElementClass extends EmphasizableMarkClass<
         p1: { x: x2, y: y1 },
         p2: { x: x1, y: y1 },
         title: "width",
-        accept: { kind: DataKind.Numerical },
+        accept: {
+          kind: DataKind.Numerical,
+          table: (this.parent as RectangleGlyph).object.table,
+        },
         dropAction: {
           scaleInference: {
             attribute: "width",
@@ -664,7 +694,10 @@ export class RectElementClass extends EmphasizableMarkClass<
         p1: { x: x1, y: y1 },
         p2: { x: x1, y: y2 },
         title: "height",
-        accept: { kind: DataKind.Numerical },
+        accept: {
+          kind: DataKind.Numerical,
+          table: (this.parent as RectangleGlyph).object.table,
+        },
         dropAction: {
           scaleInference: {
             attribute: "height",
@@ -795,5 +828,99 @@ export class RectElementClass extends EmphasizableMarkClass<
       <SnappingGuides.Axis>{ type: "y", value: y2, attribute: "y2" },
       <SnappingGuides.Axis>{ type: "y", value: cy, attribute: "cy" },
     ];
+  }
+
+  private drawTriangleOrCometMarks(
+    helper: Graphics.CoordinateSystemHelper,
+    offset: Point,
+    empasized?: boolean
+  ) {
+    const pathMaker = new Graphics.PathMaker();
+    const properties = this.object.properties;
+    const attrs = this.state.attributes;
+
+    // normalized coordinates
+    const x1 = attrs.x1 + offset.x;
+    const x2 = attrs.x2 + offset.x;
+    const y1 = attrs.y1 + offset.y;
+    const y2 = attrs.y2 + offset.y;
+
+    const halfYWidth = Math.abs(y1 - y2) / 2;
+    const halfXWidth = Math.abs(x1 - x2) / 2;
+    const minHalfWidth = Math.min(halfYWidth, halfXWidth);
+
+    if (
+      properties.orientation == OrientationType.HORIZONTAL &&
+      helper.coordinateSystem instanceof CartesianCoordinates
+    ) {
+      const xPosition = x1;
+      if (properties.cometMark == true) {
+        pathMaker.moveTo(xPosition, Math.max(y1, y2));
+        helper.arcTo(
+          pathMaker,
+          minHalfWidth,
+          halfYWidth,
+          xPosition,
+          Math.max(y1, y2),
+          xPosition,
+          Math.min(y1, y2),
+          x2 > x1 ? 0 : 1
+        );
+
+        helper.lineTo(
+          pathMaker,
+          xPosition,
+          Math.max(y1, y2),
+          x2,
+          (y1 + y2) / 2,
+          false
+        );
+      } else {
+        helper.lineTo(pathMaker, x1, y1, x1, y2, true);
+        helper.lineTo(pathMaker, x1, y2, x2, (y1 + y2) / 2, false);
+      }
+    } else {
+      if (
+        properties.cometMark == true &&
+        helper.coordinateSystem instanceof CartesianCoordinates
+      ) {
+        const yPosition = y1;
+        pathMaker.moveTo(Math.max(x1, x2), yPosition);
+        helper.arcTo(
+          pathMaker,
+          halfXWidth,
+          minHalfWidth,
+          Math.max(x1, x2),
+          yPosition,
+          Math.min(x1, x2),
+          yPosition,
+          y2 > y1 ? 1 : 0
+        );
+
+        helper.lineTo(
+          pathMaker,
+          Math.max(x1, x2),
+          yPosition,
+          (x1 + x2) / 2,
+          y2,
+          false
+        );
+      } else {
+        helper.lineTo(pathMaker, x1, y1, (x1 + x2) / 2, y2, true);
+        helper.lineTo(pathMaker, (x1 + x2) / 2, y2, x2, y1, false);
+      }
+    }
+    pathMaker.closePath();
+    const path = pathMaker.path;
+    path.style = {
+      strokeColor: attrs.stroke,
+      strokeWidth: attrs.strokeWidth,
+      strokeLinejoin: "miter",
+      strokeDasharray: strokeStyleToDashArray(properties.strokeStyle),
+      fillColor: attrs.fill,
+      opacity: attrs.opacity,
+      ...this.generateEmphasisStyle(empasized),
+    };
+    return path;
   }
 }

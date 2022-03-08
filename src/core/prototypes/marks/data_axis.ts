@@ -34,6 +34,7 @@ import {
 } from "./data_axis.attrs";
 import React = require("react");
 import { strings } from "../../../strings";
+import { ChartStateManager } from "../../prototypes";
 
 export { DataAxisAttributes, DataAxisProperties };
 
@@ -175,10 +176,30 @@ export class DataAxisClass extends MarkClass<
     ];
   }
 
+  private getTickData = (
+    axis: Specification.Types.AxisDataBinding,
+    manager: ChartStateManager
+  ) => {
+    const table = manager.getTable(this.getPlotSegmentClass()?.object?.table);
+    const axisExpression = manager.dataflow.cache.parse(axis.expression);
+    const tickDataExpression = manager.dataflow.cache.parse(
+      axis.tickDataExpression
+    );
+    const result = [];
+    for (let i = 0; i < table.rows.length; i++) {
+      const c = table.getRowContext(i);
+      const axisValue = axisExpression.getValue(c);
+      const tickData = tickDataExpression.getValue(c);
+      result.push({ value: axisValue, tick: tickData });
+    }
+    return result;
+  };
+
   public getGraphics(
     cs: Graphics.CoordinateSystem,
     offset: Point,
-    glyphIndex: number = 0
+    glyphIndex: number = 0,
+    manager: ChartStateManager
   ): Graphics.Element {
     const attrs = this.state.attributes;
     const props = this.object.properties;
@@ -217,6 +238,16 @@ export class DataAxisClass extends MarkClass<
           false,
           false
         );
+        if (props.axis.tickDataExpression) {
+          try {
+            renderer.setTicksByData(
+              this.getTickData(props.axis, manager),
+              props.axis.tickFormat
+            );
+          } catch (ex) {
+            console.log(ex);
+          }
+        }
         const g = renderer.renderLine(
           0,
           0,
@@ -384,7 +415,7 @@ export class DataAxisClass extends MarkClass<
                   { table: this.getGlyphClass().object.table }
                 );
                 return React.createElement(
-                  "fragment",
+                  "Fragment",
                   { key: index },
                   expressionInput
                 );

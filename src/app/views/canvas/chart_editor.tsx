@@ -342,7 +342,7 @@ export class ChartEditorView
     );
 
     return (
-      <>
+      <React.Fragment key={"graphics"}>
         <GraphicalElementDisplay element={this.state.graphics} />
         <g className="canvas-chart-controls">
           {renderer.renderControls(
@@ -351,7 +351,7 @@ export class ChartEditorView
             this.state.zoom
           )}
         </g>
-      </>
+      </React.Fragment>
     );
   }
 
@@ -568,7 +568,6 @@ export class ChartEditorView
           {
             mode = "rectangle";
             onCreate = (x1, y1, x2, y2) => {
-              console.log(x1, y1, x2, y2);
               const width = Math.abs(x2[0] - x1[0]);
               const height = Math.abs(y2[0] - y1[0]);
               const centerX = Math.min(x2[0], x1[0]) + width / 2;
@@ -898,6 +897,9 @@ export class ChartEditorView
                   new Actions.SelectChartElement(layout, null).dispatch(
                     this.props.store.dispatcher
                   );
+                  this.props.store.dispatcher.dispatch(
+                    new Actions.SearchUpdated("")
+                  );
                 }}
               />
             );
@@ -1136,7 +1138,7 @@ export class ChartEditorView
         case "point": {
           const axisGuide = (guide.guide as unknown) as Prototypes.SnappingGuides.PolarAxis;
           return (
-            <>
+            <React.Fragment key={`snapping-guid-${idx}`}>
               {axisGuide.visibleRadius ? (
                 <circle
                   className="snapping-guide"
@@ -1152,7 +1154,7 @@ export class ChartEditorView
                   r={Math.abs(axisGuide.visibleRadius * this.state.zoom.scale)}
                 />
               ) : (
-                <>
+                <React.Fragment key={`snapping-link-${idx}`}>
                   <line
                     key={`lk${idx}display1`}
                     className="snapping-guide"
@@ -1193,7 +1195,7 @@ export class ChartEditorView
                       this.state.zoom.centerY
                     }
                   />
-                </>
+                </React.Fragment>
               )}
               <line
                 key={`lk${idx}display`}
@@ -1214,7 +1216,7 @@ export class ChartEditorView
                   this.state.zoom.centerY
                 }
               />
-            </>
+            </React.Fragment>
           );
         }
       }

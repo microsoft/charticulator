@@ -67,6 +67,7 @@ export class CustomLegendClass extends CategoricalLegendClass {
         manager.vertical(
           manager.label(strings.objects.colors, {
             addMargins: true,
+            searchSection: strings.objects.colors,
           }),
           manager.horizontal(
             [1],

@@ -268,6 +268,7 @@ export const strings = {
     cancel: "Cancel",
     savedButton: "Saved",
     saveNested: "Save Nested Chart",
+    editNestedChart: "Edit Nested Chart...",
     closeNested: "Close",
     undo: "Undo (Ctrl-Z)",
   },
@@ -408,6 +409,9 @@ export const strings = {
     roundX: "Round X",
     roundY: "Round Y",
     dropData: "drop here to assign data",
+    dropTickData: "Tick data: drop here to assign tick data",
+    toolTips: "Tooltips",
+    selection: "Selection",
     axes: {
       data: "Data",
       numericalSuffix: ": Numerical",
@@ -434,6 +438,8 @@ export const strings = {
       verticalText: "Vertical text",
       offSet: "Offset",
       orderBy: "Order by",
+      numberOfTicks: "Number of Ticks",
+      autoNumberOfTicks: "Auto Number of Ticks",
     },
     plotSegment: {
       subLayout: "Sub-layout",
@@ -492,6 +498,7 @@ export const strings = {
       labels: "Labels",
       layout: "Layout",
       categoricalLegend: "Categorical legend",
+      numericalColorLegend: "Numerical color legend",
       ordering: "Ordering",
     },
     links: {
@@ -507,8 +514,18 @@ export const strings = {
       curveness: "Curveness",
       closeLink: "Close Link",
     },
+    arrows: {
+      beginArrowType: "Begin Arrow Type",
+      endArrowType: "End Arrow Type",
+      noArrow: "No Arrow",
+      arrow: "Arrow",
+      diamondArrow: "Diamond Arrow",
+      ovalArrow: "Oval Arrow",
+    },
     line: {
       lineStyle: "Line Style",
+      xSpan: "X Span",
+      ySpan: "Y Span",
     },
     anchor: {
       label: "(drag the anchor in the glyph editor)",
@@ -563,6 +580,7 @@ export const strings = {
         rectangle: "Rectangle",
         triangle: "Triangle",
         ellipse: "Ellipse",
+        comet: "Rounded base",
       },
     },
     derivedColumns: {
@@ -578,10 +596,17 @@ export const strings = {
       second: "Second",
       menuSuffix: " Derived columns ",
     },
+    nestedChart: {
+      sizeAndShape: "Size & Shape",
+    },
   },
   reOrder: {
     reverse: "Reverse",
     sort: "Sort",
     reset: "Reset",
+  },
+  panels: {
+    collapseAllCategories: "Collapse all categories",
+    expandAllCategories: "Expand all categories",
   },
 };

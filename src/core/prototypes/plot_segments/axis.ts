@@ -34,27 +34,37 @@ import {
 } from "../../graphics/renderer/text_measurer";
 import { Graphics, Prototypes, Specification } from "../../index";
 import { Controls, strokeStyleToDashArray } from "../common";
-import { AttributeMap, DataType } from "../../specification";
+import {
+  AttributeMap,
+  DataType,
+  MappingType,
+  ParentMapping,
+} from "../../specification";
 import { strings } from "../../../strings";
 import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
 import {
   AxisDataBinding,
   AxisDataBindingType,
   NumericalMode,
-  OrderMode,
-  TickFormatType,
 } from "../../specification/types";
 import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
 import {
+  CategoryItemsWithIds,
+  getOnConfirmFunction,
+  getSortedCategories,
   getTableColumns,
   parseDerivedColumnsExpression,
+  shouldShowTickFormatForTickExpression,
+  transformOnResetCategories,
   transformOrderByExpression,
+  updateWidgetCategoriesByExpression,
 } from "./utils";
 import { DataflowManager, DataflowTable } from "../dataflow";
 import * as Expression from "../../expression";
 import { CompiledGroupBy } from "../group_by";
 import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/types";
 import { type2DerivedColumns } from "../../../app/views/dataset/common";
+import { CartesianPlotSegment } from "../plot_segments/region_2d";
 import React = require("react");
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
@@ -102,6 +112,8 @@ export class AxisRenderer {
   public valueToPosition: (value: any) => number;
   public oppositeSide: boolean = false;
   public static SCROLL_BAR_SIZE = 10;
+  public static DEFAULT_TICKS_NUMBER = 10;
+  public static DEFAULT_Y_LABEL_GAP = 15;
 
   //axis tick selection
   private plotSegment: Specification.PlotSegment;
@@ -184,7 +196,9 @@ export class AxisRenderer {
               data.domainMax,
               rangeMin,
               rangeMax,
-              data.tickFormat
+              data.tickFormat,
+              data.numberOfTicks,
+              data.autoNumberOfTicks
             );
           }
           if (data.numericalMode == "logarithmic") {
@@ -193,7 +207,9 @@ export class AxisRenderer {
               data.domainMax,
               rangeMin,
               rangeMax,
-              data.tickFormat
+              data.tickFormat,
+              data.numberOfTicks,
+              data.autoNumberOfTicks
             );
           }
           if (data.numericalMode == "temporal") {
@@ -202,7 +218,9 @@ export class AxisRenderer {
               data.domainMax,
               rangeMin,
               rangeMax,
-              data.tickFormat
+              data.tickFormat,
+              data.numberOfTicks,
+              data.autoNumberOfTicks
             );
           }
         }
@@ -229,8 +247,7 @@ export class AxisRenderer {
   public ticksData: { tick: any; value: any }[];
   public setTicksByData(
     ticks: { tick: any; value: any }[],
-    tickFormatString: string,
-    tickFormatType: TickFormatType
+    tickFormatString: string
   ) {
     const position2Tick = new Map<number, string>();
     for (const tick of ticks) {
@@ -239,19 +256,22 @@ export class AxisRenderer {
       const tickFormat = tickFormatString
         ? tickFormatString?.replace(tickFormatParserExpression(), "$1")
         : null;
-
-      if (!tickFormat) {
+      if (!tickFormat || typeof tick.tick == "string") {
         label = <string>tick.tick;
       } else {
-        if (tickFormatType === TickFormatType.Number) {
+        try {
+          //try parse numeric format
           label = getFormat()(tickFormat)(tick.tick);
-        } else if (tickFormatType === TickFormatType.Date) {
-          label = applyDateFormat(new Date(tick.tick), tickFormat);
-        } else {
-          label = <string>tick.tick;
+        } catch (e) {
+          try {
+            //try parse date format
+            label = applyDateFormat(new Date(tick.tick), tickFormat);
+          } catch (ex) {
+            //use string format
+            label = <string>tick.tick;
+          }
         }
       }
-
       position2Tick.set(pos, label);
     }
     this.ticks = [];
@@ -279,21 +299,61 @@ export class AxisRenderer {
     }
   }
 
+  private chartMarginForYLabel: number = null;
+  public setCartesianChartMargin(plotSegment: CartesianPlotSegment) {
+    try {
+      const mappings = plotSegment.object?.mappings;
+      const side = plotSegment.object?.properties?.yData?.side;
+
+      if (side === "default") {
+        if (
+          mappings.x1.type === MappingType.parent &&
+          (mappings.x1 as ParentMapping).parentAttribute == "x1"
+        ) {
+          this.chartMarginForYLabel = plotSegment.parent.state.attributes
+            ?.marginLeft as number;
+        } else {
+          this.chartMarginForYLabel = null;
+        }
+      } else {
+        if (
+          mappings.x2.type === MappingType.parent &&
+          (mappings.x2 as ParentMapping).parentAttribute == "x2"
+        ) {
+          this.chartMarginForYLabel = plotSegment.parent.state.attributes
+            ?.marginRight as number;
+        } else {
+          this.chartMarginForYLabel = null;
+        }
+      }
+    } catch (ex) {
+      this.chartMarginForYLabel = null;
+    }
+  }
+
   public setLinearScale(
     domainMin: number,
     domainMax: number,
     rangeMin: number,
     rangeMax: number,
-    tickFormat: string
+    tickFormat: string,
+    numberOfTicks: number = AxisRenderer.DEFAULT_TICKS_NUMBER,
+    autoTickNumber: boolean = true
   ) {
     const scale = new Scale.LinearScale();
     scale.domainMin = domainMin;
     scale.domainMax = domainMax;
     const rangeLength = Math.abs(rangeMax - rangeMin);
-    const ticks = scale.ticks(Math.round(Math.min(10, rangeLength / 40)));
-    const defaultFormat = scale.tickFormat(
-      Math.round(Math.min(10, rangeLength / 40))
-    );
+    let tickNumber = numberOfTicks;
+    if (autoTickNumber) {
+      tickNumber = Math.round(Math.min(10, rangeLength / 40));
+      if (this.data) {
+        this.data.numberOfTicks = tickNumber;
+      }
+    }
+    const ticks = scale.ticks(tickNumber);
+
+    const defaultFormat = scale.tickFormat(tickNumber);
 
     const resolvedFormat = AxisRenderer.getTickFormat(
       tickFormat,
@@ -327,16 +387,23 @@ export class AxisRenderer {
     domainMax: number,
     rangeMin: number,
     rangeMax: number,
-    tickFormat: string
+    tickFormat: string,
+    numberOfTicks: number = AxisRenderer.DEFAULT_TICKS_NUMBER,
+    autoTickNumber: boolean = true
   ) {
     const scale = new Scale.LogarithmicScale();
     scale.domainMin = domainMin;
     scale.domainMax = domainMax;
     const rangeLength = Math.abs(rangeMax - rangeMin);
-    const ticks = scale.ticks(Math.round(Math.min(10, rangeLength / 40)));
-    const defaultFormat = scale.tickFormat(
-      Math.round(Math.min(10, rangeLength / 40))
-    );
+    let tickNumber = numberOfTicks;
+    if (autoTickNumber) {
+      tickNumber = Math.round(Math.min(10, rangeLength / 40));
+      if (this.data) {
+        this.data.numberOfTicks = tickNumber;
+      }
+    }
+    const ticks = scale.ticks(tickNumber);
+    const defaultFormat = scale.tickFormat(tickNumber);
 
     const resolvedFormat = AxisRenderer.getTickFormat(
       tickFormat,
@@ -371,16 +438,24 @@ export class AxisRenderer {
     domainMax: number,
     rangeMin: number,
     rangeMax: number,
-    tickFormatString: string
+    tickFormatString: string,
+    numberOfTicks: number = AxisRenderer.DEFAULT_TICKS_NUMBER,
+    autoTickNumber: boolean = true
   ) {
     const scale = new Scale.DateScale();
     scale.domainMin = domainMin;
     scale.domainMax = domainMax;
     const rangeLength = Math.abs(rangeMax - rangeMin);
-    const ticksCount = Math.round(Math.min(10, rangeLength / 40));
-    const ticks = scale.ticks(ticksCount);
+    let tickNumber = numberOfTicks;
+    if (autoTickNumber) {
+      tickNumber = Math.round(Math.min(10, rangeLength / 40));
+      if (this.data) {
+        this.data.numberOfTicks = tickNumber;
+      }
+    }
+    const ticks = scale.ticks(tickNumber);
     const tickFormat = scale.tickFormat(
-      ticksCount,
+      tickNumber,
       tickFormatString?.replace(tickFormatParserExpression(), "$1")
     );
     const r: TickDescription[] = [];
@@ -501,7 +576,7 @@ export class AxisRenderer {
     y: number,
     angle: number,
     side: number,
-    offset?: number
+    axisOffset?: number
   ): Group {
     const g = makeGroup([]);
     const style = this.style;
@@ -540,9 +615,10 @@ export class AxisRenderer {
       g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
     }
     // Ticks
-    const ticksData = this.ticks.map((x) => x.position);
-    const visibleTicks = ticksData.concat([rangeMin, rangeMax]);
-
+    const visibleTicks = this.ticks.map((x) => x.position);
+    if (style.showBaseline) {
+      visibleTicks.push(rangeMin, rangeMax);
+    }
     if (style.showTicks) {
       for (const tickPosition of visibleTicks) {
         const tx = x + tickPosition * cos;
@@ -584,9 +660,26 @@ export class AxisRenderer {
           (typeof tick.label === "string" &&
             splitStringByNewLine(tick.label).length > 1)
         ) {
-          let textContent: string[] = splitByWidth(
+          let textContent: string[];
+          let textWidth: number;
+          if (this.chartMarginForYLabel != null) {
+            if (this.oppositeSide) {
+              textWidth =
+                this.chartMarginForYLabel -
+                AxisRenderer.DEFAULT_Y_LABEL_GAP -
+                (axisOffset ?? 0);
+            } else {
+              textWidth =
+                this.chartMarginForYLabel -
+                AxisRenderer.DEFAULT_Y_LABEL_GAP +
+                (axisOffset ?? 0);
+            }
+          } else {
+            textWidth = maxTickDistance;
+          }
+          textContent = splitByWidth(
             replaceSymbolByTab(replaceSymbolByNewLine(tick.label)),
-            maxTickDistance,
+            textWidth,
             10000,
             style.fontFamily,
             style.fontSize
@@ -916,10 +1009,10 @@ export class AxisRenderer {
       }
     }
 
-    if (offset) {
+    if (axisOffset) {
       g.transform = {
-        x: angle == 90 ? offset : 0,
-        y: angle == 90 ? 0 : offset,
+        x: angle == 90 ? axisOffset : 0,
+        y: angle == 90 ? 0 : axisOffset,
         angle: 0,
       };
     }
@@ -1342,6 +1435,7 @@ interface AxisAppearanceWidgets {
   wordWrap: boolean;
   isOffset: boolean;
   isOnTop: boolean;
+  mainCollapsePanelHeader?: string;
 }
 
 export function buildAxisAppearanceWidgets(
@@ -1357,6 +1451,10 @@ export function buildAxisAppearanceWidgets(
         {
           type: "checkbox",
           label: strings.objects.axes.verticalText,
+          searchSection: [
+            strings.objects.style,
+            options.mainCollapsePanelHeader,
+          ],
         }
       );
     }
@@ -1373,6 +1471,10 @@ export function buildAxisAppearanceWidgets(
               {
                 type: "checkbox",
                 label: strings.objects.visibleOn.visible,
+                searchSection: [
+                  strings.objects.visibilityAndPosition,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             options.isOnTop
@@ -1381,6 +1483,10 @@ export function buildAxisAppearanceWidgets(
                   {
                     type: "checkbox",
                     label: strings.objects.onTop,
+                    searchSection: [
+                      strings.objects.visibilityAndPosition,
+                      options.mainCollapsePanelHeader,
+                    ],
                   }
                 )
               : null,
@@ -1392,6 +1498,10 @@ export function buildAxisAppearanceWidgets(
                 label: strings.objects.position,
                 options: ["default", "opposite"],
                 labels: [strings.objects.default, strings.objects.opposite],
+                searchSection: [
+                  strings.objects.visibilityAndPosition,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             options.isOffset
@@ -1402,6 +1512,12 @@ export function buildAxisAppearanceWidgets(
                   },
                   {
                     label: strings.objects.axes.offSet,
+                    showUpdown: true,
+                    updownTick: 10,
+                    searchSection: [
+                      strings.objects.visibilityAndPosition,
+                      options.mainCollapsePanelHeader,
+                    ],
                   }
                 )
               : null,
@@ -1419,8 +1535,12 @@ export function buildAxisAppearanceWidgets(
               },
               {
                 label: strings.objects.axes.lineColor,
-                labelKey: strings.objects.axes.lineColor,
+                labelKey: `line-color-${axisProperty}`,
                 allowNull: true,
+                searchSection: [
+                  strings.objects.style,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             manager.inputBoolean(
@@ -1433,6 +1553,10 @@ export function buildAxisAppearanceWidgets(
                     marginTop: 5,
                   },
                 },
+                searchSection: [
+                  strings.objects.style,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             manager.inputBoolean(
@@ -1445,6 +1569,10 @@ export function buildAxisAppearanceWidgets(
                     marginTop: 5,
                   },
                 },
+                searchSection: [
+                  strings.objects.style,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             manager.inputColor(
@@ -1454,8 +1582,12 @@ export function buildAxisAppearanceWidgets(
               },
               {
                 label: strings.objects.axes.tickColor,
-                labelKey: strings.objects.axes.tickColor,
+                labelKey: `tick-color-${axisProperty}`,
                 allowNull: true,
+                searchSection: [
+                  strings.objects.style,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             manager.inputColor(
@@ -1465,19 +1597,12 @@ export function buildAxisAppearanceWidgets(
               },
               {
                 label: strings.objects.axes.tickTextBackgroudColor,
-                labelKey: strings.objects.axes.tickTextBackgroudColor,
+                labelKey: `tick-text-background-color-${axisProperty}`,
                 allowNull: true,
-              }
-            ),
-            manager.inputFormat(
-              {
-                property: axisProperty,
-                field: "tickFormat",
-              },
-              {
-                blank: strings.core.auto,
-                isDateField: false,
-                label: strings.objects.axes.tickFormat,
+                searchSection: [
+                  strings.objects.style,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             manager.inputNumber(
@@ -1487,6 +1612,12 @@ export function buildAxisAppearanceWidgets(
               },
               {
                 label: strings.objects.axes.ticksize,
+                showUpdown: true,
+                updownTick: 1,
+                searchSection: [
+                  strings.objects.style,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             manager.inputFontFamily(
@@ -1496,6 +1627,10 @@ export function buildAxisAppearanceWidgets(
               },
               {
                 label: strings.objects.font,
+                searchSection: [
+                  strings.objects.style,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             manager.inputNumber(
@@ -1506,6 +1641,10 @@ export function buildAxisAppearanceWidgets(
                 updownTick: 2,
                 label: strings.objects.fontSize,
                 minimum: 1,
+                searchSection: [
+                  strings.objects.style,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             manager.inputBoolean(
@@ -1514,6 +1653,10 @@ export function buildAxisAppearanceWidgets(
                 type: "checkbox",
                 headerLabel: strings.objects.text.textDisplaying,
                 label: strings.objects.text.wrapText,
+                searchSection: [
+                  strings.objects.style,
+                  options.mainCollapsePanelHeader,
+                ],
               }
             ),
             vertical,
@@ -1532,6 +1675,10 @@ export function buildAxisAppearanceWidgets(
           {
             type: "checkbox",
             label: strings.objects.visibleOn.visible,
+            searchSection: [
+              strings.objects.visibilityAndPosition,
+              options.mainCollapsePanelHeader,
+            ],
           }
         ),
       ]
@@ -1541,18 +1688,23 @@ export function buildAxisAppearanceWidgets(
 
 function buildInteractivityGroup(
   axisProperty: string,
-  manager: Controls.WidgetManager
+  manager: Controls.WidgetManager,
+  mainCollapsePanelHeader: string
 ) {
   return manager.verticalGroup(
     {
-      header: "Interactivity",
+      header: strings.objects.interactivity,
     },
     [
       manager.inputBoolean(
         { property: axisProperty, field: "enableSelection" },
         {
           type: "checkbox",
-          label: "Selection",
+          label: strings.objects.selection,
+          searchSection: [
+            strings.objects.interactivity,
+            mainCollapsePanelHeader,
+          ],
         }
       ),
     ]
@@ -1576,10 +1728,10 @@ function buildScrollingAxisWidgets(
   axisProperty: string,
   manager: Controls.WidgetManager,
   axisName: string,
-  onChange?: () => void
+  onChange?: () => void,
+  mainCollapsePanelHeader?: string
 ) {
   return [
-    manager.label(strings.objects.dataAxis.scrolling),
     manager.inputBoolean(
       {
         property: axisProperty,
@@ -1588,6 +1740,7 @@ function buildScrollingAxisWidgets(
       {
         type: "checkbox",
         label: strings.objects.dataAxis.allowScrolling,
+        headerLabel: strings.objects.dataAxis.scrolling,
         observerConfig: {
           isObserver: true,
           properties: {
@@ -1596,6 +1749,7 @@ function buildScrollingAxisWidgets(
           },
           value: 10,
         },
+        searchSection: [strings.objects.general, mainCollapsePanelHeader],
         onChange: onChange,
       }
     ),
@@ -1609,6 +1763,7 @@ function buildScrollingAxisWidgets(
             maximum: 1000000,
             minimum: 1,
             label: strings.objects.dataAxis.windowSize,
+            searchSection: [strings.objects.general, mainCollapsePanelHeader],
           }
         )
       : null,
@@ -1622,6 +1777,7 @@ function buildScrollingAxisWidgets(
             maximum: 1000000,
             minimum: -1000000,
             label: strings.objects.dataAxis.barOffset,
+            searchSection: [strings.objects.general, mainCollapsePanelHeader],
           }
         )
       : null,
@@ -1645,13 +1801,29 @@ export function buildAxisWidgets(
       prompt: axisName + ": " + strings.objects.dropData,
     },
     noLineHeight: true,
+    ignoreSearch: true,
   };
+
+  let axisType = "";
+  if (data) {
+    switch (data.type) {
+      case AxisDataBindingType.Categorical:
+        axisType = strings.objects.axes.categoricalSuffix;
+        break;
+      case AxisDataBindingType.Numerical:
+        axisType = strings.objects.axes.numericalSuffix;
+        break;
+    }
+  }
+  const mainCollapsePanelHeader = axisName + axisType;
+
   const makeAppearance = () => {
     return buildAxisAppearanceWidgets(axisProperty, manager, {
       isVisible: data.visible,
       wordWrap: data.style?.wordWrap ?? false,
       isOffset: axisWidgetsConfig.showOffset,
       isOnTop: axisWidgetsConfig.showOnTop,
+      mainCollapsePanelHeader: mainCollapsePanelHeader,
     });
   };
   if (data != null) {
@@ -1664,9 +1836,19 @@ export function buildAxisWidgets(
           axisProperty,
           manager,
           axisName,
-          onChange
+          onChange,
+          mainCollapsePanelHeader
         )
       : [];
+
+    const tickFormatAndTickDataFields = getTickDataAndTickFormatFields(
+      data,
+      axisProperty,
+      manager,
+      mainCollapsePanelHeader
+    );
+    const categoricalTickFormatAndTickDataFields =
+      data.valueType === "date" ? tickFormatAndTickDataFields : [];
     switch (data.type) {
       case "numerical":
         {
@@ -1676,83 +1858,177 @@ export function buildAxisWidgets(
                 header: strings.objects.general,
               },
               [
-                // manager.sectionHeader(
-                //   axisName + strings.objects.axes.numericalSuffix,
-                //   manager.clearButton({ property: axisProperty }, null, true),
-                //   dropzoneOptions
-                // ),
-                manager.label(strings.objects.axes.data),
-                manager.styledHorizontal(
+                manager.searchWrapper(
                   {
-                    alignItems: "start",
+                    searchPattern: [
+                      strings.objects.axes.data,
+                      strings.objects.general,
+                      mainCollapsePanelHeader,
+                    ],
                   },
-                  [1, 0],
-                  manager.sectionHeader(
-                    null,
-                    manager.inputExpression(
+                  [
+                    manager.label(strings.objects.axes.data, {
+                      ignoreSearch: true,
+                    }),
+                    manager.styledHorizontal(
                       {
-                        property: axisProperty,
-                        field: "expression",
+                        alignItems: "start",
                       },
-                      {}
+                      [1, 0],
+                      manager.sectionHeader(
+                        null,
+                        manager.inputExpression(
+                          {
+                            property: axisProperty,
+                            field: "expression",
+                          },
+                          {
+                            ignoreSearch: true,
+                          }
+                        ),
+                        dropzoneOptions
+                      ),
+                      manager.clearButton(
+                        { property: axisProperty },
+                        null,
+                        true,
+                        {
+                          marginTop: "1px",
+                        }
+                      )
                     ),
-                    dropzoneOptions
-                  ),
-                  manager.clearButton({ property: axisProperty }, null, true, {
-                    marginTop: "1px",
-                  })
+                  ]
                 ),
-                data.valueType === "date"
-                  ? manager.label(strings.objects.dataAxis.range)
-                  : null,
-                data.valueType === "date"
-                  ? manager.inputDate(
-                      { property: axisProperty, field: "domainMin" },
-                      { label: strings.objects.dataAxis.start }
-                    )
-                  : null,
-                data.valueType === "date"
-                  ? manager.inputDate(
-                      { property: axisProperty, field: "domainMax" },
-                      { label: strings.objects.dataAxis.end }
-                    )
-                  : null,
-                data.valueType !== "date"
-                  ? manager.label(strings.objects.dataAxis.range)
-                  : null,
-                data.valueType !== "date"
-                  ? manager.inputNumber(
-                      { property: axisProperty, field: "domainMin" },
+                data.valueType == "date"
+                  ? manager.searchWrapper(
                       {
-                        label: strings.objects.axes.from,
-                        observerConfig: {
-                          isObserver: true,
-                          properties: {
-                            property: axisProperty,
-                            field: "autoDomainMin",
+                        searchPattern: [
+                          strings.objects.dataAxis.range,
+                          strings.objects.general,
+                          strings.objects.dataAxis.start,
+                          strings.objects.dataAxis.end,
+                          mainCollapsePanelHeader,
+                        ],
+                      },
+                      [
+                        manager.label(strings.objects.dataAxis.range, {
+                          ignoreSearch: true,
+                        }),
+                        manager.searchWrapper(
+                          {
+                            searchPattern: [
+                              strings.objects.dataAxis.range,
+                              strings.objects.general,
+                              strings.objects.dataAxis.start,
+                              mainCollapsePanelHeader,
+                            ],
                           },
+                          [
+                            manager.inputDate(
+                              { property: axisProperty, field: "domainMin" },
+                              {
+                                label: strings.objects.dataAxis.start,
+                                ignoreSearch: true,
+                              }
+                            ),
+                          ]
+                        ),
+                        manager.searchWrapper(
+                          {
+                            searchPattern: [
+                              strings.objects.dataAxis.range,
+                              strings.objects.general,
+                              strings.objects.dataAxis.end,
+                              mainCollapsePanelHeader,
+                            ],
+                          },
+                          [
+                            manager.inputDate(
+                              { property: axisProperty, field: "domainMax" },
+                              {
+                                label: strings.objects.dataAxis.end,
+                                ignoreSearch: true,
+                              }
+                            ),
+                          ]
+                        ),
+                      ]
+                    )
+                  : null,
 
-                          value: false,
-                        },
-                      }
-                    )
-                  : null,
                 data.valueType !== "date"
-                  ? manager.inputNumber(
-                      { property: axisProperty, field: "domainMax" },
+                  ? manager.searchWrapper(
                       {
-                        label: strings.objects.axes.to,
-                        observerConfig: {
-                          isObserver: true,
-                          properties: {
-                            property: axisProperty,
-                            field: "autoDomainMax",
+                        searchPattern: [
+                          strings.objects.dataAxis.range,
+                          strings.objects.general,
+                          strings.objects.axes.from,
+                          strings.objects.axes.to,
+                          mainCollapsePanelHeader,
+                        ],
+                      },
+                      [
+                        manager.label(strings.objects.dataAxis.range, {
+                          ignoreSearch: true,
+                        }),
+                        manager.searchWrapper(
+                          {
+                            searchPattern: [
+                              strings.objects.axes.from,
+                              strings.objects.dataAxis.range,
+                              strings.objects.general,
+                              mainCollapsePanelHeader,
+                            ],
                           },
-                          value: false,
-                        },
-                      }
+                          [
+                            manager.inputNumber(
+                              { property: axisProperty, field: "domainMin" },
+                              {
+                                label: strings.objects.axes.from,
+                                observerConfig: {
+                                  isObserver: true,
+                                  properties: {
+                                    property: axisProperty,
+                                    field: "autoDomainMin",
+                                  },
+                                  value: false,
+                                },
+                                ignoreSearch: true,
+                              }
+                            ),
+                          ]
+                        ),
+                        manager.searchWrapper(
+                          {
+                            searchPattern: [
+                              strings.objects.axes.to,
+                              strings.objects.dataAxis.range,
+                              strings.objects.general,
+                              mainCollapsePanelHeader,
+                            ],
+                          },
+                          [
+                            manager.inputNumber(
+                              { property: axisProperty, field: "domainMax" },
+                              {
+                                label: strings.objects.axes.to,
+                                observerConfig: {
+                                  isObserver: true,
+                                  properties: {
+                                    property: axisProperty,
+                                    field: "autoDomainMax",
+                                  },
+                                  value: false,
+                                },
+                                ignoreSearch: true,
+                              }
+                            ),
+                          ]
+                        ),
+                      ]
                     )
                   : null,
+
                 data.numericalMode != "temporal"
                   ? manager.inputSelect(
                       { property: axisProperty, field: "numericalMode" },
@@ -1764,52 +2040,15 @@ export function buildAxisWidgets(
                         ],
                         showLabel: true,
                         type: "dropdown",
-                        label: "Mode",
+                        label: strings.objects.scales.mode,
+                        searchSection: [
+                          strings.objects.general,
+                          mainCollapsePanelHeader,
+                        ],
                       }
                     )
                   : null,
-                manager.inputSelect(
-                  { property: axisProperty, field: "tickFormatType" },
-                  {
-                    options: [
-                      TickFormatType.None,
-                      TickFormatType.Date,
-                      TickFormatType.Number,
-                    ],
-                    labels: [
-                      strings.objects.axes.tickDataFormatTypeNone,
-                      strings.objects.axes.tickDataFormatTypeDate,
-                      strings.objects.axes.tickDataFormatTypeNumber,
-                    ],
-                    showLabel: true,
-                    type: "dropdown",
-                    label: strings.objects.axes.tickDataFormatType,
-                  }
-                ),
-                data.tickFormatType !== TickFormatType.None
-                  ? manager.inputExpression(
-                      {
-                        property: axisProperty,
-                        field: "tickDataExpression",
-                      },
-                      {
-                        label: strings.objects.axes.tickData,
-                      }
-                    )
-                  : null,
-                manager.inputFormat(
-                  {
-                    property: axisProperty,
-                    field: "tickFormat",
-                  },
-                  {
-                    blank: strings.core.auto,
-                    isDateField:
-                      data.numericalMode === NumericalMode.Temporal ||
-                      data.valueType === DataType.Date,
-                    label: strings.objects.axes.tickFormat,
-                  }
-                ),
+                ...tickFormatAndTickDataFields,
                 ...scrollingWidgets,
               ]
             )
@@ -1823,44 +2062,65 @@ export function buildAxisWidgets(
             manager.verticalGroup(
               {
                 header: strings.objects.general,
+                searchSection: mainCollapsePanelHeader,
               },
               [
-                // manager.sectionHeader(
-                //   strings.objects.axes.data,
-                //   manager.clearButton({ property: axisProperty }, null, true),
-                //   dropzoneOptions
-                // ),
-                // manager.vertical(
-                manager.label(strings.objects.axes.data),
-                manager.styledHorizontal(
+                manager.searchWrapper(
                   {
-                    alignItems: "start",
+                    searchPattern: [
+                      strings.objects.axes.data,
+                      strings.objects.general,
+                      mainCollapsePanelHeader,
+                    ],
                   },
-                  [1, 0],
-                  manager.sectionHeader(
-                    null,
-                    manager.inputExpression(
+                  [
+                    manager.label(strings.objects.axes.data, {
+                      addMargins: false,
+                      ignoreSearch: true,
+                    }),
+                    manager.styledHorizontal(
                       {
-                        property: axisProperty,
-                        field: "expression",
+                        alignItems: "start",
                       },
-                      {}
-                    ),
-                    dropzoneOptions
-                  ),
-                  isDateExpression
-                    ? manager.reorderWidget(
-                        { property: axisProperty, field: "categories" },
-                        { allowReset: true }
+                      [1, 0],
+                      manager.sectionHeader(
+                        null,
+                        manager.inputExpression(
+                          {
+                            property: axisProperty,
+                            field: "expression",
+                          },
+                          {
+                            ignoreSearch: true,
+                          }
+                        ),
+                        dropzoneOptions
+                      ),
+                      isDateExpression
+                        ? manager.reorderWidget(
+                            { property: axisProperty, field: "categories" },
+                            { allowReset: true }
+                          )
+                        : null,
+                      manager.clearButton(
+                        { property: axisProperty },
+                        null,
+                        true,
+                        {
+                          marginTop: "1px",
+                        }
                       )
-                    : null,
-                  manager.clearButton({ property: axisProperty }, null, true, {
-                    marginTop: "1px",
-                  })
+                    ),
+                  ]
                 ),
 
                 !isDateExpression
-                  ? getOrderByAnotherColumnWidgets(data, axisProperty, manager)
+                  ? getOrderByAnotherColumnWidgets(
+                      data,
+                      axisProperty,
+                      manager,
+                      mainCollapsePanelHeader
+                    )
                   : null,
 
                 manager.inputNumber(
@@ -1870,64 +2130,53 @@ export function buildAxisWidgets(
                     maximum: 1,
                     percentage: true,
                     showSlider: true,
-                    label: "Gap",
+                    label: strings.objects.axes.gap,
+                    searchSection: [
+                      strings.objects.general,
+                      mainCollapsePanelHeader,
+                    ],
                   }
                 ),
-                data.valueType === "date"
-                  ? (manager.inputExpression(
-                      {
-                        property: axisProperty,
-                        field: "tickDataExpression",
-                      },
-                      {
-                        label: strings.objects.axes.tickData,
-                      }
-                    ),
-                    manager.row(
-                      strings.objects.axes.tickFormat,
-                      manager.inputFormat(
-                        {
-                          property: axisProperty,
-                          field: "tickFormat",
-                        },
-                        {
-                          blank: strings.core.auto,
-                          isDateField:
-                            data.numericalMode === NumericalMode.Temporal ||
-                            data.valueType === DataType.Date,
-                        }
-                      )
-                    ))
-                  : null,
+                ...categoricalTickFormatAndTickDataFields,
                 ...scrollingWidgets,
                 // )
               ]
             )
           );
-          widgets.push(buildInteractivityGroup(axisProperty, manager));
+          widgets.push(
+            buildInteractivityGroup(
+              axisProperty,
+              manager,
+              mainCollapsePanelHeader
+            )
+          );
           widgets.push(makeAppearance());
         }
         break;
       case "default":
         {
           widgets.push(
-            manager.sectionHeader(
-              axisName + strings.objects.axes.stackingSuffix,
-              manager.clearButton({ property: axisProperty }, null, true),
-              {
-                ...dropzoneOptions,
-                noLineHeight: false,
-              }
-            ),
-            manager.inputNumber(
-              { property: axisProperty, field: "gapRatio" },
-              {
-                minimum: 0,
-                maximum: 1,
-                percentage: true,
-                showSlider: true,
-                label: "Gap",
-              }
+            manager.styledVertical(
+              { marginLeft: 19, marginBottom: 5 },
+              manager.sectionHeader(
+                axisName + strings.objects.axes.stackingSuffix,
+                manager.clearButton({ property: axisProperty }, null, true),
+                {
+                  ...dropzoneOptions,
+                  noLineHeight: false,
+                }
+              ),
+              manager.inputNumber(
+                { property: axisProperty, field: "gapRatio" },
+                {
+                  minimum: 0,
+                  maximum: 1,
+                  percentage: true,
+                  showSlider: true,
+                  label: strings.objects.axes.gap,
+                  searchSection: mainCollapsePanelHeader,
+                }
+              )
             )
           );
         }
@@ -1947,6 +2196,10 @@ export function buildAxisWidgets(
             {
               type: "checkbox",
               label: strings.objects.dataAxis.autoMin,
+              searchSection: [
+                axisName + strings.objects.dataAxis.exportProperties,
+                mainCollapsePanelHeader,
+              ],
             }
           ),
           manager.inputBoolean(
@@ -1957,6 +2210,10 @@ export function buildAxisWidgets(
             {
               type: "checkbox",
               label: strings.objects.dataAxis.autoMax,
+              searchSection: [
+                axisName + strings.objects.dataAxis.exportProperties,
+                mainCollapsePanelHeader,
+              ],
             }
           ),
         ]
@@ -1974,22 +2231,37 @@ export function buildAxisWidgets(
           header: strings.objects.general,
         },
         [
-          manager.label(strings.objects.axes.data),
-          manager.horizontal(
-            [1, 0, 0, 0],
-            manager.sectionHeader(
-              null,
-              manager.inputText(
-                {
-                  property: null,
-                },
-                {
-                  disabled: true,
-                  value: strings.core.none,
-                }
+          manager.searchWrapper(
+            {
+              searchPattern: [
+                strings.objects.general,
+                strings.objects.axes.data,
+                mainCollapsePanelHeader,
+              ],
+            },
+            [
+              manager.label(strings.objects.axes.data, {
+                addMargins: false,
+                ignoreSearch: true,
+              }),
+              manager.horizontal(
+                [1, 0, 0, 0],
+                manager.sectionHeader(
+                  null,
+                  manager.inputText(
+                    {
+                      property: null,
+                    },
+                    {
+                      disabled: true,
+                      value: strings.core.none,
+                      ignoreSearch: true,
+                    }
+                  ),
+                  dropzoneOptions
+                )
               ),
-              dropzoneOptions
-            )
+            ]
           ),
         ]
       )
@@ -2110,17 +2382,6 @@ export function buildAxisProperties(
       target: {
         property: {
           property,
-          field: "tickFormatType",
-        },
-      },
-      type: Specification.AttributeType.Enum,
-      default: TickFormatType.None,
-    },
-    {
-      objectID: plotSegment._id,
-      target: {
-        property: {
-          property,
           field: "tickDataExpression",
         },
       },
@@ -2137,6 +2398,28 @@ export function buildAxisProperties(
       },
       type: Specification.AttributeType.Number,
       default: 0,
+    },
+    {
+      objectID: plotSegment._id,
+      target: {
+        property: {
+          property,
+          field: "numberOfTicks",
+        },
+      },
+      type: Specification.AttributeType.Number,
+      default: 10,
+    },
+    {
+      objectID: plotSegment._id,
+      target: {
+        property: {
+          property,
+          field: "autoNumberOfTicks",
+        },
+      },
+      type: Specification.AttributeType.Boolean,
+      default: true,
     },
   ];
 }
@@ -2175,11 +2458,13 @@ function applySelectionFilter(
   }
   return filteredIndices;
 }
+let orderChanged = false;
 
 function getOrderByAnotherColumnWidgets(
   data: Specification.Types.AxisDataBinding,
   axisProperty: string,
-  manager: Controls.WidgetManager
+  manager: Controls.WidgetManager,
+  mainCollapsePanelHeader: string
 ): JSX.Element[] {
   const widgets = [];
 
@@ -2187,7 +2472,7 @@ function getOrderByAnotherColumnWidgets(
     manager as Controls.WidgetManager & CharticulatorPropertyAccessors
   );
 
-  const columnsDisplayNames = tableColumns
+  let columnsDisplayNames = tableColumns
     .filter((item) => !item.metadata?.isRaw)
     .map((column) => column.displayName);
   const columnsNames = tableColumns
@@ -2263,47 +2548,27 @@ function getOrderByAnotherColumnWidgets(
     groupByExpression = parseDerivedColumnsExpression(groupByExpression);
   }
 
+  const isOriginalColumn = groupByExpression === data.orderByExpression;
   const vectorData = getExpressionVector(data.orderByExpression, table, {
     expression: groupByExpression,
   });
   const items = vectorData.map((item) => [...new Set(item)]);
 
-  const items_idx = items.map((item, idx) => [item, idx]);
+  const items_idx: CategoryItemsWithIds = items.map((item, idx) => [item, idx]);
   const axisData = getExpressionVector(data.expression, table, {
     expression: groupByExpression,
   }).map((item, idx) => [item, idx]);
 
-  const rawAxisData = items_idx.map((item) =>
-    Array.isArray(item[0]) ? item[0].join(", ") : item[0].toString()
-  );
+  const isNumberValueType = Array.isArray(items_idx[0][0])
+    ? typeof items_idx[0][0][0] === "number"
+    : typeof items_idx[0][0] === "number";
+
+  const onResetAxisCategories = transformOnResetCategories(items_idx);
+  const sortedCategories = getSortedCategories(items_idx);
 
   const onConfirm = (items: string[]) => {
     try {
-      const newData = [...axisData];
-      const new_order = [];
-
-      for (let i = 0; i < items.length; i++) {
-        const currentItemIndex = items_idx.findIndex(
-          (item) =>
-            (Array.isArray(item[0])
-              ? item[0].join(", ")
-              : item[0].toString()) == items[i]
-        );
-        const foundItem = newData.find(
-          (item) => item[1] === items_idx[currentItemIndex]?.[1]
-        );
-        new_order.push(foundItem);
-        items_idx.splice(currentItemIndex, 1);
-      }
-      const getItem = (item: any) => {
-        if (data.valueType == DataType.Number) {
-          return "" + item;
-        }
-        return item;
-      };
-      data.order = new_order.map((item) => getItem(item[0]));
-      data.orderMode = OrderMode.order;
-      data.categories = new_order.map((item) => getItem(item[0]));
+      getOnConfirmFunction(axisData, items, items_idx, data);
     } catch (e) {
       console.log(e);
     }
@@ -2314,36 +2579,162 @@ function getOrderByAnotherColumnWidgets(
       expression: groupByExpression,
     });
     const items = vectorData.map((item) => [...new Set(item)]);
-    const newData = items.map((item) =>
-      Array.isArray(item) ? item.join(", ") : item
-    );
-    data.orderByCategories = newData;
+    const newData = updateWidgetCategoriesByExpression(items);
+    data.orderByCategories = [...new Set(newData)];
   };
 
-  widgets.push(
-    manager.label(strings.objects.axes.orderBy),
+  if (orderChanged) {
+    columnsDisplayNames = columnsDisplayNames.map((name) => {
+      if (isOriginalColumn && name == data.orderByExpression) {
+        return "Custom";
+      } else {
+        return name;
+      }
+    });
+  }
 
-    manager.horizontal(
+  widgets.push(
+    manager.searchWrapper(
+      {
+        searchPattern: [
+          strings.objects.axes.orderBy,
+          strings.objects.general,
+          mainCollapsePanelHeader,
+        ],
+      },
+      [
+        manager.label(strings.objects.axes.orderBy, {
+          addMargins: false,
+          ignoreSearch: true,
+        }),
+        manager.horizontal(
+          [1, 0],
+          manager.inputSelect(
+            { property: axisProperty, field: "orderByExpression" },
+            {
+              type: "dropdown",
+              showLabel: true,
+              labels: columnsDisplayNames,
+              options: columnsNames,
+              onChange: onChange,
+              ignoreSearch: true,
+            }
+          ),
+          manager.reorderByAnotherColumnWidget(
+            { property: axisProperty, field: "orderByCategories" },
+            {
+              allowReset: isNumberValueType == false,
+              onConfirmClick: onConfirm,
+              onResetCategories: onResetAxisCategories,
+              sortedCategories: sortedCategories,
+              allowDragItems: isNumberValueType == false,
+              onReorderHandler: isOriginalColumn
+                ? () => {
+                    orderChanged = true;
+                  }
+                : undefined,
+              onButtonHandler: isOriginalColumn
+                ? () => {
+                    orderChanged = false;
+                  }
+                : undefined,
+            }
+          )
+        ),
+      ]
+    )
+  );
+  return widgets;
+}
+
+function getTickDataAndTickFormatFields(
+  data: Specification.Types.AxisDataBinding,
+  axisProperty: string,
+  manager: Controls.WidgetManager,
+  mainCollapsePanelHeader?: string
+) {
+  const showInputFormat = shouldShowTickFormatForTickExpression(data, manager);
+
+  const widgets = [];
+  widgets.push(
+    // manager.label(strings.objects.axes.tickData),
+    manager.styledHorizontal(
+      {
+        alignItems: "start",
+      },
       [1, 0],
-      manager.inputSelect(
-        { property: axisProperty, field: "orderByExpression" },
+      manager.inputExpression(
         {
-          type: "dropdown",
-          showLabel: true,
-          labels: columnsDisplayNames,
-          options: columnsNames,
-          onChange: onChange,
-        }
-      ),
-      manager.reorderByAnotherColumnWidget(
-        { property: axisProperty, field: "orderByCategories" },
+          property: axisProperty,
+          field: "tickDataExpression",
+        },
         {
-          allowReset: true,
-          onConfirmClick: onConfirm,
-          onResetCategories: rawAxisData,
+          allowNull: true,
+          placeholder: strings.core.default,
+          dropzone: {
+            type: "tick-data-binding",
+            prompt: strings.objects.dropTickData,
+          },
+          noLineHeight: true,
+          label: strings.objects.axes.tickData,
+          searchSection: [strings.objects.general, mainCollapsePanelHeader],
         }
       )
     )
   );
+  if (showInputFormat) {
+    widgets.push(
+      manager.inputFormat(
+        {
+          property: axisProperty,
+          field: "tickFormat",
+        },
+        {
+          blank: strings.core.auto,
+          label: strings.objects.axes.tickFormat,
+          isDateField:
+            data.numericalMode === NumericalMode.Temporal ||
+            data.valueType === DataType.Date,
+          allowNull: true,
+          searchSection: [strings.objects.general, mainCollapsePanelHeader],
+        }
+      )
+    );
+  }
+  if (!data.tickDataExpression) {
+    widgets.push(
+      manager.inputBoolean(
+        {
+          property: axisProperty,
+          field: "autoNumberOfTicks",
+        },
+        {
+          type: "checkbox",
+          label: strings.objects.axes.autoNumberOfTicks,
+          styles: {
+            marginTop: "0.5rem",
+          },
+          searchSection: [strings.objects.general, mainCollapsePanelHeader],
+        }
+      )
+    );
+    if (!data.autoNumberOfTicks) {
+      widgets.push(
+        manager.inputNumber(
+          {
+            property: axisProperty,
+            field: "numberOfTicks",
+          },
+          {
+            label: strings.objects.axes.numberOfTicks,
+            showUpdown: true,
+            updownTick: 1,
+            minimum: 2,
+            searchSection: [strings.objects.general, mainCollapsePanelHeader],
+          }
+        )
+      );
+    }
+  }
   return widgets;
 }

@@ -14,6 +14,11 @@ export class ColorRgbInput extends React.Component<
   ColorRgbInputProps,
   Record<string, unknown>
 > {
+  private transformColorValue(value: number): string {
+    const newColorValue = prettyNumber(value, 0);
+    return newColorValue.length > 0 ? newColorValue : "0";
+  }
+
   render() {
     const currentColor = this.props.state.desc.toRGB(
       this.props.state.x1,
@@ -28,7 +33,7 @@ export class ColorRgbInput extends React.Component<
           <div className="row">
             <label>R</label>
             <InputField
-              defaultValue={prettyNumber(rgb.r, 0)}
+              defaultValue={this.transformColorValue(rgb.r)}
               onEnter={(v) => {
                 let num = parseFloat(v);
                 if (num == num && num != null) {
@@ -52,7 +57,7 @@ export class ColorRgbInput extends React.Component<
           <div className="row">
             <label>G</label>
             <InputField
-              defaultValue={prettyNumber(rgb.g, 0)}
+              defaultValue={this.transformColorValue(rgb.g)}
               onEnter={(v) => {
                 let num = parseFloat(v);
                 if (num == num && num != null) {
@@ -76,7 +81,7 @@ export class ColorRgbInput extends React.Component<
           <div className="row">
             <label>B</label>
             <InputField
-              defaultValue={prettyNumber(rgb.b, 0)}
+              defaultValue={this.transformColorValue(rgb.b)}
               onEnter={(v) => {
                 let num = parseFloat(v);
                 if (num == num && num != null) {

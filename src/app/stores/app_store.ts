@@ -10,6 +10,7 @@ import {
   getById,
   getByName,
   ImageKeyColumn,
+  makeRange,
   MessageType,
   Prototypes,
   Scale,
@@ -60,8 +61,10 @@ import {
 } from "../../core/specification";
 import { RenderEvents } from "../../core/graphics";
 import {
+  AxisDataBinding,
   AxisDataBindingType,
   AxisRenderingStyle,
+  CollapseOrExpandPanels,
   NumericalMode,
   OrderMode,
   TickFormatType,
@@ -84,7 +87,14 @@ import {
 import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
 import { DataAxisProperties } from "../../core/prototypes/marks/data_axis.attrs";
 import { isBase64Image } from "../../core/dataset/data_types";
-import { getColumnNameByExpression } from "../../core/prototypes/plot_segments/utils";
+import {
+  getColumnNameByExpression,
+  parseDerivedColumnsExpression,
+  transformOrderByExpression,
+  updateWidgetCategoriesByExpression,
+} from "../../core/prototypes/plot_segments/utils";
+import { AxisRenderer } from "../../core/prototypes/plot_segments/axis";
+import { CompiledGroupBy } from "../../core/prototypes/group_by";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -181,6 +191,10 @@ export class AppStore extends BaseStore {
   };
   public currentTool: string;
   public currentToolOptions: string;
+  public searchString: string = "";
+
+  public collapseOrExpandPanelsType: CollapseOrExpandPanels =
+    CollapseOrExpandPanels.Expand;
 
   public chartManager: Prototypes.ChartStateManager;
 
@@ -1874,7 +1888,15 @@ export class AppStore extends BaseStore {
         <string[]>objectProperties?.orderByCategories !== undefined
           ? <string[]>objectProperties?.orderByCategories
           : orderByCategories,
-      orderByExpression: <string>objectProperties?.orderByExpression ?? column,
+      orderByExpression: column,
+      numberOfTicks:
+        <number>objectProperties?.numberOfTicks !== undefined
+          ? <number>objectProperties?.numberOfTicks
+          : AxisRenderer.DEFAULT_TICKS_NUMBER,
+      autoNumberOfTicks:
+        <boolean>objectProperties?.autoNumberOfTicks !== undefined
+          ? <boolean>objectProperties?.autoNumberOfTicks
+          : true,
     };
 
     let expressions = [groupExpression];
@@ -1910,8 +1932,8 @@ export class AppStore extends BaseStore {
     let values: ValueType[] = [];
     if (
       appendToProperty == "dataExpressions" &&
-      dataBinding.domainMax !== undefined &&
-      dataBinding.domainMin !== undefined
+      dataBinding.domainMax != undefined &&
+      dataBinding.domainMin != undefined
     ) {
       // save current range of scale if user adds data
       values = values.concat(dataBinding.domainMax, dataBinding.domainMin);
@@ -1940,7 +1962,6 @@ export class AppStore extends BaseStore {
               dataExpression.valueType,
               values
             );
-
             dataBinding.orderByCategories = deepClone(categories);
             dataBinding.order = order != undefined ? order : null;
             dataBinding.allCategories = deepClone(categories);
@@ -1965,6 +1986,9 @@ export class AppStore extends BaseStore {
               );
             }
           }
+          //reset tick data for categorical data
+          dataBinding.tickFormat = null;
+          dataBinding.tickDataExpression = null;
 
           break;
         case Specification.DataKind.Numerical:
@@ -2126,6 +2150,47 @@ export class AppStore extends BaseStore {
         dataExpression.valueType = null;
       }
     }
+  }
+
+  public getCategoriesForOrderByColumn(
+    orderExpression: string,
+    expression: string,
+    data: AxisDataBinding
+  ) {
+    const parsed = Expression.parse(expression);
+    let groupByExpression: string = null;
+    if (parsed instanceof Expression.FunctionCall) {
+      groupByExpression = parsed.args[0].toString();
+      groupByExpression = groupByExpression?.split("`").join("");
+      //need to provide date.year() etc.
+      groupByExpression = parseDerivedColumnsExpression(groupByExpression);
+    }
+    const table = this.getTables()[0].name;
+
+    const df = new Prototypes.Dataflow.DataflowManager(this.dataset);
+    const getExpressionVector = (
+      expression: string,
+      table: string,
+      groupBy?: Specification.Types.GroupBy
+    ): any[] => {
+      const newExpression = transformOrderByExpression(expression);
+      groupBy.expression = transformOrderByExpression(groupBy.expression);
+
+      const expr = Expression.parse(newExpression);
+      const tableContext = df.getTable(table);
+      const indices = groupBy
+        ? new CompiledGroupBy(groupBy, df.cache).groupBy(tableContext)
+        : makeRange(0, tableContext.rows.length).map((x) => [x]);
+      return indices.map((is) =>
+        expr.getValue(tableContext.getGroupedContext(is))
+      );
+    };
+    const vectorData = getExpressionVector(data.orderByExpression, table, {
+      expression: groupByExpression,
+    });
+    const items = vectorData.map((item) => [...new Set(item)]);
+    const newData = updateWidgetCategoriesByExpression(items);
+    return [...new Set(newData)];
   }
 
   public getCategoriesForDataBinding(

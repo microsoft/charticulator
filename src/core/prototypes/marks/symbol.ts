@@ -6,7 +6,7 @@ import { Color, Point, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
 import { makeGroup } from "../../graphics";
 import * as Specification from "../../specification";
-import { MappingType } from "../../specification";
+import { DataKind, MappingType } from "../../specification";
 import {
   AttributeDescriptions,
   BoundingBox,
@@ -27,6 +27,7 @@ import {
   SymbolElementProperties,
   symbolTypes,
 } from "./symbol.attrs";
+import { RectangleGlyph } from "../glyphs";
 
 export const symbolTypesList = symbolTypes;
 
@@ -283,6 +284,10 @@ export class SymbolElementClass extends EmphasizableMarkClass<
             hints: { rangeNumber: [0, 200 * Math.PI] },
           },
         },
+        accept: {
+          kind: DataKind.Numerical,
+          table: (this.parent as RectangleGlyph).object.table,
+        },
       },
     ];
   }
@@ -338,6 +343,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
             acceptKinds: [Specification.DataKind.Categorical],
             hints: { rangeEnum: symbolTypes },
             defaultValue: "circle",
+            searchSection: strings.objects.general,
           }),
           manager.mappingEditor(strings.objects.size, "size", {
             acceptKinds: [Specification.DataKind.Numerical],
@@ -349,12 +355,14 @@ export class SymbolElementClass extends EmphasizableMarkClass<
               sliderRange: [0, 3600],
               sliderFunction: "sqrt",
             },
+            searchSection: strings.objects.general,
           }),
           manager.mappingEditor(
             strings.objects.visibleOn.visibility,
             "visible",
             {
               defaultValue: true,
+              searchSection: strings.objects.general,
             }
           ),
           manager.inputNumber(
@@ -363,6 +371,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
               label: strings.objects.rotation,
               showUpdown: true,
               updownTick: 5,
+              searchSection: strings.objects.general,
             }
           ),
         ]
@@ -372,8 +381,12 @@ export class SymbolElementClass extends EmphasizableMarkClass<
           header: strings.objects.style,
         },
         [
-          manager.mappingEditor(strings.objects.fill, "fill", {}),
-          manager.mappingEditor(strings.objects.stroke, "stroke", {}),
+          manager.mappingEditor(strings.objects.fill, "fill", {
+            searchSection: strings.objects.style,
+          }),
+          manager.mappingEditor(strings.objects.stroke, "stroke", {
+            searchSection: strings.objects.style,
+          }),
           this.object.mappings.stroke != null
             ? manager.mappingEditor(
                 strings.objects.strokeWidth,
@@ -386,6 +399,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
                     sliderRange: [0, 5],
                     minimum: 0,
                   },
+                  searchSection: strings.objects.style,
                 }
               )
             : null,
@@ -398,6 +412,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
               maximum: 1,
               step: 0.1,
             },
+            searchSection: strings.objects.style,
           }),
         ]
       ),

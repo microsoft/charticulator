@@ -43,12 +43,18 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       if (
         (action.valueType == Specification.DataType.String ||
           action.valueType == Specification.DataType.Boolean ||
-          action.valueType == Specification.DataType.Number) &&
+          action.valueType == Specification.DataType.Number ||
+          action.valueType == Specification.DataType.Date) &&
         action.attributeType == Specification.AttributeType.Text
       ) {
         // If the valueType is a number, use a format
-        const format =
-          action.valueType == Specification.DataType.Number ? ".1f" : undefined;
+        let format;
+        if (action.valueType == Specification.DataType.Number) {
+          format = ".1f";
+        }
+        if (action.valueType == Specification.DataType.Date) {
+          format = "%m/%d/%Y";
+        }
         action.chartElement.mappings[action.attribute] = {
           type: MappingType.text,
           table: action.table,

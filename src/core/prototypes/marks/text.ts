@@ -37,6 +37,7 @@ import {
   TextElementAttributes,
   TextElementProperties,
 } from "./text.attrs";
+import { RectangleGlyph } from "../glyphs";
 
 export { TextElementAttributes, TextElementProperties };
 
@@ -200,6 +201,9 @@ export class TextElementClass extends EmphasizableMarkClass<
             attributeType: Specification.AttributeType.Text,
           },
         },
+        accept: {
+          table: (this.parent as RectangleGlyph).object.table,
+        },
       },
     ];
   }
@@ -308,9 +312,12 @@ export class TextElementClass extends EmphasizableMarkClass<
           header: strings.objects.general,
         },
         [
-          manager.mappingEditor(strings.toolbar.text, "text", {}),
+          manager.mappingEditor(strings.toolbar.text, "text", {
+            searchSection: strings.objects.general,
+          }),
           manager.mappingEditor(strings.objects.font, "fontFamily", {
             defaultValue: defaultFont,
+            searchSection: strings.objects.general,
           }),
           manager.mappingEditor(strings.objects.size, "fontSize", {
             hints: { rangeNumber: [0, 36] },
@@ -321,12 +328,14 @@ export class TextElementClass extends EmphasizableMarkClass<
               minimum: 0,
               updownTick: 2,
             },
+            searchSection: strings.objects.general,
           }),
           manager.mappingEditor(
             strings.objects.visibleOn.visibility,
             "visible",
             {
               defaultValue: true,
+              searchSection: strings.objects.general,
             }
           ),
         ]
@@ -348,6 +357,7 @@ export class TextElementClass extends EmphasizableMarkClass<
               labels: ["Left", "Middle", "Right"],
               options: ["left", "middle", "right"],
               label: strings.objects.anchorX,
+              searchSection: strings.objects.anchorAndRotation,
             }
           ),
           props.alignment.x != "middle"
@@ -357,6 +367,7 @@ export class TextElementClass extends EmphasizableMarkClass<
                   updownTick: 1,
                   showUpdown: true,
                   label: "Margin",
+                  searchSection: strings.objects.anchorAndRotation,
                 }
               )
             : null,
@@ -372,6 +383,7 @@ export class TextElementClass extends EmphasizableMarkClass<
               labels: ["Top", "Middle", "Bottom"],
               options: ["top", "middle", "bottom"],
               label: strings.objects.anchorY,
+              searchSection: strings.objects.anchorAndRotation,
             }
           ),
           props.alignment.y != "middle"
@@ -381,6 +393,7 @@ export class TextElementClass extends EmphasizableMarkClass<
                   updownTick: 1,
                   showUpdown: true,
                   label: strings.objects.text.margin,
+                  searchSection: strings.objects.anchorAndRotation,
                 }
               )
             : null,
@@ -390,19 +403,25 @@ export class TextElementClass extends EmphasizableMarkClass<
               label: strings.objects.rotation,
               showUpdown: true,
               updownTick: 1,
+              searchSection: strings.objects.anchorAndRotation,
             }
           ),
         ]
       ),
       manager.verticalGroup(
         {
-          header: "Style",
+          header: strings.objects.style,
         },
         [
-          manager.mappingEditor(strings.objects.color, "color", {}),
-          manager.mappingEditor(strings.objects.outline, "outline", {}),
+          manager.mappingEditor(strings.objects.color, "color", {
+            searchSection: strings.objects.style,
+          }),
+          manager.mappingEditor(strings.objects.outline, "outline", {
+            searchSection: strings.objects.style,
+          }),
           manager.mappingEditor(strings.objects.background, "backgroundColor", {
             defaultValue: null,
+            searchSection: strings.objects.style,
           }),
           manager.mappingEditor(strings.objects.opacity, "opacity", {
             hints: { rangeNumber: [0, 1] },
@@ -413,6 +432,7 @@ export class TextElementClass extends EmphasizableMarkClass<
               maximum: 1,
               step: 0.1,
             },
+            searchSection: strings.objects.style,
           }),
         ]
       ),

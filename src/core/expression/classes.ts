@@ -35,14 +35,17 @@ import {
   DataflowTable,
   DataflowTableGroupedContext,
 } from "../prototypes/dataflow";
-import { getFormat, Specification } from "..";
+import { applyDateFormat, getFormat, Specification } from "..";
 
 export type PatternReplacer = (expr: Expression) => Expression | void;
 
 export function variableReplacer(map: { [name: string]: string }) {
   return (expr: Expression) => {
     if (expr instanceof Variable) {
-      if (Object.prototype.hasOwnProperty.call(map, expr.name)) {
+      // DON'T CHANGE TO Object.prototype.hasOwnProperty.call !!!
+      // Template builder overrides hasOwnProperty method
+      // eslint-disable-next-line
+      if (map.hasOwnProperty(expr.name)) {
         return new Variable(map[expr.name]);
       }
     }
@@ -114,11 +117,15 @@ export class TextExpression {
             try {
               return getFormat()(part.format)(+val);
             } catch (ex) {
-              // try to handle specific format
-              if (part.format.match(/^%raw$/).length > 0) {
-                return getFormattedValue(context, val, part.expression);
-              } else {
-                throw ex;
+              try {
+                return applyDateFormat(new Date(+val), part.format);
+              } catch (ex) {
+                // try to handle specific format
+                if (part.format.match(/^%raw$/).length > 0) {
+                  return getFormattedValue(context, val, part.expression);
+                } else {
+                  throw ex;
+                }
               }
             }
           } else {

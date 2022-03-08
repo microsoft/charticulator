@@ -1688,7 +1688,11 @@ export class SingleMarkView
             <defs>
               {zipArray(glyph.marks, glyphState.marks).map(
                 ([elements, elementState]) => {
-                  return this.renderElementDefs(elements, elementState);
+                  return (
+                    <React.Fragment key={`SVGDefs-${elements._id}`}>
+                      {this.renderElementDefs(elements, elementState)}
+                    </React.Fragment>
+                  );
                 }
               )}
             </defs>

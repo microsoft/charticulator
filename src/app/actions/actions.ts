@@ -18,6 +18,7 @@ import { DataType } from "../../core/dataset";
 import { ObjectClass } from "../../core/prototypes";
 import {
   AxisDataBindingType,
+  CollapseOrExpandPanels,
   NumericalMode,
 } from "../../core/specification/types";
 import { NestedChartEditorOptions } from "../../core/prototypes/controls";
@@ -975,5 +976,25 @@ export class OpenNestedEditor extends Action {
   }
   public digest() {
     return { name: "OpenNestedEditor" };
+  }
+}
+
+export class SearchUpdated extends Action {
+  constructor(public searchString: string) {
+    super();
+  }
+
+  public digest(): { name: string } {
+    return { name: "SearchUpdated" };
+  }
+}
+
+export class ExpandOrCollapsePanelsUpdated extends Action {
+  constructor(public type: CollapseOrExpandPanels) {
+    super();
+  }
+
+  public digest(): { name: string } {
+    return { name: "ExpandOrCollapsePanelsUpdated" };
   }
 }

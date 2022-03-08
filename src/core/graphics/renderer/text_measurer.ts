@@ -121,7 +121,7 @@ export function split(str: string): string[] {
  * Splits text to fragments do display text with word wrap
  * Source code taken from https://github.com/microsoft/powerbi-visuals-utils-formattingutils/blob/master/src/wordBreaker.ts#L130
  * @param content source of text
- * @param maxWidth max awailable with for text
+ * @param maxWidth max available with for text
  * @param maxNumLines limit lines count, rest of words will be drew in the last line
  * @param fontFamily font family
  * @param fontSize font size in px

@@ -3,9 +3,11 @@
 
 import { deepClone, getByName, Point, uniqueID } from "../../common";
 import * as Dataset from "../../dataset";
+import { TableType } from "../../dataset";
 import * as Graphics from "../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
+import { MappingType } from "../../specification";
 import {
   BoundingBox,
   Controls,
@@ -22,14 +24,13 @@ import {
   NestedChartElementAttributes,
   NestedChartElementProperties,
 } from "./nested_chart.attrs";
-import { TableType } from "../../dataset";
-import { MappingType } from "../../specification";
 import {
   GridDirection,
   GridStartPosition,
   Region2DSublayoutType,
   SublayoutAlignment,
 } from "../plot_segments/region_2d/base";
+import { strings } from "../../../strings";
 
 export { NestedChartElementAttributes, NestedChartElementProperties };
 
@@ -81,37 +82,44 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-    let widgets: Controls.Widget[] = [
-      manager.sectionHeader("Size & Shape"),
-      manager.mappingEditor("Width", "width", {
-        hints: { autoRange: true, startWithZero: "always" },
-        acceptKinds: [Specification.DataKind.Numerical],
-        defaultAuto: true,
-      }),
-      manager.mappingEditor("Height", "height", {
-        hints: { autoRange: true, startWithZero: "always" },
-        acceptKinds: [Specification.DataKind.Numerical],
-        defaultAuto: true,
-      }),
-    ];
-    widgets = widgets.concat([
-      manager.mappingEditor("Visibility", "visible", {
-        defaultValue: true,
-      }),
-    ]);
-    widgets = widgets.concat([
-      manager.nestedChartEditor(
-        { property: "specification" },
-        {
-          specification: this.object.properties.specification,
-          dataset: this.getDataset(0),
-          // filterCondition: this.getFilterCondition(),
-          width: this.state.attributes.width,
-          height: this.state.attributes.height,
-        }
+    return [
+      manager.verticalGroup(
+        { header: strings.objects.nestedChart.sizeAndShape },
+        [
+          manager.mappingEditor(strings.objects.width, "width", {
+            hints: { autoRange: true, startWithZero: "always" },
+            acceptKinds: [Specification.DataKind.Numerical],
+            defaultAuto: true,
+            searchSection: strings.objects.nestedChart.sizeAndShape,
+          }),
+          manager.mappingEditor(strings.objects.height, "height", {
+            hints: { autoRange: true, startWithZero: "always" },
+            acceptKinds: [Specification.DataKind.Numerical],
+            defaultAuto: true,
+            searchSection: strings.objects.nestedChart.sizeAndShape,
+          }),
+          manager.mappingEditor(
+            strings.objects.visibleOn.visibility,
+            "visible",
+            {
+              defaultValue: true,
+              searchSection: strings.objects.nestedChart.sizeAndShape,
+            }
+          ),
+          manager.nestedChartEditor(
+            { property: "specification" },
+            {
+              specification: this.object.properties.specification,
+              dataset: this.getDataset(0),
+              // filterCondition: this.getFilterCondition(),
+              width: this.state.attributes.width,
+              height: this.state.attributes.height,
+              searchSection: strings.objects.nestedChart.sizeAndShape,
+            }
+          ),
+        ]
       ),
-    ]);
-    return widgets;
+    ];
   }
 
   // Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
@@ -185,7 +193,16 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
       plotSegmentClass.object.table
     );
     let columnNameMap = this.object.properties.columnNameMap;
-    if (columnNameMap == null) {
+    if (table.columns.length === Object.keys(columnNameMap).length) {
+      if (columnNameMap == null) {
+        columnNameMap = {};
+        for (const c of table.columns) {
+          columnNameMap[c.name] = c.name;
+        }
+        this.object.properties.columnNameMap = columnNameMap;
+      }
+    } else {
+      //update columns
       columnNameMap = {};
       for (const c of table.columns) {
         columnNameMap[c.name] = c.name;

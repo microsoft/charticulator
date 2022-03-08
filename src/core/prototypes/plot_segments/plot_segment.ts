@@ -107,7 +107,8 @@ export abstract class PlotSegmentClass<
   public buildGridLineWidgets(
     data: Specification.Types.AxisDataBinding,
     manager: Controls.WidgetManager,
-    axisProperty: string
+    axisProperty: string,
+    mainCollapsePanelHeader: string
   ) {
     if (!data) {
       return [];
@@ -119,13 +120,15 @@ export abstract class PlotSegmentClass<
 
     return PlotSegmentClass.getGridLineAttributePanelWidgets(
       manager,
-      axisProperty
+      axisProperty,
+      mainCollapsePanelHeader
     );
   }
 
   public static getGridLineAttributePanelWidgets(
     manager: Controls.WidgetManager,
-    axisProperty: string
+    axisProperty: string,
+    mainCollapsePanelHeader?: string
   ) {
     return [
       manager.verticalGroup(
@@ -138,6 +141,7 @@ export abstract class PlotSegmentClass<
             {
               type: "dropdown",
               showLabel: true,
+              isLocalIcons: true,
               icons: [
                 "ChromeClose",
                 "stroke/solid",
@@ -145,8 +149,17 @@ export abstract class PlotSegmentClass<
                 "stroke/dotted",
               ],
               options: ["none", "solid", "dashed", "dotted"],
-              labels: ["None", "Solid", "Dashed", "Dotted"],
+              labels: [
+                strings.filter.none,
+                strings.objects.links.solid,
+                strings.objects.links.dashed,
+                strings.objects.links.dotted,
+              ],
               label: strings.objects.style,
+              searchSection: [
+                strings.objects.plotSegment.gridline,
+                mainCollapsePanelHeader,
+              ],
             }
           ),
           manager.inputColor(
@@ -156,7 +169,11 @@ export abstract class PlotSegmentClass<
             },
             {
               label: strings.objects.color,
-              labelKey: strings.objects.color,
+              labelKey: `gridline-color-${axisProperty}`,
+              searchSection: [
+                strings.objects.plotSegment.gridline,
+                mainCollapsePanelHeader,
+              ],
             }
           ),
           manager.inputNumber(
@@ -169,6 +186,10 @@ export abstract class PlotSegmentClass<
               maximum: 100,
               showUpdown: true,
               label: strings.objects.width,
+              searchSection: [
+                strings.objects.plotSegment.gridline,
+                mainCollapsePanelHeader,
+              ],
             }
           ),
         ]
@@ -185,6 +206,7 @@ export abstract class PlotSegmentClass<
         manager.label("Data", {
           addMargins: true,
           key: "Data",
+          ignoreSearch: true,
         }),
         manager.horizontal(
           [1],
@@ -195,12 +217,15 @@ export abstract class PlotSegmentClass<
               value: this.object.filter,
               mode: PanelMode.Button,
               key: "filterEditor",
+              ignoreSearch: true,
             }),
             manager.groupByEditor({
               table: this.object.table,
               target: { plotSegment: this.object },
               value: this.object.groupBy,
               mode: PanelMode.Button,
+              key: "groupByEditor",
+              ignoreSearch: true,
             }),
           ]
         )

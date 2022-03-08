@@ -44,7 +44,11 @@ export class ScaleEditor extends React.Component<
   public render() {
     const { scale, store, scaleMapping } = this.props;
     const scaleClass = store.chartManager.getClassById(scale._id);
-    const manager = new FluentUIWidgetManager(this.props.store, scaleClass);
+    const manager = new FluentUIWidgetManager(
+      this.props.store,
+      scaleClass,
+      true
+    );
     manager.onEditMappingHandler = (
       attribute: string,
       mapping: Specification.Mapping
@@ -56,7 +60,9 @@ export class ScaleEditor extends React.Component<
     let canAddLegend = true;
     if (
       scale.classID.startsWith("scale.format") ||
-      scale.classID === "scale.categorical<string,image>"
+      scale.classID === "scale.categorical<string,image>" ||
+      scale.classID === "scale.categorical<string,boolean>" ||
+      scale.classID === "scale.linear<number,boolean>"
     ) {
       canAddLegend = false;
     }

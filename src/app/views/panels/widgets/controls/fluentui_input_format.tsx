@@ -35,7 +35,7 @@ export const FluentInputFormat: React.FC<InputExpressionProps> = (
   const [value, setValue] = React.useState(props.defaultValue);
 
   const doEnter = React.useCallback(() => {
-    if (props.allowNull && value.trim() == "") {
+    if (props.allowNull && value?.trim() == "") {
       setValue("");
       props.onEnter(null);
     } else {
@@ -70,12 +70,12 @@ export const FluentInputFormat: React.FC<InputExpressionProps> = (
             return validateResults.error;
           }
         }}
-        value={replaceSymbolByTab(
+        defaultValue={replaceSymbolByTab(
           replaceSymbolByNewLine(value || props.defaultValue)
         )}
         onChange={(event, newValue) => {
           // Check for parse errors while input
-          if (props.allowNull && newValue.trim() == "") {
+          if (props.allowNull && newValue?.trim() == "") {
             setValue(newValue);
           } else {
             Expression.verifyUserExpression(

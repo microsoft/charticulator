@@ -7,6 +7,7 @@ import * as Specification from "../specification";
 import * as Dataset from "../dataset";
 import { CSSProperties } from "react";
 import { ICheckboxStyles, IDropdownOption } from "@fluentui/react";
+import { DataType } from "../specification";
 
 export type Widget = any;
 
@@ -17,7 +18,7 @@ export interface Property {
   noComputeLayout?: boolean;
 }
 
-export interface InputComboboxOptions {
+export interface InputComboboxOptions extends SearchSection {
   defaultRange: string[];
   valuesOnly?: boolean;
   label?: string;
@@ -30,12 +31,13 @@ export const enum LabelPosition {
   Top,
 }
 
-export interface InputSelectOptions {
+export interface InputSelectOptions extends SearchSection {
   type: "radio" | "dropdown";
   showLabel?: boolean;
   labelPosition?: LabelPosition;
   options: string[];
   icons?: string[];
+  isLocalIcons?: boolean;
   labels?: string[];
   tooltip?: string;
   label?: string;
@@ -45,11 +47,11 @@ export interface InputSelectOptions {
   onChange?: (value: IDropdownOption) => void;
 }
 
-export interface InputFontComboboxOptions {
+export interface InputFontComboboxOptions extends SearchSection {
   label?: string;
 }
 
-export interface InputTextOptions {
+export interface InputTextOptions extends SearchSection {
   label?: string;
   placeholder?: string;
   tooltip?: string;
@@ -62,7 +64,7 @@ export interface InputTextOptions {
   disabled?: boolean;
 }
 
-export interface InputBooleanOptions {
+export interface InputBooleanOptions extends SearchSection {
   type: "checkbox" | "highlight" | "checkbox-fill-width";
   icon?: string;
   headerLabel?: string;
@@ -70,9 +72,10 @@ export interface InputBooleanOptions {
   observerConfig?: ObserverConfig;
   checkBoxStyles?: ICheckboxStyles;
   onChange?: (value: boolean) => void;
+  styles?: CSSProperties;
 }
 
-export interface RowOptions {
+export interface RowOptions extends SearchSection {
   dropzone?: {
     type: "axis-data-binding";
     prompt?: string;
@@ -80,6 +83,7 @@ export interface RowOptions {
     defineCategories?: boolean;
   };
   noLineHeight?: boolean;
+  acceptLinksTable?: boolean;
 }
 
 export interface DropTargetOptions {
@@ -96,7 +100,7 @@ export interface OrderWidgetOptions {
   shiftCallout?: number;
 }
 
-export interface MappingEditorOptions {
+export interface MappingEditorOptions extends SearchSection {
   /** Hints for creating data mapping */
   hints?: DataMappingHints;
 
@@ -117,6 +121,8 @@ export interface MappingEditorOptions {
   /** Text lael of input */
   label?: string;
   stopPropagation?: boolean;
+
+  acceptLinksTable?: boolean;
 }
 
 export interface ObserverConfig {
@@ -125,7 +131,7 @@ export interface ObserverConfig {
   value: Specification.AttributeValue;
 }
 
-export interface InputNumberOptions {
+export interface InputNumberOptions extends SearchSection {
   digits?: number;
   minimum?: number;
   maximum?: number;
@@ -144,16 +150,18 @@ export interface InputNumberOptions {
   stopPropagation?: boolean;
 
   observerConfig?: ObserverConfig;
+  styles?: CSSProperties;
+  placeholder?: string;
 }
 
-export interface InputDateOptions {
+export interface InputDateOptions extends SearchSection {
   defaultValue?: number | Date;
   placeholder?: string;
   label?: string;
   onEnter?: (value: number) => boolean;
 }
 
-export interface InputColorOptions {
+export interface InputColorOptions extends SearchSection {
   allowNull?: boolean;
   label?: string;
   noDefaultMargin?: boolean;
@@ -170,7 +178,7 @@ export interface InputColorOptions {
 // eslint-disable-next-line
 export interface TableOptions {}
 
-export interface VerticalGroupOptions {
+export interface VerticalGroupOptions extends SearchSection {
   isCollapsed?: boolean;
   header: string;
   alignVertically?: boolean;
@@ -181,7 +189,7 @@ export const enum PanelMode {
   Panel = "panel",
 }
 
-export interface FilterEditorOptions {
+export interface FilterEditorOptions extends SearchSection {
   table: string;
   target: {
     plotSegment?: Specification.PlotSegment;
@@ -192,7 +200,7 @@ export interface FilterEditorOptions {
   key?: string;
 }
 
-export interface GroupByEditorOptions {
+export interface GroupByEditorOptions extends SearchSection {
   table: string;
   target: {
     plotSegment?: Specification.PlotSegment;
@@ -200,9 +208,10 @@ export interface GroupByEditorOptions {
   };
   value: Specification.Types.GroupBy;
   mode: PanelMode;
+  key: string;
 }
 
-export interface NestedChartEditorOptions {
+export interface NestedChartEditorOptions extends SearchSection {
   specification: Specification.Chart;
   dataset: Dataset.Dataset;
   filterCondition?: {
@@ -224,30 +233,36 @@ export interface ScrollListOptions {
   styles?: CSSProperties;
 }
 
-export interface InputExpressionOptions {
+export interface InputExpressionOptions extends SearchSection {
   table?: string;
   label?: string;
+  allowNull?: boolean;
+  placeholder?: string;
+  noLineHeight?: boolean;
   dropzone?: {
-    type: "axis-data-binding";
+    type: "axis-data-binding" | "tick-data-binding";
     prompt?: string;
     property?: string;
     defineCategories?: boolean;
   };
 }
 
-export interface InputFormatOptions {
+export interface InputFormatOptions extends SearchSection {
   blank?: string;
+  allowNull?: boolean;
 }
 
 export interface InputFormatOptions {
   blank?: string;
   label?: string;
+  allowNull?: boolean;
 }
 
 export interface InputFormatOptions {
   blank?: string;
   isDateField?: boolean;
   label?: string;
+  allowNull?: boolean;
 }
 
 export interface ReOrderWidgetOptions {
@@ -257,6 +272,11 @@ export interface ReOrderWidgetOptions {
   items?: string[];
   onConfirmClick?: (items: string[]) => void;
   onResetCategories?: string[];
+  sortedCategories?: string[];
+  itemsDataType?: DataType.Number | DataType.String;
+  allowDragItems?: boolean;
+  onReorderHandler?: () => void;
+  onButtonHandler?: () => void;
 }
 
 export interface InputFormatOptions {
@@ -369,6 +389,7 @@ export interface WidgetManager {
   ): Widget;
   verticalGroup(options: VerticalGroupOptions, ...widgets: Widget[]): Widget;
   vertical(...widgets: Widget[]): Widget;
+  styledVertical(styles: CSSProperties, ...widgets: Widget[]): Widget;
   table(rows: Widget[][], options?: TableOptions): Widget;
   scrollList(widgets: Widget[], options?: ScrollListOptions): Widget;
 
@@ -387,6 +408,10 @@ export interface WidgetManager {
     widgets: Widget[],
     options: CustomCollapsiblePanelOptions
   ): Widget;
+
+  searchInput(options: InputTextOptions): Widget;
+
+  searchWrapper(options: SearchWrapperOptions, ...widgets: Widget[]): Widget;
 }
 
 export interface PopupEditor {
@@ -394,7 +419,16 @@ export interface PopupEditor {
   widgets: Widget[];
 }
 
-export interface LabelOptions {
-  addMargins: boolean;
+export interface LabelOptions extends SearchSection {
+  addMargins?: boolean;
   key?: string;
+}
+
+export interface SearchWrapperOptions {
+  searchPattern: string[];
+}
+
+export interface SearchSection {
+  searchSection?: string | string[];
+  ignoreSearch?: boolean;
 }

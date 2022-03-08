@@ -91,6 +91,10 @@ export interface AxisDataBinding extends AttributeMap {
 
   //axis tick selection
   enableSelection?: boolean;
+
+  //amount ticks in axis
+  numberOfTicks?: number;
+  autoNumberOfTicks?: boolean;
 }
 
 export interface AxisRenderingStyle extends AttributeMap {
@@ -178,4 +182,10 @@ export interface GroupBy extends AttributeMap {
 /** Order expression */
 export interface SortBy extends AttributeMap {
   expression?: Expression;
+}
+
+export enum CollapseOrExpandPanels {
+  Collapse = "collapse",
+  Expand = "expand",
+  Custom = "custom",
 }

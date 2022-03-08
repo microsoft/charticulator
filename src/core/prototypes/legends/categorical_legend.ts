@@ -8,6 +8,7 @@ import { LegendClass, LegendProperties } from "./legend";
 import { Controls } from "..";
 import { strings } from "../../../strings";
 import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/types";
+import { OrientationType } from "./types";
 
 export interface CategoricalLegendItem {
   type: "number" | "color" | "boolean";
@@ -23,7 +24,7 @@ export class CategoricalLegendClass extends LegendClass {
 
   public static defaultProperties: LegendProperties = {
     ...LegendClass.defaultProperties,
-    orientation: "vertical",
+    orientation: OrientationType.VERTICAL,
   };
 
   protected textMeasure = new Graphics.TextMeasurer();
@@ -93,7 +94,7 @@ export class CategoricalLegendClass extends LegendClass {
   public getLineWidth(): number {
     let width = 0;
     const items = this.getLegendItems();
-    if (this.object.properties.orientation === "horizontal") {
+    if (this.object.properties.orientation === OrientationType.HORIZONTAL) {
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
         const metrics = this.textMeasure.measure(item.label);
@@ -116,7 +117,7 @@ export class CategoricalLegendClass extends LegendClass {
   public getLegendSize(): [number, number] {
     const items = this.getLegendItems();
     if (
-      this.object.properties.orientation === "vertical" ||
+      this.object.properties.orientation === OrientationType.VERTICAL ||
       this.object.properties.orientation === undefined
     ) {
       return [
@@ -215,7 +216,7 @@ export class CategoricalLegendClass extends LegendClass {
           }
           break;
       }
-      if (this.object.properties.orientation === "horizontal") {
+      if (this.object.properties.orientation === OrientationType.HORIZONTAL) {
         gItem.transform = {
           x: itemGroupOffset,
           y: 0,
@@ -238,7 +239,7 @@ export class CategoricalLegendClass extends LegendClass {
 
   public getLayoutBox(): { x1: number; y1: number; x2: number; y2: number } {
     if (
-      this.object.properties.orientation === "vertical" ||
+      this.object.properties.orientation === OrientationType.VERTICAL ||
       this.object.properties.orientation === undefined
     ) {
       return super.getLayoutBox();
@@ -295,13 +296,14 @@ export class CategoricalLegendClass extends LegendClass {
             {
               type: "radio",
               showLabel: false,
-              icons: ["AlignHorizontalCenter", "AlignVerticalCenter"],
+              icons: ["GripperBarVertical", "GripperBarHorizontal"],
               labels: [
                 strings.objects.legend.vertical,
                 strings.objects.legend.horizontal,
               ],
-              options: ["vertical", "horizontal"],
+              options: [OrientationType.VERTICAL, OrientationType.HORIZONTAL],
               label: strings.objects.legend.orientation,
+              searchSection: strings.objects.legend.categoricalLegend,
             }
           ),
         ]

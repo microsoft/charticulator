@@ -367,11 +367,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         this.parent.dataflow
       );
       if (props.xData.tickDataExpression) {
-        const tickFormatType = props.xData?.tickFormatType;
         axisRenderer.setTicksByData(
           this.getTickData(props.xData, manager),
-          props.xData.tickFormat,
-          tickFormatType
+          props.xData.tickFormat
         );
       }
       g.elements.push(
@@ -406,13 +404,12 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         this.parent.dataflow
       );
       if (props.yData.tickDataExpression) {
-        const tickFormatType = props.yData?.tickFormatType;
         axisRenderer.setTicksByData(
           this.getTickData(props.yData, manager),
-          props.yData.tickFormat,
-          tickFormatType
+          props.yData.tickFormat
         );
       }
+      axisRenderer.setCartesianChartMargin(this);
       g.elements.push(
         axisRenderer.renderCartesian(
           props.yData.side != "default" ? attrs.x2 : attrs.x1,
@@ -681,6 +678,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       dropAction: {
         axisInference: { property: PlotSegmentAxisPropertyNames.xData },
       },
+      accept: {
+        table: this.object.table,
+      },
     });
     zones.push(<DropZones.Line>{
       type: "line",
@@ -689,6 +689,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       title: "Y Axis",
       dropAction: {
         axisInference: { property: PlotSegmentAxisPropertyNames.yData },
+      },
+      accept: {
+        table: this.object.table,
       },
     });
     return zones;

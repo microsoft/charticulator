@@ -6,6 +6,7 @@ import * as Specification from "../specification";
 import { TemplateParameters } from ".";
 import { Controls, CreatingInteraction } from "./common";
 import { MappingType } from "../specification";
+import { strings } from "../../strings";
 
 export interface AttributeDescription {
   name: string;
@@ -94,28 +95,31 @@ export abstract class ObjectClass<
     return [
       manager.verticalGroup(
         {
-          header: "Interactivity",
+          header: strings.objects.interactivity,
         },
         [
           manager.inputBoolean(
             { property: "enableTooltips" },
             {
               type: "checkbox",
-              label: "Tooltips",
+              label: strings.objects.toolTips,
+              searchSection: strings.objects.interactivity,
             }
           ),
           manager.inputBoolean(
             { property: "enableContextMenu" },
             {
               type: "checkbox",
-              label: "Context menu",
+              label: strings.objects.contextMenu,
+              searchSection: strings.objects.interactivity,
             }
           ),
           manager.inputBoolean(
             { property: "enableSelection" },
             {
               type: "checkbox",
-              label: "Selection",
+              label: strings.objects.selection,
+              searchSection: strings.objects.interactivity,
             }
           ),
         ]
