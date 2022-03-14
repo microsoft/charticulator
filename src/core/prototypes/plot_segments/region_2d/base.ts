@@ -82,6 +82,8 @@ export interface Region2DSublayoutOptions extends Specification.AttributeMap {
   packing: {
     gravityX: number;
     gravityY: number;
+    boxedX: boolean;
+    boxedY: boolean;
   };
   jitter: {
     vertical: boolean;
@@ -2018,6 +2020,15 @@ export class Region2DConstraintBuilder {
           {
             gravityX: packingProps && packingProps.gravityX,
             gravityY: packingProps && packingProps.gravityY,
+            boxed:
+              packingProps.boxedX || packingProps.boxedY
+                ? {
+                    x1: packingProps.boxedX ? solver.getValue(group.x1) : null,
+                    x2: packingProps.boxedX ? solver.getValue(group.x2) : null,
+                    y1: packingProps.boxedY ? solver.getValue(group.y1) : null,
+                    y2: packingProps.boxedY ? solver.getValue(group.y2) : null,
+                  }
+                : null,
           }
         )
       );
@@ -2755,6 +2766,25 @@ export class Region2DConstraintBuilder {
                 maximum: 15,
                 label: strings.coordinateSystem.y,
                 ignoreSearch: true,
+              }
+            ),
+            m.label(strings.objects.plotSegment.packingInContainer, {
+              ignoreSearch: true,
+            }),
+            m.inputBoolean(
+              { property: "sublayout", field: ["packing", "boxedX"] },
+              {
+                type: "checkbox-fill-width",
+                label: strings.objects.plotSegment.packingX,
+                ignoreSearch: false,
+              }
+            ),
+            m.inputBoolean(
+              { property: "sublayout", field: ["packing", "boxedY"] },
+              {
+                type: "checkbox-fill-width",
+                label: strings.objects.plotSegment.packingY,
+                ignoreSearch: false,
               }
             ),
           ]
