@@ -19,7 +19,7 @@ import {
   TemplateParameters,
 } from "../common";
 import { ChartStateManager } from "../state";
-import { EmphasizableMarkClass } from "./emphasis";
+import { DEFAULT_POWER_BI_OPACITY, EmphasizableMarkClass } from "./emphasis";
 import {
   imageAttributes,
   ImageElementAttributes,
@@ -328,7 +328,8 @@ export class ImageElementClass extends EmphasizableMarkClass<
     // eslint-disable-next-line
     glyphIndex: number,
     // eslint-disable-next-line
-    manager: ChartStateManager
+    manager: ChartStateManager,
+    empasized?: boolean
   ): Graphics.Element {
     const attrs = this.state.attributes;
     const props = this.object.properties;
@@ -436,6 +437,12 @@ export class ImageElementClass extends EmphasizableMarkClass<
         width: imageWidth,
         height: imageHeight,
         mode: "stretch",
+        style: {
+          ...this.generateEmphasisStyle(empasized),
+          colorFilter: empasized
+            ? `alpha(opacity=${DEFAULT_POWER_BI_OPACITY * 100})`
+            : null,
+        },
       },
     ]);
     gImage.transform = cs.getLocalTransform(px + offset.x, py + offset.y);
