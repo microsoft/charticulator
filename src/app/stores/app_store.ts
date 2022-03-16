@@ -924,7 +924,7 @@ export class AppStore extends BaseStore {
       }
 
       if (isParentScale) {
-        const parentScale = this.chart.parentScales.find(
+        const parentScale = this.chart.parentScales?.find(
           (scale) => scale.scale._id === options.hints.scaleID
         );
         if (parentScale) {

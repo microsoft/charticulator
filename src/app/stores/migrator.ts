@@ -194,6 +194,13 @@ export class Migrator {
       state = this.setMissedProperties_2_1_6(state);
     }
 
+    if (
+      compareVersion(state.version, "2.2.0") < 0 &&
+      compareVersion(targetVersion, "2.2.0") >= 0
+    ) {
+      state = this.setParentScalesArray(state);
+    }
+
     // After migration, set version to targetVersion
     state.version = targetVersion;
 
@@ -1155,6 +1162,14 @@ export class Migrator {
         }
       }
     }
+    return state;
+  }
+
+  public setParentScalesArray(state: AppStoreState) {
+    if (!state.chart.parentScales) {
+      state.chart.parentScales = [];
+    }
+
     return state;
   }
 }
