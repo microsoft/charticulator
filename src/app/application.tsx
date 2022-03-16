@@ -45,7 +45,7 @@ initializeIcons();
 import { defaultVersionOfTemplate } from "./stores/defaults";
 import { MenuBarHandlers, MenubarTabButton } from "./views/menubar";
 import { TelemetryRecorder } from "./components";
-import { AttributeMap, MappingType } from "../core/specification";
+import { AttributeMap, MappingType, Scale } from "../core/specification";
 import { NestedChartEditorOptions } from "../core/prototypes/controls";
 import { EditorType } from "./stores/app_store";
 import { LocalizationConfig } from "../container/container";
@@ -95,6 +95,7 @@ export interface NestedEditorData {
     column: string;
     value: any;
   };
+  parentScales: Specification.ScaleApplication[];
 }
 
 export class Application {
@@ -282,6 +283,7 @@ export class Application {
         {},
         deepClone(info.specification)
       );
+      chartManager.appendParentScales(info.parentScales);
 
       // if version wasn't saved in tempalte we asume it is 2.0.3
       if (info.template && info.template.version == undefined) {

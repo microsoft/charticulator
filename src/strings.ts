@@ -250,6 +250,10 @@ export const strings = {
     layersPanelTitle: "Layers",
     scalesPanelTitle: "Scales",
   },
+  scalesPanel: {
+    chartScales: "Nested chart scales",
+    parentChartScales: "Parent chart scales",
+  },
   menuBar: {
     defaultTemplateName: "Charticulator Template",
     export: "Export",

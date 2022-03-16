@@ -1,9 +1,10 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 import * as FileSaver from "file-saver";
 import { saveAs } from "file-saver";
-import { Prototypes, deepClone, uniqueID } from "../../../core";
+import { Prototypes, deepClone, uniqueID, Specification } from "../../../core";
 import { Actions } from "../../actions";
 import {
   renderDataURLToPNG,
@@ -399,6 +400,22 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
                 );
 
                 const template = builder.build();
+
+                const filterElementProperties = (
+                  scaleID: string,
+                  element: any
+                ) => {
+                  return Object.keys(element.mappings).filter((key) => {
+                    const mapping = element.mappings[key];
+                    return (
+                      (mapping.type === Specification.MappingType.scale ||
+                        mapping.type ===
+                          Specification.MappingType.expressionScale) &&
+                      (mapping as Specification.ScaleMapping).scale === scaleID
+                    );
+                  });
+                };
+
                 newWindow.postMessage(
                   {
                     id: editorID,
@@ -409,6 +426,45 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
                     template,
                     height: options.height,
                     filterCondition: options.filterCondition,
+                    parentScales: this.chart.scales.flatMap((scale) => {
+                      return this.chart.elements
+                        .concat(this.chart.glyphs.flatMap((gl) => gl.marks))
+                        .flatMap(
+                          (
+                            mark: Specification.ChartElement<
+                              Specification.ObjectProperties
+                            >
+                          ) => {
+                            return filterElementProperties(scale._id, mark).map(
+                              (property) => {
+                                const scaleMapping = <
+                                  Specification.ScaleMapping
+                                >mark.mappings[property];
+                                return <Specification.ScaleApplication>{
+                                  scale,
+                                  valueType: scale.inputType,
+                                  expression: scaleMapping.expression,
+                                  property: property,
+                                  table: "MainTable",
+                                  name: mark.properties.name,
+                                  elementClassID: mark.classID,
+                                  mappings: {
+                                    fill: {
+                                      attribute: property,
+                                      expression: scaleMapping.expression,
+                                      scale: scale._id,
+                                      table: "MainTable",
+                                      type: scaleMapping.type,
+                                      valueIndex: scaleMapping.valueIndex,
+                                      valueType: scaleMapping.valueType,
+                                    },
+                                  },
+                                };
+                              }
+                            );
+                          }
+                        );
+                    }),
                   },
                   document.location.origin
                 );

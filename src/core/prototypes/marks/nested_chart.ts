@@ -576,6 +576,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
       scaleMappings: [],
       constraints: [],
       resources: [],
+      parentScales: [],
     };
     return obj;
   }

@@ -257,6 +257,19 @@ export interface Scale<
 > extends Object<PropertiesType> {
   inputType: DataType;
   outputType: AttributeType;
+  isParent: boolean;
+}
+
+/** Scale application */
+export interface ScaleApplication {
+  name: string;
+  scale: Scale;
+  property: string;
+  valueType: any;
+  table: string;
+  expression: string;
+  mappings: any;
+  elementClassID: string;
 }
 
 /** MarkLayout: the "PlotSegment" */
@@ -331,6 +344,8 @@ export interface Chart<
   constraints: Constraint[];
   /** Resources */
   resources: Resource[];
+  /** Used scales */
+  parentScales: Specification.ScaleApplication[];
 }
 
 // ===========================================================================
