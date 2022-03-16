@@ -701,6 +701,9 @@ export class AppStore extends BaseStore {
     context: { glyph?: Specification.Glyph; chart?: { table: string } },
     options: ScaleInferenceOptions
   ): string {
+    const isParentScale = !this.chart.scales.find(
+      (scale) => scale._id === options.hints && options.hints.scaleID
+    );
     // Figure out the source table
     let tableName: string = null;
     if (context.glyph) {
@@ -769,7 +772,7 @@ export class AppStore extends BaseStore {
     };
 
     // If there is an existing scale on the same column in the table, return that one
-    if (!options.hints?.newScale) {
+    if (!options.hints?.newScale && !isParentScale) {
       const getExpressionUnit = (expr: string) => {
         const parsed = Expression.parse(expr);
         // In the case of an aggregation function
@@ -807,7 +810,10 @@ export class AppStore extends BaseStore {
                   this.chart.scales,
                   scaleMapping.scale
                 );
-                if (scaleObject.outputType == options.outputType) {
+                if (
+                  scaleObject &&
+                  scaleObject.outputType == options.outputType
+                ) {
                   return scaleMapping.scale;
                 }
               }
@@ -821,7 +827,10 @@ export class AppStore extends BaseStore {
                   this.chart.scales,
                   scaleMapping.scale
                 );
-                if (scaleObject.outputType == options.outputType) {
+                if (
+                  scaleObject &&
+                  scaleObject.outputType == options.outputType
+                ) {
                   return scaleMapping.scale;
                 }
               }
@@ -914,6 +923,15 @@ export class AppStore extends BaseStore {
         table = parentMainTable;
       }
 
+      if (isParentScale) {
+        const parentScale = this.chart.parentScales.find(
+          (scale) => scale.scale._id === options.hints.scaleID
+        );
+        if (parentScale) {
+          newScale.properties.mapping = parentScale.scale.properties.mapping;
+        }
+      }
+
       let rangeImage = null;
       if (
         scaleClassID === "scale.categorical<image,image>" &&
@@ -933,9 +951,11 @@ export class AppStore extends BaseStore {
           ) as Specification.DataValue[],
           {
             ...options.hints,
-            extendScaleMax: true,
-            extendScaleMin: true,
+            extendScaleMax: isParentScale ? false : true,
+            extendScaleMin: isParentScale ? false : true,
             rangeImage,
+            reuseRange: isParentScale ? true : false,
+            keepDomain: isParentScale ? true : false,
           }
         );
       } else {
@@ -947,9 +967,11 @@ export class AppStore extends BaseStore {
           ) as Specification.DataValue[],
           {
             ...options.hints,
-            extendScaleMax: true,
-            extendScaleMin: true,
+            extendScaleMax: isParentScale ? false : true,
+            extendScaleMin: isParentScale ? false : true,
             rangeImage,
+            reuseRange: isParentScale ? true : false,
+            keepDomain: isParentScale ? true : false,
           }
         );
       }

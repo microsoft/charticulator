@@ -218,7 +218,9 @@ export class CategoricalScaleColor extends ScaleClass<
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
     const values = column.filter((x) => x != null).map((x) => x.toString());
-    s.inferParameters(values, OrderMode.order);
+    if (!options.keepDomain) {
+      s.inferParameters(values, OrderMode.order);
+    }
 
     props.autoDomainMin = true;
     props.autoDomainMax = true;
@@ -258,7 +260,9 @@ export class CategoricalScaleColor extends ScaleClass<
 
         props.mapping = mapping;
       } else {
-        props.mapping = reuseMapping(s.domain, props.mapping);
+        if (!options.keepDomain) {
+          props.mapping = reuseMapping(s.domain, props.mapping);
+        }
       }
     }
     if (props.mapping == null) {

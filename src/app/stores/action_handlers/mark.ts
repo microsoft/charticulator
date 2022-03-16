@@ -179,7 +179,11 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.saveHistory();
 
     const inferred =
-      (action.hints && action.hints.scaleID) ||
+      (action.hints &&
+        action.hints.scaleID &&
+        this.chart.scales.find(
+          (scale) => scale._id === action.hints && action.hints.scaleID
+        )) ||
       this.scaleInference(
         {
           glyph: action.glyph,
