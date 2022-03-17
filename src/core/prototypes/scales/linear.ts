@@ -299,7 +299,9 @@ export class LinearColorScale extends ScaleClass<
     const props = this.object.properties;
     const s = new Scale.LinearScale();
     const values = <number[]>column.filter((x) => typeof x == "number");
-    s.inferParameters(values);
+    if (!options.keepDomain) {
+      s.inferParameters(values);
+    }
 
     if (options.extendScaleMin || props.domainMin === undefined) {
       props.domainMin = s.domainMin;

@@ -931,7 +931,16 @@ export class AppStore extends BaseStore {
           (scale) => scale.scale._id === options.hints.scaleID
         );
         if (parentScale) {
+          // TODO expose copy scale into fucntion
+          // categorical
           newScale.properties.mapping = parentScale.scale.properties.mapping;
+          // linear
+          newScale.properties.domainMin =
+            parentScale.scale.properties.domainMin;
+          newScale.properties.domainMax =
+            parentScale.scale.properties.domainMax;
+          newScale.properties.range = parentScale.scale.properties.range;
+          // TODO handle all scales type
         }
       }
 
