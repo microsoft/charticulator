@@ -701,8 +701,11 @@ export class AppStore extends BaseStore {
     context: { glyph?: Specification.Glyph; chart?: { table: string } },
     options: ScaleInferenceOptions
   ): string {
-    const isParentScale = !this.chart.scales.find(
-      (scale) => scale._id === options.hints && options.hints.scaleID
+    const isParentScale = !!(
+      options.hints.scaleID &&
+      !this.chart.scales.find(
+        (scale) => scale._id === options.hints && options.hints.scaleID
+      )
     );
     // Figure out the source table
     let tableName: string = null;
