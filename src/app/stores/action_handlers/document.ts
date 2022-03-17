@@ -449,7 +449,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
                                   name: mark.properties.name,
                                   elementClassID: mark.classID,
                                   mappings: {
-                                    fill: {
+                                    [property]: {
                                       attribute: property,
                                       expression: scaleMapping.expression,
                                       scale: scale._id,
