@@ -195,8 +195,8 @@ export class Migrator {
     }
 
     if (
-      compareVersion(state.version, "2.2.0") < 0 &&
-      compareVersion(targetVersion, "2.2.0") >= 0
+      compareVersion(state.version, "2.2.1") < 0 &&
+      compareVersion(targetVersion, "2.2.1") >= 0
     ) {
       state = this.setParentScalesArray(state);
     }
