@@ -325,7 +325,9 @@ export class ScalesPanel extends ContextedComponent<
     return (
       <div className="charticulator__object-list-editor charticulator__object-scales">
         <ReorderListView restrict={true} enabled={false} onReorder={() => null}>
-          {parentScales && <p>{strings.scalesPanel.parentChartScales}</p>}
+          {parentScales?.length ? (
+            <p>{strings.scalesPanel.parentChartScales}</p>
+          ) : null}
           {parentScales &&
             parentScales.map((scalesApplication) => {
               return (
@@ -398,7 +400,9 @@ export class ScalesPanel extends ContextedComponent<
             );
           }}
         >
-          {parentScales && <p>{strings.scalesPanel.chartScales}</p>}
+          {parentScales?.length ? (
+            <p>{strings.scalesPanel.chartScales}</p>
+          ) : null}
           {propertyList.map((el) => {
             return mapToUI(el.scale)(el.glyph, el.mark)(el.property);
           })}
