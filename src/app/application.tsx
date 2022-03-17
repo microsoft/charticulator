@@ -45,7 +45,7 @@ initializeIcons();
 import { defaultVersionOfTemplate } from "./stores/defaults";
 import { MenuBarHandlers, MenubarTabButton } from "./views/menubar";
 import { TelemetryRecorder } from "./components";
-import { AttributeMap, MappingType, Scale } from "../core/specification";
+import { AttributeMap, MappingType } from "../core/specification";
 import { NestedChartEditorOptions } from "../core/prototypes/controls";
 import { EditorType } from "./stores/app_store";
 import { LocalizationConfig } from "../container/container";
