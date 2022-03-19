@@ -415,7 +415,7 @@ export class CoordinateSystemHelper {
     x2: number,
     y2: number,
     sweepFlag: number = 1
-  ) {
+  ): Element {
     const cs = this.coordinateSystem;
     if (cs instanceof CartesianCoordinates) {
       path.arcTo(rx, ry, 0, 0, sweepFlag, x2, y2);
@@ -423,7 +423,7 @@ export class CoordinateSystemHelper {
     } else {
       //IGNORE NOW. TODO: handle arc for CartesianCoordinates and BezierCurveCoordinates
       this.lineTo(path, x1, y1, x2, y2, true);
-      return path.path;
+      return path.path as Element;
     }
   }
 }
