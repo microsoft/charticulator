@@ -2774,7 +2774,7 @@ export class Region2DConstraintBuilder {
             m.inputBoolean(
               { property: "sublayout", field: ["packing", "boxedX"] },
               {
-                type: "checkbox-fill-width",
+                type: "checkbox",
                 label: strings.objects.plotSegment.packingX,
                 ignoreSearch: false,
               }
@@ -2782,7 +2782,7 @@ export class Region2DConstraintBuilder {
             m.inputBoolean(
               { property: "sublayout", field: ["packing", "boxedY"] },
               {
-                type: "checkbox-fill-width",
+                type: "checkbox",
                 label: strings.objects.plotSegment.packingY,
                 ignoreSearch: false,
               }
