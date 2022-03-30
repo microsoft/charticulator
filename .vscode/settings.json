@@ -12,7 +12,7 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     "dist/": true,
-    "node_modules/": true
+    "node_modules/": false
   },
   "files.associations": {
     "*.chart": "json",

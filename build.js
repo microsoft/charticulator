@@ -84,7 +84,7 @@ const devSequence = [
   "cleanup",
   "makedirs",
   "copy",
-  "third_party_data",
+  // "third_party_data",
   // "pegjs",
   "typescript",
   "dtsBundle",
@@ -114,11 +114,16 @@ let COMMANDS = {
 
   // Copy files
   copy: [
-    () =>
-      fs.copy(
-        "src/core/expression/parser.d.ts",
-        "dist/scripts/core/expression/parser.d.ts"
-      ),
+    () => {
+      try {
+        fs.copy(
+          "src/core/expression/parser.d.ts",
+          "dist/scripts/core/expression/parser.d.ts"
+        )
+      } catch (ex) {
+        console.error(ex);
+      }
+    },
 
     // Copy all of the public files
     isProd
@@ -226,6 +231,7 @@ let COMMANDS = {
     server: "http-server ./dist -a 0.0.0.0 -p 4000 -c-1 -s --ssl --cors"
   },
   dev: () => runCommands(devSequence),
+  dir: () => runCommands(COMMANDS["makedirs"]),
   visual_dev: () => runCommands([...devSequence, ...visualSequence])
 };
 
