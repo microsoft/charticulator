@@ -90,8 +90,6 @@ export class RectElementClass extends EmphasizableMarkClass<
     attrs.y2 = +defaultHeight / 2;
     attrs.cx = 0;
     attrs.cy = 0;
-    attrs.rx = 0;
-    attrs.ry = 0;
     attrs.width = defaultWidth;
     attrs.height = defaultHeight;
     attrs.stroke = null;
@@ -183,7 +181,7 @@ export class RectElementClass extends EmphasizableMarkClass<
         property: "rx",
       },
       type: Specification.AttributeType.Number,
-      default: this.state.attributes.rx,
+      default: this.object.properties.rx,
     });
 
     properties.push({
@@ -192,7 +190,7 @@ export class RectElementClass extends EmphasizableMarkClass<
         property: "ry",
       },
       type: Specification.AttributeType.Number,
-      default: this.state.attributes.ry,
+      default: this.object.properties.ry,
     });
 
     return {
