@@ -153,12 +153,17 @@ export class ChartStateManager {
       for (let index = 0; index < origin.constraints.length; index++) {
         const originConstringts = origin.constraints[index];
         const current = chart.constraints[index];
-        expect_deep_approximately_equals(
-          originConstringts,
-          current,
-          defaultDifferenceApproximation,
-          true
-        );
+        try {
+          expect_deep_approximately_equals(
+            originConstringts,
+            current,
+            defaultDifferenceApproximation,
+            true
+          );
+        } catch (ex) {
+          console.log(ex);
+          return true;
+        }
       }
     }
 
