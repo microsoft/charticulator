@@ -6,9 +6,9 @@ import { ObjectClass } from "../object";
 import { ObjectState, EmphasisMethod, AttributeMap } from "../../specification";
 import { Specification } from "../../../container";
 
-const DEFAULT_EMPHASIS_STROKE_COLOR = { r: 255, g: 0, b: 0 };
-const DEFAULT_EMPHASIS_STROKE_WIDTH = 1;
-const DEFAULT_POWER_BI_OPACITY = 0.4;
+export const DEFAULT_EMPHASIS_STROKE_COLOR = { r: 255, g: 0, b: 0 };
+export const DEFAULT_EMPHASIS_STROKE_WIDTH = 1;
+export const DEFAULT_POWER_BI_OPACITY = 0.4;
 /**
  * Represents a mark class that is emphasizable
  */

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { forceSimulation, forceCollide, forceX, forceY } from "d3-force";
+import { Rect } from "src/container";
 import { AxisMode } from "../../prototypes/plot_segments/axis";
 import { ConstraintPlugin, ConstraintSolver, Variable } from "../abstract";
 
@@ -13,6 +14,7 @@ interface NodeType {
 export interface PackingPluginOptions {
   gravityX: number;
   gravityY: number;
+  boxed?: Rect;
 }
 
 export class PackingPlugin extends ConstraintPlugin {
@@ -25,6 +27,7 @@ export class PackingPlugin extends ConstraintPlugin {
   public getXYScale: () => { x: number; y: number };
   public gravityX?: number;
   public gravityY?: number;
+  public boxed?: Rect;
 
   constructor(
     solver: ConstraintSolver,
@@ -45,6 +48,7 @@ export class PackingPlugin extends ConstraintPlugin {
     this.getXYScale = getXYScale;
     this.gravityX = options.gravityX;
     this.gravityY = options.gravityY;
+    this.boxed = options.boxed;
   }
 
   public apply() {
@@ -84,9 +88,23 @@ export class PackingPlugin extends ConstraintPlugin {
     }
     for (let i = 0; i < nodes.length; i++) {
       if (this.xEnable) {
+        if (this.boxed && this.boxed.x1 != null && this.boxed.x2 != null) {
+          if (nodes[i].x < (this.boxed.x1 - cx) / xScale) {
+            nodes[i].x = (this.boxed.x1 - cx) / xScale;
+          } else if (nodes[i].x > (this.boxed.x2 - cx) / xScale) {
+            nodes[i].x = (this.boxed.x2 - cx) / xScale;
+          }
+        }
         this.solver.setValue(this.points[i][0], nodes[i].x * xScale + cx);
       }
       if (this.yEnable) {
+        if (this.boxed && this.boxed.y1 != null && this.boxed.y2 != null) {
+          if (nodes[i].y < (this.boxed.y1 - cy) / yScale) {
+            nodes[i].y = (this.boxed.y1 - cy) / yScale;
+          } else if (nodes[i].y > (this.boxed.y2 - cy) / yScale) {
+            nodes[i].y = (this.boxed.y2 - cy) / yScale;
+          }
+        }
         this.solver.setValue(this.points[i][1], nodes[i].y * yScale + cy);
       }
     }

@@ -133,6 +133,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       packing: {
         gravityX: 0.1,
         gravityY: 0.1,
+        boxedX: null,
+        boxedY: null,
       },
       orderReversed: null,
     },

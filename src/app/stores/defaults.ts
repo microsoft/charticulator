@@ -93,6 +93,8 @@ export function createDefaultPlotSegment(
         packing: {
           gravityX: 0.1,
           gravityY: 0.1,
+          boxedX: null,
+          boxedY: null,
         },
         jitter: {
           vertical: true,
