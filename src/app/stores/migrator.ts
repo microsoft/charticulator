@@ -607,8 +607,12 @@ export class Migrator {
             if (element.properties.xData === undefined) {
               element.properties.xData = null;
             }
-            element.properties.xData.offset = 0;
-            element.properties.xData.tickFormatType = TickFormatType.None;
+            if (element.properties.xData.offset === undefined) {
+              element.properties.xData.offset = 0;
+            }
+            if (element.properties.xData.tickFormatType == undefined) {
+              element.properties.xData.tickFormatType = TickFormatType.None;
+            }
             if (element.properties.xData?.style) {
               element.properties.xData.style.showTicks =
                 element.properties.xData.style.showTicks ?? true;
@@ -623,8 +627,12 @@ export class Migrator {
             if (element.properties.yData === undefined) {
               element.properties.yData = null;
             }
-            element.properties.yData.offset = 0;
-            element.properties.yData.tickFormatType = TickFormatType.None;
+            if (element.properties.yData.offset === undefined) {
+              element.properties.yData.offset = 0;
+            }
+            if (element.properties.yData.tickFormatType === undefined) {
+              element.properties.yData.tickFormatType = TickFormatType.None;
+            }
             if (element.properties.yData?.style) {
               element.properties.yData.style.showTicks =
                 element.properties.yData.style.showTicks ?? true;
@@ -726,7 +734,9 @@ export class Migrator {
               element.properties.xData.style.showBaseline =
                 element.properties.xData.style.showBaseline ?? true;
             }
-            element.properties.xData.offset = 0;
+            if (element.properties.xData.offset === undefined) {
+              element.properties.xData.offset = 0;
+            }
             element.properties.xData.barOffset = 0;
             if (element.properties.xData.orderByCategories == undefined) {
               element.properties.xData.orderByCategories =
@@ -753,7 +763,9 @@ export class Migrator {
               element.properties.yData.style.showBaseline =
                 element.properties.yData.style.showBaseline ?? true;
             }
-            element.properties.yData.offset = 0;
+            if (element.properties.yData.offset === undefined) {
+              element.properties.yData.offset = 0;
+            }
             element.properties.yData.barOffset = 0;
             if (element.properties.yData.orderByCategories == undefined) {
               element.properties.yData.orderByCategories =
@@ -784,7 +796,9 @@ export class Migrator {
               element.properties.xData.style.showBaseline =
                 element.properties.xData.style.showBaseline ?? true;
             }
-            element.properties.xData.offset = 0;
+            if (element.properties.xData.offset === undefined) {
+              element.properties.xData.offset = 0;
+            }
             element.properties.xData.barOffset = 0;
             if (element.properties.xData.orderByCategories == undefined) {
               element.properties.xData.orderByCategories =
@@ -819,7 +833,9 @@ export class Migrator {
                 element.properties.yData.expression
               );
             }
-            element.properties.yData.offset = 0;
+            if (element.properties.yData.offset === undefined) {
+              element.properties.yData.offset = 0;
+            }
             element.properties.yData.barOffset = 0;
             element.properties.yData.enableSelection = true;
           }
@@ -864,7 +880,9 @@ export class Migrator {
               element.properties.xData.style.showBaseline =
                 element.properties.xData.style.showBaseline ?? true;
             }
-            element.properties.xData.offset = 0;
+            if (element.properties.xData.offset === undefined) {
+              element.properties.xData.offset = 0;
+            }
             element.properties.xData.barOffset = 0;
             if (element.properties.xData.orderByCategories == undefined) {
               element.properties.xData.orderByCategories =
@@ -899,7 +917,9 @@ export class Migrator {
                 element.properties.yData.expression
               );
             }
-            element.properties.yData.offset = 0;
+            if (element.properties.yData.offset === undefined) {
+              element.properties.yData.offset = 0;
+            }
             element.properties.yData.barOffset = 0;
             element.properties.yData.enableSelection = true;
           }
