@@ -150,7 +150,7 @@ export class CategoricalScaleNumber extends ScaleClass<
       }
     }
     return [
-      manager.sectionHeader("Number Mapping"),
+      manager.sectionHeader(strings.objects.scales.numberMapping),
       manager.scrollList(
         keys.map((key) =>
           manager.horizontal(
@@ -160,7 +160,7 @@ export class CategoricalScaleNumber extends ScaleClass<
           )
         )
       ),
-      manager.sectionHeader("Scale export properties"),
+      manager.sectionHeader(strings.objects.scales.exportProperties),
       manager.row(
         "",
         manager.vertical(
@@ -170,7 +170,7 @@ export class CategoricalScaleNumber extends ScaleClass<
             },
             {
               type: "checkbox",
-              label: "Auto min value",
+              label: strings.objects.scales.autoMin,
             }
           ),
           manager.inputBoolean(
@@ -179,7 +179,7 @@ export class CategoricalScaleNumber extends ScaleClass<
             },
             {
               type: "checkbox",
-              label: "Auto max value",
+              label: strings.objects.scales.autoMax,
             }
           )
         )
@@ -308,7 +308,7 @@ export class CategoricalScaleColor extends ScaleClass<
           label: strings.objects.dataAxis.autoUpdateValues,
         }
       ),
-      manager.sectionHeader("Color Mapping"),
+      manager.sectionHeader(strings.objects.scales.colorMapping),
       manager.scrollList(
         keys.map((key) =>
           manager.horizontal(
@@ -435,7 +435,7 @@ export class CategoricalScaleEnum extends ScaleClass<
       }
     }
     return [
-      manager.sectionHeader("String Mapping"),
+      manager.sectionHeader(strings.objects.scales.stringMapping),
       manager.scrollList(
         keys.map((key) =>
           manager.horizontal(
@@ -520,7 +520,13 @@ export class CategoricalScaleBoolean extends ScaleClass<
         items.push(
           manager.inputBoolean(
             { property: "mapping", field: key },
-            { type: "checkbox-fill-width", label: key }
+            {
+              type: "checkbox-fill-width",
+              label: key,
+              styles: {
+                overflowX: "hidden",
+              },
+            }
           )
         );
         mappingALL[key] = true;
@@ -542,7 +548,7 @@ export class CategoricalScaleBoolean extends ScaleClass<
           label: strings.objects.dataAxis.autoUpdateValues,
         }
       ),
-      manager.sectionHeader("Boolean Mapping"),
+      manager.sectionHeader(strings.objects.scales.booleanMapping),
       manager.row(
         null,
         manager.horizontal(
@@ -551,9 +557,14 @@ export class CategoricalScaleBoolean extends ScaleClass<
             { property: "mapping" },
             mappingALL,
             null,
-            "Select All"
+            strings.objects.scales.selectAll
           ),
-          manager.setButton({ property: "mapping" }, mappingNONE, null, "Clear")
+          manager.setButton(
+            { property: "mapping" },
+            mappingNONE,
+            null,
+            strings.objects.scales.clear
+          )
         )
       ),
       manager.scrollList(items),
@@ -633,7 +644,7 @@ export class CategoricalScaleImage extends ScaleClass<
           label: strings.objects.dataAxis.autoUpdateValues,
         }
       ),
-      manager.sectionHeader("Image Mapping"),
+      manager.sectionHeader(strings.objects.scales.imageMapping),
       manager.scrollList(
         keys.map((key) =>
           manager.horizontal(
@@ -737,7 +748,7 @@ export class CategoricalScaleBase64Image extends ScaleClass<
           label: strings.objects.dataAxis.autoUpdateValues,
         }
       ),
-      manager.sectionHeader("Image Mapping"),
+      manager.sectionHeader(strings.objects.scales.imageMapping),
       manager.scrollList(
         keys.map((key) =>
           manager.horizontal(

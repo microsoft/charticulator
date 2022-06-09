@@ -487,13 +487,19 @@ export class LinearBooleanScale extends ScaleClass<
           this.object.inputType === Specification.DataType.Date
             ? manager.inputDate(
                 { property: "min" },
-                { label: isEqual ? "Date" : "Start date" }
+                {
+                  label: isEqual
+                    ? strings.objects.scales.date
+                    : strings.objects.scales.startDate,
+                }
               )
             : manager.inputNumber(
                 { property: "min" },
                 {
                   stopPropagation: true,
-                  label: isEqual ? "Value" : "Minimum value",
+                  label: isEqual
+                    ? strings.objects.scales.value
+                    : strings.objects.scales.minimumValue,
                 }
               )
         )
@@ -508,10 +514,16 @@ export class LinearBooleanScale extends ScaleClass<
     ) {
       minMax.push(
         this.object.inputType === Specification.DataType.Date
-          ? manager.inputDate({ property: "max" }, { label: "End date" })
+          ? manager.inputDate(
+              { property: "max" },
+              { label: strings.objects.scales.endDate }
+            )
           : manager.inputNumber(
               { property: "max" },
-              { stopPropagation: true, label: "Maximum value" }
+              {
+                stopPropagation: true,
+                label: strings.objects.scales.maximumValue,
+              }
             )
       );
     }
