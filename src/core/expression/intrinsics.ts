@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { utcFormat } from "d3-time-format";
 import { ValueType } from "./classes";
 import { parseDate } from "../dataset/datetime";
-import { getFormat } from "../common";
+import { getFormat, isUtcTimeZone } from "../common";
+import { timeFormat } from "d3-time-format";
 
 export const constants: { [name: string]: ValueType } = {};
 export const functions: {
@@ -254,20 +254,23 @@ operators.or = makeArrayCapable2((a: boolean, b: boolean) => a || b);
 operators["unary:not"] = makeArrayCapable1((a: boolean) => !a);
 
 // Date operations
+// TODO convert to class with static methods
 functions.date = {
-  parse: makeArrayCapable1((x: string) => parseDate(x)),
+  parse: makeArrayCapable1((x: string) =>
+    parseDate(x, isUtcTimeZone() ? 0 : new Date().getTimezoneOffset())
+  ),
 
-  year: makeArrayCapable1(utcFormat("%Y")), // year with century as a decimal number.
-  month: makeArrayCapable1(utcFormat("%b")), // month as a string "Jan" - "Dec".
-  monthnumber: makeArrayCapable1(utcFormat("%m")), // zero-padded number of the month as a decimal number [01,12].
-  day: makeArrayCapable1(utcFormat("%d")), // zero-padded day of the month as a decimal number [01,31].
-  weekOfYear: makeArrayCapable1(utcFormat("%U")), // Sunday-based week of the year as a decimal number [00,53].
-  dayOfYear: makeArrayCapable1(utcFormat("%j")), // day of the year as a decimal number [001,366].
-  weekday: makeArrayCapable1(utcFormat("%a")), // abbreviated weekday name.
+  year: makeArrayCapable1(timeFormat("%Y")), // year with century as a decimal number.
+  month: makeArrayCapable1(timeFormat("%b")), // month as a string "Jan" - "Dec".
+  monthnumber: makeArrayCapable1(timeFormat("%m")), // zero-padded number of the month as a decimal number [01,12].
+  day: makeArrayCapable1(timeFormat("%d")), // zero-padded day of the month as a decimal number [01,31].
+  weekOfYear: makeArrayCapable1(timeFormat("%U")), // Sunday-based week of the year as a decimal number [00,53].
+  dayOfYear: makeArrayCapable1(timeFormat("%j")), // day of the year as a decimal number [001,366].
+  weekday: makeArrayCapable1(timeFormat("%a")), // abbreviated weekday name.
 
-  hour: makeArrayCapable1(utcFormat("%H")), // hour (24-hour clock) as a decimal number [00,23].
-  minute: makeArrayCapable1(utcFormat("%M")), // minute as a decimal number [00,59].
-  second: makeArrayCapable1(utcFormat("%S")), // second as a decimal number [00,61].
+  hour: makeArrayCapable1(timeFormat("%H")), // hour (24-hour clock) as a decimal number [00,23].
+  minute: makeArrayCapable1(timeFormat("%M")), // minute as a decimal number [00,59].
+  second: makeArrayCapable1(timeFormat("%S")), // second as a decimal number [00,61].
 
   timestamp: makeArrayCapable1((d: Date) => d.getTime() / 1000),
 };

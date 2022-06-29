@@ -35,7 +35,12 @@ import {
   DataflowTable,
   DataflowTableGroupedContext,
 } from "../prototypes/dataflow";
-import { applyDateFormat, getFormat, Specification } from "..";
+import {
+  applyDateFormat,
+  getFormat,
+  getTimeFormatFunction,
+  Specification,
+} from "..";
 
 export type PatternReplacer = (expr: Expression) => Expression | void;
 
