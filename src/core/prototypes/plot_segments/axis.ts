@@ -167,12 +167,12 @@ export class AxisRenderer {
         Math.abs(data.dataDomainMax - data.dataDomainMin) > data.windowSize);
 
     this.dataType = data.type;
+    this.hiddenCategoriesRatio =
+      data.windowSize /
+      (data.allCategories
+        ? data.allCategories.length
+        : Math.abs(data.dataDomainMax - data.dataDomainMin));
     if (this.shiftAxis) {
-      this.hiddenCategoriesRatio =
-        data.windowSize /
-        (data.allCategories
-          ? data.allCategories.length
-          : Math.abs(data.dataDomainMax - data.dataDomainMin));
       if (
         data.windowSize > data.allCategories?.length ||
         data.windowSize > Math.abs(data.dataDomainMax - data.dataDomainMin)
