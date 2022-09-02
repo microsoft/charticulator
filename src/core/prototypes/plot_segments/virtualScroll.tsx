@@ -61,7 +61,9 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
       }
 
       handlePosition =
-        ((trackSize - handleSize) / 100) * (100 - handlePosition); // map % to axis position
+        ((trackSize - handlerBarWidth * 2 - handleSize) / 100) *
+          (100 - handlePosition) +
+        handlerBarWidth; // map % to axis position
 
       if (vertical) {
         handlePositionY = handlePosition;
@@ -81,11 +83,6 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
     onScroll(position);
     // eslint-disable-next-line
   }, [windowSize]);
-
-  const widthPerBar = !vertical ? width / windowSize : height / windowSize;
-  const widthPerBarPercent = !vertical
-    ? widthPerBar / width
-    : widthPerBar / height;
 
   const [handlePositionX, handlePositionY] = React.useMemo(
     () => mapPositionToCoordinates(position),
@@ -114,6 +111,11 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
         return;
       }
 
+      const widthPerBar = !vertical ? width / windowSize : height / windowSize;
+      const widthPerBarPercent = !vertical
+        ? widthPerBar / width
+        : widthPerBar / height;
+
       const trackElement = track.current.getBoundingClientRect();
       let deltaX = e.clientX - trackElement.left;
       let deltaY = e.clientY - trackElement.top;
@@ -141,20 +143,27 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
       if (newPosition > 100) {
         newPosition = 100;
       }
-      if (newPosition - widthPerBarPercent * 100 < 0) {
-        newPosition = 0;
+      if (dataType == AxisDataBindingType.Categorical) {
+        if (newPosition - widthPerBarPercent * 100 < 0) {
+          newPosition = 0;
+        }
       }
       setPosition(Math.round(newPosition));
       onScroll(Math.round(newPosition));
     },
     [
+      dataType,
       handleSize,
+      height,
       isActive,
       onScroll,
       position,
       vertical,
-      widthPerBarPercent,
+      width,
+      windowSize,
       zoom.scale,
+      track,
+      handler,
     ]
   );
 

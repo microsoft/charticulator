@@ -125,9 +125,8 @@ export class AxisRenderer {
   private scrollRequired: boolean = false;
   private shiftAxis: boolean = true;
   private hiddenCategoriesRatio: number = 0;
-  private handlerSize: number = 0;
   private dataType: AxisDataBindingType = AxisDataBindingType.Default;
-  private windowSize: number = 0;
+  private windowSize: number = 1;
 
   public setStyle(style?: Partial<Specification.Types.AxisRenderingStyle>) {
     if (!style) {
@@ -174,16 +173,15 @@ export class AxisRenderer {
         (data.allCategories
           ? data.allCategories.length
           : Math.abs(data.dataDomainMax - data.dataDomainMin));
-      this.handlerSize = rangeMax / this.hiddenCategoriesRatio;
       if (
         data.windowSize > data.allCategories?.length ||
         data.windowSize > Math.abs(data.dataDomainMax - data.dataDomainMin)
       ) {
         this.windowSize = data.allCategories
-          ? data.allCategories.length
+          ? Math.max(data.allCategories.length, 1)
           : Math.abs(data.dataDomainMax - data.dataDomainMin);
       } else {
-        this.windowSize = data.windowSize;
+        this.windowSize = Math.max(data.windowSize, 1);
       }
     }
 
