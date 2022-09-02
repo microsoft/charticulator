@@ -73,7 +73,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
 
       return [handlePositionX, handlePositionY];
     },
-    [handleSize, trackSize, vertical]
+    [handleSize, handlerBarWidth, trackSize, vertical]
   );
 
   const [position, setPosition] = React.useState(initialPosition);
