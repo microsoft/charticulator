@@ -188,6 +188,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
         {/* track */}
         <rect
           ref={track}
+          className="track"
           x={Math.min(x, x + width) + (vertical ? 0 : buttonsWidth)}
           y={-Math.max(y, y + height) + (vertical ? buttonsHeight : 0)}
           width={Math.abs(width) - (vertical ? 0 : buttonsWidth * 2)}
@@ -204,6 +205,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
         {/*handler  */}
         <rect
           ref={handler}
+          className="handler"
           x={Math.min(x + handlePositionX, x + handlePositionX + handlerWidth)}
           y={
             -Math.max(y + handlePositionY, y + handlePositionY + handlerHeight)
@@ -228,6 +230,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
             <g>
               <rect
                 ref={handler}
+                className="downButton"
                 x={Math.min(x, x + buttonsWidth)}
                 y={-Math.max(y, y + buttonsHeight)}
                 width={Math.abs(buttonsWidth)}
@@ -252,6 +255,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
             <g>
               <rect
                 ref={handler}
+                className="upButton"
                 x={Math.min(x, x + width)}
                 y={-Math.max(y, y + height)}
                 width={Math.abs(buttonsWidth)}
@@ -292,6 +296,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
             <g>
               <rect
                 ref={handler}
+                className="leftButton"
                 x={Math.min(x, x + width)}
                 y={-Math.max(y, y + height)}
                 width={Math.abs(buttonsWidth)}
@@ -317,6 +322,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
             <g>
               <rect
                 ref={handler}
+                className="rightButton"
                 x={Math.max(x, x + width) - buttonsWidth}
                 y={-Math.max(y, y + height)}
                 width={Math.abs(buttonsWidth)}
