@@ -161,7 +161,6 @@ export class ChartStateManager {
             true
           );
         } catch (ex) {
-          console.log(ex);
           return true;
         }
       }
@@ -262,7 +261,6 @@ export class ChartStateManager {
                 true
               );
             } catch (ex) {
-              console.log(ex);
               return true;
             }
           }
@@ -278,7 +276,6 @@ export class ChartStateManager {
               true
             );
           } catch (ex) {
-            console.log(ex);
             return true;
           }
         }
@@ -310,7 +307,6 @@ export class ChartStateManager {
               true
             );
           } catch (ex) {
-            console.log(ex);
             return true;
           }
         }
@@ -325,7 +321,6 @@ export class ChartStateManager {
             true
           );
         } catch (ex) {
-          console.log(ex);
           return true;
         }
 
@@ -340,7 +335,6 @@ export class ChartStateManager {
             true
           );
         } catch (ex) {
-          console.log(ex);
           return true;
         }
       }
