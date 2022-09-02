@@ -94,19 +94,15 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
 
   let handlerWidth = 0;
   let handlerHeight = 0;
-  let buttonsWidth = 0;
-  let buttonsHeight = 0;
+  const buttonsWidth = handlerBarWidth;
+  const buttonsHeight = handlerBarWidth;
 
   if (vertical) {
-    handlerHeight += handleSize;
+    handlerHeight = handleSize;
     handlerWidth = handlerBarWidth;
-    buttonsHeight += handleSize / 3;
-    buttonsWidth = handlerBarWidth;
   } else {
-    handlerWidth += handleSize;
+    handlerWidth = handleSize;
     handlerHeight = handlerBarWidth;
-    buttonsHeight += handleSize / 3;
-    buttonsWidth = handlerBarWidth;
   }
 
   const track = React.useRef<SVGRectElement>(null);
