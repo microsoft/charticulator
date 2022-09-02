@@ -255,6 +255,9 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
                 }}
               />
               <path
+                onClick={() => {
+                  onClick(-1);
+                }}
                 transform={`translate(${Math.min(x, x + width)}, ${-Math.max(
                   y,
                   y + height
@@ -292,6 +295,9 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
                 }}
               />
               <path
+                onClick={() => {
+                  onClick(1);
+                }}
                 transform={`translate(${Math.min(x, x + width)}, ${
                   -Math.max(y, y + height) + buttonsWidth
                 }) scale(0.005) rotate(-90)`}
