@@ -2021,10 +2021,6 @@ export class AppStore extends BaseStore {
               }
               dataBinding.type = AxisDataBindingType.Numerical;
               dataBinding.numericalMode = NumericalMode.Logarithmic;
-              if (dataBinding.allowScrolling) {
-                // eslint-disable-next-line no-debugger
-                debugger;
-              }
             } else {
               const scale = new Scale.LinearScale();
               scale.inferParameters(values as number[]);
