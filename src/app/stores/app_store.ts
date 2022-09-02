@@ -1996,30 +1996,60 @@ export class AppStore extends BaseStore {
             if (options.numericalMode === NumericalMode.Logarithmic) {
               const scale = new Scale.LogarithmicScale();
               scale.inferParameters(values as number[]);
-              if (dataBinding.autoDomainMin) {
-                dataBinding.domainMin = scale.domainMin;
+              if (dataBinding.allowScrolling) {
+                if (dataBinding.autoDomainMin) {
+                  dataBinding.dataDomainMin = scale.domainMin;
+                } else {
+                  dataBinding.dataDomainMin = options.domainMin;
+                }
+                if (dataBinding.autoDomainMax) {
+                  dataBinding.dataDomainMax = scale.domainMax;
+                } else {
+                  dataBinding.dataDomainMax = options.domainMax;
+                }
               } else {
-                dataBinding.domainMin = options.domainMin;
-              }
-              if (dataBinding.autoDomainMax) {
-                dataBinding.domainMax = scale.domainMax;
-              } else {
-                dataBinding.domainMax = options.domainMax;
+                if (dataBinding.autoDomainMin) {
+                  dataBinding.domainMin = scale.domainMin;
+                } else {
+                  dataBinding.domainMin = options.domainMin;
+                }
+                if (dataBinding.autoDomainMax) {
+                  dataBinding.domainMax = scale.domainMax;
+                } else {
+                  dataBinding.domainMax = options.domainMax;
+                }
               }
               dataBinding.type = AxisDataBindingType.Numerical;
               dataBinding.numericalMode = NumericalMode.Logarithmic;
+              if (dataBinding.allowScrolling) {
+                // eslint-disable-next-line no-debugger
+                debugger;
+              }
             } else {
               const scale = new Scale.LinearScale();
               scale.inferParameters(values as number[]);
-              if (dataBinding.autoDomainMin) {
-                dataBinding.domainMin = scale.domainMin;
+              if (dataBinding.allowScrolling) {
+                if (dataBinding.autoDomainMin) {
+                  dataBinding.dataDomainMin = scale.domainMin;
+                } else {
+                  dataBinding.dataDomainMin = options.domainMin;
+                }
+                if (dataBinding.autoDomainMax) {
+                  dataBinding.dataDomainMax = scale.domainMax;
+                } else {
+                  dataBinding.dataDomainMax = options.domainMax;
+                }
               } else {
-                dataBinding.domainMin = options.domainMin;
-              }
-              if (dataBinding.autoDomainMax) {
-                dataBinding.domainMax = scale.domainMax;
-              } else {
-                dataBinding.domainMax = options.domainMax;
+                if (dataBinding.autoDomainMin) {
+                  dataBinding.domainMin = scale.domainMin;
+                } else {
+                  dataBinding.domainMin = options.domainMin;
+                }
+                if (dataBinding.autoDomainMax) {
+                  dataBinding.domainMax = scale.domainMax;
+                } else {
+                  dataBinding.domainMax = options.domainMax;
+                }
               }
               dataBinding.type = AxisDataBindingType.Numerical;
               dataBinding.numericalMode = NumericalMode.Linear;
