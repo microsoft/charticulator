@@ -2543,7 +2543,6 @@ function getOrderByAnotherColumnWidgets(
   let groupByExpression: string = null;
   if (parsed instanceof Expression.FunctionCall) {
     groupByExpression = parsed.args[0].toString();
-    groupByExpression = groupByExpression?.split("`").join("");
     //need to provide date.year() etc.
     groupByExpression = parseDerivedColumnsExpression(groupByExpression);
   }
