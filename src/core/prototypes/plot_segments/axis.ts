@@ -1922,13 +1922,27 @@ export function buildAxisWidgets(
                             ],
                           },
                           [
-                            manager.inputDate(
-                              { property: axisProperty, field: "domainMin" },
-                              {
-                                label: strings.objects.dataAxis.start,
-                                ignoreSearch: true,
-                              }
-                            ),
+                            data.allowScrolling
+                              ? manager.inputDate(
+                                  {
+                                    property: axisProperty,
+                                    field: "dataDomainMin",
+                                  },
+                                  {
+                                    label: strings.objects.dataAxis.start,
+                                    ignoreSearch: true,
+                                  }
+                                )
+                              : manager.inputDate(
+                                  {
+                                    property: axisProperty,
+                                    field: "domainMin",
+                                  },
+                                  {
+                                    label: strings.objects.dataAxis.start,
+                                    ignoreSearch: true,
+                                  }
+                                ),
                           ]
                         ),
                         manager.searchWrapper(
@@ -1941,13 +1955,27 @@ export function buildAxisWidgets(
                             ],
                           },
                           [
-                            manager.inputDate(
-                              { property: axisProperty, field: "domainMax" },
-                              {
-                                label: strings.objects.dataAxis.end,
-                                ignoreSearch: true,
-                              }
-                            ),
+                            data.allowScrolling
+                              ? manager.inputDate(
+                                  {
+                                    property: axisProperty,
+                                    field: "dataDomainMax",
+                                  },
+                                  {
+                                    label: strings.objects.dataAxis.end,
+                                    ignoreSearch: true,
+                                  }
+                                )
+                              : manager.inputDate(
+                                  {
+                                    property: axisProperty,
+                                    field: "domainMax",
+                                  },
+                                  {
+                                    label: strings.objects.dataAxis.end,
+                                    ignoreSearch: true,
+                                  }
+                                ),
                           ]
                         ),
                       ]
@@ -1979,21 +2007,43 @@ export function buildAxisWidgets(
                             ],
                           },
                           [
-                            manager.inputNumber(
-                              { property: axisProperty, field: "domainMin" },
-                              {
-                                label: strings.objects.axes.from,
-                                observerConfig: {
-                                  isObserver: true,
-                                  properties: {
+                            data.allowScrolling
+                              ? manager.inputNumber(
+                                  {
                                     property: axisProperty,
-                                    field: "autoDomainMin",
+                                    field: "dataDomainMin",
                                   },
-                                  value: false,
-                                },
-                                ignoreSearch: true,
-                              }
-                            ),
+                                  {
+                                    label: strings.objects.axes.from,
+                                    observerConfig: {
+                                      isObserver: true,
+                                      properties: {
+                                        property: axisProperty,
+                                        field: "autoDomainMin",
+                                      },
+                                      value: false,
+                                    },
+                                    ignoreSearch: true,
+                                  }
+                                )
+                              : manager.inputNumber(
+                                  {
+                                    property: axisProperty,
+                                    field: "domainMin",
+                                  },
+                                  {
+                                    label: strings.objects.axes.from,
+                                    observerConfig: {
+                                      isObserver: true,
+                                      properties: {
+                                        property: axisProperty,
+                                        field: "autoDomainMin",
+                                      },
+                                      value: false,
+                                    },
+                                    ignoreSearch: true,
+                                  }
+                                ),
                           ]
                         ),
                         manager.searchWrapper(
@@ -2006,21 +2056,43 @@ export function buildAxisWidgets(
                             ],
                           },
                           [
-                            manager.inputNumber(
-                              { property: axisProperty, field: "domainMax" },
-                              {
-                                label: strings.objects.axes.to,
-                                observerConfig: {
-                                  isObserver: true,
-                                  properties: {
+                            data.allowScrolling
+                              ? manager.inputNumber(
+                                  {
                                     property: axisProperty,
-                                    field: "autoDomainMax",
+                                    field: "dataDomainMax",
                                   },
-                                  value: false,
-                                },
-                                ignoreSearch: true,
-                              }
-                            ),
+                                  {
+                                    label: strings.objects.axes.to,
+                                    observerConfig: {
+                                      isObserver: true,
+                                      properties: {
+                                        property: axisProperty,
+                                        field: "autoDomainMax",
+                                      },
+                                      value: false,
+                                    },
+                                    ignoreSearch: true,
+                                  }
+                                )
+                              : manager.inputNumber(
+                                  {
+                                    property: axisProperty,
+                                    field: "domainMax",
+                                  },
+                                  {
+                                    label: strings.objects.axes.to,
+                                    observerConfig: {
+                                      isObserver: true,
+                                      properties: {
+                                        property: axisProperty,
+                                        field: "autoDomainMax",
+                                      },
+                                      value: false,
+                                    },
+                                    ignoreSearch: true,
+                                  }
+                                ),
                           ]
                         ),
                       ]
