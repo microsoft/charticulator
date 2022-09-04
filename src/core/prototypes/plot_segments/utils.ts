@@ -7,6 +7,7 @@ import { Dataset, Expression, Specification } from "../../index";
 import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/types";
 import { AxisDataBinding, OrderMode } from "../../../core/specification/types";
 import { DataType } from "../../../core/specification";
+import { Variable } from "../../../core/expression";
 
 export function getTableColumns(
   manager: Controls.WidgetManager & CharticulatorPropertyAccessors
@@ -57,11 +58,14 @@ export function parseDerivedColumnsExpression(expression: string): string {
 }
 
 export function transformOrderByExpression(expression: string): string {
-  return expression.indexOf("`") < 0
-    ? expression.split(" ").length >= 2
-      ? "`" + expression + "`"
-      : expression
-    : expression;
+  if (
+    (expression.indexOf("`") < 0 && expression.split(" ").length >= 2) ||
+    Variable.isNonEnglishVariableName(expression)
+  ) {
+    return Variable.VariableNameToString(expression);
+  } else {
+    return expression;
+  }
 }
 
 export function shouldShowTickFormatForTickExpression(

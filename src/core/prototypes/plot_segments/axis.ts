@@ -2543,6 +2543,7 @@ function getOrderByAnotherColumnWidgets(
   let groupByExpression: string = null;
   if (parsed instanceof Expression.FunctionCall) {
     groupByExpression = parsed.args[0].toString();
+    groupByExpression = groupByExpression?.split("`").join("");
     //need to provide date.year() etc.
     groupByExpression = parseDerivedColumnsExpression(groupByExpression);
   }
@@ -2582,6 +2583,7 @@ function getOrderByAnotherColumnWidgets(
     data.orderByCategories = [...new Set(newData)];
   };
 
+  // eslint-disable-next-line no-constant-condition
   if (orderChanged) {
     columnsDisplayNames = columnsDisplayNames.map((name) => {
       if (isOriginalColumn && name == data.orderByExpression) {
