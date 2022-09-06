@@ -61,7 +61,9 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
       }
 
       handlePosition =
-        ((trackSize - handleSize) / 100) * (100 - handlePosition); // map % to axis position
+        ((trackSize - handlerBarWidth * 2 - handleSize) / 100) *
+          (100 - handlePosition) +
+        handlerBarWidth; // map % to axis position
 
       if (vertical) {
         handlePositionY = handlePosition;
@@ -71,7 +73,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
 
       return [handlePositionX, handlePositionY];
     },
-    [handleSize, trackSize, vertical]
+    [handleSize, handlerBarWidth, trackSize, vertical]
   );
 
   const [position, setPosition] = React.useState(initialPosition);
@@ -82,11 +84,6 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
     // eslint-disable-next-line
   }, [windowSize]);
 
-  const widthPerBar = !vertical ? width / windowSize : height / windowSize;
-  const widthPerBarPercent = !vertical
-    ? widthPerBar / width
-    : widthPerBar / height;
-
   const [handlePositionX, handlePositionY] = React.useMemo(
     () => mapPositionToCoordinates(position),
     [position, mapPositionToCoordinates]
@@ -94,19 +91,15 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
 
   let handlerWidth = 0;
   let handlerHeight = 0;
-  let buttonsWidth = 0;
-  let buttonsHeight = 0;
+  const buttonsWidth = handlerBarWidth;
+  const buttonsHeight = handlerBarWidth;
 
   if (vertical) {
-    handlerHeight += handleSize;
+    handlerHeight = handleSize;
     handlerWidth = handlerBarWidth;
-    buttonsHeight += handleSize / 3;
-    buttonsWidth = handlerBarWidth;
   } else {
-    handlerWidth += handleSize;
+    handlerWidth = handleSize;
     handlerHeight = handlerBarWidth;
-    buttonsHeight += handleSize / 3;
-    buttonsWidth = handlerBarWidth;
   }
 
   const track = React.useRef<SVGRectElement>(null);
@@ -117,6 +110,11 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
       if (!isActive) {
         return;
       }
+
+      const widthPerBar = !vertical ? width / windowSize : height / windowSize;
+      const widthPerBarPercent = !vertical
+        ? widthPerBar / width
+        : widthPerBar / height;
 
       const trackElement = track.current.getBoundingClientRect();
       let deltaX = e.clientX - trackElement.left;
@@ -145,20 +143,27 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
       if (newPosition > 100) {
         newPosition = 100;
       }
-      if (newPosition - widthPerBarPercent * 100 < 0) {
-        newPosition = 0;
+      if (dataType == AxisDataBindingType.Categorical) {
+        if (newPosition - widthPerBarPercent * 100 < 0) {
+          newPosition = 0;
+        }
       }
       setPosition(Math.round(newPosition));
       onScroll(Math.round(newPosition));
     },
     [
+      dataType,
       handleSize,
+      height,
       isActive,
       onScroll,
       position,
       vertical,
-      widthPerBarPercent,
+      width,
+      windowSize,
       zoom.scale,
+      track,
+      handler,
     ]
   );
 
@@ -183,6 +188,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
         {/* track */}
         <rect
           ref={track}
+          className="track"
           x={Math.min(x, x + width) + (vertical ? 0 : buttonsWidth)}
           y={-Math.max(y, y + height) + (vertical ? buttonsHeight : 0)}
           width={Math.abs(width) - (vertical ? 0 : buttonsWidth * 2)}
@@ -199,6 +205,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
         {/*handler  */}
         <rect
           ref={handler}
+          className="handler"
           x={Math.min(x + handlePositionX, x + handlePositionX + handlerWidth)}
           y={
             -Math.max(y + handlePositionY, y + handlePositionY + handlerHeight)
@@ -223,6 +230,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
             <g>
               <rect
                 ref={handler}
+                className="downButton"
                 x={Math.min(x, x + buttonsWidth)}
                 y={-Math.max(y, y + buttonsHeight)}
                 width={Math.abs(buttonsWidth)}
@@ -247,6 +255,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
             <g>
               <rect
                 ref={handler}
+                className="upButton"
                 x={Math.min(x, x + width)}
                 y={-Math.max(y, y + height)}
                 width={Math.abs(buttonsWidth)}
@@ -259,6 +268,9 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
                 }}
               />
               <path
+                onClick={() => {
+                  onClick(-1);
+                }}
                 transform={`translate(${Math.min(x, x + width)}, ${-Math.max(
                   y,
                   y + height
@@ -284,6 +296,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
             <g>
               <rect
                 ref={handler}
+                className="leftButton"
                 x={Math.min(x, x + width)}
                 y={-Math.max(y, y + height)}
                 width={Math.abs(buttonsWidth)}
@@ -296,6 +309,9 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
                 }}
               />
               <path
+                onClick={() => {
+                  onClick(1);
+                }}
                 transform={`translate(${Math.min(x, x + width)}, ${
                   -Math.max(y, y + height) + buttonsWidth
                 }) scale(0.005) rotate(-90)`}
@@ -306,6 +322,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
             <g>
               <rect
                 ref={handler}
+                className="rightButton"
                 x={Math.max(x, x + width) - buttonsWidth}
                 y={-Math.max(y, y + height)}
                 width={Math.abs(buttonsWidth)}
