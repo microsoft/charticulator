@@ -282,6 +282,7 @@ export class ImportDataView extends React.Component<
               numberFormat: localeFileFormat.numberFormat,
               currency: null,
               group: null,
+              utcTimeZone: true,
             }),
             null,
           ];

@@ -11,6 +11,7 @@ import {
   EventSubscription,
   Prototypes,
   setFormatOptions,
+  setTimeZone,
   defaultCurrency,
   defaultDigitsGroup,
   defaultNumberFormat,
@@ -317,6 +318,10 @@ export class ChartContainer extends EventEmitter {
 
   public static setFormatOptions(options: FormatLocaleDefinition) {
     setFormatOptions(options);
+  }
+
+  public static setUtcTimeZone(utcTimeZone: boolean) {
+    setTimeZone(utcTimeZone);
   }
 
   public reactMount(width: number = 1200, height: number = 800) {

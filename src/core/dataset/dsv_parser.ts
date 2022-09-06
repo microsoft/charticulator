@@ -41,6 +41,7 @@ export interface LocaleFileFormat {
   numberFormat: LocaleNumberFormat;
   currency: string;
   group: string;
+  utcTimeZone: boolean;
 }
 
 /**
@@ -78,7 +79,7 @@ export function parseDataset(
 
     let columnValues = header.map((name, index) => {
       const values = data.map((row) => row[index]);
-      return inferAndConvertColumn(values, localeFileFormat.numberFormat);
+      return inferAndConvertColumn(values, localeFileFormat);
     });
 
     const additionalColumns: {

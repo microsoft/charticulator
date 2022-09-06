@@ -20,7 +20,7 @@
  * @returns the parsed Date's unix timestamp (in milliseconds) or null if unable to parse
  */
 // eslint-disable-next-line
-export function parseDate(str: string) {
+export function parseDate(str: string, timeZoneOffsetMinutes?: number) {
   str = str.trim();
   // ISO8601 full date: https://stackoverflow.com/a/37563868
   if (
@@ -114,6 +114,10 @@ export function parseDate(str: string) {
       } else {
         timestamp -= offsetMS;
       }
+    }
+    if (timeZoneOffsetMinutes) {
+      const offsetMS = timeZoneOffsetMinutes * 60000;
+      timestamp += offsetMS;
     }
     return timestamp;
   }
