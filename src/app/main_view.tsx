@@ -245,7 +245,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
             {this.state.attributeViewMaximized ? null : (
               <MinimizablePane
                 title={strings.mainView.attributesPaneltitle}
-                scroll={true}
+                scroll={false}
                 onMaximize={() =>
                   this.setState({ attributeViewMaximized: true })
                 }
@@ -353,7 +353,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
               ) : null}
               {this.state.attributeViewMaximized ? (
                 <FloatingPanel
-                  scroll={true}
+                  scroll={false}
                   peerGroup="panels"
                   title={strings.mainView.attributesPaneltitle}
                   onClose={() =>

@@ -190,7 +190,18 @@ export class AttributePanel extends React.Component<
             {manager.searchInput({
               placeholder: "Search",
             })}
-            {manager.vertical(...objectClass.getAttributePanelWidgets(manager))}
+            {manager.scrollList(
+              [
+                manager.vertical(
+                  ...objectClass.getAttributePanelWidgets(manager)
+                ),
+              ],
+              {
+                styles: {
+                  overflowX: "hidden",
+                },
+              }
+            )}
           </section>
         </div>
       );

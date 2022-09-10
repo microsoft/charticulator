@@ -128,7 +128,7 @@ export const FluentGroupedList = styled.div<{ marginLeft?: number }>`
     margin-left: ${({ marginLeft }) =>
       marginLeft != null ? marginLeft : "25px"};
     margin-right: 15px;
-    min-width: 270px;
+    min-width: 255px;
   }
 
   .ms-List-surface .ms-List-cell .ms-List-cell:last-child {
