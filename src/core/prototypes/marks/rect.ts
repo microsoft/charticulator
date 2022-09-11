@@ -583,6 +583,9 @@ export class RectElementClass extends EmphasizableMarkClass<
               this.object.properties.strokeStyle
             ),
             fillColor: attrs.fill,
+            fillStartColor: attrs.fillStart,
+            fillStopColor: attrs.fillStop,
+            gradientRotation: attrs.gradientRotation,
             opacity: attrs.opacity,
             ...this.generateEmphasisStyle(empasized),
           }
@@ -1004,6 +1007,9 @@ export class RectElementClass extends EmphasizableMarkClass<
       strokeLinejoin: "miter",
       strokeDasharray: strokeStyleToDashArray(properties.strokeStyle),
       fillColor: attrs.fill,
+      fillStartColor: attrs.fillStart,
+      fillStopColor: attrs.fillStop,
+      gradientRotation: attrs.gradientRotation,
       opacity: attrs.opacity,
       ...this.generateEmphasisStyle(empasized),
     };

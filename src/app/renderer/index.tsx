@@ -595,17 +595,60 @@ export function renderGraphicalElementSVG(
     }
     case "ellipse": {
       const ellipse = element as Graphics.Ellipse;
+
+      const gradientID: string = uniqueID();
+      const rotation = rotateGradient(ellipse.style.gradientRotation);
+
+      // if gradient color was set, override color value by ID of gradient
+      if (
+        ellipse.style.fillColor == null &&
+        ellipse.style.fillStartColor &&
+        ellipse.style.fillStopColor
+      ) {
+        style.fill = `url(#${gradientID})`;
+      }
+
       return (
-        <ellipse
-          key={options.key}
-          {...mouseEvents}
-          className={options.className || null}
-          style={style}
-          cx={(ellipse.x1 + ellipse.x2) / 2}
-          cy={-(ellipse.y1 + ellipse.y2) / 2}
-          rx={Math.abs(ellipse.x1 - ellipse.x2) / 2}
-          ry={Math.abs(ellipse.y1 - ellipse.y2) / 2}
-        />
+        <g>
+          <defs>
+            {ellipse.style.fillColor == null &&
+            ellipse.style.fillStartColor &&
+            ellipse.style.fillStopColor ? (
+              <linearGradient
+                id={gradientID}
+                x1={`${rotation.x1}%`}
+                y1={`${rotation.y1}%`}
+                x2={`${rotation.x2}%`}
+                y2={`${rotation.y2}%`}
+              >
+                <stop
+                  offset="0%"
+                  style={{
+                    stopColor: renderColor(ellipse.style.fillStartColor),
+                    stopOpacity: 1,
+                  }}
+                />
+                <stop
+                  offset="100%"
+                  style={{
+                    stopColor: renderColor(ellipse.style.fillStopColor),
+                    stopOpacity: 1,
+                  }}
+                />
+              </linearGradient>
+            ) : null}
+          </defs>
+          <ellipse
+            key={options.key}
+            {...mouseEvents}
+            className={options.className || null}
+            style={style}
+            cx={(ellipse.x1 + ellipse.x2) / 2}
+            cy={-(ellipse.y1 + ellipse.y2) / 2}
+            rx={Math.abs(ellipse.x1 - ellipse.x2) / 2}
+            ry={Math.abs(ellipse.y1 - ellipse.y2) / 2}
+          />
+        </g>
       );
     }
     case "line": {
@@ -648,17 +691,60 @@ export function renderGraphicalElementSVG(
         path.endArrowType != ArrowType.NO_ARROW
           ? `url(#${path.style.endArrowColorId})`
           : null;
+
+      const gradientID: string = uniqueID();
+      const rotation = rotateGradient(path.style.gradientRotation);
+
+      // if gradient color was set, override color value by ID of gradient
+      if (
+        path.style.fillColor == null &&
+        path.style.fillStartColor &&
+        path.style.fillStopColor
+      ) {
+        style.fill = `url(#${gradientID})`;
+      }
+
       return (
-        <path
-          key={options.key}
-          {...mouseEvents}
-          className={options.className || null}
-          style={style}
-          d={d}
-          transform={path.transform}
-          markerEnd={markerEnd}
-          markerStart={markerStart}
-        />
+        <g>
+          <defs>
+            {path.style.fillColor == null &&
+            path.style.fillStartColor &&
+            path.style.fillStopColor ? (
+              <linearGradient
+                id={gradientID}
+                x1={`${rotation.x1}%`}
+                y1={`${rotation.y1}%`}
+                x2={`${rotation.x2}%`}
+                y2={`${rotation.y2}%`}
+              >
+                <stop
+                  offset="0%"
+                  style={{
+                    stopColor: renderColor(path.style.fillStartColor),
+                    stopOpacity: 1,
+                  }}
+                />
+                <stop
+                  offset="100%"
+                  style={{
+                    stopColor: renderColor(path.style.fillStopColor),
+                    stopOpacity: 1,
+                  }}
+                />
+              </linearGradient>
+            ) : null}
+          </defs>
+          <path
+            key={options.key}
+            {...mouseEvents}
+            className={options.className || null}
+            style={style}
+            d={d}
+            transform={path.transform}
+            markerEnd={markerEnd}
+            markerStart={markerStart}
+          />
+        </g>
       );
     }
     case "text-on-path": {
