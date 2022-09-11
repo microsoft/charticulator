@@ -96,7 +96,7 @@ const devSequence = [
 
 let COMMANDS = {
   // Remove the entire build directory
-  cleanup: async () => { await fs.remove("dist"); await fs.remove(".tmp") },
+  cleanup: () => { fs.remove("dist"); fs.remove(".tmp") },
 
   // Create necessary directories
   makedirs: [
@@ -137,7 +137,7 @@ let COMMANDS = {
 
   // Convert the THIRD_PARTY.yml to json
   third_party_data: () =>
-    yamlToJSON("THIRD_PARTY.yml", "dist/data/THIRD_PARTY.json").catch(e => console.error(e)),
+    yamlToJSON("THIRD_PARTY.yml", "dist/data/THIRD_PARTY.json"),
 
   // Convert the config.yml to config.js
   config: async () => {
