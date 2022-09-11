@@ -373,12 +373,14 @@ export class RectElementClass extends EmphasizableMarkClass<
                 "gradientRotation",
                 {
                   hints: { rangeNumber: [0, 360] },
-                  defaultValue: 1,
+                  defaultValue: 0,
                   numberOptions: {
-                    showSlider: true,
+                    showSlider: false,
+                    showUpdown: true,
                     minimum: 0,
                     maximum: 360,
                     step: 1,
+                    updownTick: 1,
                   },
                   searchSection: strings.objects.style,
                 }
