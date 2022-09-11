@@ -403,6 +403,26 @@ export function renderSVGDefs(element: Graphics.Element): JSX.Element {
   }
 }
 
+export function rotateGradient(rotation: number) {
+  if (!rotation === undefined) {
+    return {
+      x1: 0,
+      x2: 100,
+      y1: 0,
+      y2: 0,
+    };
+  }
+  const pi = rotation * (Math.PI / 180);
+  const coords = {
+    x1: Math.round(50 + Math.sin(pi) * 50),
+    y1: Math.round(50 + Math.cos(pi) * 50),
+    x2: Math.round(50 + Math.sin(pi + Math.PI) * 50),
+    y2: Math.round(50 + Math.cos(pi + Math.PI) * 50),
+  };
+
+  return coords;
+}
+
 /** The method renders all chart elements in SVG document */
 // eslint-disable-next-line
 export function renderGraphicalElementSVG(
@@ -500,20 +520,63 @@ export function renderGraphicalElementSVG(
   switch (element.type) {
     case "rect": {
       const rect = element as Graphics.Rect;
+
+      const gradientID: string = uniqueID();
+      const rotation = rotateGradient(rect.style.gradientRotation);
+
+      // if gradient color was set, override color value by ID of gradient
+      if (
+        rect.style.fillColor == null &&
+        rect.style.fillStartColor &&
+        rect.style.fillStopColor
+      ) {
+        style.fill = `url(#${gradientID})`;
+      }
+
       return (
-        <rect
-          key={options.key}
-          {...mouseEvents}
-          className={options.className || null}
-          style={style}
-          x={Math.min(rect.x1, rect.x2)}
-          y={-Math.max(rect.y1, rect.y2)}
-          width={Math.abs(rect.x1 - rect.x2)}
-          height={Math.abs(rect.y1 - rect.y2)}
-          rx={rect.rx}
-          ry={rect.ry}
-          transform={`rotate(${rect.rotation ?? 0})`}
-        />
+        <g>
+          <defs>
+            {rect.style.fillColor == null &&
+            rect.style.fillStartColor &&
+            rect.style.fillStopColor ? (
+              <linearGradient
+                id={gradientID}
+                x1={`${rotation.x1}%`}
+                y1={`${rotation.y1}%`}
+                x2={`${rotation.x2}%`}
+                y2={`${rotation.y2}%`}
+              >
+                <stop
+                  offset="0%"
+                  style={{
+                    stopColor: renderColor(rect.style.fillStartColor),
+                    stopOpacity: 1,
+                  }}
+                />
+                <stop
+                  offset="100%"
+                  style={{
+                    stopColor: renderColor(rect.style.fillStopColor),
+                    stopOpacity: 1,
+                  }}
+                />
+              </linearGradient>
+            ) : null}
+          </defs>
+          <rect
+            key={options.key}
+            {...mouseEvents}
+            className={options.className || null}
+            style={style}
+            x={Math.min(rect.x1, rect.x2)}
+            y={-Math.max(rect.y1, rect.y2)}
+            width={Math.abs(rect.x1 - rect.x2)}
+            height={Math.abs(rect.y1 - rect.y2)}
+            rx={rect.rx}
+            ry={rect.ry}
+            transform={`rotate(${rect.rotation ?? 0})`}
+          />
+        </g>
       );
     }
     case "circle": {

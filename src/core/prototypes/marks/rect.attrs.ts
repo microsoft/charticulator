@@ -3,7 +3,7 @@
 
 import { AttributeDescriptions } from "../object";
 import { Color } from "../../common";
-import { AttributeMap } from "../../specification/index";
+import { AttributeMap, AttributeType } from "../../specification/index";
 import { AttrBuilder } from "../attrs";
 import { StrokeStyle } from "../common";
 import { ShapeType } from "./rect";
@@ -14,6 +14,16 @@ export const rectAttributes: AttributeDescriptions = {
   ...AttrBuilder.center(),
   ...AttrBuilder.size(),
   ...AttrBuilder.style({ fill: true }),
+  gradientDivider: {
+    name: "gradientDivider",
+    type: AttributeType.Number,
+    defaultValue: 0.5,
+  },
+  gradientRotation: {
+    name: "gradientRotation",
+    type: AttributeType.Number,
+    defaultValue: 0,
+  },
 };
 
 /**
@@ -47,6 +57,12 @@ export interface RectElementAttributes extends AttributeMap {
   stroke: Color;
   /** color of the rectangle  */
   fill: Color;
+  /** start color of the rectangle gradient  */
+  fillStart: Color;
+  /** stop color of the rectangle gradient  */
+  fillStop: Color;
+  /**Gradient rotation */
+  gradientRotation: number;
   /** thickness of the rectangle border */
   strokeWidth: number;
   /** opacity */

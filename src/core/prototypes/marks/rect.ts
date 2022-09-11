@@ -69,6 +69,8 @@ export class RectElementClass extends EmphasizableMarkClass<
 
   public static defaultMappingValues: Partial<RectElementAttributes> = {
     fill: { r: 17, g: 141, b: 255 },
+    fillStart: { r: 17, g: 141, b: 255 },
+    fillStop: { r: 255, g: 255, b: 255 },
     strokeWidth: 1,
     opacity: 1,
     visible: true,
@@ -94,6 +96,10 @@ export class RectElementClass extends EmphasizableMarkClass<
     attrs.height = defaultHeight;
     attrs.stroke = null;
     attrs.fill = { r: 200, g: 200, b: 200 };
+    attrs.fillStart = { r: 200, g: 200, b: 200 };
+    attrs.fillStop = { r: 255, g: 255, b: 255 };
+    attrs.gradientDivider = 0.5;
+    attrs.gradientRotation = 0;
     attrs.strokeWidth = 1;
     attrs.opacity = 1;
     attrs.visible = true;
@@ -113,6 +119,32 @@ export class RectElementClass extends EmphasizableMarkClass<
         },
         type: Specification.AttributeType.Color,
         default: rgbToHex(this.state.attributes.fill),
+      });
+    }
+    if (
+      this.object.mappings.fillStart &&
+      this.object.mappings.fillStart.type === MappingType.value
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "fillStart",
+        },
+        type: Specification.AttributeType.Color,
+        default: rgbToHex(this.state.attributes.fillStart),
+      });
+    }
+    if (
+      this.object.mappings.fillStop &&
+      this.object.mappings.fillStop.type === MappingType.value
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "fillStop",
+        },
+        type: Specification.AttributeType.Color,
+        default: rgbToHex(this.state.attributes.fillStop),
       });
     }
     if (
@@ -303,6 +335,55 @@ export class RectElementClass extends EmphasizableMarkClass<
           manager.mappingEditor(strings.objects.fill, "fill", {
             searchSection: strings.objects.style,
           }),
+          this.object.mappings.fill == null
+            ? manager.mappingEditor(
+                strings.objects.gradientStart,
+                "fillStart",
+                {
+                  searchSection: strings.objects.style,
+                }
+              )
+            : null,
+          this.object.mappings.fill == null
+            ? manager.mappingEditor(strings.objects.gradientStop, "fillStop", {
+                searchSection: strings.objects.style,
+              })
+            : null,
+          // TODO implement
+          // this.object.mappings.fill == null
+          //   ? manager.mappingEditor(
+          //       strings.objects.gradientDivider,
+          //       "gradientDivider",
+          //       {
+          //         hints: { rangeNumber: [0, 1] },
+          //         defaultValue: 1,
+          //         numberOptions: {
+          //           showSlider: true,
+          //           minimum: 0,
+          //           maximum: 1,
+          //           step: 0.1,
+          //         },
+          //         searchSection: strings.objects.style,
+          //       }
+          //     )
+          //   : null,
+          this.object.mappings.fill == null
+            ? manager.mappingEditor(
+                strings.objects.gradientRotation,
+                "gradientRotation",
+                {
+                  hints: { rangeNumber: [0, 360] },
+                  defaultValue: 1,
+                  numberOptions: {
+                    showSlider: true,
+                    minimum: 0,
+                    maximum: 360,
+                    step: 1,
+                  },
+                  searchSection: strings.objects.style,
+                }
+              )
+            : null,
           manager.mappingEditor(strings.objects.stroke, "stroke", {
             searchSection: strings.objects.style,
           }),
@@ -524,6 +605,9 @@ export class RectElementClass extends EmphasizableMarkClass<
               this.object.properties.strokeStyle
             ),
             fillColor: attrs.fill,
+            fillStartColor: attrs.fillStart,
+            fillStopColor: attrs.fillStop,
+            gradientRotation: attrs.gradientRotation,
             opacity: attrs.opacity,
             ...this.generateEmphasisStyle(empasized),
           },
