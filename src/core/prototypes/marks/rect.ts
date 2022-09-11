@@ -98,7 +98,6 @@ export class RectElementClass extends EmphasizableMarkClass<
     attrs.fill = { r: 200, g: 200, b: 200 };
     attrs.fillStart = { r: 200, g: 200, b: 200 };
     attrs.fillStop = { r: 255, g: 255, b: 255 };
-    attrs.gradientDivider = 0.5;
     attrs.gradientRotation = 0;
     attrs.strokeWidth = 1;
     attrs.opacity = 1;
@@ -349,24 +348,6 @@ export class RectElementClass extends EmphasizableMarkClass<
                 searchSection: strings.objects.style,
               })
             : null,
-          // TODO implement
-          // this.object.mappings.fill == null
-          //   ? manager.mappingEditor(
-          //       strings.objects.gradientDivider,
-          //       "gradientDivider",
-          //       {
-          //         hints: { rangeNumber: [0, 1] },
-          //         defaultValue: 1,
-          //         numberOptions: {
-          //           showSlider: true,
-          //           minimum: 0,
-          //           maximum: 1,
-          //           step: 0.1,
-          //         },
-          //         searchSection: strings.objects.style,
-          //       }
-          //     )
-          //   : null,
           this.object.mappings.fill == null
             ? manager.mappingEditor(
                 strings.objects.gradientRotation,

@@ -14,11 +14,6 @@ export const rectAttributes: AttributeDescriptions = {
   ...AttrBuilder.center(),
   ...AttrBuilder.size(),
   ...AttrBuilder.style({ fill: true }),
-  gradientDivider: {
-    name: "gradientDivider",
-    type: AttributeType.Number,
-    defaultValue: 0.5,
-  },
   gradientRotation: {
     name: "gradientRotation",
     type: AttributeType.Number,

@@ -126,8 +126,12 @@ export class AttrBuilder {
     };
     if (options.fill) {
       r.fill = this.color("fill", { defaultValue: null }).fill;
-      r.fillStart = this.color("fillStart", { defaultValue: null }).fillStart;
-      r.fillStop = this.color("fillStop", { defaultValue: null }).fillStop;
+      r.fillStart = this.color("fillStart", {
+        defaultValue: { r: 200, g: 200, b: 200 },
+      }).fillStart;
+      r.fillStop = this.color("fillStop", {
+        defaultValue: { r: 255, g: 255, b: 255 },
+      }).fillStop;
     }
     return r;
   }
