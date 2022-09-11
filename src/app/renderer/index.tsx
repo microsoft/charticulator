@@ -928,7 +928,7 @@ export function renderGraphicalElementSVG(
         >
           {group.elements.map((x, index) => {
             return renderGraphicalElementSVG(x, {
-              key: `m${index}`,
+              key: `m-${group.key || options.key}-${index}`,
               chartComponentSync: options.chartComponentSync,
               externalResourceResolver: options.externalResourceResolver,
               onClick: options.onClick,
