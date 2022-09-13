@@ -9,6 +9,7 @@ import {
   defaultDigitsGroup,
   parseSafe,
   setFormatOptions,
+  setTimeZone
 } from "../../../core/common";
 import { LocaleFileFormat } from "../../../core/dataset/dsv_parser";
 import { strings } from "../../../strings";
@@ -34,6 +35,10 @@ export const FileViewOptionsView: React.FC<FileViewOptionsProps> = () => {
   const [delimiterSymbol, setDelimiterSymbol] = useLocalStorage<string>(
     localeFileFormat.delimiter,
     LocalStorageKeys.DelimiterSymbol
+  );
+  const [utcTimeZone, setUtcTimeZone] = useLocalStorage<boolean>(
+    localeFileFormat.utcTimeZone,
+    LocalStorageKeys.UtcTimeZone
   );
 
   // const [currencySymbol, setCurrencySymbol] = useLocalStorage<string>(
@@ -108,6 +113,24 @@ export const FileViewOptionsView: React.FC<FileViewOptionsProps> = () => {
               <option value=".">{strings.options.numberFormatComma}</option>
             </select>
             <label>{strings.options.numberFormat}</label>
+          </div>
+
+          <div className="form-group">
+            <select
+              onChange={(e) => {
+                changeLocaleFileFormat({
+                  ...localeFileFormat,
+                  utcTimeZone: e.target.options[e.target.selectedIndex].value === "true",
+                });
+                setUtcTimeZone(e.target.options[e.target.selectedIndex].value === "true");
+                setTimeZone(e.target.options[e.target.selectedIndex].value === "true")
+              }}
+              value={utcTimeZone ? "true" : "false"}
+            >
+              <option value="true">{strings.options.utc}</option>
+              <option value="false">{strings.options.local}</option>
+            </select>
+            <label>{strings.options.timeZone}</label>
           </div>
           {/* Uncomment to enable configuration for locale: currency symbol and groupping digits */}
           {/*
