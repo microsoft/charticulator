@@ -38,7 +38,7 @@ export function colorToCSS(color: Color) {
 export interface ColorPickerProps {
   defaultValue?: Color;
   allowNull?: boolean;
-  onPick?: (color: Color) => void;
+  onPick?: (color: Color | string) => void;
   store?: AppStore;
   parent?: React.Component;
   closePicker?: () => void;
@@ -230,7 +230,12 @@ export class ColorPicker extends React.Component<
           <PatternEditor patternName={this.state.currentPattern} />
         ) : null}
         {this.state.currentPicker == PickerType.SVGPattern ? (
-          <PatternPicker patternName={this.state.currentPattern} />
+          <PatternPicker
+            patternName={this.state.currentPattern}
+            onPick={(_patternName: string, pattern: string) => {
+              this.props.onPick(pattern);
+            }}
+          />
         ) : null}
       </ColorsSectionWrapper>
     );

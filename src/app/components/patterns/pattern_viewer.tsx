@@ -16,6 +16,7 @@ export interface PatternViewerProps {
   width?: number;
   height?: number;
   type: ViewerType;
+  onClick?: (patternName: string, pattern: string) => void;
 }
 
 // eslint-disable-next-line

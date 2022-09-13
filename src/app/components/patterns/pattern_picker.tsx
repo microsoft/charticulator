@@ -7,6 +7,7 @@ import { PatternViewer, ViewerType } from "./pattern_viewer";
 
 export interface PatternPickerProps {
   patternName: string;
+  onPick?: (patternName: string, pattern: string) => void;
 }
 
 // eslint-disable-next-line
@@ -25,6 +26,9 @@ export const PatternPicker: React.FC<PatternPickerProps> = ({
             type={ViewerType.Rect}
             patternName={pattern.mainID}
             pattern={pattern.pattern}
+            onClick={(patternName: string, pattern: string) => {
+              console.log(patternName, pattern);
+            }}
           />
         );
       })}

@@ -12,7 +12,12 @@ import {
 } from "../../../core";
 import { ColorPicker, colorToCSS } from "../fluentui_color_picker";
 import { Callout, DefaultButton, TextField } from "@fluentui/react";
-import { ColorCell, ColorRowWrapper, colorTextInputStyles, deleteColorStyles } from "./styles";
+import {
+  ColorCell,
+  ColorRowWrapper,
+  colorTextInputStyles,
+  deleteColorStyles,
+} from "./styles";
 import { GradientView } from "./gradient_palettes";
 import { CustomGradientButtons } from "./custom_gradient_buttons";
 
@@ -140,9 +145,13 @@ export class CustomGradientMenu extends React.Component<
             <ColorPicker
               defaultValue={this.state.currentColor}
               onPick={(color) => {
-                const newGradient = deepClone(this.props.currentGradient);
-                newGradient.colors[this.state.currentItemIdx] = color;
-                this.props.selectGradient(newGradient, true);
+                if (typeof color !== "string") {
+                  const newGradient = deepClone(this.props.currentGradient);
+                  newGradient.colors[this.state.currentItemIdx] = color;
+                  this.props.selectGradient(newGradient, true);
+                } else {
+                  console.warn("Appying SVG pattern for gradient");
+                }
               }}
               parent={this}
             />
