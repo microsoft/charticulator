@@ -58,7 +58,8 @@ describe("Charticulator", () => {
           currency: "$",
           thousandsDelimiter: ",",
           decemalDelimiter: ".",
-        }
+        },
+        true
       )
       .then(() => {
         closeStartMenuPanel();

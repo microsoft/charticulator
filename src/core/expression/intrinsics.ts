@@ -282,7 +282,7 @@ class DateFunction {
   }
 
   get parse() {
-    return makeArrayCapable1((x: string) => isUtcTimeZone() ? utcParse(x) :parseDate(x))
+    return makeArrayCapable1((x: string) => isUtcTimeZone() ? utcParse(x) : parseDate(x))
   }
 
   get year() {

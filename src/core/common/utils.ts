@@ -697,7 +697,7 @@ export function isUtcTimeZone(): boolean {
 export function getTimeFormatFunction(): (
   specifier: string
 ) => (date: Date) => string {
-  return utcTimeZoneOption.utcTimeZone ? utcFormat : timeFormat;
+  return isUtcTimeZone() ? utcFormat : timeFormat;
 }
 
 export const tickFormatParserExpression = () => /\{([^}]+)\}/g;
