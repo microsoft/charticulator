@@ -249,7 +249,7 @@ export class FunctionCall extends Expression {
     this.args = args;
     let v = <any>functions;
     for (const part of parts) {
-      if (Object.prototype.hasOwnProperty.call(v, part)) {
+      if (Object.prototype.hasOwnProperty.call(v, part) || v[part]) {
         v = v[part];
       } else {
         v = undefined;

@@ -3,12 +3,12 @@
 import { ValueType } from "./classes";
 import { parseDate } from "../dataset/datetime";
 import { getFormat, isUtcTimeZone } from "../common";
-import { timeFormat } from "d3-time-format";
+import { timeFormat, utcFormat, utcParse } from "d3-time-format";
 
 export const constants: { [name: string]: ValueType } = {};
 export const functions: {
   // eslint-disable-next-line
-  [name: string]: Function | { [name: string]: Function };
+  [name: string]: Function | { [name: string]: Function } | any;
 } = {};
 // eslint-disable-next-line
 export const operators: { [name: string]: Function } = {};
@@ -255,25 +255,70 @@ operators["unary:not"] = makeArrayCapable1((a: boolean) => !a);
 
 // Date operations
 // TODO convert to class with static methods
-functions.date = {
-  parse: makeArrayCapable1((x: string) =>
-    parseDate(x, isUtcTimeZone() ? 0 : new Date().getTimezoneOffset())
-  ),
+// functions.date = {
+//   parse: makeArrayCapable1((x: string) => {
+//     debugger;
+//     parseDate(x, isUtcTimeZone() ? 0 : new Date().getTimezoneOffset())
+//   }),
 
-  year: makeArrayCapable1(timeFormat("%Y")), // year with century as a decimal number.
-  month: makeArrayCapable1(timeFormat("%b")), // month as a string "Jan" - "Dec".
-  monthnumber: makeArrayCapable1(timeFormat("%m")), // zero-padded number of the month as a decimal number [01,12].
-  day: makeArrayCapable1(timeFormat("%d")), // zero-padded day of the month as a decimal number [01,31].
-  weekOfYear: makeArrayCapable1(timeFormat("%U")), // Sunday-based week of the year as a decimal number [00,53].
-  dayOfYear: makeArrayCapable1(timeFormat("%j")), // day of the year as a decimal number [001,366].
-  weekday: makeArrayCapable1(timeFormat("%a")), // abbreviated weekday name.
+//   year: makeArrayCapable1(utcFormat("%Y")), // year with century as a decimal number.
+//   month: makeArrayCapable1(utcFormat("%b")), // month as a string "Jan" - "Dec".
+//   monthnumber: makeArrayCapable1(utcFormat("%m")), // zero-padded number of the month as a decimal number [01,12].
+//   day: makeArrayCapable1(utcFormat("%d")), // zero-padded day of the month as a decimal number [01,31].
+//   weekOfYear: makeArrayCapable1(utcFormat("%U")), // Sunday-based week of the year as a decimal number [00,53].
+//   dayOfYear: makeArrayCapable1(utcFormat("%j")), // day of the year as a decimal number [001,366].
+//   weekday: makeArrayCapable1(utcFormat("%a")), // abbreviated weekday name.
 
-  hour: makeArrayCapable1(timeFormat("%H")), // hour (24-hour clock) as a decimal number [00,23].
-  minute: makeArrayCapable1(timeFormat("%M")), // minute as a decimal number [00,59].
-  second: makeArrayCapable1(timeFormat("%S")), // second as a decimal number [00,61].
+//   hour: makeArrayCapable1(utcFormat("%H")), // hour (24-hour clock) as a decimal number [00,23].
+//   minute: makeArrayCapable1(utcFormat("%M")), // minute as a decimal number [00,59].
+//   second: makeArrayCapable1(utcFormat("%S")), // second as a decimal number [00,61].
 
-  timestamp: makeArrayCapable1((d: Date) => d.getTime() / 1000),
-};
+//   timestamp: makeArrayCapable1((d: Date) => d.getTime() / 1000),
+// };
+
+class DateFunction {
+  get hour() {
+    return makeArrayCapable1(isUtcTimeZone() ? utcFormat("%H") : timeFormat("%H"));
+  }
+
+  get parse() {
+    return makeArrayCapable1((x: string) => isUtcTimeZone() ? utcParse(x) : parseDate(x))
+  }
+
+  get year() {
+    return makeArrayCapable1(isUtcTimeZone() ? utcFormat("%Y") : timeFormat("%Y")) // year with century as a decimal number.
+  } 
+  get month() {
+    return makeArrayCapable1(isUtcTimeZone() ? utcFormat("%b") : timeFormat("%b")) // month as a string "Jan" - "Dec".
+  }
+  get monthnumber() {
+    return makeArrayCapable1(isUtcTimeZone() ? utcFormat("%m") : timeFormat("%m")) // zero-padded number of the month as a decimal number [01,12].
+  }
+  get day() {
+    return makeArrayCapable1(isUtcTimeZone() ? utcFormat("%d") : timeFormat("%d")) // zero-padded day of the month as a decimal number [01,31].
+  }
+  get weekOfYear() {
+    return makeArrayCapable1(isUtcTimeZone() ? utcFormat("%U") : timeFormat("%U")) // Sunday-based week of the year as a decimal number [00,53].
+  }
+  get dayOfYear() {
+    return makeArrayCapable1(isUtcTimeZone() ? utcFormat("%j") : timeFormat("%j")) // day of the year as a decimal number [001,366].
+  }
+  get weekday() {
+    return makeArrayCapable1(isUtcTimeZone() ? utcFormat("%a") : timeFormat("%a")) // abbreviated weekday name.
+  }
+  get minute() {
+    return makeArrayCapable1(isUtcTimeZone() ? utcFormat("%M") : timeFormat("%M")) // minute as a decimal number [00,59].
+  }
+  get second() {
+    return makeArrayCapable1(isUtcTimeZone() ? utcFormat("%S") : timeFormat("%S")) // second as a decimal number [00,61].
+  }
+
+  get timestamp() {
+    return makeArrayCapable1((d: Date) => d.getTime() / 1000)
+  }
+}
+
+functions.date = new DateFunction();
 
 functions.format = makeArrayCapable2((value: number, spec: string) => {
   return getFormat()(spec)(value);

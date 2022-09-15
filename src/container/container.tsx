@@ -215,7 +215,8 @@ export class ChartContainer extends EventEmitter {
     public readonly instance: TemplateInstance,
     public readonly dataset: Dataset.Dataset,
     public renderEvents?: RenderEvents,
-    public localizaiton?: LocalizationConfig
+    public localizaiton?: LocalizationConfig,
+    public utcTimeZone?: boolean
   ) {
     super();
     this.chart = instance.chart;
@@ -228,6 +229,7 @@ export class ChartContainer extends EventEmitter {
       thousands:
         localizaiton?.thousandsDelimiter ?? defaultNumberFormat.decimal,
     });
+    setTimeZone(utcTimeZone);
   }
 
   private container: Element;

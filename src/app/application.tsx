@@ -127,6 +127,7 @@ export class Application {
       worker?: CharticulatorWorkerInterface;
     },
     localizaiton: LocalizationConfig,
+    utcTimeZone: boolean,
     handlers?: {
       menuBarHandlers?: MenuBarHandlers;
       telemetry?: TelemetryRecorder;
@@ -201,7 +202,7 @@ export class Application {
           decimal: NumberFormatRemove === "," ? "." : ",",
           remove: NumberFormatRemove === "," ? "," : ".",
         },
-        utcTimeZone: UtcTimeZone !== undefined ? UtcTimeZone : true,
+        utcTimeZone: utcTimeZone !== undefined ? utcTimeZone : UtcTimeZone,
       });
       setFormatOptions({
         currency: parseSafe(CurrencySymbol, defaultCurrency),
@@ -209,7 +210,7 @@ export class Application {
         decimal: NumberFormatRemove === "," ? "." : ",",
         thousands: NumberFormatRemove === "," ? "," : ".",
       });
-      setTimeZone(UtcTimeZone !== undefined ? UtcTimeZone : true);
+      setTimeZone(utcTimeZone !== undefined ? utcTimeZone : UtcTimeZone);
     } catch (ex) {
       setFormatOptions({
         currency: [localizaiton?.currency, ""] ?? defaultCurrency,
