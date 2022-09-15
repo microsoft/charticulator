@@ -709,7 +709,7 @@ export function getFormat() {
 export function parseSafe(value: string, defaultValue: any = null) {
   try {
     const parsedValue = JSON.parse(value);
-    return parsedValue !== undefined ? parsedValue : defaultValue;
+    return parsedValue != undefined ? parsedValue : defaultValue;
   } catch (ex) {
     return defaultValue;
   }

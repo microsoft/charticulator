@@ -202,7 +202,7 @@ export class Application {
           decimal: NumberFormatRemove === "," ? "." : ",",
           remove: NumberFormatRemove === "," ? "," : ".",
         },
-        utcTimeZone: UtcTimeZone !== undefined ? UtcTimeZone : utcTimeZone,
+        utcTimeZone: utcTimeZone !== undefined ? utcTimeZone : UtcTimeZone,
       });
       setFormatOptions({
         currency: parseSafe(CurrencySymbol, defaultCurrency),
@@ -210,7 +210,7 @@ export class Application {
         decimal: NumberFormatRemove === "," ? "." : ",",
         thousands: NumberFormatRemove === "," ? "," : ".",
       });
-      setTimeZone(UtcTimeZone !== undefined ? UtcTimeZone : utcTimeZone);
+      setTimeZone(utcTimeZone !== undefined ? utcTimeZone : UtcTimeZone);
     } catch (ex) {
       setFormatOptions({
         currency: [localizaiton?.currency, ""] ?? defaultCurrency,
