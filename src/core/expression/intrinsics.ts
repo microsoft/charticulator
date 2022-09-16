@@ -3,7 +3,7 @@
 import { ValueType } from "./classes";
 import { parseDate } from "../dataset/datetime";
 import { getFormat, isUtcTimeZone } from "../common";
-import { timeFormat, utcFormat, utcParse } from "d3-time-format";
+import { timeFormat, timeParse, utcFormat, utcParse } from "d3-time-format";
 
 export const constants: { [name: string]: ValueType } = {};
 export const functions: {
@@ -282,7 +282,7 @@ class DateFunction {
   }
 
   get parse() {
-    return makeArrayCapable1((x: string) => isUtcTimeZone() ? utcParse(x) : parseDate(x))
+    return makeArrayCapable1((x: string) => isUtcTimeZone() ? parseDate(x) : timeParse(x))
   }
 
   get year() {
