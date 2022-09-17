@@ -50,7 +50,7 @@ describe("Datetime Parser", () => {
       ["2016-05-24T15:54:14Z", "2016-05-24T15:54:14.000Z", "May 2016 24 15 54"],
     ];
     for (const [str, datestr, exprdatestr] of cases) {
-      const r = parseDate(str, 0);
+      const r = parseDate(str);
       const p = new Date(r).toISOString();
       expect(p).to.equal(datestr, str);
 

@@ -69,7 +69,7 @@ export const dataTypes: { [name in DataType]: DataTypeDescription } = {
   },
   date: {
     test: (x: string) => parseDate(x) != null,
-    convert: (x: string, timeZone?: number) => parseDate(x, timeZone),
+    convert: (x: string) => parseDate(x),
   },
   string: {
     // eslint-disable-next-line
