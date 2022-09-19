@@ -346,8 +346,7 @@ export function convertColumns(
     const convertedValues = convertColumn(
       type,
       columnValues as any,
-      table.localeNumberFormat,
-      new Date().getTimezoneOffset() // time zone offset in minutes
+      table.localeNumberFormat
     );
     if (convertedValues.filter((val) => val).length === 0) {
       throw Error(

@@ -33,7 +33,7 @@ export interface DataTypeDescription {
   test: (v: string, localeNumberFormat?: LocaleNumberFormat) => boolean;
   convert: (
     v: string,
-    localeNumberFormat?: LocaleNumberFormat | number
+    localeNumberFormat?: LocaleNumberFormat
   ) => DataValue;
 }
 
@@ -122,13 +122,12 @@ export function convertColumn(
   localeNumberFormat: LocaleNumberFormat = {
     remove: ",",
     decimal: ".",
-  },
-  timeZone: number = 0
+  }
 ): DataValue[] {
   const converter = dataTypes[type].convert;
   return values.map((v) => {
     if (type === DataType.Date) {
-      return v != null ? converter(v, timeZone) : null;
+      return v != null ? converter(v) : null;
     } else {
       return v != null ? converter(v, localeNumberFormat) : null;
     }
@@ -163,8 +162,7 @@ export function inferAndConvertColumn(
   const convertedValues = convertColumn(
     inferredType,
     values,
-    localeFileFormat.numberFormat,
-    localeFileFormat.utcTimeZone ? 0 : new Date().getTimezoneOffset() // time zone offset in minutes
+    localeFileFormat.numberFormat
   );
   if (hints == null) {
     hints = {};
