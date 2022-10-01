@@ -8,7 +8,7 @@ import { classNames } from "../utils";
 
 import { Point } from "../../core";
 
-import * as Hammer from "hammerjs";
+import { default as Hammer } from "hammerjs";
 
 export interface DraggableElementProps {
   className?: string;
