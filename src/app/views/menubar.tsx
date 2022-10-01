@@ -106,7 +106,8 @@ export class HelpButton extends React.Component<
                       </a>
                     </div>
                     <div className="el-item">
-                      <a {...contactUsLinkProps}>{strings.help.contact}</a>
+                      <a onClick={contactUsLinkProps.onClick}
+                      >{strings.help.contact}</a>
                     </div>
                     <div className="el-item-version">
                       {strings.help.version(CHARTICULATOR_PACKAGE.version)}
