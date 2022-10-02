@@ -42,7 +42,7 @@ export interface ChartContainerComponentProps {
 export interface LocalizationConfig {
   currency: string;
   thousandsDelimiter: string;
-  decemalDelimiter: string;
+  decimalDelimiter: string;
 }
 
 export interface ChartContainerComponentState {
@@ -223,7 +223,7 @@ export class ChartContainer extends EventEmitter {
     setFormatOptions({
       currency: [localizaiton?.currency, ""] ?? defaultCurrency,
       grouping: defaultDigitsGroup,
-      decimal: localizaiton?.decemalDelimiter ?? defaultNumberFormat.decimal,
+      decimal: localizaiton?.decimalDelimiter ?? defaultNumberFormat.decimal,
       thousands:
         localizaiton?.thousandsDelimiter ?? defaultNumberFormat.decimal,
     });

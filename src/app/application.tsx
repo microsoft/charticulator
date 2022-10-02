@@ -51,7 +51,7 @@ import { EditorType } from "./stores/app_store";
 import { LocalizationConfig } from "../container/container";
 
 export class ApplicationExtensionContext implements ExtensionContext {
-  constructor(public app: Application) {}
+  constructor(public app: Application) { }
 
   public getGlobalDispatcher(): Dispatcher<Action> {
     return this.app.appStore.dispatcher;
@@ -175,7 +175,7 @@ export class Application {
       );
       const DelimiterSymbol = parseSafe(
         window.localStorage.getItem(LocalStorageKeys.DelimiterSymbol) ||
-          defaultDelimiter,
+        defaultDelimiter,
         defaultDelimiter
       );
       const GroupSymbol = parseSafe(
@@ -184,7 +184,7 @@ export class Application {
       );
       const NumberFormatRemove = parseSafe(
         window.localStorage.getItem(LocalStorageKeys.NumberFormatRemove) ||
-          defaultNumberFormat.remove,
+        defaultNumberFormat.remove,
         defaultNumberFormat.remove
       );
 
@@ -207,7 +207,7 @@ export class Application {
       setFormatOptions({
         currency: [localizaiton?.currency, ""] ?? defaultCurrency,
         grouping: defaultDigitsGroup,
-        decimal: localizaiton?.decemalDelimiter ?? defaultNumberFormat.decimal,
+        decimal: localizaiton?.decimalDelimiter ?? defaultNumberFormat.decimal,
         thousands:
           localizaiton?.thousandsDelimiter ?? defaultNumberFormat.decimal,
       });

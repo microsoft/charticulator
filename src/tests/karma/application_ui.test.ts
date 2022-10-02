@@ -57,7 +57,7 @@ describe("Charticulator", () => {
         {
           currency: "$",
           thousandsDelimiter: ",",
-          decemalDelimiter: ".",
+          decimalDelimiter: ".",
         }
       )
       .then(() => {
