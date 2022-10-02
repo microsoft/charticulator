@@ -20,7 +20,7 @@
  *
  * * {@link "app/backend/indexed_db"} contains class {@link IndexedDBBackend}. It wraps [IndexedDB API](https://developer.mozilla.org/docs/Web/API/IndexedDB_API) to save user charts in the browser storage.
  *
- * * {@link "app/components/index"} contains general high-level componenets for UI. Other low-level components ("bricks" of UI) are in {@link "app/views/index"} module.
+ * * {@link "app/components/index"} contains general high-level components for UI. Other low-level components ("bricks" of UI) are in {@link "app/views/index"} module.
  *
  * Charticulator has {@link WidgetManager} class for managing those components. It's "facade" over all components.
  *
