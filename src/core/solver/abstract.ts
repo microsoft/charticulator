@@ -81,7 +81,7 @@ export abstract class ConstraintSolver {
     return s;
   }
 
-  /** Add a constraint that enfoces a = b */
+  /** Add a constraint that enforces a = b */
   public addEquals(strength: ConstraintStrength, a: Variable, b: Variable) {
     this.addLinear(strength, 0, [
       [1, a],
@@ -89,7 +89,7 @@ export abstract class ConstraintSolver {
     ]);
   }
 
-  /** Add a constraint that enfoces a = value */
+  /** Add a constraint that enforces a = value */
   public addEqualToConstant(
     strength: ConstraintStrength,
     a: Variable,
