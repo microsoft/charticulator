@@ -36,7 +36,7 @@ export { RectElementAttributes, RectElementProperties };
 export enum ShapeType {
   Rectangle = "rectangle",
   Triangle = "triangle",
-  Ellips = "ellipse",
+  Ellipse = "ellipse",
 }
 
 export class RectElementClass extends EmphasizableMarkClass<
@@ -236,7 +236,7 @@ export class RectElementClass extends EmphasizableMarkClass<
               options: [
                 ShapeType.Rectangle,
                 ShapeType.Triangle,
-                ShapeType.Ellips,
+                ShapeType.Ellipse,
               ],
               searchSection: strings.objects.general,
             }
@@ -486,7 +486,7 @@ export class RectElementClass extends EmphasizableMarkClass<
     }
     const helper = new Graphics.CoordinateSystemHelper(cs);
     switch (this.object.properties.shape) {
-      case ShapeType.Ellips: {
+      case ShapeType.Ellipse: {
         return helper.ellipse(
           attrs.x1 + offset.x,
           attrs.y1 + offset.y,
