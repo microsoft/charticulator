@@ -404,7 +404,7 @@ export class RectElementClass extends EmphasizableMarkClass<
       this.state.attributes,
       ["x1", "y1", "x2", "y2", "cx", "cy", "width", "height"]
     );
-    // Describes intrinsic relations of reactangle
+    // Describes intrinsic relations of rectangle
     // add constraint x2 - x1 = width
     solver.addLinear(
       ConstraintStrength.HARD,
