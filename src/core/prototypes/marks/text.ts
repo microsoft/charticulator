@@ -114,7 +114,7 @@ export class TextElementClass extends EmphasizableMarkClass<
     glyphIndex = 0,
     // eslint-disable-next-line
     manager: ChartStateManager,
-    empasized?: boolean
+    emphasized?: boolean
   ): Graphics.Element {
     const attrs = this.state.attributes;
     const props = this.object.properties;
@@ -160,7 +160,7 @@ export class TextElementClass extends EmphasizableMarkClass<
               backgroundColor: attrs.backgroundColor,
               backgroundColorId: attrs.backgroundColorFilterId,
               opacity: attrs.opacity,
-              ...this.generateEmphasisStyle(empasized),
+              ...this.generateEmphasisStyle(emphasized),
             }
           )
         );
@@ -179,7 +179,7 @@ export class TextElementClass extends EmphasizableMarkClass<
           backgroundColor: attrs.backgroundColor,
           backgroundColorId: attrs.backgroundColorFilterId,
           opacity: attrs.opacity,
-          ...this.generateEmphasisStyle(empasized),
+          ...this.generateEmphasisStyle(emphasized),
         }
       );
     }

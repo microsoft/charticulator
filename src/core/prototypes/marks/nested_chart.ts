@@ -265,7 +265,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
     // eslint-disable-next-line
     manager: ChartStateManager,
     // eslint-disable-next-line
-    empasized?: boolean
+    emphasized?: boolean
   ): Graphics.Element {
     const attrs = this.state.attributes;
     if (!attrs.visible || !this.object.properties.visible) {
