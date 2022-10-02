@@ -40,7 +40,7 @@ import { AggregationFunctionDescription } from "../../../core/expression";
 import {
   defaultLabelStyle,
   defaultStyle,
-  defultBindButtonSize,
+  defaultBindButtonSize,
   FluentDataBindingMenuItem,
   FluentDataBindingMenuLabel,
 } from "../panels/widgets/controls/fluentui_customized_components";
@@ -85,7 +85,7 @@ interface Builder {
   /**
    * Add default value
    */
-  produceDefaultValue(dafaultValue: IDefaultValue): void;
+  produceDefaultValue(defaultValue: IDefaultValue): void;
 
   getMenuItems(): IContextualMenuItem[];
 
@@ -149,7 +149,7 @@ class MenuItemsCreator {
     }
   }
 
-  public setFieds(
+  public setFields(
     datasetStore: AppStore,
     table?: string,
     kinds?: Dataset.DataKind[],
@@ -736,11 +736,11 @@ export class MenuItemBuilder implements Builder {
     kinds?: Dataset.DataKind[],
     types?: Dataset.DataType[]
   ): void {
-    this.menuItemsCreator.setFieds(datasetStore, table, kinds, types);
+    this.menuItemsCreator.setFields(datasetStore, table, kinds, types);
   }
 
-  public produceDefaultValue(dafaultValue: IDefaultValue): void {
-    this.menuItemsCreator.produceDefaultValue(dafaultValue);
+  public produceDefaultValue(defaultValue: IDefaultValue): void {
+    this.menuItemsCreator.produceDefaultValue(defaultValue);
   }
 
   public buildMenu(): void {
@@ -845,12 +845,12 @@ export class Director {
                 ...(defaultStyle as any),
                 title: {
                   ...defaultStyle.title,
-                  lineHeight: defultBindButtonSize.height,
+                  lineHeight: defaultBindButtonSize.height,
                   borderWidth: "0px",
                 },
                 dropdownOptionText: {
                   boxSizing: "unset",
-                  lineHeight: defultBindButtonSize.height,
+                  lineHeight: defaultBindButtonSize.height,
                 },
                 callout: {
                   minWidth: 180,

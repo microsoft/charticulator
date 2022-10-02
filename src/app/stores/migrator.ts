@@ -201,7 +201,7 @@ export class Migrator {
   }
 
   /**
-   * Adds enableTooltips, enableSelection, enableContextMenu properties with default balue true
+   * Adds enableTooltips, enableSelection, enableContextMenu properties with default value true
    * @param state current state
    */
   public addInteractivityProperties(state: AppStoreState) {

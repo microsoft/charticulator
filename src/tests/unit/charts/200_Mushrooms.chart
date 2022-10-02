@@ -1631,8 +1631,8 @@
                   "g": 0,
                   "b": 0
                 },
-                "tickTextBackgroudColor": null,
-                "tickTextBackgroudColorId": null,
+                "tickTextBackgroundColor": null,
+                "tickTextBackgroundColorId": null,
                 "showTicks": true,
                 "showBaseline": true,
                 "lineColor": {
@@ -1705,8 +1705,8 @@
                   "g": 0,
                   "b": 0
                 },
-                "tickTextBackgroudColor": null,
-                "tickTextBackgroudColorId": null,
+                "tickTextBackgroundColor": null,
+                "tickTextBackgroundColorId": null,
                 "showTicks": true,
                 "showBaseline": true,
                 "lineColor": {

@@ -36,7 +36,7 @@ export { RectElementAttributes, RectElementProperties };
 export enum ShapeType {
   Rectangle = "rectangle",
   Triangle = "triangle",
-  Ellips = "ellipse",
+  Ellipse = "ellipse",
 }
 
 export class RectElementClass extends EmphasizableMarkClass<
@@ -236,7 +236,7 @@ export class RectElementClass extends EmphasizableMarkClass<
               options: [
                 ShapeType.Rectangle,
                 ShapeType.Triangle,
-                ShapeType.Ellips,
+                ShapeType.Ellipse,
               ],
               searchSection: strings.objects.general,
             }
@@ -404,7 +404,7 @@ export class RectElementClass extends EmphasizableMarkClass<
       this.state.attributes,
       ["x1", "y1", "x2", "y2", "cx", "cy", "width", "height"]
     );
-    // Describes intrinsic relations of reactangle
+    // Describes intrinsic relations of rectangle
     // add constraint x2 - x1 = width
     solver.addLinear(
       ConstraintStrength.HARD,
@@ -477,7 +477,7 @@ export class RectElementClass extends EmphasizableMarkClass<
     glyphIndex = 0,
     // eslint-disable-next-line
     manager: ChartStateManager,
-    empasized?: boolean
+    emphasized?: boolean
   ): Graphics.Element {
     const attrs = this.state.attributes;
     const properties = this.object.properties;
@@ -486,7 +486,7 @@ export class RectElementClass extends EmphasizableMarkClass<
     }
     const helper = new Graphics.CoordinateSystemHelper(cs);
     switch (this.object.properties.shape) {
-      case ShapeType.Ellips: {
+      case ShapeType.Ellipse: {
         return helper.ellipse(
           attrs.x1 + offset.x,
           attrs.y1 + offset.y,
@@ -501,12 +501,12 @@ export class RectElementClass extends EmphasizableMarkClass<
             ),
             fillColor: attrs.fill,
             opacity: attrs.opacity,
-            ...this.generateEmphasisStyle(empasized),
+            ...this.generateEmphasisStyle(emphasized),
           }
         );
       }
       case ShapeType.Triangle: {
-        const path = this.drawTriangleOrCometMarks(helper, offset, empasized);
+        const path = this.drawTriangleOrCometMarks(helper, offset, emphasized);
         return path;
       }
       case ShapeType.Rectangle:
@@ -525,7 +525,7 @@ export class RectElementClass extends EmphasizableMarkClass<
             ),
             fillColor: attrs.fill,
             opacity: attrs.opacity,
-            ...this.generateEmphasisStyle(empasized),
+            ...this.generateEmphasisStyle(emphasized),
           },
           properties.rx,
           properties.ry
@@ -833,7 +833,7 @@ export class RectElementClass extends EmphasizableMarkClass<
   private drawTriangleOrCometMarks(
     helper: Graphics.CoordinateSystemHelper,
     offset: Point,
-    empasized?: boolean
+    emphasized?: boolean
   ) {
     const pathMaker = new Graphics.PathMaker();
     const properties = this.object.properties;
@@ -919,7 +919,7 @@ export class RectElementClass extends EmphasizableMarkClass<
       strokeDasharray: strokeStyleToDashArray(properties.strokeStyle),
       fillColor: attrs.fill,
       opacity: attrs.opacity,
-      ...this.generateEmphasisStyle(empasized),
+      ...this.generateEmphasisStyle(emphasized),
     };
     return path;
   }

@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import { ComboBox, IComboBoxOption } from "@fluentui/react";
-import { defultComponentsHeight } from "../../views/panels/widgets/controls/fluentui_customized_components";
+import { defaultComponentsHeight } from "../../views/panels/widgets/controls/fluentui_customized_components";
 import { Color } from "../../../core";
 import {
   ColorSpaceDescription,
@@ -47,7 +47,7 @@ export class ColorSpaceSelect extends React.Component<
         }}
         styles={{
           root: {
-            ...defultComponentsHeight,
+            ...defaultComponentsHeight,
           },
           input: {
             width: "100px !important",

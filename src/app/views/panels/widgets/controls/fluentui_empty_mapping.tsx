@@ -5,7 +5,7 @@ import * as React from "react";
 import { DefaultButton, TextField } from "@fluentui/react";
 import {
   defaultStyle,
-  defultBindButtonSize,
+  defaultBindButtonSize,
   FluentButton,
   FluentTextField,
   labelRender,
@@ -116,7 +116,7 @@ export const EmptyColorButton = ({
         styles={{
           root: {
             minWidth: "unset",
-            ...defultBindButtonSize,
+            ...defaultBindButtonSize,
             marginLeft: 5,
           },
         }}

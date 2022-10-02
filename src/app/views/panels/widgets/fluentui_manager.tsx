@@ -78,8 +78,8 @@ import { FluentInputExpression } from "./controls/fluentui_input_expression";
 import {
   defaultLabelStyle,
   defaultStyle,
-  defultBindButtonSize,
-  defultComponentsHeight,
+  defaultBindButtonSize,
+  defaultComponentsHeight,
   FluentButton,
   FluentCheckbox,
   FluentDatePickerWrapper,
@@ -733,7 +733,7 @@ export class FluentUIWidgetManager
                   label: null,
                   root: {
                     minWidth: "unset",
-                    ...defultBindButtonSize,
+                    ...defaultBindButtonSize,
                   },
                 }}
                 title={options.labels[index]}
@@ -783,7 +783,7 @@ export class FluentUIWidgetManager
                 styles={{
                   label: defaultLabelStyle,
                   root: {
-                    ...defultComponentsHeight,
+                    ...defaultComponentsHeight,
                   },
                   ...options.checkBoxStyles,
                 }}
@@ -815,11 +815,11 @@ export class FluentUIWidgetManager
             title={options.label}
             label={options.label}
             styles={{
-              ...defultBindButtonSize,
+              ...defaultBindButtonSize,
               label: defaultLabelStyle,
               root: {
                 minWidth: "unset",
-                ...defultBindButtonSize,
+                ...defaultBindButtonSize,
               },
             }}
             text={options.label}
@@ -1058,7 +1058,7 @@ export class FluentUIWidgetManager
           styles={{
             root: {
               minWidth: "unset",
-              ...defultBindButtonSize,
+              ...defaultBindButtonSize,
             },
           }}
           iconProps={{
@@ -1178,7 +1178,7 @@ export class FluentUIWidgetManager
             styles={{
               root: {
                 minWidth: "unset",
-                ...defultBindButtonSize,
+                ...defaultBindButtonSize,
               },
               label: null,
             }}
@@ -1217,7 +1217,7 @@ export class FluentUIWidgetManager
           styles={{
             root: {
               minWidth: "unset",
-              ...defultComponentsHeight,
+              ...defaultComponentsHeight,
             },
           }}
           iconProps={{
@@ -1576,7 +1576,7 @@ export class FluentUIWidgetManager
                 },
                 root: {
                   minWidth: "unset",
-                  ...defultBindButtonSize,
+                  ...defaultBindButtonSize,
                 },
               }}
             />
@@ -1699,7 +1699,7 @@ export class FluentUIWidgetManager
                 styles={{
                   root: {
                     minWidth: "unset",
-                    ...defultComponentsHeight,
+                    ...defaultComponentsHeight,
                   },
                 }}
                 text={text}
@@ -1967,7 +1967,7 @@ export class FluentUIWidgetManager
           styles={{
             root: {
               minWidth: "unset",
-              ...defultComponentsHeight,
+              ...defaultComponentsHeight,
             },
           }}
           iconProps={{

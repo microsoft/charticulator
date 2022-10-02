@@ -141,7 +141,7 @@ export namespace Handles {
     y: number;
   }
 
-  /** A line with a x or y coordiante, and a span on the other */
+  /** A line with a x or y coordinate, and a span on the other */
   export interface Line extends Description {
     type: "line";
     axis: "x" | "y";

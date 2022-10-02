@@ -329,7 +329,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
     glyphIndex: number,
     // eslint-disable-next-line
     manager: ChartStateManager,
-    empasized?: boolean
+    emphasized?: boolean
   ): Graphics.Element {
     const attrs = this.state.attributes;
     const props = this.object.properties;
@@ -365,7 +365,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
       );
     }
 
-    // Center in local coordiantes
+    // Center in local coordinates
     const cx = (attrs.x1 + attrs.x2) / 2;
     const cy = (attrs.y1 + attrs.y2) / 2;
 
@@ -438,8 +438,8 @@ export class ImageElementClass extends EmphasizableMarkClass<
         height: imageHeight,
         mode: "stretch",
         style: {
-          ...this.generateEmphasisStyle(empasized),
-          colorFilter: empasized
+          ...this.generateEmphasisStyle(emphasized),
+          colorFilter: emphasized
             ? `alpha(opacity=${DEFAULT_POWER_BI_OPACITY * 100})`
             : null,
         },

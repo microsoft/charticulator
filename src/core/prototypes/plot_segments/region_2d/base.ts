@@ -48,7 +48,7 @@ export enum GridStartPosition {
   LeftTop = "LT",
   RightTop = "RT",
   LeftBottom = "LB",
-  RigtBottom = "RB",
+  RightBottom = "RB",
 }
 
 export interface Region2DSublayoutOptions extends Specification.AttributeMap {
@@ -244,7 +244,7 @@ export class DodgingFitters {
 }
 
 /**
- * Describes variables for constraints group. Count of group matches with data cound
+ * Describes variables for constraints group. Count of group matches with data count
  */
 export class SublayoutGroup {
   public group: number[];
@@ -1724,7 +1724,7 @@ export class Region2DConstraintBuilder {
   ) {
     if (
       gridStartPosition === GridStartPosition.LeftBottom ||
-      gridStartPosition === GridStartPosition.RigtBottom
+      gridStartPosition === GridStartPosition.RightBottom
     ) {
       markStates = markStates.reverse();
     }
@@ -1741,7 +1741,7 @@ export class Region2DConstraintBuilder {
 
         if (
           gridStartPosition === GridStartPosition.RightTop ||
-          gridStartPosition === GridStartPosition.RigtBottom
+          gridStartPosition === GridStartPosition.RightBottom
         ) {
           xi = xCount - 1 - xi; // flip X
         }
@@ -2677,7 +2677,7 @@ export class Region2DConstraintBuilder {
                 GridStartPosition.LeftTop,
                 GridStartPosition.RightTop,
                 GridStartPosition.LeftBottom,
-                GridStartPosition.RigtBottom,
+                GridStartPosition.RightBottom,
               ],
               labels: [
                 strings.objects.plotSegment.directionDownRight,
@@ -3027,7 +3027,7 @@ export class Region2DConstraintBuilder {
                   GridStartPosition.LeftTop,
                   GridStartPosition.RightTop,
                   GridStartPosition.LeftBottom,
-                  GridStartPosition.RigtBottom,
+                  GridStartPosition.RightBottom,
                 ],
                 labels: [
                   strings.objects.plotSegment.directionDownRight,

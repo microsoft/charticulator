@@ -8,7 +8,7 @@ import { PanelMode } from "../../../../core/prototypes/controls";
 
 import { strings } from "../../../../strings";
 import {
-  defultComponentsHeight,
+  defaultComponentsHeight,
   FluentButton,
 } from "./controls/fluentui_customized_components";
 import { FluentUIFilterEditor } from "./fluentui_filter_editor";
@@ -46,7 +46,7 @@ export const FilterPanel: React.FC<{
               styles={{
                 root: {
                   minWidth: "unset",
-                  ...defultComponentsHeight,
+                  ...defaultComponentsHeight,
                 },
               }}
             />

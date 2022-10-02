@@ -20,13 +20,13 @@
  *
  * * {@link "app/backend/indexed_db"} contains class {@link IndexedDBBackend}. It wraps [IndexedDB API](https://developer.mozilla.org/docs/Web/API/IndexedDB_API) to save user charts in the browser storage.
  *
- * * {@link "app/components/index"} contains general high-level componenets for UI. Other low-level components ("bricks" of UI) are in {@link "app/views/index"} module.
+ * * {@link "app/components/index"} contains general high-level components for UI. Other low-level components ("bricks" of UI) are in {@link "app/views/index"} module.
  *
  * Charticulator has {@link WidgetManager} class for managing those components. It's "facade" over all components.
  *
  * {@link ObjectClass.getAttributePanelWidgets} method uses interface of {@link WidgetManager} to build UI for mark attributes. (See {@link "core/prototypes/marks/index"})
  *
- * * {@link "app/views/index"} module contains general views for dataset displaying, file views for open, save, create chart and different panes like attribure panel link creator, object list editor, scale editor, scale panel with used scales list.
+ * * {@link "app/views/index"} module contains general views for dataset displaying, file views for open, save, create chart and different panes like attribute panel link creator, object list editor, scale editor, scale panel with used scales list.
  *
  * * {@link "app/views/dataset/table_view"} contains view for displaying dataset as table on creating the new chart or for displaying data samples after importing data
  *

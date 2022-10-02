@@ -6,7 +6,7 @@ import { copyToClipboard } from "../utils";
 
 export enum TelemetryActionType {
   Exception = "exception",
-  ExportTemplate = "exportTempalte",
+  ExportTemplate = "exportTemplate",
 }
 
 export interface TelemetryRecorder {

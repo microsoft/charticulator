@@ -20,7 +20,7 @@ import { strings } from "../../strings";
 import { LayoutDirection, UndoRedoLocation } from "../main_view";
 import { EditorType } from "../stores/app_store";
 
-const minWidthToColapseButtons = Object.freeze({
+const minWidthToCollapseButtons = Object.freeze({
   guides: 1090,
   plotSegments: 1120,
   scaffolds: 1211,
@@ -459,7 +459,7 @@ export class Toolbar extends ContextedComponent<
             {strings.toolbar.guides}
           </span>
         )}
-        {innerWidth > minWidthToColapseButtons.guides ? (
+        {innerWidth > minWidthToCollapseButtons.guides ? (
           <>
             <ObjectButton
               classID="guide-y"
@@ -506,7 +506,7 @@ export class Toolbar extends ContextedComponent<
             </span>
           </>
         )}
-        {innerWidth > minWidthToColapseButtons.plotSegments ? (
+        {innerWidth > minWidthToCollapseButtons.plotSegments ? (
           <>
             <ObjectButton
               classID="plot-segment.cartesian"
@@ -536,7 +536,7 @@ export class Toolbar extends ContextedComponent<
             {strings.toolbar.scaffolds}
           </span>
         )}
-        {innerWidth > minWidthToColapseButtons.scaffolds ? (
+        {innerWidth > minWidthToCollapseButtons.scaffolds ? (
           <>
             <ScaffoldButton
               type="cartesian-x"

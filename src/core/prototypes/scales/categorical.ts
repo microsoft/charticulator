@@ -244,7 +244,7 @@ export class CategoricalScaleColor extends ScaleClass<
           }
         });
 
-        // Find unused mapping and save them, if count if new mapping domain is less thant old.
+        // Find unused mapping and save them, if count if new mapping domain is less than old.
         const newMappingKeys = Object.keys(mapping);
         const oldMappingKeys = Object.keys(props.mapping);
         if (newMappingKeys.length < oldMappingKeys.length) {

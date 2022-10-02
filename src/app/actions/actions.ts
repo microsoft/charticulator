@@ -174,7 +174,7 @@ export class ReplaceDataset extends Action {
   }
 }
 
-/** Invokes updaes all plot segments on the chart,  */
+/** Invokes updates all plot segments on the chart,  */
 export class UpdatePlotSegments extends Action {
   constructor() {
     super();
@@ -283,7 +283,7 @@ export class RemoveMarkFromGlyph extends Action {
 }
 
 /**
- * Dispatches when user binds table coulmns to attributes
+ * Dispatches when user binds table columns to attributes
  */
 export class MapDataToMarkAttribute extends Action {
   /**
@@ -530,7 +530,7 @@ export class MapDataToChartElementAttribute extends Action {
 
   public digest() {
     return {
-      name: "MapChartElementkAttribute",
+      name: "MapChartElementAttribute",
       chartElement: objectDigest(this.chartElement),
       attribute: this.attribute,
       attributeType: this.attributeType,

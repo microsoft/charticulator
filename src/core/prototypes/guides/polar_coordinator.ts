@@ -248,13 +248,13 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
 
     // xy
     {
-      const angleVarable: Variable[] = [];
+      const angleVariable: Variable[] = [];
       for (let xindex = 0; xindex < angularX.length; xindex++) {
-        angleVarable.push(solver.attr(attrs, angularX[xindex]));
+        angleVariable.push(solver.attr(attrs, angularX[xindex]));
       }
-      const radialVarable: Variable[] = [];
+      const radialVariable: Variable[] = [];
       for (let yindex = 0; yindex < radialY.length; yindex++) {
-        radialVarable.push(solver.attr(attrs, radialY[yindex]));
+        radialVariable.push(solver.attr(attrs, radialY[yindex]));
       }
 
       for (let xindex = 0; xindex < angularX.length; xindex++) {
@@ -333,8 +333,8 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
           solver,
           x,
           y,
-          radialVarable,
-          angleVarable,
+          radialVariable,
+          angleVariable,
           attrs,
           chartConstraints,
           this.object._id,
@@ -639,7 +639,7 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
               )
             )
           ),
-          // uncomment to allow configure raito
+          // uncomment to allow configure ratio
           // manager.row(
           //   strings.objects.guides.radius,
           //   manager.horizontal(

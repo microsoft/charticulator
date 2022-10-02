@@ -118,7 +118,7 @@ export interface MappingEditorOptions extends SearchSection {
   openMapping?: boolean;
   /** Enables value selector from mapping */
   allowSelectValue?: boolean;
-  /** Text lael of input */
+  /** Text label of input */
   label?: string;
   stopPropagation?: boolean;
 

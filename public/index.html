@@ -18,16 +18,16 @@
     <script src="scripts/app.bundle.js"></script>
 
     <script type="text/javascript">
-      const responce = fetch(`${CHARTICULATOR_CONFIG.WorkerURL}`).then(
-        (responce) => {
-          if (!responce.ok) {
+      const response = fetch(`${CHARTICULATOR_CONFIG.WorkerURL}`).then(
+        (response) => {
+          if (!response.ok) {
             throw Error(
               `Loading worker script from ${
                 CHARTICULATOR_CONFIG.WorkerURL
               } failed`
             );
           }
-          const script = responce.text().then((script) => {
+          const script = response.text().then((script) => {
             const blob = new Blob([script], { type: "application/javascript" });
 
             const workerScript = URL.createObjectURL(blob);

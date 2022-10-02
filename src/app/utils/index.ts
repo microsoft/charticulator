@@ -165,7 +165,7 @@ export function stringToDataURL(mimeType: string, content: string) {
   return "data:" + mimeType + ";base64," + b64EncodeUnicode(content);
 }
 
-function checkConvertion(
+function checkConversion(
   type: DataType,
   dataSample: (string | boolean | Date | number)[]
 ) {
@@ -303,7 +303,7 @@ export function getConvertableTypes(
       return true;
     }
     if (dataSample) {
-      return checkConvertion(
+      return checkConversion(
         t,
         dataSample.map((d) => d && d.toString())
       );
@@ -356,11 +356,11 @@ export function convertColumns(
     applyConvertedValues(table, column.name, convertedValues);
     return null;
   } catch (ex) {
-    const messgae = `Converting column type from ${originColumn.type} to ${type} failed`;
-    console.warn(messgae);
+    const message = `Converting column type from ${originColumn.type} to ${type} failed`;
+    console.warn(message);
     // rollback type
     column.type = typeBeforeChange;
-    return messgae;
+    return message;
   }
 }
 
@@ -381,7 +381,7 @@ export function isInIFrame() {
   }
 }
 
-export function getAligntment(anchor: Element) {
+export function getAlignment(anchor: Element) {
   let alignX:
     | "start-outer"
     | "inner"

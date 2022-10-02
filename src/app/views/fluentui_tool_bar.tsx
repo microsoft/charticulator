@@ -27,7 +27,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { Icon } from "@fluentui/react/lib/Icon";
 
-const minWidthToColapseButtons = Object.freeze({
+const minWidthToCollapseButtons = Object.freeze({
   guides: 1090,
   plotSegments: 1120,
   scaffolds: 1211,
@@ -496,7 +496,7 @@ export const FluentUIToolbar: React.FC<{
             {strings.toolbar.guides}
           </span>
         )}
-        {innerWidth > minWidthToColapseButtons.guides ? (
+        {innerWidth > minWidthToCollapseButtons.guides ? (
           <>
             <ObjectButton
               classID="guide-y"
@@ -567,7 +567,7 @@ export const FluentUIToolbar: React.FC<{
             {strings.toolbar.scaffolds}
           </span>
         )}
-        {innerWidth > minWidthToColapseButtons.scaffolds ? (
+        {innerWidth > minWidthToCollapseButtons.scaffolds ? (
           <>
             <ScaffoldButton
               type="cartesian-x"

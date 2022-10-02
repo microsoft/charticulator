@@ -31,8 +31,8 @@ import {
 } from "@fluentui/react";
 import {
   defaultLabelStyle,
-  defultBindButtonSize,
-  defultComponentsHeight,
+  defaultBindButtonSize,
+  defaultComponentsHeight,
   FluentActionButton,
   FluentButton,
   FluentRowLayout,
@@ -121,12 +121,12 @@ export class FluentMappingEditor extends React.Component<
                 scaleMapping={mapping as any}
                 store={this.props.store}
                 onSelect={(index) => {
-                  const paresedExpression = Expression.parse(
+                  const parsedExpression = Expression.parse(
                     scaleMapping.expression
                   ) as FunctionCall;
                   // change the second param of get function
-                  (paresedExpression.args[1] as any).value = index;
-                  scaleMapping.expression = paresedExpression.toString();
+                  (parsedExpression.args[1] as any).value = index;
+                  scaleMapping.expression = parsedExpression.toString();
                   this.props.parent.onEditMappingHandler(
                     this.props.attribute,
                     scaleMapping
@@ -411,10 +411,10 @@ export class FluentMappingEditor extends React.Component<
                     styles={{
                       menuIcon: {
                         display: "none !important",
-                        ...defultComponentsHeight,
+                        ...defaultComponentsHeight,
                       },
                       root: {
-                        ...defultComponentsHeight,
+                        ...defaultComponentsHeight,
                       },
                     }}
                     title={strings.mappingEditor.bindData}
@@ -507,10 +507,10 @@ export class FluentMappingEditor extends React.Component<
                       styles={{
                         menuIcon: {
                           display: "none !important",
-                          ...defultComponentsHeight,
+                          ...defaultComponentsHeight,
                         },
                         root: {
-                          ...defultComponentsHeight,
+                          ...defaultComponentsHeight,
                         },
                       }}
                       title={strings.mappingEditor.keyColumnExpression}
@@ -551,10 +551,10 @@ export class FluentMappingEditor extends React.Component<
                       styles={{
                         menuIcon: {
                           display: "none !important",
-                          ...defultComponentsHeight,
+                          ...defaultComponentsHeight,
                         },
                         root: {
-                          ...defultComponentsHeight,
+                          ...defaultComponentsHeight,
                         },
                       }}
                       title={strings.mappingEditor.bindData}
@@ -701,7 +701,7 @@ export class FluentMappingEditor extends React.Component<
                     styles={{
                       root: {
                         minWidth: "unset",
-                        ...defultBindButtonSize,
+                        ...defaultBindButtonSize,
                       },
                     }}
                     checked={false}
@@ -733,7 +733,7 @@ export class FluentMappingEditor extends React.Component<
                         },
                         root: {
                           minWidth: "unset",
-                          ...defultBindButtonSize,
+                          ...defaultBindButtonSize,
                         },
                       }}
                       title={strings.mappingEditor.bindData}
@@ -756,7 +756,7 @@ export class FluentMappingEditor extends React.Component<
                     styles={{
                       root: {
                         minWidth: "unset",
-                        ...defultBindButtonSize,
+                        ...defaultBindButtonSize,
                       },
                     }}
                     title={strings.mappingEditor.bindDataValue}
@@ -887,7 +887,7 @@ export class FluentMappingEditor extends React.Component<
   }
 }
 
-export interface DataMappAndScaleEditorProps {
+export interface DataMapAndScaleEditorProps {
   attribute: string;
   defaultMapping: Specification.Mapping;
   options: Prototypes.Controls.MappingEditorOptions;
@@ -896,13 +896,13 @@ export interface DataMappAndScaleEditorProps {
   alignLeft?: boolean;
   plotSegment: ObjectClass;
 }
-export interface DataMappAndScaleEditorState {
+export interface DataMapAndScaleEditorState {
   currentMapping: Specification.Mapping;
 }
 
-export class DataMappAndScaleEditor extends ContextedComponent<
-  DataMappAndScaleEditorProps,
-  DataMappAndScaleEditorState
+export class DataMapAndScaleEditor extends ContextedComponent<
+  DataMapAndScaleEditorProps,
+  DataMapAndScaleEditorState
 > {
   public state = {
     currentMapping: this.props.defaultMapping,

@@ -590,7 +590,7 @@ export function getSortFunctionByData(values: string[]) {
   return (a: any, b: any) => (a < b ? -1 : 1);
 }
 /**
- * Retunrs sort direction by comparing the first and the last values of string array
+ * Returns sort direction by comparing the first and the last values of string array
  */
 export function getSortDirection(values: string[]): string {
   let direction = "ascending";
@@ -624,7 +624,7 @@ export function compareMarkAttributeNames(a: string, b: string) {
   if (a === b) {
     return true;
   } else {
-    // fill and stroke uses with color. Those preoperties has the same meaning for marks
+    // fill and stroke uses with color. Those properties has the same meaning for marks
     if (colorAttributes.indexOf(b) > -1 && colorAttributes.indexOf(a) > -1) {
       return true;
     }

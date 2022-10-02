@@ -119,8 +119,8 @@ export class FileViewImport extends ContextedComponent<
                   >
                     <h4>
                       {this.props.mode === MappingMode.ImportTemplate
-                        ? strings.templateImport.usbtitleImportTemplate
-                        : strings.templateImport.usbtitleImportData}
+                        ? strings.templateImport.subtitleImportTemplate
+                        : strings.templateImport.subtitleImportData}
                     </h4>
                     <table className="charticulator__file-view-mapping_table">
                       <thead>

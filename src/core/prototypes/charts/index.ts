@@ -139,7 +139,7 @@ export class RectangleChart extends ChartClass {
   };
   public readonly state: RectangleChartState;
 
-  // Get a list of elemnt attributes
+  // Get a list of element attributes
   public attributeNames: string[] = [
     "x1",
     "y1",

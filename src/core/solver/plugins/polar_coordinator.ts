@@ -10,7 +10,7 @@ import { snapToAttribute } from "../../prototypes/update_attribute";
 import { ConstraintPlugin, ConstraintSolver, Variable } from "../abstract";
 
 // eslint-disable-next-line
-export interface PolarCoordinatorPluginOptions {}
+export interface PolarCoordinatorPluginOptions { }
 
 // Converts Polar coordinates to cartesian coordinates
 export class PolarCoordinatorPlugin extends ConstraintPlugin {
@@ -19,33 +19,33 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
   public cy: Variable;
   public an: Variable[];
   attrs: PolarGuideCoordinatorAttributesExtend;
-  radialVarable: Variable[];
-  angleVarable: Variable[];
+  radialVariable: Variable[];
+  angleVariable: Variable[];
   chartConstraints: Specification.Constraint[];
-  coordinatoObjectID: string;
-  chartMananger: ChartStateManager;
+  coordinatorObjectID: string;
+  chartManager: ChartStateManager;
 
   constructor(
     solver: ConstraintSolver,
     cx: Variable,
     cy: Variable,
-    radialVarable: Variable[],
-    angleVarable: Variable[],
+    radialVariable: Variable[],
+    angleVariable: Variable[],
     attrs: PolarGuideCoordinatorAttributesExtend,
     chartConstraints: Specification.Constraint[],
-    coordinatoObjectID: string,
-    chartMananger: ChartStateManager
+    coordinatorObjectID: string,
+    chartManager: ChartStateManager
   ) {
     super();
     this.solver = solver;
     this.cx = cx;
     this.cy = cy;
-    this.radialVarable = radialVarable;
-    this.angleVarable = angleVarable;
+    this.radialVariable = radialVariable;
+    this.angleVariable = angleVariable;
     this.attrs = attrs;
     this.chartConstraints = chartConstraints;
-    this.coordinatoObjectID = coordinatoObjectID;
-    this.chartMananger = chartMananger;
+    this.coordinatorObjectID = coordinatorObjectID;
+    this.chartManager = chartManager;
   }
 
   public apply() {
@@ -53,22 +53,22 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
     const cy = this.solver.getValue(this.cy);
 
     const attrs = this.attrs;
-    for (let i = 0; i < this.angleVarable.length; i++) {
+    for (let i = 0; i < this.angleVariable.length; i++) {
       const angleAttr = this.solver.attr(
         attrs,
-        (<any>this.angleVarable[i]).name,
+        (<any>this.angleVariable[i]).name,
         {
           edit: false,
         }
       );
 
-      for (let j = 0; j < this.radialVarable.length; j++) {
+      for (let j = 0; j < this.radialVariable.length; j++) {
         const attrXname = getPointValueName(i, j, "X");
         const attrYname = getPointValueName(i, j, "Y");
 
         const radialAttr = this.solver.attr(
           attrs,
-          (<any>this.radialVarable[j]).name,
+          (<any>this.radialVariable[j]).name,
           {
             edit: false,
           }
@@ -94,16 +94,16 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
 
         // take snapped attributes and apply new value
         snapToAttribute(
-          this.chartMananger,
+          this.chartManager,
           this.chartConstraints,
-          this.coordinatoObjectID,
+          this.coordinatorObjectID,
           attrXname,
           cx + tx
         );
         snapToAttribute(
-          this.chartMananger,
+          this.chartManager,
           this.chartConstraints,
-          this.coordinatoObjectID,
+          this.coordinatorObjectID,
           attrYname,
           cy + ty
         );

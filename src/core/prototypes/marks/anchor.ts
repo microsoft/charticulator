@@ -33,7 +33,7 @@ export class AnchorElement extends MarkClass {
 
   public readonly state: AnchorElementState;
 
-  /** Get a list of elemnt attributes */
+  /** Get a list of element attributes */
   public attributeNames: string[] = ["x", "y"];
   public attributes: { [name: string]: AttributeDescription } = {
     x: {

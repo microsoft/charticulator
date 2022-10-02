@@ -21,7 +21,7 @@ import {
 } from "@fluentui/react";
 import {
   defaultLabelStyle,
-  defultBindButtonSize,
+  defaultBindButtonSize,
   FluentActionButton,
   FluentButton,
 } from "./fluentui_customized_components";
@@ -118,7 +118,7 @@ export class InputImage extends ContextedComponent<
                 {this.props.label}
               </Label>
             ) : null}
-            <span className="el-drag-over-attrubutes">
+            <span className="el-drag-over-attributes">
               {strings.objects.image.dropImage}
             </span>
           </div>
@@ -130,12 +130,12 @@ export class InputImage extends ContextedComponent<
               </Label>
             ) : null}
             <FluentActionButton
-              style={{ width: "100%", height: defultBindButtonSize.height }}
+              style={{ width: "100%", height: defaultBindButtonSize.height }}
             >
               <ActionButton
                 styles={{
                   root: {
-                    height: defultBindButtonSize.height,
+                    height: defaultBindButtonSize.height,
                   },
                 }}
                 text={isNone ? strings.core.none : imageDisplayURL}
@@ -342,7 +342,7 @@ export class ImageUploader extends React.Component<
                 styles={{
                   root: {
                     minWidth: "unset",
-                    ...defultBindButtonSize,
+                    ...defaultBindButtonSize,
                   },
                 }}
                 iconProps={{

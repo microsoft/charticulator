@@ -47,7 +47,7 @@ import {
   AxisDataBindingType,
   NumericalMode,
 } from "../../specification/types";
-import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
+import { VirtualScrollBar, VirtualScrollBarProperties } from "./virtualScroll";
 import {
   CategoryItemsWithIds,
   getOnConfirmFunction,
@@ -69,8 +69,8 @@ import React = require("react");
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
-  tickTextBackgroudColor: null,
-  tickTextBackgroudColorId: null,
+  tickTextBackgroundColor: null,
+  tickTextBackgroundColorId: null,
   showTicks: true,
   showBaseline: true,
   lineColor: { r: 0, g: 0, b: 0 },
@@ -135,7 +135,7 @@ export class AxisRenderer {
     } else {
       this.style = fillDefaultAxisStyle(deepClone(style));
     }
-    this.style.tickTextBackgroudColorId =
+    this.style.tickTextBackgroundColorId =
       "axis-tick-filter-" + getRandomNumber();
     return this;
   }
@@ -713,8 +713,8 @@ export class AxisRenderer {
               style.fontSize,
               {
                 fillColor: style.tickColor,
-                backgroundColor: style.tickTextBackgroudColor,
-                backgroundColorId: style.tickTextBackgroudColorId,
+                backgroundColor: style.tickTextBackgroundColor,
+                backgroundColorId: style.tickTextBackgroundColorId,
               }
             );
             lines.push(text);
@@ -745,8 +745,8 @@ export class AxisRenderer {
               style.fontSize,
               {
                 fillColor: style.tickColor,
-                backgroundColor: style.tickTextBackgroudColor,
-                backgroundColorId: style.tickTextBackgroudColorId,
+                backgroundColor: style.tickTextBackgroundColor,
+                backgroundColorId: style.tickTextBackgroundColorId,
               },
               this.plotSegment && this.dataFlow
                 ? {
@@ -788,8 +788,8 @@ export class AxisRenderer {
             style.fontSize,
             {
               fillColor: style.tickColor,
-              backgroundColor: style.tickTextBackgroudColor,
-              backgroundColorId: style.tickTextBackgroudColorId,
+              backgroundColor: style.tickTextBackgroundColor,
+              backgroundColorId: style.tickTextBackgroundColorId,
             },
             this.plotSegment && this.dataFlow
               ? {
@@ -850,8 +850,8 @@ export class AxisRenderer {
               style.fontSize,
               {
                 fillColor: style.tickColor,
-                backgroundColor: style.tickTextBackgroudColor,
-                backgroundColorId: style.tickTextBackgroudColorId,
+                backgroundColor: style.tickTextBackgroundColor,
+                backgroundColorId: style.tickTextBackgroundColorId,
               },
               this.plotSegment && this.dataFlow
                 ? {
@@ -921,8 +921,8 @@ export class AxisRenderer {
                 style.fontSize,
                 {
                   fillColor: style.tickColor,
-                  backgroundColor: style.tickTextBackgroudColor,
-                  backgroundColorId: style.tickTextBackgroudColorId,
+                  backgroundColor: style.tickTextBackgroundColor,
+                  backgroundColorId: style.tickTextBackgroundColorId,
                 },
                 this.plotSegment && this.dataFlow
                   ? {
@@ -980,8 +980,8 @@ export class AxisRenderer {
                 style.fontSize,
                 {
                   fillColor: style.tickColor,
-                  backgroundColor: style.tickTextBackgroudColor,
-                  backgroundColorId: style.tickTextBackgroudColorId,
+                  backgroundColor: style.tickTextBackgroundColor,
+                  backgroundColorId: style.tickTextBackgroundColorId,
                 },
                 this.plotSegment && this.dataFlow
                   ? {
@@ -1046,7 +1046,7 @@ export class AxisRenderer {
       return;
     }
     const g = makeGroup([]);
-    const gridineArcRotate = 90;
+    const gridlineArcRotate = 90;
     const lineStyle: Style = {
       strokeLinecap: "round",
       strokeColor: style.gridlineColor,
@@ -1055,10 +1055,10 @@ export class AxisRenderer {
     };
     for (const tickPosition of this.ticks.map((x) => x.position)) {
       const cos = Math.cos(
-        Geometry.degreesToRadians(-tickPosition + gridineArcRotate)
+        Geometry.degreesToRadians(-tickPosition + gridlineArcRotate)
       );
       const sin = Math.sin(
-        Geometry.degreesToRadians(-tickPosition + gridineArcRotate)
+        Geometry.degreesToRadians(-tickPosition + gridlineArcRotate)
       );
       const tx1 = x + cos * innerRadius;
       const ty1 = y + sin * innerRadius;
@@ -1085,7 +1085,7 @@ export class AxisRenderer {
     const g = makeGroup([]);
     const startCos = Math.cos(Geometry.degreesToRadians(startAngle));
     const startSin = Math.sin(Geometry.degreesToRadians(startAngle));
-    const gridineArcRotate = 90;
+    const gridlineArcRotate = 90;
     const lineStyle: Style = {
       strokeLinecap: "round",
       strokeColor: style.gridlineColor,
@@ -1101,9 +1101,9 @@ export class AxisRenderer {
       arc.polarLineTo(
         x,
         y,
-        -startAngle + gridineArcRotate,
+        -startAngle + gridlineArcRotate,
         tickPosition,
-        -endAngle + gridineArcRotate,
+        -endAngle + gridlineArcRotate,
         tickPosition,
         true
       );
@@ -1140,25 +1140,25 @@ export class AxisRenderer {
       Geometry.degreesToRadians(
         radius * ((rangeMax - rangeMin) / this.ticks.length)
       ) -
-      margins * 2; // lenght of arc for all ticks
+      margins * 2; // length of arc for all ticks
     for (const tick of this.ticks) {
       const angle = tick.position;
       const radians = Geometry.degreesToRadians(angle);
       const tx = Math.sin(radians) * radius;
       const ty = Math.cos(radians) * radius;
 
-      const lablel =
+      const label =
         tick.label && replaceSymbolByTab(replaceSymbolByNewLine(tick.label));
       if (
-        lablel &&
+        label &&
         (style.wordWrap ||
           (typeof tick.label === "string" &&
-            splitStringByNewLine(lablel).length > 1))
+            splitStringByNewLine(label).length > 1))
       ) {
-        let textContent = [lablel];
+        let textContent = [label];
         if (style.wordWrap) {
           textContent = splitByWidth(
-            lablel,
+            label,
             maxTickDistance,
             10000,
             style.fontFamily,
@@ -1190,8 +1190,8 @@ export class AxisRenderer {
             style.fontSize,
             {
               fillColor: style.tickColor,
-              backgroundColor: style.tickTextBackgroudColor,
-              backgroundColorId: style.tickTextBackgroudColorId,
+              backgroundColor: style.tickTextBackgroundColor,
+              backgroundColorId: style.tickTextBackgroundColorId,
             }
           );
           lines.push(gt);
@@ -1219,8 +1219,8 @@ export class AxisRenderer {
           style.showTicks ? line : null,
           makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
             fillColor: style.tickColor,
-            backgroundColor: style.tickTextBackgroudColor,
-            backgroundColorId: style.tickTextBackgroudColorId,
+            backgroundColor: style.tickTextBackgroundColor,
+            backgroundColorId: style.tickTextBackgroundColorId,
           }),
         ]);
 
@@ -1267,8 +1267,8 @@ export class AxisRenderer {
         style.showTicks ? line : null,
         makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
           fillColor: style.tickColor,
-          backgroundColor: style.tickTextBackgroudColor,
-          backgroundColorId: style.tickTextBackgroudColorId,
+          backgroundColor: style.tickTextBackgroundColor,
+          backgroundColorId: style.tickTextBackgroundColorId,
         }),
       ]);
 
@@ -1353,7 +1353,7 @@ export class AxisRenderer {
       height = AxisRenderer.SCROLL_BAR_SIZE;
     }
 
-    return React.createElement(VirtualScrollBar, <VirtualScrollBarPropertes>{
+    return React.createElement(VirtualScrollBar, <VirtualScrollBarProperties>{
       onScroll,
       handlerBarWidth: AxisRenderer.SCROLL_BAR_SIZE,
       height,
@@ -1593,10 +1593,10 @@ export function buildAxisAppearanceWidgets(
             manager.inputColor(
               {
                 property: axisProperty,
-                field: ["style", "tickTextBackgroudColor"],
+                field: ["style", "tickTextBackgroundColor"],
               },
               {
-                label: strings.objects.axes.tickTextBackgroudColor,
+                label: strings.objects.axes.tickTextBackgroundColor,
                 labelKey: `tick-text-background-color-${axisProperty}`,
                 allowNull: true,
                 searchSection: [

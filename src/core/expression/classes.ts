@@ -256,7 +256,7 @@ export class FunctionCall extends Expression {
       }
     }
     if (v == undefined) {
-      throw new SyntaxError(`undefiend function ${this.name}`);
+      throw new SyntaxError(`undefined function ${this.name}`);
     } else {
       this.function = v;
     }

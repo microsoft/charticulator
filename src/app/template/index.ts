@@ -1,7 +1,7 @@
 /**
- * The {@link ChartTemplateBuilder} creates tempate ({@link ChartTemplate}) from the current chart.
+ * The {@link ChartTemplateBuilder} creates template ({@link ChartTemplate}) from the current chart.
  * {@link ChartTemplate} contains simplified version of {@link Chart} object in {@link ChartTemplate.specification} property.
- * Tempate can be exported as *.tmplt file (JSON format). It also uses on export to HTML file or on export as Power BI visual.
+ * Template can be exported as *.tmplt file (JSON format). It also uses on export to HTML file or on export as Power BI visual.
  *
  * Template can be loaded into container outside of Charticulator app to visualize with custom dataset.
  *

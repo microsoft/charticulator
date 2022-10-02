@@ -2,33 +2,33 @@
 // Licensed under the MIT license.
 
 /**
- * Plotsegmets are high level elements of charticulator responsible for layout and arrange other elements (glyph's and marks)
+ * Plotsegments are high level elements of charticulator responsible for layout and arrange other elements (glyph's and marks)
  *
- * ![Plot segmets](media://plotsegmets_scaffolds.png)
+ * ![Plot segments](media://plotsegments_scaffolds.png)
  *
  * Segment can have different sublayouts: stacked x, stacked y, grid, packing e.tc
  *
- * ![Plot segmets sublayout](media://cartesian_plot_segment.png) ![Polar plot segmets sublayout](media://sublayout_polar.png)
+ * ![Plot segments sublayout](media://cartesian_plot_segment.png) ![Polar plot segments sublayout](media://sublayout_polar.png)
  *
- * All plot segmets extends {@link PlotSegmentClass} class.
+ * All plot segments extends {@link PlotSegmentClass} class.
  *
- * Charticulator has different plot segmets:
+ * Charticulator has different plot segments:
  *
  * {@link LineGuide} - puts elements on the one line
  *
- * {@link MapPlotSegment} - special plot segmet to draw a map. Uses {@link StaticMapService} class to workd with Bing and Google services
+ * {@link MapPlotSegment} - special plot segment to draw a map. Uses {@link StaticMapService} class to work with Bing and Google services
  *
- * {@link CartesianPlotSegment} - classic plot segmet with x and y axis coordinates
+ * {@link CartesianPlotSegment} - classic plot segment with x and y axis coordinates
  *
- * ![Cartesian plot segmets](media://cartesian_plot.png)
+ * ![Cartesian plot segments](media://cartesian_plot.png)
  *
- * {@link CurvePlotSegment} - puts elements on cruve drawn by user.
+ * {@link CurvePlotSegment} - puts elements on curve drawn by user.
  *
  * ![Curve plot](media://curve_plot.png)
  *
- * {@link PolarPlotSegment} - plot segmets with polar coordinates
+ * {@link PolarPlotSegment} - plot segments with polar coordinates
  *
- * ![Polar plot segmets](media://polar_plot.png)
+ * ![Polar plot segments](media://polar_plot.png)
  *
  * @packageDocumentation
  * @preferred

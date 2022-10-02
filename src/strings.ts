@@ -187,12 +187,12 @@ export const strings = {
     loadSample: "Load Sample Dataset...",
     links: "Links",
     messageNoID: (keyColumn: string) =>
-      `No ${keyColumn} colum are specified in main table`,
+      `No ${keyColumn} column are specified in main table`,
     messageNoSourceOrTargetID: (
       linkSourceKeyColumn: string,
       linkTargetKeyColumn: string
     ) =>
-      `No ${linkSourceKeyColumn} or ${linkTargetKeyColumn} colums are specified in links table`,
+      `No ${linkSourceKeyColumn} or ${linkTargetKeyColumn} columns are specified in links table`,
     removeButtonText: "Remove",
     removeButtonTitle: "Remove this table",
   },
@@ -296,9 +296,9 @@ export const strings = {
     save: "Save mapping",
     tableName: "Table name",
     title: "Map your data",
-    usbtitleImportTemplate:
+    subtitleImportTemplate:
       "Map the columns from your data source to the corresponding template fields",
-    usbtitleImportData:
+    subtitleImportData:
       "Map the columns from new data to the corresponding fields in the current chart design",
     unmapped: "Unmapped",
   },
@@ -432,7 +432,7 @@ export const strings = {
       dataExpressions: "Data Expressions",
       lineColor: "Line Color",
       tickColor: "Tick Label Color",
-      tickTextBackgroudColor: "Tick background color",
+      tickTextBackgroundColor: "Tick background color",
       showTickLine: "Show Tick Line",
       showBaseline: "Show Baseline",
       verticalText: "Vertical text",

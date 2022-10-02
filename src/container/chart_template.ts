@@ -124,7 +124,7 @@ export class ChartTemplate {
   }
 
   /**
-   * Creates instance of chart object from template. Chart objecty can be loaded into container to display it in canvas
+   * Creates instance of chart object from template. Chart object can be loaded into container to display it in canvas
    * On editing this method ensure that you made correspond changes in template builder ({@link ChartTemplateBuilder}).
    * Any exposed into template objects should be initialized here
    */
@@ -172,7 +172,7 @@ export class ChartTemplate {
           const plotSegment = item.chartElement as Specification.PlotSegment;
           const originalTable = plotSegment.table;
           plotSegment.table = this.tableAssignment[originalTable];
-          // Also fix filter and gropyBy expressions
+          // Also fix filter and groupyBy expressions
           if (plotSegment.filter) {
             if (plotSegment.filter.categories) {
               plotSegment.filter.categories.expression = this.transformExpression(
@@ -389,7 +389,7 @@ export class ChartTemplate {
         ) as Specification.Types.AxisDataBinding;
         axisDataBinding.expression = expression;
         if (inference.autoDomainMin || inference.autoDomainMax) {
-          // disableAuto flag responsible for disabling/enabling configulration scale domains when new data is coming
+          // disableAuto flag responsible for disabling/enabling configuration scale domains when new data is coming
           // If disableAuto is true, the same scales will be used for data
           // Example: If disableAuto is true, axis values will be same for all new data sets.
           let vector = getExpressionVector(

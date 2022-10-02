@@ -28,7 +28,7 @@ import { AxisDataBinding } from "../../specification/types";
 /**
  * Line plot segment distributes the elements on the line
  *
- *  (y1 and y2 can have diferent values, so line cna have some angle between line and axis lines)
+ *  (y1 and y2 can have different values, so line can have some angle between line and axis lines)
  *  y1 *------#------#------* y2
  *    x1                    x2
  *

@@ -57,7 +57,7 @@
  * A linear least square solver using the Conjugate Gradient method.
  *
  * * Solve sparse linear least square problems.
- * * Solve sparse constrained linear least square problems using a lagrange method.
+ * * Solve sparse constrained linear least square problems using a Lagrange method.
  * * Decompose dense matrices with full pivot LU to obtain solution and kernel (null space).
  * * Uses the Eigen library for sparse matrix computation and the conjugate gradient method.
  * * Compiled into WebAssembly for performance.

@@ -1119,7 +1119,7 @@
           background: lighten($color-active, 30%);
           height: 26px;
 
-          &-attrubutes {
+          &-attributes {
             @extend .el-drag-over;
             width: auto;
           }

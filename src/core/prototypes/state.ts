@@ -151,10 +151,10 @@ export class ChartStateManager {
       return true;
     } else {
       for (let index = 0; index < origin.constraints.length; index++) {
-        const originConstringts = origin.constraints[index];
+        const originConstraints = origin.constraints[index];
         const current = chart.constraints[index];
         expect_deep_approximately_equals(
-          originConstringts,
+          originConstraints,
           current,
           defaultDifferenceApproximation,
           true
@@ -165,7 +165,7 @@ export class ChartStateManager {
     const chartElements = [...forEachObject(chart)];
     const originElements = [...forEachObject(origin)];
 
-    // forEachObject retuns all objects in the chart
+    // forEachObject returns all objects in the chart
     // if any object was added or removed to the chart it means chart has changes
     // don't need to compare in details
     if (chartElements.length != originElements.length) {
@@ -391,7 +391,7 @@ export class ChartStateManager {
 
     // Build the state hierarchy
     const elementStates = chart.elements.map((element) => {
-      // Initialie the element state
+      // Initialize the element state
       const elementState: Specification.ChartElementState = {
         attributes: {},
       };
@@ -1175,7 +1175,7 @@ export class ChartStateManager {
   }
 
   /** Get glyph-level data context for the glyphIndex-th glyph */
-  public getGlpyhDataContext(
+  public getGlyphDataContext(
     plotSegment: Specification.PlotSegment,
     glyphIndex: number
   ): Expression.Context {
@@ -1188,7 +1188,7 @@ export class ChartStateManager {
   }
 
   /** Get all glyph-level data contexts for a given plot segment */
-  public getGlpyhDataContexts(
+  public getGlyphDataContexts(
     plotSegment: Specification.PlotSegment,
     // eslint-disable-next-line
     glyphIndex: number

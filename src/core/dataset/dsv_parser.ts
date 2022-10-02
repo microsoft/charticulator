@@ -44,11 +44,11 @@ export interface LocaleFileFormat {
 }
 
 /**
- * Parses data from file. Returns converted rows and list of colum names with types.
+ * Parses data from file. Returns converted rows and list of column names with types.
  * Calls {@link inferAndConvertColumn} method from {@link "core/dataset/data_types"} for convert types.
  * @param fileName input file name for parsing
  * @param content data of file
- * @param type type of file. *.csv - text with coma delimeter. *.tsv - tab separated text files
+ * @param type type of file. *.csv - text with coma delimiter. *.tsv - tab separated text files
  */
 export function parseDataset(
   fileName: string,

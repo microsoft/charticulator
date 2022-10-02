@@ -72,7 +72,7 @@ export interface AxisDataBinding extends AttributeMap {
   orderMode?: OrderMode;
 
   /** scrolling options */
-  // allCategories contsins all data set and categories property uses to display current content
+  // allCategories contains all data set and categories property uses to display current content
   allowScrolling?: boolean;
   allCategories?: string[];
   scrollPosition?: number;
@@ -103,8 +103,8 @@ export interface AxisRenderingStyle extends AttributeMap {
   fontFamily: string;
   fontSize: number;
   tickSize: number;
-  tickTextBackgroudColor: Color;
-  tickTextBackgroudColorId: string;
+  tickTextBackgroundColor: Color;
+  tickTextBackgroundColorId: string;
   wordWrap: boolean;
   gridlineStyle: StrokeStyle;
   gridlineColor: Color;

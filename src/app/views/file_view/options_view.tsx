@@ -80,7 +80,7 @@ export const FileViewOptionsView: React.FC<FileViewOptionsProps> = () => {
             <select
               onChange={(e) => {
                 const isDecimalDot =
-                  e.target.options[e.target.selectedIndex].value === ","; // values is removeal
+                  e.target.options[e.target.selectedIndex].value === ","; // values is removal
                 changeLocaleFileFormat({
                   ...localeFileFormat,
                   numberFormat: {
@@ -109,7 +109,7 @@ export const FileViewOptionsView: React.FC<FileViewOptionsProps> = () => {
             </select>
             <label>{strings.options.numberFormat}</label>
           </div>
-          {/* Uncomment to enable configuration for locale: currency symbol and groupping digits */}
+          {/* Uncomment to enable configuration for locale: currency symbol and grouping digits */}
           {/*
             <div className="form-group">
             <InputText

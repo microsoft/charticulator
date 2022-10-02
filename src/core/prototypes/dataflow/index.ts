@@ -6,7 +6,7 @@
  *
  * {@link DataflowTable} provides data context for charticulator's expressions, solver, plotsegments.
  *
- * {@link DataflowManager} is a proxy between dateset and other parts of charticualtor.
+ * {@link DataflowManager} is a proxy between dataset and other parts of charticulator.
  *
  * @packageDocumentation
  * @preferred

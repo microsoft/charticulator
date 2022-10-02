@@ -51,7 +51,7 @@ import { EditorType } from "./stores/app_store";
 import { LocalizationConfig } from "../container/container";
 
 export class ApplicationExtensionContext implements ExtensionContext {
-  constructor(public app: Application) {}
+  constructor(public app: Application) { }
 
   public getGlobalDispatcher(): Dispatcher<Action> {
     return this.app.appStore.dispatcher;
@@ -125,7 +125,7 @@ export class Application {
       workerScriptContent?: string;
       worker?: CharticulatorWorkerInterface;
     },
-    localizaiton: LocalizationConfig,
+    localization: LocalizationConfig,
     handlers?: {
       menuBarHandlers?: MenuBarHandlers;
       telemetry?: TelemetryRecorder;
@@ -175,7 +175,7 @@ export class Application {
       );
       const DelimiterSymbol = parseSafe(
         window.localStorage.getItem(LocalStorageKeys.DelimiterSymbol) ||
-          defaultDelimiter,
+        defaultDelimiter,
         defaultDelimiter
       );
       const GroupSymbol = parseSafe(
@@ -184,7 +184,7 @@ export class Application {
       );
       const NumberFormatRemove = parseSafe(
         window.localStorage.getItem(LocalStorageKeys.NumberFormatRemove) ||
-          defaultNumberFormat.remove,
+        defaultNumberFormat.remove,
         defaultNumberFormat.remove
       );
 
@@ -205,13 +205,13 @@ export class Application {
       });
     } catch (ex) {
       setFormatOptions({
-        currency: [localizaiton?.currency, ""] ?? defaultCurrency,
+        currency: [localization?.currency, ""] ?? defaultCurrency,
         grouping: defaultDigitsGroup,
-        decimal: localizaiton?.decemalDelimiter ?? defaultNumberFormat.decimal,
+        decimal: localization?.decimalDelimiter ?? defaultNumberFormat.decimal,
         thousands:
-          localizaiton?.thousandsDelimiter ?? defaultNumberFormat.decimal,
+          localization?.thousandsDelimiter ?? defaultNumberFormat.decimal,
       });
-      console.warn("Loadin localization settings failed");
+      console.warn("Loading localization settings failed");
     }
 
     (window as any).mainStore = this.appStore;
@@ -283,7 +283,7 @@ export class Application {
         deepClone(info.specification)
       );
 
-      // if version wasn't saved in tempalte we asume it is 2.0.3
+      // if version wasn't saved in template we assume it is 2.0.3
       if (info.template && info.template.version == undefined) {
         info.template.version = defaultVersionOfTemplate;
       }

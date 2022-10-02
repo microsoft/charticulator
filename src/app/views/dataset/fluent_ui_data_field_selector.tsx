@@ -417,7 +417,7 @@ export class DataFieldSelector extends React.Component<
     );
   }
 
-  //Update desing
+  //Update design
   public render() {
     const fields = this.getFields();
 

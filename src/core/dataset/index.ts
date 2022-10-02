@@ -14,7 +14,7 @@
  *
  * {@link "core/dataset/context"} provides proxy classes for data and expressions. Expressions module ({@link "core/expression/index"}) classes use data through context.
  *
- * {@link "core/dataset/dataset"} interfaces for describe dataset stuctures of charticulator as Table, Column, Dataset e.t.c.
+ * {@link "core/dataset/dataset"} interfaces for describe dataset structures of charticulator as Table, Column, Dataset e.t.c.
  *
  * @packageDocumentation
  * @preferred

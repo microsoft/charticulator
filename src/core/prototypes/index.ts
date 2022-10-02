@@ -10,15 +10,15 @@
  *
  * * Chart {@link "core/prototypes/charts/index"} highest level element, contains all other elements like plot segments, marks, legends e.t.c
  *
- * * Scales {@link "core/prototypes/plot_segments/index"} map data valus into pixels and sizes of elements(marks)
+ * * Scales {@link "core/prototypes/plot_segments/index"} map data values into pixels and sizes of elements(marks)
  *
  * * Links {@link "core/prototypes/links/index"}
  *
  * * Legends {@link "core/prototypes/legends/index"}
  *
- * * Guides {@link "core/prototypes/guides/index"} helper non visual elements to allign other elements
+ * * Guides {@link "core/prototypes/guides/index"} helper non visual elements to align other elements
  *
- * * Glyphs {@link "core/prototypes/glyphs/index"} is container of other elements on plot segmets
+ * * Glyphs {@link "core/prototypes/glyphs/index"} is container of other elements on plot segments
  *
  * * Dataflow {@link "core/prototypes/dataflow/index"} uses for connecting elements to dataset
  *

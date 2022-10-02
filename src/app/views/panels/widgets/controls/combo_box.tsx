@@ -11,7 +11,7 @@ import { fontList } from "../../../../../core";
 import {
   defaultLabelStyle,
   defaultStyle,
-  defultComponentsHeight,
+  defaultComponentsHeight,
 } from "./fluentui_customized_components";
 
 export interface ComboBoxFontFamilyProps {
@@ -41,8 +41,8 @@ export const FluentComboBoxFontFamily: React.FC<ComboBoxFontFamilyProps> = (
           fontFamily: fontName,
         },
         root: {
-          ...defultComponentsHeight,
-          minHeight: defultComponentsHeight.height,
+          ...defaultComponentsHeight,
+          minHeight: defaultComponentsHeight.height,
         },
       },
     }));
@@ -66,7 +66,7 @@ export const FluentComboBoxFontFamily: React.FC<ComboBoxFontFamilyProps> = (
       styles={{
         ...defaultStyle,
         root: {
-          ...defultComponentsHeight,
+          ...defaultComponentsHeight,
         },
       }}
       selectedKey={currentValue}

@@ -38,7 +38,7 @@ import { FileViewImport, MappingMode } from "../file_view/import_view";
 import { strings } from "../../../strings";
 import { EditorType } from "../../stores/app_store";
 import { Callout, DefaultButton } from "@fluentui/react";
-import { defultBindButtonSize } from "../panels/widgets/controls/fluentui_customized_components";
+import { defaultBindButtonSize } from "../panels/widgets/controls/fluentui_customized_components";
 
 export interface DatasetViewProps {
   store: AppStore;
@@ -93,9 +93,9 @@ export interface ColumnsViewState {
 
 const buttonStyles = {
   root: {
-    height: `${defultBindButtonSize}px`,
-    width: `${defultBindButtonSize}px`,
-    minWidth: `${defultBindButtonSize}px`,
+    height: `${defaultBindButtonSize}px`,
+    width: `${defaultBindButtonSize}px`,
+    minWidth: `${defaultBindButtonSize}px`,
     padding: "0px",
     border: "none",
   },

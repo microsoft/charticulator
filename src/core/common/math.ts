@@ -54,12 +54,12 @@ export namespace Geometry {
     return { x: p.x / len, y: p.y / len };
   }
 
-  /** Rotate a vector 90 degrees (counter-clock-wise, but clock-wise in screen coordiantes) */
+  /** Rotate a vector 90 degrees (counter-clock-wise, but clock-wise in screen coordinates) */
   export function vectorRotate90(p: Vector): Vector {
     return { y: p.x, x: -p.y };
   }
 
-  /** Rotate a vector by a angle in radians (counter-clock-wise, but clock-wise in screen coordiantes) */
+  /** Rotate a vector by a angle in radians (counter-clock-wise, but clock-wise in screen coordinates) */
   export function vectorRotate(p: Vector, radians: number): Vector {
     return {
       x: p.x * Math.cos(radians) + p.y * Math.sin(radians),

@@ -3,7 +3,7 @@
 
 import { IDropdownOption, IDropdownStyles } from "@fluentui/react";
 import {
-  defultComponentsHeight,
+  defaultComponentsHeight,
   FluentDropdown,
   FluentDropdownWrapper,
 } from "./controls/fluentui_customized_components";
@@ -19,7 +19,7 @@ export const dropdownStyles = (
 ): Partial<IDropdownStyles> => {
   return {
     title: {
-      ...defultComponentsHeight,
+      ...defaultComponentsHeight,
       borderWidth: options.hideBorder ? "0px" : null,
     },
     dropdownItemsWrapper: {

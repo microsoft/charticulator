@@ -57,7 +57,7 @@ export class SnappingSession<ElementType> {
     }
   }
 
-  private giveProrityToPoint(
+  private givePriorityToPoint(
     a: SnappableGuide<ElementType>,
     b: SnappableGuide<ElementType>
   ) {
@@ -88,7 +88,7 @@ export class SnappingSession<ElementType> {
           let minXDistance: number = null;
           let minYGuide: SnappableGuide<ElementType> = null;
           let minYDistance: number = null;
-          for (const g of this.candidates.sort(this.giveProrityToPoint)) {
+          for (const g of this.candidates.sort(this.givePriorityToPoint)) {
             const guide = g.guide as Prototypes.SnappingGuides.Axis;
             if (this.findClosestSnappingGuide) {
               if (guide.type == "y") {
@@ -142,7 +142,7 @@ export class SnappingSession<ElementType> {
           let minXDistance: number = null;
           let minYGuide: SnappableGuide<ElementType> = null;
           let minYDistance: number = null;
-          for (const g of this.candidates.sort(this.giveProrityToPoint)) {
+          for (const g of this.candidates.sort(this.givePriorityToPoint)) {
             const guide = g.guide as Prototypes.SnappingGuides.Axis;
             if (this.findClosestSnappingGuide) {
               // Find closest point
@@ -280,7 +280,7 @@ export class SnappingSession<ElementType> {
             }
             if (source == "x" || source == "y") {
               for (const candidate of this.currentCandidates.sort(
-                this.giveProrityToPoint
+                this.givePriorityToPoint
               )) {
                 if (
                   (candidate.guide as Prototypes.SnappingGuides.PolarAxis)
