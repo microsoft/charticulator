@@ -356,11 +356,11 @@ export function convertColumns(
     applyConvertedValues(table, column.name, convertedValues);
     return null;
   } catch (ex) {
-    const messgae = `Converting column type from ${originColumn.type} to ${type} failed`;
-    console.warn(messgae);
+    const message = `Converting column type from ${originColumn.type} to ${type} failed`;
+    console.warn(message);
     // rollback type
     column.type = typeBeforeChange;
-    return messgae;
+    return message;
   }
 }
 
