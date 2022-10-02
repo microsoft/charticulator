@@ -44,7 +44,7 @@ export interface LocaleFileFormat {
 }
 
 /**
- * Parses data from file. Returns converted rows and list of colum names with types.
+ * Parses data from file. Returns converted rows and list of column names with types.
  * Calls {@link inferAndConvertColumn} method from {@link "core/dataset/data_types"} for convert types.
  * @param fileName input file name for parsing
  * @param content data of file

@@ -187,7 +187,7 @@ export const strings = {
     loadSample: "Load Sample Dataset...",
     links: "Links",
     messageNoID: (keyColumn: string) =>
-      `No ${keyColumn} colum are specified in main table`,
+      `No ${keyColumn} column are specified in main table`,
     messageNoSourceOrTargetID: (
       linkSourceKeyColumn: string,
       linkTargetKeyColumn: string
