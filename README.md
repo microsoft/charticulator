@@ -128,6 +128,6 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 # Documentation
 
 Run `yarn typedoc` to generate documentation pages.
-The page will be awailable in [`./docs/charticulator`](./docs/charticulator/index.html)
+The page will be available in [`./docs/charticulator`](./docs/charticulator/index.html)
 
 Start point of documentation is index page {@link "index"}
