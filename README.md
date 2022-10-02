@@ -87,7 +87,7 @@ You can add custom sample datasets that can be used with Charticulator.  To do s
 [
     {
         "name": "<Your dataset display name>",
-        "description": "<Your dataset desription>",
+        "description": "<Your dataset description>",
         "tables": [
             {
                 "name": "<Your dataset file name without extension>",
