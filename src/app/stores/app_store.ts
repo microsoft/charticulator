@@ -347,7 +347,7 @@ export class AppStore extends BaseStore {
     this.chartManager?.resetDifference();
   }
 
-  // removes unused scale objecs
+  // removes unused scale objects
   private updateChartState() {
     function hasMappedProperty(
       mappings: Specification.Mappings,
