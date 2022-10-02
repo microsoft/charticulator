@@ -22,7 +22,7 @@
  *
  * ![Cartesian plot segmets](media://cartesian_plot.png)
  *
- * {@link CurvePlotSegment} - puts elements on cruve drawn by user.
+ * {@link CurvePlotSegment} - puts elements on curve drawn by user.
  *
  * ![Curve plot](media://curve_plot.png)
  *
