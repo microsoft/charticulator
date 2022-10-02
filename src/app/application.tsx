@@ -283,7 +283,7 @@ export class Application {
         deepClone(info.specification)
       );
 
-      // if version wasn't saved in tempalte we assume it is 2.0.3
+      // if version wasn't saved in template we assume it is 2.0.3
       if (info.template && info.template.version == undefined) {
         info.template.version = defaultVersionOfTemplate;
       }

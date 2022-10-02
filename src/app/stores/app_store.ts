@@ -2107,7 +2107,7 @@ export class AppStore extends BaseStore {
   /**
    * Due to undefined "value" will not saved after JSON.stringify, need to update all undefined "values" to null
    * deepClone uses JSON.stringify to create copy of object. If object losses some property after copy
-   * the function expect_deep_approximately_equals gives difference for identical tempalte/chart state
+   * the function expect_deep_approximately_equals gives difference for identical template/chart state
    * See {@link ChartStateManager.hasUnsavedChanges} for details
    * @param dataExpression Data expression for axis
    */

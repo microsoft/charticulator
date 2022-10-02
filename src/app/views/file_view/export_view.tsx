@@ -489,7 +489,7 @@ export class ExportTemplateView extends React.Component<
             this.props.store.chart,
             inference.objectID
           );
-          const temaplteObject = findObjectById(
+          const templateObject = findObjectById(
             template.specification,
             inference.objectID
           );
@@ -535,7 +535,7 @@ export class ExportTemplateView extends React.Component<
                   true
                 )
               );
-              temaplteObject.properties[keyAutoDomainMax] = true;
+              templateObject.properties[keyAutoDomainMax] = true;
               inference.autoDomainMax = true;
             } else {
               inference.autoDomainMax = (object.properties[
@@ -576,10 +576,10 @@ export class ExportTemplateView extends React.Component<
                   true
                 )
               );
-              temaplteObject.properties[keyAutoDomainMax] = true;
+              templateObject.properties[keyAutoDomainMax] = true;
               inference.autoDomainMax = true;
             } else {
-              inference.autoDomainMax = temaplteObject.properties[
+              inference.autoDomainMax = templateObject.properties[
                 keyAutoDomainMax
               ] as boolean;
             }
@@ -618,7 +618,7 @@ export class ExportTemplateView extends React.Component<
                   true
                 )
               );
-              temaplteObject.properties[keyAutoDomainMin] = true;
+              templateObject.properties[keyAutoDomainMin] = true;
               inference.autoDomainMin = true;
             } else {
               inference.autoDomainMin = (object.properties[
@@ -659,7 +659,7 @@ export class ExportTemplateView extends React.Component<
                   true
                 )
               );
-              temaplteObject.properties[keyAutoDomainMin] = true;
+              templateObject.properties[keyAutoDomainMin] = true;
               inference.autoDomainMin = true;
             } else {
               inference.autoDomainMin = object.properties[
