@@ -69,8 +69,8 @@ import React = require("react");
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
-  tickTextBackgroudColor: null,
-  tickTextBackgroudColorId: null,
+  tickTextBackgroundColor: null,
+  tickTextBackgroundColorId: null,
   showTicks: true,
   showBaseline: true,
   lineColor: { r: 0, g: 0, b: 0 },
@@ -135,7 +135,7 @@ export class AxisRenderer {
     } else {
       this.style = fillDefaultAxisStyle(deepClone(style));
     }
-    this.style.tickTextBackgroudColorId =
+    this.style.tickTextBackgroundColorId =
       "axis-tick-filter-" + getRandomNumber();
     return this;
   }
@@ -713,8 +713,8 @@ export class AxisRenderer {
               style.fontSize,
               {
                 fillColor: style.tickColor,
-                backgroundColor: style.tickTextBackgroudColor,
-                backgroundColorId: style.tickTextBackgroudColorId,
+                backgroundColor: style.tickTextBackgroundColor,
+                backgroundColorId: style.tickTextBackgroundColorId,
               }
             );
             lines.push(text);
@@ -745,8 +745,8 @@ export class AxisRenderer {
               style.fontSize,
               {
                 fillColor: style.tickColor,
-                backgroundColor: style.tickTextBackgroudColor,
-                backgroundColorId: style.tickTextBackgroudColorId,
+                backgroundColor: style.tickTextBackgroundColor,
+                backgroundColorId: style.tickTextBackgroundColorId,
               },
               this.plotSegment && this.dataFlow
                 ? {
@@ -788,8 +788,8 @@ export class AxisRenderer {
             style.fontSize,
             {
               fillColor: style.tickColor,
-              backgroundColor: style.tickTextBackgroudColor,
-              backgroundColorId: style.tickTextBackgroudColorId,
+              backgroundColor: style.tickTextBackgroundColor,
+              backgroundColorId: style.tickTextBackgroundColorId,
             },
             this.plotSegment && this.dataFlow
               ? {
@@ -850,8 +850,8 @@ export class AxisRenderer {
               style.fontSize,
               {
                 fillColor: style.tickColor,
-                backgroundColor: style.tickTextBackgroudColor,
-                backgroundColorId: style.tickTextBackgroudColorId,
+                backgroundColor: style.tickTextBackgroundColor,
+                backgroundColorId: style.tickTextBackgroundColorId,
               },
               this.plotSegment && this.dataFlow
                 ? {
@@ -921,8 +921,8 @@ export class AxisRenderer {
                 style.fontSize,
                 {
                   fillColor: style.tickColor,
-                  backgroundColor: style.tickTextBackgroudColor,
-                  backgroundColorId: style.tickTextBackgroudColorId,
+                  backgroundColor: style.tickTextBackgroundColor,
+                  backgroundColorId: style.tickTextBackgroundColorId,
                 },
                 this.plotSegment && this.dataFlow
                   ? {
@@ -980,8 +980,8 @@ export class AxisRenderer {
                 style.fontSize,
                 {
                   fillColor: style.tickColor,
-                  backgroundColor: style.tickTextBackgroudColor,
-                  backgroundColorId: style.tickTextBackgroudColorId,
+                  backgroundColor: style.tickTextBackgroundColor,
+                  backgroundColorId: style.tickTextBackgroundColorId,
                 },
                 this.plotSegment && this.dataFlow
                   ? {
@@ -1190,8 +1190,8 @@ export class AxisRenderer {
             style.fontSize,
             {
               fillColor: style.tickColor,
-              backgroundColor: style.tickTextBackgroudColor,
-              backgroundColorId: style.tickTextBackgroudColorId,
+              backgroundColor: style.tickTextBackgroundColor,
+              backgroundColorId: style.tickTextBackgroundColorId,
             }
           );
           lines.push(gt);
@@ -1219,8 +1219,8 @@ export class AxisRenderer {
           style.showTicks ? line : null,
           makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
             fillColor: style.tickColor,
-            backgroundColor: style.tickTextBackgroudColor,
-            backgroundColorId: style.tickTextBackgroudColorId,
+            backgroundColor: style.tickTextBackgroundColor,
+            backgroundColorId: style.tickTextBackgroundColorId,
           }),
         ]);
 
@@ -1267,8 +1267,8 @@ export class AxisRenderer {
         style.showTicks ? line : null,
         makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
           fillColor: style.tickColor,
-          backgroundColor: style.tickTextBackgroudColor,
-          backgroundColorId: style.tickTextBackgroudColorId,
+          backgroundColor: style.tickTextBackgroundColor,
+          backgroundColorId: style.tickTextBackgroundColorId,
         }),
       ]);
 
@@ -1593,10 +1593,10 @@ export function buildAxisAppearanceWidgets(
             manager.inputColor(
               {
                 property: axisProperty,
-                field: ["style", "tickTextBackgroudColor"],
+                field: ["style", "tickTextBackgroundColor"],
               },
               {
-                label: strings.objects.axes.tickTextBackgroudColor,
+                label: strings.objects.axes.tickTextBackgroundColor,
                 labelKey: `tick-text-background-color-${axisProperty}`,
                 allowNull: true,
                 searchSection: [

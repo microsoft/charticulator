@@ -432,7 +432,7 @@ export const strings = {
       dataExpressions: "Data Expressions",
       lineColor: "Line Color",
       tickColor: "Tick Label Color",
-      tickTextBackgroudColor: "Tick background color",
+      tickTextBackgroundColor: "Tick background color",
       showTickLine: "Show Tick Line",
       showBaseline: "Show Baseline",
       verticalText: "Vertical text",

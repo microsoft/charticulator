@@ -103,8 +103,8 @@ export interface AxisRenderingStyle extends AttributeMap {
   fontFamily: string;
   fontSize: number;
   tickSize: number;
-  tickTextBackgroudColor: Color;
-  tickTextBackgroudColorId: string;
+  tickTextBackgroundColor: Color;
+  tickTextBackgroundColorId: string;
   wordWrap: boolean;
   gridlineStyle: StrokeStyle;
   gridlineColor: Color;
