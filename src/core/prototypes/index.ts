@@ -10,7 +10,7 @@
  *
  * * Chart {@link "core/prototypes/charts/index"} highest level element, contains all other elements like plot segments, marks, legends e.t.c
  *
- * * Scales {@link "core/prototypes/plot_segments/index"} map data valus into pixels and sizes of elements(marks)
+ * * Scales {@link "core/prototypes/plot_segments/index"} map data values into pixels and sizes of elements(marks)
  *
  * * Links {@link "core/prototypes/links/index"}
  *
