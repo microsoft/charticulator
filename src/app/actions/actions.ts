@@ -530,7 +530,7 @@ export class MapDataToChartElementAttribute extends Action {
 
   public digest() {
     return {
-      name: "MapChartElementkAttribute",
+      name: "MapChartElementAttribute",
       chartElement: objectDigest(this.chartElement),
       attribute: this.attribute,
       attributeType: this.attributeType,

@@ -80,7 +80,7 @@ export class RectangleGlyph extends GlyphClass {
 
   public readonly state: RectangleGlyphState;
 
-  // Get a list of elemnt attributes
+  // Get a list of element attributes
   public attributeNames: string[] = [
     "x1",
     "y1",
