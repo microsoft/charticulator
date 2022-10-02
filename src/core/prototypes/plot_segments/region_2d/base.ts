@@ -244,7 +244,7 @@ export class DodgingFitters {
 }
 
 /**
- * Describes variables for constraints group. Count of group matches with data cound
+ * Describes variables for constraints group. Count of group matches with data count
  */
 export class SublayoutGroup {
   public group: number[];
