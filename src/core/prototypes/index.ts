@@ -18,7 +18,7 @@
  *
  * * Guides {@link "core/prototypes/guides/index"} helper non visual elements to align other elements
  *
- * * Glyphs {@link "core/prototypes/glyphs/index"} is container of other elements on plot segmets
+ * * Glyphs {@link "core/prototypes/glyphs/index"} is container of other elements on plot segments
  *
  * * Dataflow {@link "core/prototypes/dataflow/index"} uses for connecting elements to dataset
  *
