@@ -16,7 +16,7 @@
  *
  * {@link LineGuide} - puts elements on the one line
  *
- * {@link MapPlotSegment} - special plot segment to draw a map. Uses {@link StaticMapService} class to workd with Bing and Google services
+ * {@link MapPlotSegment} - special plot segment to draw a map. Uses {@link StaticMapService} class to work with Bing and Google services
  *
  * {@link CartesianPlotSegment} - classic plot segment with x and y axis coordinates
  *
