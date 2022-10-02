@@ -47,7 +47,7 @@ import {
   AxisDataBindingType,
   NumericalMode,
 } from "../../specification/types";
-import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
+import { VirtualScrollBar, VirtualScrollBarProperties } from "./virtualScroll";
 import {
   CategoryItemsWithIds,
   getOnConfirmFunction,
@@ -1353,7 +1353,7 @@ export class AxisRenderer {
       height = AxisRenderer.SCROLL_BAR_SIZE;
     }
 
-    return React.createElement(VirtualScrollBar, <VirtualScrollBarPropertes>{
+    return React.createElement(VirtualScrollBar, <VirtualScrollBarProperties>{
       onScroll,
       handlerBarWidth: AxisRenderer.SCROLL_BAR_SIZE,
       height,

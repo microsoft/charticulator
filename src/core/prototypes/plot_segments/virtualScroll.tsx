@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { ZoomInfo } from "../..";
 import { AxisDataBindingType } from "../../specification/types";
 
-export interface VirtualScrollBarPropertes {
+export interface VirtualScrollBarProperties {
   initialPosition: number;
   onScroll: (position: number) => void;
   x: number;
@@ -22,7 +22,7 @@ export interface VirtualScrollBarPropertes {
   dataType: AxisDataBindingType;
 }
 
-export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
+export const VirtualScrollBar: React.FC<VirtualScrollBarProperties> = ({
   handlerBarWidth, // AxisRenderer.SCROLL_BAR_SIZE
   vertical,
   height,
