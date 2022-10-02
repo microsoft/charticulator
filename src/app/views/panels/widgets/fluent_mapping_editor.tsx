@@ -31,8 +31,8 @@ import {
 } from "@fluentui/react";
 import {
   defaultLabelStyle,
-  defultBindButtonSize,
-  defultComponentsHeight,
+  defaultBindButtonSize,
+  defaultComponentsHeight,
   FluentActionButton,
   FluentButton,
   FluentRowLayout,
@@ -411,10 +411,10 @@ export class FluentMappingEditor extends React.Component<
                     styles={{
                       menuIcon: {
                         display: "none !important",
-                        ...defultComponentsHeight,
+                        ...defaultComponentsHeight,
                       },
                       root: {
-                        ...defultComponentsHeight,
+                        ...defaultComponentsHeight,
                       },
                     }}
                     title={strings.mappingEditor.bindData}
@@ -507,10 +507,10 @@ export class FluentMappingEditor extends React.Component<
                       styles={{
                         menuIcon: {
                           display: "none !important",
-                          ...defultComponentsHeight,
+                          ...defaultComponentsHeight,
                         },
                         root: {
-                          ...defultComponentsHeight,
+                          ...defaultComponentsHeight,
                         },
                       }}
                       title={strings.mappingEditor.keyColumnExpression}
@@ -551,10 +551,10 @@ export class FluentMappingEditor extends React.Component<
                       styles={{
                         menuIcon: {
                           display: "none !important",
-                          ...defultComponentsHeight,
+                          ...defaultComponentsHeight,
                         },
                         root: {
-                          ...defultComponentsHeight,
+                          ...defaultComponentsHeight,
                         },
                       }}
                       title={strings.mappingEditor.bindData}
@@ -701,7 +701,7 @@ export class FluentMappingEditor extends React.Component<
                     styles={{
                       root: {
                         minWidth: "unset",
-                        ...defultBindButtonSize,
+                        ...defaultBindButtonSize,
                       },
                     }}
                     checked={false}
@@ -733,7 +733,7 @@ export class FluentMappingEditor extends React.Component<
                         },
                         root: {
                           minWidth: "unset",
-                          ...defultBindButtonSize,
+                          ...defaultBindButtonSize,
                         },
                       }}
                       title={strings.mappingEditor.bindData}
@@ -756,7 +756,7 @@ export class FluentMappingEditor extends React.Component<
                     styles={{
                       root: {
                         minWidth: "unset",
-                        ...defultBindButtonSize,
+                        ...defaultBindButtonSize,
                       },
                     }}
                     title={strings.mappingEditor.bindDataValue}

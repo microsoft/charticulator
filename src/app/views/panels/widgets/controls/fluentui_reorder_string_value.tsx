@@ -6,7 +6,7 @@ import { ReorderListView } from "../../object_list_editor";
 import { ButtonRaised } from "../../../../components";
 import { strings } from "../../../../../strings";
 import { DefaultButton, TooltipHost } from "@fluentui/react";
-import { defultComponentsHeight } from "./fluentui_customized_components";
+import { defaultComponentsHeight } from "./fluentui_customized_components";
 import { getRandomNumber } from "../../../../../core";
 import { DataType } from "../../../../../core/specification";
 
@@ -85,7 +85,7 @@ export class FluentUIReorderStringsValue extends React.Component<
             styles={{
               root: {
                 minWidth: "unset",
-                ...defultComponentsHeight,
+                ...defaultComponentsHeight,
                 padding: 0,
                 marginRight: 5,
               },
@@ -98,7 +98,7 @@ export class FluentUIReorderStringsValue extends React.Component<
             styles={{
               root: {
                 minWidth: "unset",
-                ...defultComponentsHeight,
+                ...defaultComponentsHeight,
                 padding: 0,
                 marginRight: 5,
               },
@@ -123,7 +123,7 @@ export class FluentUIReorderStringsValue extends React.Component<
                 styles={{
                   root: {
                     minWidth: "unset",
-                    ...defultComponentsHeight,
+                    ...defaultComponentsHeight,
                     padding: 0,
                   },
                 }}

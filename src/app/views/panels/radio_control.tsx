@@ -5,7 +5,7 @@ import * as React from "react";
 import { DefaultButton } from "@fluentui/react";
 import { SVGImageIcon } from "../../../app/components";
 import * as R from "../../../app/resources";
-import { defultComponentsHeight } from "../../../app/views/panels/widgets/controls/fluentui_customized_components";
+import { defaultComponentsHeight } from "../../../app/views/panels/widgets/controls/fluentui_customized_components";
 
 export interface PanelRadioControlProps {
   options: string[];
@@ -51,7 +51,7 @@ export class PanelRadioControl extends React.Component<
                 root: {
                   marginRight: 5,
                   marginLeft: 5,
-                  ...defultComponentsHeight,
+                  ...defaultComponentsHeight,
                 },
               }}
               onRenderIcon={() => {

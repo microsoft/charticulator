@@ -32,8 +32,8 @@ import { strings } from "../../../../strings";
 import {
   defaultLabelStyle,
   defaultStyle,
-  defultBindButtonSize,
-  defultComponentsHeight,
+  defaultBindButtonSize,
+  defaultComponentsHeight,
   FluentTextField,
   labelRender,
 } from "./controls/fluentui_customized_components";
@@ -313,7 +313,7 @@ export class FluentValueEditor extends ContextedComponent<
               ...(defaultStyle as any),
               title: {
                 ...defaultStyle.title,
-                lineHeight: defultBindButtonSize.height,
+                lineHeight: defaultBindButtonSize.height,
               },
             }}
             label={this.props.label}
@@ -347,7 +347,7 @@ export class FluentValueEditor extends ContextedComponent<
               <DefaultButton
                 styles={{
                   root: {
-                    ...defultComponentsHeight,
+                    ...defaultComponentsHeight,
                   },
                   menuIcon: { display: "none !important" },
                 }}

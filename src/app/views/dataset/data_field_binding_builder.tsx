@@ -40,7 +40,7 @@ import { AggregationFunctionDescription } from "../../../core/expression";
 import {
   defaultLabelStyle,
   defaultStyle,
-  defultBindButtonSize,
+  defaultBindButtonSize,
   FluentDataBindingMenuItem,
   FluentDataBindingMenuLabel,
 } from "../panels/widgets/controls/fluentui_customized_components";
@@ -85,7 +85,7 @@ interface Builder {
   /**
    * Add default value
    */
-  produceDefaultValue(dafaultValue: IDefaultValue): void;
+  produceDefaultValue(defaultValue: IDefaultValue): void;
 
   getMenuItems(): IContextualMenuItem[];
 
@@ -739,8 +739,8 @@ export class MenuItemBuilder implements Builder {
     this.menuItemsCreator.setFieds(datasetStore, table, kinds, types);
   }
 
-  public produceDefaultValue(dafaultValue: IDefaultValue): void {
-    this.menuItemsCreator.produceDefaultValue(dafaultValue);
+  public produceDefaultValue(defaultValue: IDefaultValue): void {
+    this.menuItemsCreator.produceDefaultValue(defaultValue);
   }
 
   public buildMenu(): void {
@@ -845,12 +845,12 @@ export class Director {
                 ...(defaultStyle as any),
                 title: {
                   ...defaultStyle.title,
-                  lineHeight: defultBindButtonSize.height,
+                  lineHeight: defaultBindButtonSize.height,
                   borderWidth: "0px",
                 },
                 dropdownOptionText: {
                   boxSizing: "unset",
-                  lineHeight: defultBindButtonSize.height,
+                  lineHeight: defaultBindButtonSize.height,
                 },
                 callout: {
                   minWidth: 180,

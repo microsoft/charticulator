@@ -17,7 +17,7 @@ import {
 } from "@fluentui/react";
 import styled from "styled-components";
 
-export const defultBindButtonSize = {
+export const defaultBindButtonSize = {
   height: "24px",
   width: "24px",
 };
@@ -31,8 +31,8 @@ export const FluentButton = styled.div<{
   margin-left: ${({ marginLeft }) => marginLeft || "unset"};
   display: inline-block;
   padding: 0px ${({ paddingRight }) => paddingRight || "4px"} 0px 0px;
-  height: ${defultBindButtonSize.height};
-  line-height: ${defultBindButtonSize.height};
+  height: ${defaultBindButtonSize.height};
+  line-height: ${defaultBindButtonSize.height};
   button {
     padding: 4px;
   }
@@ -139,7 +139,7 @@ export const FluentGroupedList = styled.div<{ marginLeft?: number }>`
     min-height: 24px;
   }
 `;
-export const defultComponentsHeight = {
+export const defaultComponentsHeight = {
   height: "24px",
   lineHeight: "unset",
 };
@@ -155,10 +155,10 @@ export const groupHeaderStyles: IStyleFunctionOrObject<
     display: "none",
   },
   groupHeaderContainer: {
-    ...defultComponentsHeight,
+    ...defaultComponentsHeight,
   },
   expand: {
-    ...defultBindButtonSize,
+    ...defaultBindButtonSize,
     fontSize: "unset",
   },
   dropIcon: {
@@ -223,45 +223,45 @@ export const FluentDatePickerWrapper = styled.div`
 
 export const defaultStyle: any = {
   field: {
-    defultComponentsHeight,
+    defaultComponentsHeight,
     height: "20px",
   },
-  fieldGroup: defultComponentsHeight,
+  fieldGroup: defaultComponentsHeight,
   dropdown: {
     boxSizing: "unset",
-    ...defultComponentsHeight,
+    ...defaultComponentsHeight,
   },
   dropdownOptionText: {
     boxSizing: "unset",
-    ...defultComponentsHeight,
+    ...defaultComponentsHeight,
   },
   dropdownItem: {
     boxSizing: "unset",
     minHeight: "25px",
-    ...defultComponentsHeight,
+    ...defaultComponentsHeight,
   },
   dropdownItemHeader: {
     boxSizing: "unset",
-    ...defultComponentsHeight,
+    ...defaultComponentsHeight,
   },
   dropdownItemSelected: {
     boxSizing: "unset",
     minHeight: "24px",
     lineHeight: "24px",
-    ...defultComponentsHeight,
+    ...defaultComponentsHeight,
   },
   caretDown: {
     boxSizing: "unset",
-    ...defultComponentsHeight,
+    ...defaultComponentsHeight,
   },
   caretDownWrapper: {
     boxSizing: "unset",
     marginTop: "5px",
-    ...defultComponentsHeight,
+    ...defaultComponentsHeight,
   },
   title: {
     boxSizing: "unset",
-    ...defultComponentsHeight,
+    ...defaultComponentsHeight,
     height: "22px",
     lineHeight: "unset",
   },

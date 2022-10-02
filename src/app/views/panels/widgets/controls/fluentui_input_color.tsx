@@ -20,7 +20,7 @@ import { Callout, TextField } from "@fluentui/react";
 import {
   defaultLabelStyle,
   defaultStyle,
-  defultComponentsHeight,
+  defaultComponentsHeight,
   FluentTextField,
   labelRender,
 } from "./fluentui_customized_components";
@@ -162,11 +162,11 @@ export class FluentInputColor extends React.Component<
             styles={{
               ...defaultStyle,
               fieldGroup: {
-                ...defultComponentsHeight,
+                ...defaultComponentsHeight,
                 width: this.props.width,
               },
               root: {
-                ...defultComponentsHeight,
+                ...defaultComponentsHeight,
               },
               subComponentStyles: {
                 label: {
