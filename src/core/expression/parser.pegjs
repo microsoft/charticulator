@@ -94,13 +94,13 @@ level4
         return create_operator(flatten(op), expr);
     }
 
-begin_braket "\"(\"" = "("
-end_braket "\")\"" = ")"
+begin_bracket "\"(\"" = "("
+end_bracket "\")\"" = ")"
 comma "\",\'" = ","
 dot "." = "."
 
-braket_expression
-  = begin_braket sp expr:levelm0 sp end_braket
+bracket_expression
+  = begin_bracket sp expr:levelm0 sp end_bracket
     { return expr; }
 
 item
@@ -109,11 +109,11 @@ item
   / lambda_function
   / fieldaccess
   / variable
-  / braket_expression
+  / bracket_expression
 
 fieldable
   = variable
-  / braket_expression
+  / bracket_expression
 
 fieldaccess
   = expr:fieldable fields:(sp dot sp variable_name)+
@@ -122,7 +122,7 @@ fieldaccess
 funcitem
   = fieldaccess
   / variable
-  / braket_expression
+  / bracket_expression
 
 funcname
   = name:variable_name names:("." variable_name)*
@@ -142,7 +142,7 @@ argitems
     { return [ expr ] }
 
 argitem_list
-  = begin_braket sp source_args:argitems sp end_braket
+  = begin_bracket sp source_args:argitems sp end_bracket
     {
       var args = [];
       for(var i = 0; i < source_args.length; i++) {
@@ -167,7 +167,7 @@ argnames
     { return [ expr ] }
 
 lambda_function
-  = begin_braket sp argNames:argnames sp end_braket sp "=>" sp expr:expression
+  = begin_bracket sp argNames:argnames sp end_bracket sp "=>" sp expr:expression
     { return new Expression.LambdaFunction(expr, argNames); }
   / argName:variable_name sp "=>" sp expr:expression
     { return new Expression.LambdaFunction(expr, [argName]); }
