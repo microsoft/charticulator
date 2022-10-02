@@ -283,7 +283,7 @@ export class RemoveMarkFromGlyph extends Action {
 }
 
 /**
- * Dispatches when user binds table coulmns to attributes
+ * Dispatches when user binds table columns to attributes
  */
 export class MapDataToMarkAttribute extends Action {
   /**

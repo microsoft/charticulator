@@ -168,7 +168,7 @@ describe("Charticulator", () => {
     const columns = dataColumnsSelector.querySelectorAll<HTMLSpanElement>(
       "span.el-text"
     );
-    // select all coulmns
+    // select all columns
     columns.forEach((column) => column.click());
 
     //click to create legend button
