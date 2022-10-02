@@ -149,7 +149,7 @@ class MenuItemsCreator {
     }
   }
 
-  public setFieds(
+  public setFields(
     datasetStore: AppStore,
     table?: string,
     kinds?: Dataset.DataKind[],
@@ -736,7 +736,7 @@ export class MenuItemBuilder implements Builder {
     kinds?: Dataset.DataKind[],
     types?: Dataset.DataType[]
   ): void {
-    this.menuItemsCreator.setFieds(datasetStore, table, kinds, types);
+    this.menuItemsCreator.setFields(datasetStore, table, kinds, types);
   }
 
   public produceDefaultValue(defaultValue: IDefaultValue): void {
