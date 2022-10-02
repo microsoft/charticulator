@@ -125,7 +125,7 @@ export class Application {
       workerScriptContent?: string;
       worker?: CharticulatorWorkerInterface;
     },
-    localizaiton: LocalizationConfig,
+    localization: LocalizationConfig,
     handlers?: {
       menuBarHandlers?: MenuBarHandlers;
       telemetry?: TelemetryRecorder;
@@ -205,11 +205,11 @@ export class Application {
       });
     } catch (ex) {
       setFormatOptions({
-        currency: [localizaiton?.currency, ""] ?? defaultCurrency,
+        currency: [localization?.currency, ""] ?? defaultCurrency,
         grouping: defaultDigitsGroup,
-        decimal: localizaiton?.decimalDelimiter ?? defaultNumberFormat.decimal,
+        decimal: localization?.decimalDelimiter ?? defaultNumberFormat.decimal,
         thousands:
-          localizaiton?.thousandsDelimiter ?? defaultNumberFormat.decimal,
+          localization?.thousandsDelimiter ?? defaultNumberFormat.decimal,
       });
       console.warn("Loading localization settings failed");
     }
