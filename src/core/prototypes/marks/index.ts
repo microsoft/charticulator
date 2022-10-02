@@ -42,7 +42,7 @@
  *
  *
  * All marks implement several methods of {@link ObjectClass}
- * for exmaple
+ * for example
  * `{@link ObjectClass.getAttributePanelWidgets}` - the method responsible for displaying widgets in the property panel. Each time when a user selects the mark in the object browser, the charticulator calls this method to display properties. Charticulator displays the properties for rectangle named `Shape1`
  *
  * ![Mark widgets](media://mark_widgets.png)
