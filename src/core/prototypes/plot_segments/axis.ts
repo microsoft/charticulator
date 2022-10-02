@@ -1140,7 +1140,7 @@ export class AxisRenderer {
       Geometry.degreesToRadians(
         radius * ((rangeMax - rangeMin) / this.ticks.length)
       ) -
-      margins * 2; // lenght of arc for all ticks
+      margins * 2; // length of arc for all ticks
     for (const tick of this.ticks) {
       const angle = tick.position;
       const radians = Geometry.degreesToRadians(angle);
