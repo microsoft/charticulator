@@ -149,7 +149,7 @@ export class InputImage extends ContextedComponent<
                 {this.props.label}
               </Label>
             ) : null}
-            <span className="el-drag-over-attrubutes">
+            <span className="el-drag-over-attributes">
               {strings.objects.image.dropImage}
             </span>
           </div>
