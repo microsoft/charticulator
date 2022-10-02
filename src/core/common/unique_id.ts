@@ -39,14 +39,14 @@ export function uniqueID(): string {
 }
 
 let hashIndex = 1;
-const objectHashs = new WeakMap<Record<string, never>, string>();
+const objectHashes = new WeakMap<Record<string, never>, string>();
 
 export function objectHash(o: Record<string, never>): string {
-  if (objectHashs.has(o)) {
-    return objectHashs.get(o);
+  if (objectHashes.has(o)) {
+    return objectHashes.get(o);
   }
   const newHash = `<#${hashIndex.toString()}>`;
   hashIndex += 1;
-  objectHashs.set(o, newHash);
+  objectHashes.set(o, newHash);
   return newHash;
 }
