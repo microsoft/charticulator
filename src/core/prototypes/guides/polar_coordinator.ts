@@ -639,7 +639,7 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
               )
             )
           ),
-          // uncomment to allow configure raito
+          // uncomment to allow configure ratio
           // manager.row(
           //   strings.objects.guides.radius,
           //   manager.horizontal(
