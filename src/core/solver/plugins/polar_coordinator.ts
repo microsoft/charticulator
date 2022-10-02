@@ -10,7 +10,7 @@ import { snapToAttribute } from "../../prototypes/update_attribute";
 import { ConstraintPlugin, ConstraintSolver, Variable } from "../abstract";
 
 // eslint-disable-next-line
-export interface PolarCoordinatorPluginOptions {}
+export interface PolarCoordinatorPluginOptions { }
 
 // Converts Polar coordinates to cartesian coordinates
 export class PolarCoordinatorPlugin extends ConstraintPlugin {
@@ -22,7 +22,7 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
   radialVarable: Variable[];
   angleVarable: Variable[];
   chartConstraints: Specification.Constraint[];
-  coordinatoObjectID: string;
+  coordinatorObjectID: string;
   chartMananger: ChartStateManager;
 
   constructor(
@@ -33,7 +33,7 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
     angleVarable: Variable[],
     attrs: PolarGuideCoordinatorAttributesExtend,
     chartConstraints: Specification.Constraint[],
-    coordinatoObjectID: string,
+    coordinatorObjectID: string,
     chartMananger: ChartStateManager
   ) {
     super();
@@ -44,7 +44,7 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
     this.angleVarable = angleVarable;
     this.attrs = attrs;
     this.chartConstraints = chartConstraints;
-    this.coordinatoObjectID = coordinatoObjectID;
+    this.coordinatorObjectID = coordinatorObjectID;
     this.chartMananger = chartMananger;
   }
 
@@ -96,14 +96,14 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
         snapToAttribute(
           this.chartMananger,
           this.chartConstraints,
-          this.coordinatoObjectID,
+          this.coordinatorObjectID,
           attrXname,
           cx + tx
         );
         snapToAttribute(
           this.chartMananger,
           this.chartConstraints,
-          this.coordinatoObjectID,
+          this.coordinatorObjectID,
           attrYname,
           cy + ty
         );
