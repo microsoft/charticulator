@@ -365,7 +365,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
       );
     }
 
-    // Center in local coordiantes
+    // Center in local coordinates
     const cx = (attrs.x1 + attrs.x2) / 2;
     const cy = (attrs.y1 + attrs.y2) / 2;
 
