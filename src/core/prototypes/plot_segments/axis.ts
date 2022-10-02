@@ -1046,7 +1046,7 @@ export class AxisRenderer {
       return;
     }
     const g = makeGroup([]);
-    const gridineArcRotate = 90;
+    const gridlineArcRotate = 90;
     const lineStyle: Style = {
       strokeLinecap: "round",
       strokeColor: style.gridlineColor,
@@ -1055,10 +1055,10 @@ export class AxisRenderer {
     };
     for (const tickPosition of this.ticks.map((x) => x.position)) {
       const cos = Math.cos(
-        Geometry.degreesToRadians(-tickPosition + gridineArcRotate)
+        Geometry.degreesToRadians(-tickPosition + gridlineArcRotate)
       );
       const sin = Math.sin(
-        Geometry.degreesToRadians(-tickPosition + gridineArcRotate)
+        Geometry.degreesToRadians(-tickPosition + gridlineArcRotate)
       );
       const tx1 = x + cos * innerRadius;
       const ty1 = y + sin * innerRadius;
@@ -1085,7 +1085,7 @@ export class AxisRenderer {
     const g = makeGroup([]);
     const startCos = Math.cos(Geometry.degreesToRadians(startAngle));
     const startSin = Math.sin(Geometry.degreesToRadians(startAngle));
-    const gridineArcRotate = 90;
+    const gridlineArcRotate = 90;
     const lineStyle: Style = {
       strokeLinecap: "round",
       strokeColor: style.gridlineColor,
@@ -1101,9 +1101,9 @@ export class AxisRenderer {
       arc.polarLineTo(
         x,
         y,
-        -startAngle + gridineArcRotate,
+        -startAngle + gridlineArcRotate,
         tickPosition,
-        -endAngle + gridineArcRotate,
+        -endAngle + gridlineArcRotate,
         tickPosition,
         true
       );
