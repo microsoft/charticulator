@@ -172,7 +172,7 @@ export class ChartTemplate {
           const plotSegment = item.chartElement as Specification.PlotSegment;
           const originalTable = plotSegment.table;
           plotSegment.table = this.tableAssignment[originalTable];
-          // Also fix filter and gropyBy expressions
+          // Also fix filter and groupyBy expressions
           if (plotSegment.filter) {
             if (plotSegment.filter.categories) {
               plotSegment.filter.categories.expression = this.transformExpression(
