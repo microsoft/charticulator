@@ -859,7 +859,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
   public getTemplateParameters(): TemplateParameters {
     const properties = [];
     if (
-      this.object.mappings.vistextible &&
+      this.object.mappings.visible &&
       this.object.mappings.text.type === MappingType.value
     ) {
       properties.push({
