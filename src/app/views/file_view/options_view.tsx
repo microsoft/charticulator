@@ -80,7 +80,7 @@ export const FileViewOptionsView: React.FC<FileViewOptionsProps> = () => {
             <select
               onChange={(e) => {
                 const isDecimalDot =
-                  e.target.options[e.target.selectedIndex].value === ","; // values is removeal
+                  e.target.options[e.target.selectedIndex].value === ","; // values is removal
                 changeLocaleFileFormat({
                   ...localeFileFormat,
                   numberFormat: {
