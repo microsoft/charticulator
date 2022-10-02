@@ -19,8 +19,8 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
   public cy: Variable;
   public an: Variable[];
   attrs: PolarGuideCoordinatorAttributesExtend;
-  radialVarable: Variable[];
-  angleVarable: Variable[];
+  radialVariable: Variable[];
+  angleVariable: Variable[];
   chartConstraints: Specification.Constraint[];
   coordinatorObjectID: string;
   chartManager: ChartStateManager;
@@ -29,8 +29,8 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
     solver: ConstraintSolver,
     cx: Variable,
     cy: Variable,
-    radialVarable: Variable[],
-    angleVarable: Variable[],
+    radialVariable: Variable[],
+    angleVariable: Variable[],
     attrs: PolarGuideCoordinatorAttributesExtend,
     chartConstraints: Specification.Constraint[],
     coordinatorObjectID: string,
@@ -40,8 +40,8 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
     this.solver = solver;
     this.cx = cx;
     this.cy = cy;
-    this.radialVarable = radialVarable;
-    this.angleVarable = angleVarable;
+    this.radialVariable = radialVariable;
+    this.angleVariable = angleVariable;
     this.attrs = attrs;
     this.chartConstraints = chartConstraints;
     this.coordinatorObjectID = coordinatorObjectID;
@@ -53,22 +53,22 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
     const cy = this.solver.getValue(this.cy);
 
     const attrs = this.attrs;
-    for (let i = 0; i < this.angleVarable.length; i++) {
+    for (let i = 0; i < this.angleVariable.length; i++) {
       const angleAttr = this.solver.attr(
         attrs,
-        (<any>this.angleVarable[i]).name,
+        (<any>this.angleVariable[i]).name,
         {
           edit: false,
         }
       );
 
-      for (let j = 0; j < this.radialVarable.length; j++) {
+      for (let j = 0; j < this.radialVariable.length; j++) {
         const attrXname = getPointValueName(i, j, "X");
         const attrYname = getPointValueName(i, j, "Y");
 
         const radialAttr = this.solver.attr(
           attrs,
-          (<any>this.radialVarable[j]).name,
+          (<any>this.radialVariable[j]).name,
           {
             edit: false,
           }
