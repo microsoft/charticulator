@@ -109,7 +109,7 @@ export const FileViewOptionsView: React.FC<FileViewOptionsProps> = () => {
             </select>
             <label>{strings.options.numberFormat}</label>
           </div>
-          {/* Uncomment to enable configuration for locale: currency symbol and groupping digits */}
+          {/* Uncomment to enable configuration for locale: currency symbol and grouping digits */}
           {/*
             <div className="form-group">
             <InputText
