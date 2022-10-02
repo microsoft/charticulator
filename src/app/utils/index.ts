@@ -381,7 +381,7 @@ export function isInIFrame() {
   }
 }
 
-export function getAligntment(anchor: Element) {
+export function getAlignment(anchor: Element) {
   let alignX:
     | "start-outer"
     | "inner"
