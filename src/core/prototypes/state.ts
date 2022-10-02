@@ -1175,7 +1175,7 @@ export class ChartStateManager {
   }
 
   /** Get glyph-level data context for the glyphIndex-th glyph */
-  public getGlpyhDataContext(
+  public getGlyphDataContext(
     plotSegment: Specification.PlotSegment,
     glyphIndex: number
   ): Expression.Context {
@@ -1188,7 +1188,7 @@ export class ChartStateManager {
   }
 
   /** Get all glyph-level data contexts for a given plot segment */
-  public getGlpyhDataContexts(
+  public getGlyphDataContexts(
     plotSegment: Specification.PlotSegment,
     // eslint-disable-next-line
     glyphIndex: number
