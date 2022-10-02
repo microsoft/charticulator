@@ -174,7 +174,7 @@ export class ReplaceDataset extends Action {
   }
 }
 
-/** Invokes updaes all plot segments on the chart,  */
+/** Invokes updates all plot segments on the chart,  */
 export class UpdatePlotSegments extends Action {
   constructor() {
     super();
