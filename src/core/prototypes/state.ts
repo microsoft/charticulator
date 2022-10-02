@@ -391,7 +391,7 @@ export class ChartStateManager {
 
     // Build the state hierarchy
     const elementStates = chart.elements.map((element) => {
-      // Initialie the element state
+      // Initialize the element state
       const elementState: Specification.ChartElementState = {
         attributes: {},
       };
