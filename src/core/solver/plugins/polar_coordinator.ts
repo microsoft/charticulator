@@ -23,7 +23,7 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
   angleVarable: Variable[];
   chartConstraints: Specification.Constraint[];
   coordinatorObjectID: string;
-  chartMananger: ChartStateManager;
+  chartManager: ChartStateManager;
 
   constructor(
     solver: ConstraintSolver,
@@ -34,7 +34,7 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
     attrs: PolarGuideCoordinatorAttributesExtend,
     chartConstraints: Specification.Constraint[],
     coordinatorObjectID: string,
-    chartMananger: ChartStateManager
+    chartManager: ChartStateManager
   ) {
     super();
     this.solver = solver;
@@ -45,7 +45,7 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
     this.attrs = attrs;
     this.chartConstraints = chartConstraints;
     this.coordinatorObjectID = coordinatorObjectID;
-    this.chartMananger = chartMananger;
+    this.chartManager = chartManager;
   }
 
   public apply() {
@@ -94,14 +94,14 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
 
         // take snapped attributes and apply new value
         snapToAttribute(
-          this.chartMananger,
+          this.chartManager,
           this.chartConstraints,
           this.coordinatorObjectID,
           attrXname,
           cx + tx
         );
         snapToAttribute(
-          this.chartMananger,
+          this.chartManager,
           this.chartConstraints,
           this.coordinatorObjectID,
           attrYname,
