@@ -121,12 +121,12 @@ export class FluentMappingEditor extends React.Component<
                 scaleMapping={mapping as any}
                 store={this.props.store}
                 onSelect={(index) => {
-                  const paresedExpression = Expression.parse(
+                  const parsedExpression = Expression.parse(
                     scaleMapping.expression
                   ) as FunctionCall;
                   // change the second param of get function
-                  (paresedExpression.args[1] as any).value = index;
-                  scaleMapping.expression = paresedExpression.toString();
+                  (parsedExpression.args[1] as any).value = index;
+                  scaleMapping.expression = parsedExpression.toString();
                   this.props.parent.onEditMappingHandler(
                     this.props.attribute,
                     scaleMapping
