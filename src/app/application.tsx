@@ -211,7 +211,7 @@ export class Application {
         thousands:
           localizaiton?.thousandsDelimiter ?? defaultNumberFormat.decimal,
       });
-      console.warn("Loadin localization settings failed");
+      console.warn("Loading localization settings failed");
     }
 
     (window as any).mainStore = this.appStore;
