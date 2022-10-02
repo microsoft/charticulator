@@ -1147,18 +1147,18 @@ export class AxisRenderer {
       const tx = Math.sin(radians) * radius;
       const ty = Math.cos(radians) * radius;
 
-      const lablel =
+      const label =
         tick.label && replaceSymbolByTab(replaceSymbolByNewLine(tick.label));
       if (
-        lablel &&
+        label &&
         (style.wordWrap ||
           (typeof tick.label === "string" &&
-            splitStringByNewLine(lablel).length > 1))
+            splitStringByNewLine(label).length > 1))
       ) {
-        let textContent = [lablel];
+        let textContent = [label];
         if (style.wordWrap) {
           textContent = splitByWidth(
-            lablel,
+            label,
             maxTickDistance,
             10000,
             style.fontFamily,
