@@ -236,7 +236,7 @@ export class InputCurveHandleView extends React.Component<
                         text={strings.handles.drawSpiral}
                         onClick={() => {
                           context.close();
-                          // Make sprial and emit.
+                          // Make spiral and emit.
                           const dragContext = new HandlesDragContext();
                           const curve: Point[][] = [];
                           this.props.onDragStart(
