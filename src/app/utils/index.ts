@@ -165,7 +165,7 @@ export function stringToDataURL(mimeType: string, content: string) {
   return "data:" + mimeType + ";base64," + b64EncodeUnicode(content);
 }
 
-function checkConvertion(
+function checkConversion(
   type: DataType,
   dataSample: (string | boolean | Date | number)[]
 ) {
@@ -303,7 +303,7 @@ export function getConvertableTypes(
       return true;
     }
     if (dataSample) {
-      return checkConvertion(
+      return checkConversion(
         t,
         dataSample.map((d) => d && d.toString())
       );
