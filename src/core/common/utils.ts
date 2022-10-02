@@ -590,7 +590,7 @@ export function getSortFunctionByData(values: string[]) {
   return (a: any, b: any) => (a < b ? -1 : 1);
 }
 /**
- * Retunrs sort direction by comparing the first and the last values of string array
+ * Returns sort direction by comparing the first and the last values of string array
  */
 export function getSortDirection(values: string[]): string {
   let direction = "ascending";
