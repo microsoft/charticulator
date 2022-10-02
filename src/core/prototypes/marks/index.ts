@@ -4,7 +4,7 @@
 /**
  * # Marks
  *
- * Most of mark elements extends {@link EmphasizableMarkClass} and  {@link MarkClass} clases.
+ * Most of mark elements extends {@link EmphasizableMarkClass} and  {@link MarkClass} classes.
  *
  * Each mark has a property
  *
