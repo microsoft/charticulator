@@ -16,7 +16,7 @@
  *
  * * Legends {@link "core/prototypes/legends/index"}
  *
- * * Guides {@link "core/prototypes/guides/index"} helper non visual elements to allign other elements
+ * * Guides {@link "core/prototypes/guides/index"} helper non visual elements to align other elements
  *
  * * Glyphs {@link "core/prototypes/glyphs/index"} is container of other elements on plot segmets
  *
