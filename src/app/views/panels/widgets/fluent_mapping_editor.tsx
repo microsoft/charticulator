@@ -887,7 +887,7 @@ export class FluentMappingEditor extends React.Component<
   }
 }
 
-export interface DataMappAndScaleEditorProps {
+export interface DataMapAndScaleEditorProps {
   attribute: string;
   defaultMapping: Specification.Mapping;
   options: Prototypes.Controls.MappingEditorOptions;
@@ -896,13 +896,13 @@ export interface DataMappAndScaleEditorProps {
   alignLeft?: boolean;
   plotSegment: ObjectClass;
 }
-export interface DataMappAndScaleEditorState {
+export interface DataMapAndScaleEditorState {
   currentMapping: Specification.Mapping;
 }
 
-export class DataMappAndScaleEditor extends ContextedComponent<
-  DataMappAndScaleEditorProps,
-  DataMappAndScaleEditorState
+export class DataMapAndScaleEditor extends ContextedComponent<
+  DataMapAndScaleEditorProps,
+  DataMapAndScaleEditorState
 > {
   public state = {
     currentMapping: this.props.defaultMapping,
