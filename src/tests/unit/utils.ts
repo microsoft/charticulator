@@ -130,8 +130,8 @@ export function parseSVGTransform(a: any) {
 export const pathPrefix = "tests/unit/charts";
 
 export async function loadJSON(url: string) {
-  const responce = await fetch(url);
-  const json = await responce.text();
+  const response = await fetch(url);
+  const json = await response.text();
   return JSON.parse(json);
 }
 
