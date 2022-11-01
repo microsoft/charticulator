@@ -151,14 +151,18 @@ export class ChartStateManager {
       return true;
     } else {
       for (let index = 0; index < origin.constraints.length; index++) {
-        const originConstringts = origin.constraints[index];
+        const originConstraints = origin.constraints[index];
         const current = chart.constraints[index];
-        expect_deep_approximately_equals(
-          originConstringts,
-          current,
-          defaultDifferenceApproximation,
-          true
-        );
+        try {
+          expect_deep_approximately_equals(
+            originConstraints,
+            current,
+            defaultDifferenceApproximation,
+            true
+          );
+        } catch (ex) {
+          return true;
+        }
       }
     }
 
@@ -257,7 +261,6 @@ export class ChartStateManager {
                 true
               );
             } catch (ex) {
-              console.log(ex);
               return true;
             }
           }
@@ -273,7 +276,6 @@ export class ChartStateManager {
               true
             );
           } catch (ex) {
-            console.log(ex);
             return true;
           }
         }
@@ -305,7 +307,6 @@ export class ChartStateManager {
               true
             );
           } catch (ex) {
-            console.log(ex);
             return true;
           }
         }
@@ -320,7 +321,6 @@ export class ChartStateManager {
             true
           );
         } catch (ex) {
-          console.log(ex);
           return true;
         }
 
@@ -335,7 +335,6 @@ export class ChartStateManager {
             true
           );
         } catch (ex) {
-          console.log(ex);
           return true;
         }
       }
