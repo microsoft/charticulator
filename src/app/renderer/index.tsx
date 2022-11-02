@@ -365,6 +365,7 @@ export function renderSVGDefs(element: Graphics.Element): JSX.Element {
                 text.style.colorFilter
               )}
               result="bg"
+              flood-opacity="0"
             />
             <feMerge>
               <feMergeNode in="bg" />
