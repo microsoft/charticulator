@@ -433,7 +433,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     const attrs = this.state.attributes;
     const props = this.object.properties;
 
-    if (props.xData && props.xData.visible) {
+    if (props.xData) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.xData,
         0,
@@ -452,7 +452,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       );
     }
 
-    if (props.yData && props.yData.visible) {
+    if (props.yData) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.yData,
         0,
