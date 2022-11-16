@@ -271,7 +271,7 @@ export class FluentUIWidgetManager
 
     return (
       <FluentMappingEditor
-        key={name + attribute}
+        key={name.replace(/\s/g, '_') + attribute}
         store={this.store}
         parent={this}
         attribute={attribute}
