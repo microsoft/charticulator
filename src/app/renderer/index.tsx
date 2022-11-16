@@ -404,6 +404,26 @@ export function renderSVGDefs(element: Graphics.Element): JSX.Element {
   }
 }
 
+export function rotateGradient(rotation: number) {
+  if (!rotation === undefined) {
+    return {
+      x1: 0,
+      x2: 100,
+      y1: 0,
+      y2: 0,
+    };
+  }
+  const pi = rotation * (Math.PI / 180);
+  const coords = {
+    x1: Math.round(50 + Math.sin(pi) * 50),
+    y1: Math.round(50 + Math.cos(pi) * 50),
+    x2: Math.round(50 + Math.sin(pi + Math.PI) * 50),
+    y2: Math.round(50 + Math.cos(pi + Math.PI) * 50),
+  };
+
+  return coords;
+}
+
 /** The method renders all chart elements in SVG document */
 // eslint-disable-next-line
 export function renderGraphicalElementSVG(
@@ -501,20 +521,63 @@ export function renderGraphicalElementSVG(
   switch (element.type) {
     case "rect": {
       const rect = element as Graphics.Rect;
+
+      const gradientID: string = uniqueID();
+      const rotation = rotateGradient(rect.style.gradientRotation);
+
+      // if gradient color was set, override color value by ID of gradient
+      if (
+        rect.style.fillColor == null &&
+        rect.style.fillStartColor &&
+        rect.style.fillStopColor
+      ) {
+        style.fill = `url(#${gradientID})`;
+      }
+
       return (
-        <rect
-          key={options.key}
-          {...mouseEvents}
-          className={options.className || null}
-          style={style}
-          x={Math.min(rect.x1, rect.x2)}
-          y={-Math.max(rect.y1, rect.y2)}
-          width={Math.abs(rect.x1 - rect.x2)}
-          height={Math.abs(rect.y1 - rect.y2)}
-          rx={rect.rx}
-          ry={rect.ry}
-          transform={`rotate(${rect.rotation ?? 0})`}
-        />
+        <g>
+          <defs>
+            {rect.style.fillColor == null &&
+            rect.style.fillStartColor &&
+            rect.style.fillStopColor ? (
+              <linearGradient
+                id={gradientID}
+                x1={`${rotation.x1}%`}
+                y1={`${rotation.y1}%`}
+                x2={`${rotation.x2}%`}
+                y2={`${rotation.y2}%`}
+              >
+                <stop
+                  offset="0%"
+                  style={{
+                    stopColor: renderColor(rect.style.fillStartColor),
+                    stopOpacity: 1,
+                  }}
+                />
+                <stop
+                  offset="100%"
+                  style={{
+                    stopColor: renderColor(rect.style.fillStopColor),
+                    stopOpacity: 1,
+                  }}
+                />
+              </linearGradient>
+            ) : null}
+          </defs>
+          <rect
+            key={options.key}
+            {...mouseEvents}
+            className={options.className || null}
+            style={style}
+            x={Math.min(rect.x1, rect.x2)}
+            y={-Math.max(rect.y1, rect.y2)}
+            width={Math.abs(rect.x1 - rect.x2)}
+            height={Math.abs(rect.y1 - rect.y2)}
+            rx={rect.rx}
+            ry={rect.ry}
+            transform={`rotate(${rect.rotation ?? 0})`}
+          />
+        </g>
       );
     }
     case "circle": {
@@ -533,17 +596,60 @@ export function renderGraphicalElementSVG(
     }
     case "ellipse": {
       const ellipse = element as Graphics.Ellipse;
+
+      const gradientID: string = uniqueID();
+      const rotation = rotateGradient(ellipse.style.gradientRotation);
+
+      // if gradient color was set, override color value by ID of gradient
+      if (
+        ellipse.style.fillColor == null &&
+        ellipse.style.fillStartColor &&
+        ellipse.style.fillStopColor
+      ) {
+        style.fill = `url(#${gradientID})`;
+      }
+
       return (
-        <ellipse
-          key={options.key}
-          {...mouseEvents}
-          className={options.className || null}
-          style={style}
-          cx={(ellipse.x1 + ellipse.x2) / 2}
-          cy={-(ellipse.y1 + ellipse.y2) / 2}
-          rx={Math.abs(ellipse.x1 - ellipse.x2) / 2}
-          ry={Math.abs(ellipse.y1 - ellipse.y2) / 2}
-        />
+        <g>
+          <defs>
+            {ellipse.style.fillColor == null &&
+            ellipse.style.fillStartColor &&
+            ellipse.style.fillStopColor ? (
+              <linearGradient
+                id={gradientID}
+                x1={`${rotation.x1}%`}
+                y1={`${rotation.y1}%`}
+                x2={`${rotation.x2}%`}
+                y2={`${rotation.y2}%`}
+              >
+                <stop
+                  offset="0%"
+                  style={{
+                    stopColor: renderColor(ellipse.style.fillStartColor),
+                    stopOpacity: 1,
+                  }}
+                />
+                <stop
+                  offset="100%"
+                  style={{
+                    stopColor: renderColor(ellipse.style.fillStopColor),
+                    stopOpacity: 1,
+                  }}
+                />
+              </linearGradient>
+            ) : null}
+          </defs>
+          <ellipse
+            key={options.key}
+            {...mouseEvents}
+            className={options.className || null}
+            style={style}
+            cx={(ellipse.x1 + ellipse.x2) / 2}
+            cy={-(ellipse.y1 + ellipse.y2) / 2}
+            rx={Math.abs(ellipse.x1 - ellipse.x2) / 2}
+            ry={Math.abs(ellipse.y1 - ellipse.y2) / 2}
+          />
+        </g>
       );
     }
     case "line": {
@@ -586,17 +692,60 @@ export function renderGraphicalElementSVG(
         path.endArrowType != ArrowType.NO_ARROW
           ? `url(#${path.style.endArrowColorId})`
           : null;
+
+      const gradientID: string = uniqueID();
+      const rotation = rotateGradient(path.style.gradientRotation);
+
+      // if gradient color was set, override color value by ID of gradient
+      if (
+        path.style.fillColor == null &&
+        path.style.fillStartColor &&
+        path.style.fillStopColor
+      ) {
+        style.fill = `url(#${gradientID})`;
+      }
+
       return (
-        <path
-          key={options.key}
-          {...mouseEvents}
-          className={options.className || null}
-          style={style}
-          d={d}
-          transform={path.transform}
-          markerEnd={markerEnd}
-          markerStart={markerStart}
-        />
+        <g>
+          <defs>
+            {path.style.fillColor == null &&
+            path.style.fillStartColor &&
+            path.style.fillStopColor ? (
+              <linearGradient
+                id={gradientID}
+                x1={`${rotation.x1}%`}
+                y1={`${rotation.y1}%`}
+                x2={`${rotation.x2}%`}
+                y2={`${rotation.y2}%`}
+              >
+                <stop
+                  offset="0%"
+                  style={{
+                    stopColor: renderColor(path.style.fillStartColor),
+                    stopOpacity: 1,
+                  }}
+                />
+                <stop
+                  offset="100%"
+                  style={{
+                    stopColor: renderColor(path.style.fillStopColor),
+                    stopOpacity: 1,
+                  }}
+                />
+              </linearGradient>
+            ) : null}
+          </defs>
+          <path
+            key={options.key}
+            {...mouseEvents}
+            className={options.className || null}
+            style={style}
+            d={d}
+            transform={path.transform}
+            markerEnd={markerEnd}
+            markerStart={markerStart}
+          />
+        </g>
       );
     }
     case "text-on-path": {
@@ -780,7 +929,7 @@ export function renderGraphicalElementSVG(
         >
           {group.elements.map((x, index) => {
             return renderGraphicalElementSVG(x, {
-              key: `m${index}`,
+              key: `m-${group.key || options.key}-${index}`,
               chartComponentSync: options.chartComponentSync,
               externalResourceResolver: options.externalResourceResolver,
               onClick: options.onClick,
