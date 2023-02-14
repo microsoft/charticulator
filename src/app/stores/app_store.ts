@@ -814,7 +814,7 @@ export class AppStore extends BaseStore {
               // TODO: Fix this part
               if (
                 getExpressionUnit(scaleMapping.expression) ==
-                  getExpressionUnit(options.expression) &&
+                getExpressionUnit(options.expression) &&
                 getExpressionUnit(scaleMapping.expression) != null
               ) {
                 const scaleObject = getById(
@@ -1342,10 +1342,10 @@ export class AppStore extends BaseStore {
               mapping.mapping.type === MappingType.scale &&
               (mapping.mapping as ScaleMapping).scale === scaleId
           ) as {
-          element: Specification.Element<Specification.ObjectProperties>;
-          key: string;
-          mapping: ScaleMapping;
-        }[];
+            element: Specification.Element<Specification.ObjectProperties>;
+            key: string;
+            mapping: ScaleMapping;
+          }[];
 
         // Figure out the groupBy
         let groupBy: Specification.Types.GroupBy = null;
@@ -1491,23 +1491,23 @@ export class AppStore extends BaseStore {
           {
             kind:
               xDataProperty.type === "numerical" &&
-              xDataProperty.numericalMode === "temporal"
+                xDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : xDataProperty.dataKind
-                ? xDataProperty.dataKind
-                : this.getDataKindByType(xDataProperty.type),
+                  ? xDataProperty.dataKind
+                  : this.getDataKindByType(xDataProperty.type),
             orderMode: xDataProperty.orderMode
               ? xDataProperty.orderMode
               : xDataProperty.valueType === "string" ||
                 xDataProperty.valueType === "number"
-              ? OrderMode.order
-              : null,
+                ? OrderMode.order
+                : null,
             order:
               xDataProperty.order != undefined
                 ? xDataProperty.order
                 : xDataProperty.orderByCategories
-                ? xDataProperty.orderByCategories
-                : null,
+                  ? xDataProperty.orderByCategories
+                  : null,
             orderByExpression:
               xDataProperty.orderByExpression !== undefined
                 ? xDataProperty.orderByExpression
@@ -1542,18 +1542,22 @@ export class AppStore extends BaseStore {
           {
             kind:
               yDataProperty.type === "numerical" &&
-              yDataProperty.numericalMode === "temporal"
+                yDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : yDataProperty.dataKind
-                ? yDataProperty.dataKind
-                : this.getDataKindByType(yDataProperty.type),
+                  ? yDataProperty.dataKind
+                  : this.getDataKindByType(yDataProperty.type),
             orderMode: yDataProperty.orderMode
               ? yDataProperty.orderMode
               : yDataProperty.valueType === "string"
-              ? OrderMode.order
-              : null,
+                ? OrderMode.order
+                : null,
             order:
               yDataProperty.order !== undefined ? yDataProperty.order : null,
+            orderByExpression:
+              xDataProperty.orderByExpression !== undefined
+                ? xDataProperty.orderByExpression
+                : null
           },
           yDataProperty.rawExpression as string
         );
@@ -1585,16 +1589,16 @@ export class AppStore extends BaseStore {
           {
             kind:
               axisProperty.type === "numerical" &&
-              axisProperty.numericalMode === "temporal"
+                axisProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : axisProperty.dataKind
-                ? axisProperty.dataKind
-                : this.getDataKindByType(axisProperty.type),
+                  ? axisProperty.dataKind
+                  : this.getDataKindByType(axisProperty.type),
             orderMode: axisProperty.orderMode
               ? axisProperty.orderMode
               : axisProperty.valueType === "string"
-              ? OrderMode.order
-              : null,
+                ? OrderMode.order
+                : null,
             order: axisProperty.order !== undefined ? axisProperty.order : null,
           },
           axisProperty.rawExpression as string
@@ -1641,16 +1645,16 @@ export class AppStore extends BaseStore {
         {
           kind:
             axisProperty.type === "numerical" &&
-            axisProperty.numericalMode === "temporal"
+              axisProperty.numericalMode === "temporal"
               ? DataKind.Temporal
               : axisProperty.dataKind
-              ? axisProperty.dataKind
-              : this.getDataKindByType(axisProperty.type),
+                ? axisProperty.dataKind
+                : this.getDataKindByType(axisProperty.type),
           orderMode: axisProperty.orderMode
             ? axisProperty.orderMode
             : axisProperty.valueType === "string"
-            ? OrderMode.order
-            : null,
+              ? OrderMode.order
+              : null,
           order: axisProperty.order,
         },
         axisProperty.rawExpression as string
@@ -1853,8 +1857,8 @@ export class AppStore extends BaseStore {
         <string[]>objectProperties?.allCategories !== undefined
           ? <string[]>objectProperties?.allCategories
           : <string[]>objectProperties?.categories !== undefined
-          ? <string[]>objectProperties?.categories
-          : null,
+            ? <string[]>objectProperties?.categories
+            : null,
       scrollPosition:
         <number>objectProperties?.scrollPosition !== undefined
           ? <number>objectProperties?.scrollPosition
@@ -1962,7 +1966,17 @@ export class AppStore extends BaseStore {
               dataExpression.valueType,
               values
             );
-            dataBinding.orderByCategories = deepClone(categories);
+            try {
+              if (dataBinding.orderByExpression) {
+                dataBinding.orderByCategories = this.getCategoriesForOrderByColumn(
+                  dataBinding
+                );
+              } else {
+                dataBinding.orderByCategories = deepClone(categories);
+              }
+            } catch (e) {
+              dataBinding.orderByCategories = deepClone(categories);
+            }
             dataBinding.order = order != undefined ? order : null;
             dataBinding.allCategories = deepClone(categories);
 
@@ -1978,7 +1992,7 @@ export class AppStore extends BaseStore {
             if (dataBinding.allowScrolling) {
               const start = Math.floor(
                 ((categories.length - dataBinding.windowSize) / 100) *
-                  dataBinding.scrollPosition
+                dataBinding.scrollPosition
               );
               dataBinding.categories = categories.slice(
                 start,
@@ -2062,7 +2076,7 @@ export class AppStore extends BaseStore {
             if (dataBinding.allowScrolling) {
               const start = Math.floor(
                 ((categories.length - dataBinding.windowSize) / 100) *
-                  dataBinding.scrollPosition
+                dataBinding.scrollPosition
               );
               dataBinding.categories = categories.slice(
                 start,
@@ -2153,10 +2167,9 @@ export class AppStore extends BaseStore {
   }
 
   public getCategoriesForOrderByColumn(
-    orderExpression: string,
-    expression: string,
     data: AxisDataBinding
   ) {
+    const expression: string = data.expression;
     const parsed = Expression.parse(expression);
     let groupByExpression: string = null;
     if (parsed instanceof Expression.FunctionCall) {
