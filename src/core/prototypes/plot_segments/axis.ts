@@ -1280,13 +1280,21 @@ export class AxisRenderer {
     x: number,
     y: number,
     axis: AxisMode,
-    scrollPosition: number,
+    scrollPositionRatio: number,
     onScroll: (position: number) => void,
     zoom: ZoomInfo
   ) {
     switch (axis) {
       case AxisMode.X: {
-        return this.renderScrollBar(x, y, 0, 1, scrollPosition, onScroll, zoom);
+        return this.renderScrollBar(
+          x,
+          y,
+          0,
+          1,
+          scrollPositionRatio,
+          onScroll,
+          zoom
+        );
       }
       case AxisMode.Y: {
         return this.renderScrollBar(
@@ -1294,7 +1302,7 @@ export class AxisRenderer {
           y,
           90,
           -1,
-          scrollPosition,
+          scrollPositionRatio,
           onScroll,
           zoom
         );
@@ -1307,7 +1315,7 @@ export class AxisRenderer {
     y: number,
     angle: number,
     side: number,
-    handlePosition: number,
+    positionRatio: number,
     onScroll: (position: number) => void,
     zoom: ZoomInfo
   ): React.ReactElement<any> {
@@ -1353,12 +1361,12 @@ export class AxisRenderer {
 
     return React.createElement(VirtualScrollBar, <VirtualScrollBarPropertes>{
       onScroll,
-      handlerBarWidth: AxisRenderer.SCROLL_BAR_SIZE,
+      handleBarWidth: AxisRenderer.SCROLL_BAR_SIZE,
       height,
       width,
       x: x1,
       y: y1,
-      initialPosition: handlePosition,
+      initialPositionRatio: positionRatio,
       vertical: angle === 90,
       zoom,
       scrollBarRatio: this.hiddenCategoriesRatio,

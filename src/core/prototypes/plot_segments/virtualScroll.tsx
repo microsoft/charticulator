@@ -8,13 +8,13 @@ import { ZoomInfo } from "../..";
 import { AxisDataBindingType } from "../../specification/types";
 
 export interface VirtualScrollBarPropertes {
-  initialPosition: number;
+  initialPositionRatio: number;
   onScroll: (position: number) => void;
   x: number;
   y: number;
   width: number;
   height: number;
-  handlerBarWidth: number;
+  handleBarWidth: number;
   vertical: boolean;
   zoom: ZoomInfo;
   scrollBarRatio: number;
@@ -23,10 +23,10 @@ export interface VirtualScrollBarPropertes {
 }
 
 export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
-  handlerBarWidth, // AxisRenderer.SCROLL_BAR_SIZE
+  handleBarWidth, // AxisRenderer.SCROLL_BAR_SIZE
   vertical,
   height,
-  initialPosition,
+  initialPositionRatio,
   onScroll,
   width,
   x,
@@ -61,9 +61,9 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
       }
 
       handlePosition =
-        ((trackSize - handlerBarWidth * 2 - handleSize) / 100) *
+        ((trackSize - handleBarWidth * 2 - handleSize) / 100) *
           (100 - handlePosition) +
-        handlerBarWidth; // map % to axis position
+        handleBarWidth; // map % to axis position
 
       if (vertical) {
         handlePositionY = handlePosition;
@@ -73,33 +73,35 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
 
       return [handlePositionX, handlePositionY];
     },
-    [handleSize, handlerBarWidth, trackSize, vertical]
+    [handleSize, handleBarWidth, trackSize, vertical]
   );
 
-  const [position, setPosition] = React.useState(initialPosition);
+  const [positionRatio, setPositionRatio] = React.useState(
+    initialPositionRatio
+  );
   const [isActive, setActive] = React.useState(false);
 
   useEffect(() => {
-    onScroll(position);
+    onScroll(positionRatio);
     // eslint-disable-next-line
   }, [windowSize]);
 
   const [handlePositionX, handlePositionY] = React.useMemo(
-    () => mapPositionToCoordinates(position),
-    [position, mapPositionToCoordinates]
+    () => mapPositionToCoordinates(positionRatio),
+    [positionRatio, mapPositionToCoordinates]
   );
 
   let handlerWidth = 0;
   let handlerHeight = 0;
-  const buttonsWidth = handlerBarWidth;
-  const buttonsHeight = handlerBarWidth;
+  const buttonsWidth = handleBarWidth;
+  const buttonsHeight = handleBarWidth;
 
   if (vertical) {
     handlerHeight = handleSize;
-    handlerWidth = handlerBarWidth;
+    handlerWidth = handleBarWidth;
   } else {
     handlerWidth = handleSize;
-    handlerHeight = handlerBarWidth;
+    handlerHeight = handleBarWidth;
   }
 
   const track = React.useRef<SVGRectElement>(null);
@@ -130,26 +132,26 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
       if (deltaYHandler > 0 && deltaYHandler < handleSize * zoom.scale) {
         deltaY = deltaY - deltaYHandler;
       }
-      // debugger
-      let newPosition = position;
+
+      let newPositionRatio = positionRatio;
       if (vertical) {
         const trackSize = Math.abs(trackElement.bottom - trackElement.top);
-        newPosition = (deltaY / trackSize) * 100;
+        newPositionRatio = (deltaY / trackSize) * 100;
       } else {
         const trackSize = Math.abs(trackElement.right - trackElement.left);
-        newPosition = 100 - (deltaX / trackSize) * 100;
+        newPositionRatio = 100 - (deltaX / trackSize) * 100;
       }
 
-      if (newPosition > 100) {
-        newPosition = 100;
+      if (newPositionRatio > 100) {
+        newPositionRatio = 100;
       }
       if (dataType == AxisDataBindingType.Categorical) {
-        if (newPosition - widthPerBarPercent * 100 < 0) {
-          newPosition = 0;
+        if (newPositionRatio - widthPerBarPercent * 100 < 0) {
+          newPositionRatio = 0;
         }
       }
-      setPosition(Math.round(newPosition));
-      onScroll(Math.round(newPosition));
+      setPositionRatio(Math.round(newPositionRatio));
+      onScroll(Math.round(newPositionRatio));
     },
     [
       dataType,
@@ -157,7 +159,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
       height,
       isActive,
       onScroll,
-      position,
+      positionRatio,
       vertical,
       width,
       windowSize,
@@ -169,17 +171,17 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
 
   const onClick = React.useCallback(
     (sign: number) => {
-      let newPosition = position + sign * 5;
+      let newPosition = positionRatio + sign * 5;
       if (newPosition > 100) {
         newPosition = 100;
       }
       if (newPosition < 0) {
         newPosition = 0;
       }
-      setPosition(Math.round(newPosition));
+      setPositionRatio(Math.round(newPosition));
       onScroll(newPosition);
     },
-    [onScroll, position]
+    [onScroll, positionRatio]
   );
 
   return (
