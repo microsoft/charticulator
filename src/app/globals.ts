@@ -15,4 +15,5 @@ export enum LocalStorageKeys {
   DelimiterSymbol = "delimiterSymbol",
   CurrencySymbol = "currencySymbol",
   GroupSymbol = "groupSymbol",
+  UtcTimeZone = "utcTimeZone",
 }

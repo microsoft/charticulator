@@ -188,6 +188,7 @@ export class AppStore extends BaseStore {
     },
     currency: '["$", ""]',
     group: "[3]",
+    utcTimeZone: true,
   };
   public currentTool: string;
   public currentToolOptions: string;

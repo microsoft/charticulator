@@ -2,8 +2,9 @@
 // Licensed under the MIT license.
 /* eslint-disable @typescript-eslint/no-namespace */
 
-import { scaleUtc, scaleLinear, scaleLog } from "d3-scale";
-import { getSortFunctionByData } from ".";
+import { scaleUtc, scaleLinear, scaleLog, scaleTime } from "d3-scale";
+import { timeFormat, utcFormat } from "d3-time-format";
+import { getSortFunctionByData, isUtcTimeZone } from ".";
 import { OrderMode } from "../specification/types";
 
 export namespace Scale {
@@ -99,7 +100,7 @@ export namespace Scale {
   export class DateScale extends LinearScale {
     public inferParameters(values: number[], nice: boolean = true) {
       const filteredValues = values.filter((val) => !isNaN(val));
-      let scale = scaleUtc().domain([
+      let scale = (isUtcTimeZone() ? scaleUtc() : scaleTime()).domain([
         Math.min(...filteredValues),
         Math.max(...filteredValues),
       ]);
@@ -114,13 +115,14 @@ export namespace Scale {
     }
 
     public ticks(n: number = 10) {
-      const scale = scaleUtc().domain([this.domainMin, this.domainMax]);
+      const scale = (isUtcTimeZone() ? scaleUtc() : scaleTime()).domain([this.domainMin, this.domainMax]);
       return scale.ticks(n).map((x) => x.getTime());
     }
 
-    public tickFormat(n: number = 10, specifier?: string) {
-      const scale = scaleUtc().domain([this.domainMin, this.domainMax]);
-      const fmt = scale.tickFormat(n, specifier);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public tickFormat(_n: number = 10, specifier?: string) {
+      const fmt = isUtcTimeZone() ? utcFormat(specifier) : timeFormat(specifier);
+
       return (t: number) => fmt(new Date(t));
     }
   }

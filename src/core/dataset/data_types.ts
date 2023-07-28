@@ -9,6 +9,7 @@ import {
   monthNames,
   getDateFormat,
 } from "./datetime";
+import { LocaleFileFormat } from "./dsv_parser";
 
 export interface LocaleNumberFormat {
   remove: string;
@@ -30,7 +31,10 @@ function localeNumber(x: string, localeNumberFormat: LocaleNumberFormat) {
 
 export interface DataTypeDescription {
   test: (v: string, localeNumberFormat?: LocaleNumberFormat) => boolean;
-  convert: (v: string, localeNumberFormat?: LocaleNumberFormat) => DataValue;
+  convert: (
+    v: string,
+    localeNumberFormat?: LocaleNumberFormat
+  ) => DataValue;
 }
 
 export const dataTypes: { [name in DataType]: DataTypeDescription } = {
@@ -121,9 +125,13 @@ export function convertColumn(
   }
 ): DataValue[] {
   const converter = dataTypes[type].convert;
-  return values.map((v) =>
-    v != null ? converter(v, localeNumberFormat) : null
-  );
+  return values.map((v) => {
+    if (type === DataType.Date) {
+      return v != null ? converter(v) : null;
+    } else {
+      return v != null ? converter(v, localeNumberFormat) : null;
+    }
+  });
 }
 
 /** Get distinct values from a non-null array of basic types */
@@ -139,7 +147,7 @@ export function getDistinctValues(values: DataValue[]): DataValue[] {
 // eslint-disable-next-line
 export function inferAndConvertColumn(
   values: string[],
-  localeNumberFormat: LocaleNumberFormat,
+  localeFileFormat: LocaleFileFormat,
   hints?: { [name: string]: string }
 ): {
   values: DataValue[];
@@ -149,12 +157,12 @@ export function inferAndConvertColumn(
 } {
   const inferredType = inferColumnType(
     values.filter((x) => x != null),
-    localeNumberFormat
+    localeFileFormat.numberFormat
   );
   const convertedValues = convertColumn(
     inferredType,
     values,
-    localeNumberFormat
+    localeFileFormat.numberFormat
   );
   if (hints == null) {
     hints = {};

@@ -9,12 +9,12 @@ import { BoundingBox, Controls, DropZones, Handles } from "../common";
 import { FunctionCall, TextExpression, Variable } from "../../expression";
 import {
   getSortFunctionByData,
+  getTimeFormatFunction,
   refineColumnName,
   tickFormatParserExpression,
   ZoomInfo,
 } from "../..";
 import { AxisRenderer } from "./axis";
-import { utcFormat } from "d3-time-format";
 import { AxisDataBindingType, NumericalMode } from "../../specification/types";
 import { strings } from "../../../strings";
 import { PanelMode } from "../controls";
@@ -312,13 +312,13 @@ export abstract class PlotSegmentClass<
     ) {
       if (tickFormat) {
         return (value: any) => {
-          return utcFormat(
+          return getTimeFormatFunction()(
             tickFormat.replace(tickFormatParserExpression(), "$1")
           )(value);
         };
       } else {
         return (value: any) => {
-          return utcFormat("%m/%d/%Y")(value);
+          return getTimeFormatFunction()("%m/%d/%Y")(value);
         };
       }
     } else {

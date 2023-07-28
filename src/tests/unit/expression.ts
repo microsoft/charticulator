@@ -1,7 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { expect } from "chai";
+import { setTimeZone } from "../../container";
 import * as Expression from "../../core/expression";
+
+setTimeZone(true);
 
 describe("Basic Expression", () => {
   const test_cases: Array<[string, any]> = [

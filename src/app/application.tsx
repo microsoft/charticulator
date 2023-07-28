@@ -22,6 +22,7 @@ import {
   defaultNumberFormat,
   parseSafe,
   Prototypes,
+  setTimeZone,
 } from "../core";
 import { ExtensionContext, Extension } from "./extension";
 import { Action } from "./actions/actions";
@@ -126,6 +127,7 @@ export class Application {
       worker?: CharticulatorWorkerInterface;
     },
     localizaiton: LocalizationConfig,
+    utcTimeZone: boolean,
     handlers?: {
       menuBarHandlers?: MenuBarHandlers;
       telemetry?: TelemetryRecorder;
@@ -169,6 +171,10 @@ export class Application {
     }
 
     try {
+      const UtcTimeZone = parseSafe(
+        window.localStorage.getItem(LocalStorageKeys.UtcTimeZone),
+        true
+      );
       const CurrencySymbol = parseSafe(
         window.localStorage.getItem(LocalStorageKeys.CurrencySymbol),
         defaultCurrency
@@ -196,6 +202,7 @@ export class Application {
           decimal: NumberFormatRemove === "," ? "." : ",",
           remove: NumberFormatRemove === "," ? "," : ".",
         },
+        utcTimeZone: utcTimeZone !== undefined ? utcTimeZone : UtcTimeZone,
       });
       setFormatOptions({
         currency: parseSafe(CurrencySymbol, defaultCurrency),
@@ -203,6 +210,7 @@ export class Application {
         decimal: NumberFormatRemove === "," ? "." : ",",
         thousands: NumberFormatRemove === "," ? "," : ".",
       });
+      setTimeZone(utcTimeZone !== undefined ? utcTimeZone : UtcTimeZone);
     } catch (ex) {
       setFormatOptions({
         currency: [localizaiton?.currency, ""] ?? defaultCurrency,
@@ -420,6 +428,7 @@ export class Application {
         numberFormat: defaultNumberFormat,
         currency: null,
         group: null,
+        utcTimeZone: true,
       };
       const spec: DatasetSourceSpecification = {
         tables: hashParsed.loadCSV

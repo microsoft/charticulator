@@ -11,6 +11,7 @@ import {
   EventSubscription,
   Prototypes,
   setFormatOptions,
+  setTimeZone,
   defaultCurrency,
   defaultDigitsGroup,
   defaultNumberFormat,
@@ -214,7 +215,8 @@ export class ChartContainer extends EventEmitter {
     public readonly instance: TemplateInstance,
     public readonly dataset: Dataset.Dataset,
     public renderEvents?: RenderEvents,
-    public localizaiton?: LocalizationConfig
+    public localizaiton?: LocalizationConfig,
+    public utcTimeZone?: boolean
   ) {
     super();
     this.chart = instance.chart;
@@ -227,6 +229,7 @@ export class ChartContainer extends EventEmitter {
       thousands:
         localizaiton?.thousandsDelimiter ?? defaultNumberFormat.decimal,
     });
+    setTimeZone(utcTimeZone);
   }
 
   private container: Element;
@@ -317,6 +320,10 @@ export class ChartContainer extends EventEmitter {
 
   public static setFormatOptions(options: FormatLocaleDefinition) {
     setFormatOptions(options);
+  }
+
+  public static setUtcTimeZone(utcTimeZone: boolean) {
+    setTimeZone(utcTimeZone);
   }
 
   public reactMount(width: number = 1200, height: number = 800) {

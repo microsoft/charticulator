@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 import { Color } from "./color";
-import { utcFormat } from "d3-time-format";
+import { timeFormat, utcFormat } from "d3-time-format";
 
 import { formatLocale, FormatLocaleDefinition } from "d3-format";
 import { Scale } from ".";
@@ -612,7 +612,7 @@ export function getSortDirection(values: string[]): string {
  * @param format date format of d3
  */
 export function applyDateFormat(value: Date, format: string): string {
-  return utcFormat(format)(value);
+  return getTimeFormatFunction()(format)(value);
 }
 
 export const colorAttributes = ["fill", "stroke", "color"];
@@ -667,6 +667,11 @@ var formatOptions: FormatLocaleDefinition = {
   currency: ["$", ""],
 };
 
+// eslint-disable-next-line no-var
+var utcTimeZoneOption = {
+  utcTimeZone: true,
+};
+
 export function getFormatOptions(): FormatLocaleDefinition {
   return {
     ...formatOptions,
@@ -679,6 +684,22 @@ export function setFormatOptions(options: FormatLocaleDefinition) {
   };
 }
 
+export function setTimeZone(utcTimeZone: boolean) {
+  utcTimeZoneOption = {
+    utcTimeZone: utcTimeZone,
+  };
+}
+
+export function isUtcTimeZone(): boolean {
+  return utcTimeZoneOption.utcTimeZone;
+}
+
+export function getTimeFormatFunction(): (
+  specifier: string
+) => (date: Date) => string {
+  return isUtcTimeZone() ? utcFormat : timeFormat;
+}
+
 export const tickFormatParserExpression = () => /\{([^}]+)\}/g;
 
 export function getFormat() {
@@ -687,7 +708,8 @@ export function getFormat() {
 
 export function parseSafe(value: string, defaultValue: any = null) {
   try {
-    return JSON.parse(value) || defaultValue;
+    const parsedValue = JSON.parse(value);
+    return parsedValue != undefined ? parsedValue : defaultValue;
   } catch (ex) {
     return defaultValue;
   }

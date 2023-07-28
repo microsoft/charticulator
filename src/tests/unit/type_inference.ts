@@ -72,7 +72,13 @@ describe("Data Type Inference", () => {
       ],
     ];
     for (const [values, expectedResult] of cases) {
-      const r = inferAndConvertColumn(values, localeNumberFormat);
+      const r = inferAndConvertColumn(values, {
+        delimiter: ", ",
+        numberFormat: localeNumberFormat,
+        currency: '["$",""]',
+        group: "[3]",
+        utcTimeZone: true,
+      });
       if (expectedResult.type) {
         expect(r.type).to.equals(expectedResult.type);
       }
