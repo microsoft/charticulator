@@ -499,8 +499,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       props.xData.allowScrolling &&
       ((props.xData.allCategories &&
         props.xData.allCategories.length > props.xData.windowSize) ||
-        Math.abs(props.xData.dataDomainMax - props.xData.dataDomainMin) >
-          props.xData.windowSize)
+        (props.xData.dataDomainMax !== undefined &&
+          props.xData.dataDomainMin !== undefined))
     ) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.xData,
@@ -549,8 +549,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
                 .range([props.xData.dataDomainMin, props.xData.dataDomainMax]);
               props.xData.scrollPosition = position;
               const start = scale(position);
-              props.xData.domainMin = start - props.xData.windowSize;
-              props.xData.domainMax = start;
+              props.xData.domainMin = start;
+              props.xData.domainMax = start + props.xData.windowSize;
             }
             manager.remapPlotSegmentGlyphs(this.object);
             manager.solveConstraints();
@@ -565,8 +565,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       props.yData.allowScrolling &&
       ((props.yData.allCategories &&
         props.yData.allCategories.length > props.yData.windowSize) ||
-        Math.abs(props.yData.dataDomainMax - props.yData.dataDomainMin) >
-          props.yData.windowSize)
+        (props.yData.dataDomainMax !== undefined &&
+          props.yData.dataDomainMin !== undefined))
     ) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.yData,
