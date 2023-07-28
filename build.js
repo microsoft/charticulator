@@ -1,3 +1,4 @@
+/* eslint-disable powerbi-visuals/non-literal-fs-path */
 const fs = require("fs-extra");
 const jsyaml = require("js-yaml");
 const multirun = require("multirun");
@@ -96,13 +97,13 @@ const devSequence = [
 
 let COMMANDS = {
   // Remove the entire build directory
-  cleanup: () => { fs.remove("dist"); fs.remove(".tmp") },
+  cleanup: async () => { await fs.remove("dist"); await fs.remove(".tmp") },
 
   // Create necessary directories
   makedirs: [
-    () => fs.mkdirs("dist/styles"),
-    () => fs.mkdirs("dist/data"),
-    () => fs.mkdirs("dist/scripts/core/expression")
+    async () => fs.mkdirs("dist/styles"),
+    async () => fs.mkdirs("dist/data"),
+    async () => fs.mkdirs("dist/scripts/core/expression")
   ],
 
   dtsBundle: [
@@ -114,29 +115,35 @@ let COMMANDS = {
 
   // Copy files
   copy: [
-    () =>
-      fs.copy(
-        "src/core/expression/parser.d.ts",
-        "dist/scripts/core/expression/parser.d.ts"
-      ),
+    async () => {
+      const parserPath = "src/core/expression/parser.d.ts";
+      if (await fs.ensureFile(parserPath)) {
+        await fs.copy(
+          parserPath,
+          "dist/scripts/core/expression/parser.d.ts"
+        )
+      } else {
+        console.error(`${parserPath} not found`);
+      }
+    },
 
     // Copy all of the public files
     isProd
-      ? () => copyFolder("./public", "./dist")
+      ? async () => copyFolder("./public", "./dist")
       : [
-        () => copyFolder("./public", "./dist"),
-        () => copyFolder("./public_test", "./dist")
+        async () => copyFolder("./public", "./dist"),
+        async () => copyFolder("./public_test", "./dist")
       ],
 
     // Copy all of the extensions
-    () => copyFolder("./extensions", "./dist/extensions"),
+    async () => copyFolder("./extensions", "./dist/extensions"),
 
     // Copy all of the datasets
-    () => copyFolder("./datasets", "./dist/datasets")
+    async () => copyFolder("./datasets", "./dist/datasets")
   ],
 
   // Convert the THIRD_PARTY.yml to json
-  third_party_data: () =>
+  third_party_data: async () =>
     yamlToJSON("THIRD_PARTY.yml", "dist/data/THIRD_PARTY.json"),
 
   // Convert the config.yml to config.js
