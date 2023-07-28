@@ -408,6 +408,15 @@ export class Variable extends Expression {
     return precedences.VARIABLE;
   }
 
+  public static isNonEnglishVariableName(name: string) {
+    // eslint-disable-next-line no-control-regex
+    if (name.match(/^[^\x00-\x7F]+$/)) {
+      return true;
+    }
+
+    return false;
+  }
+
   public static VariableNameToString(name: string) {
     if (name.match(/^[a-zA-Z_][a-zA-Z0-9_]*$/)) {
       return name;

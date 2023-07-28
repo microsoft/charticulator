@@ -2583,6 +2583,7 @@ function getOrderByAnotherColumnWidgets(
     data.orderByCategories = [...new Set(newData)];
   };
 
+  // eslint-disable-next-line no-constant-condition
   if (orderChanged) {
     columnsDisplayNames = columnsDisplayNames.map((name) => {
       if (isOriginalColumn && name == data.orderByExpression) {
