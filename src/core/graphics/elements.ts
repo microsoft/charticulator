@@ -70,6 +70,12 @@ export interface Style {
   colorFilter?: ColorFilter;
 
   fillColor?: Color;
+
+  /** Gradient configuration */
+  fillStartColor?: Color;
+  fillStopColor?: Color;
+  gradientRotation?: number;
+
   backgroundColor?: Color;
   backgroundColorId?: string;
   fillOpacity?: number;

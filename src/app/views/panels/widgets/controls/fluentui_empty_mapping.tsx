@@ -35,7 +35,7 @@ export const EmptyMapping = ({
             <EmptyColorInput onClick={onClick} label={options.label} />
           ) : (
             <TextField
-              id={`id_${options.label}`}
+              id={`id_${options.label.replace(/\s/g, '_')}`}
               styles={defaultStyle}
               label={options.label}
               onRenderLabel={labelRender}
@@ -53,7 +53,7 @@ export const EmptyMapping = ({
             <EmptyColorInput onClick={onClick} label={options.label} />
           ) : (
             <TextField
-              id={`id_${options.label}`}
+              id={`id_${options.label.replace(/\s/g, '_')}`}
               styles={defaultStyle}
               label={options.label}
               onRenderLabel={labelRender}
@@ -82,7 +82,7 @@ const EmptyColorInput = ({
     <span className="el-color-value">
       <FluentTextField>
         <TextField
-          id={`id_${label}`}
+          id={`id_${label.replace(/\s/g, '_')}`}
           styles={defaultStyle}
           label={label}
           onRenderLabel={labelRender}

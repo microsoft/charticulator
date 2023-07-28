@@ -14,7 +14,7 @@ function serialize(data: HTMLDocument) {
   return JSON.stringify(
     parseSync(new XMLSerializer().serializeToString(data)),
     null,
-    ""
+    " "
   );
 }
 

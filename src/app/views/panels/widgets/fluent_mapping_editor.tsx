@@ -266,7 +266,7 @@ export class FluentMappingEditor extends React.Component<
       <>
         {this.state.isColorPickerOpen && (
           <Callout
-            target={`#id_${this.props.options.label}`}
+            target={`#id_${this.props.options.label.replace(/\s/g, '_')}`}
             onDismiss={() => this.changeColorPickerState()}
           >
             <ColorPicker
