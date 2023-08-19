@@ -1381,20 +1381,30 @@ export class AppStore extends BaseStore {
             extendScale = true;
             reuseRange = true;
           } else {
-            if (scale.classID == "scale.categorical<string,color>") {
-              newScale = true;
-              extendScale = true;
-              reuseRange = true;
-            } else {
-              newScale = false;
-              extendScale = true;
-              reuseRange = true;
-            }
             values = this.chartManager.getGroupedExpressionVector(
               mapping.mapping.table,
               groupBy,
               mapping.mapping.expression
             );
+            if (scale.classID == "scale.categorical<string,color>") {
+              newScale = true;
+              extendScale = true;
+              reuseRange = true;
+              const hexColor = new RegExp("^#[0-9,a-f,A-F]{6}");
+              // if values hex codes of color, charticulator should not use current range
+              // need to update scale's hex codes from data
+              if (
+                values.every(
+                  (val: string) => typeof val === "string" && hexColor.test(val)
+                )
+              ) {
+                reuseRange = false;
+              }
+            } else {
+              newScale = false;
+              extendScale = true;
+              reuseRange = true;
+            }
           }
           scaleClass.inferParameters(values as any, {
             newScale,
