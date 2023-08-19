@@ -1564,6 +1564,10 @@ export class AppStore extends BaseStore {
               : null,
             order:
               yDataProperty.order !== undefined ? yDataProperty.order : null,
+            orderByExpression:
+              xDataProperty.orderByExpression !== undefined
+                ? xDataProperty.orderByExpression
+                : null,
           },
           yDataProperty.rawExpression as string
         );
@@ -1972,7 +1976,17 @@ export class AppStore extends BaseStore {
               dataExpression.valueType,
               values
             );
-            dataBinding.orderByCategories = deepClone(categories);
+            try {
+              if (dataBinding.orderByExpression) {
+                dataBinding.orderByCategories = this.getCategoriesForOrderByColumn(
+                  dataBinding
+                );
+              }
+            } finally {
+              if (!dataBinding.orderByExpression) {
+                dataBinding.orderByCategories = deepClone(categories);
+              }
+            }
             dataBinding.order = order != undefined ? order : null;
             dataBinding.allCategories = deepClone(categories);
 
@@ -2162,11 +2176,8 @@ export class AppStore extends BaseStore {
     }
   }
 
-  public getCategoriesForOrderByColumn(
-    orderExpression: string,
-    expression: string,
-    data: AxisDataBinding
-  ) {
+  public getCategoriesForOrderByColumn(data: AxisDataBinding) {
+    const expression: string = data.expression;
     const parsed = Expression.parse(expression);
     let groupByExpression: string = null;
     if (parsed instanceof Expression.FunctionCall) {
