@@ -44,7 +44,7 @@ export const ColorGridColumnWrapper = styled.div`
 
 export const PickersSectionWrapper = styled.div`
   margin: 5px;
-  width: 150px;
+  width: 160px;
   display: flex;
   flex-direction: column;
 `;

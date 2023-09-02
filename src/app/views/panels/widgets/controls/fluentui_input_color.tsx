@@ -32,7 +32,7 @@ export interface InputColorProps {
   defaultValue: Color;
   allowNull?: boolean;
   label?: string;
-  onEnter: (value: Color) => boolean;
+  onEnter: (value: Color | string) => boolean;
   store?: AppStore;
   noDefaultMargin?: boolean;
   labelKey?: string; //key for color picker

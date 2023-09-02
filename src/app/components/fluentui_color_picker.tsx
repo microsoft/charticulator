@@ -9,7 +9,7 @@ import {
   predefinedPalettes,
 } from "../resources";
 import { AppStore } from "../stores";
-import { Label } from "@fluentui/react";
+import { DefaultButton, Label } from "@fluentui/react";
 import { ColorGrid } from "./colors/color_grid";
 import { NullButton } from "./colors/null_button";
 import { ColorPickerButton, PickerType } from "./colors/color_pickers";
@@ -20,9 +20,14 @@ import {
   ColorsPickerLeftSectionWrapper,
   ColorsPickerWrapper,
   ColorsSectionWrapper,
+  defaultPaletteButtonsStyles,
   PickersSection,
   PickersSectionWrapper,
 } from "./colors/styles";
+import { PatternList } from "./patterns/pattern_list";
+import { PatternEditor } from "./patterns/pattern_editor";
+import { PatternPicker } from "./patterns/pattern_picker";
+import { strings } from "../../strings";
 
 export function colorToCSS(color: Color) {
   return `rgb(${color.r.toFixed(0)},${color.g.toFixed(0)},${color.b.toFixed(
@@ -33,7 +38,7 @@ export function colorToCSS(color: Color) {
 export interface ColorPickerProps {
   defaultValue?: Color;
   allowNull?: boolean;
-  onPick?: (color: Color) => void;
+  onPick?: (color: Color | string) => void;
   store?: AppStore;
   parent?: React.Component;
   closePicker?: () => void;
@@ -43,6 +48,7 @@ export interface ColorPickerState {
   currentPalette?: ColorPalette;
   currentPicker?: string;
   currentColor?: Color;
+  currentPattern?: string;
 }
 
 export class ColorPicker extends React.Component<
@@ -104,6 +110,7 @@ export class ColorPicker extends React.Component<
     };
   }
 
+  // eslint-disable-next-line
   public render() {
     const editorType = this.props?.store?.editorType ?? EditorType.Chart;
 
@@ -142,6 +149,40 @@ export class ColorPicker extends React.Component<
                 })
               }
               type={PickerType.HSV}
+            />
+            <PaletteList
+              palettes={predefinedPalettes.filter((x) => x.type == "palette")}
+              selected={this.state.currentPalette}
+              onClick={(p) => {
+                this.setState({ currentPalette: p, currentPicker: null });
+                this.props.parent?.forceUpdate();
+              }}
+            />
+            <PatternList
+              onSelectPattern={(type: string) => {
+                this.setState({
+                  currentPalette: null,
+                  currentPicker: PickerType.SVGPattern,
+                  currentPattern: type,
+                });
+              }}
+              onEdit={() => {
+                this.setState({
+                  currentPalette: null,
+                  currentPicker: PickerType.SVGPatternEditor,
+                  currentPattern: null,
+                });
+              }}
+            />
+            <DefaultButton
+              text={strings.patterns.addPatternSet}
+              styles={{
+                ...defaultPaletteButtonsStyles,
+                // root: {
+                //   ...(defaultPaletteButtonsStyles.root as any),
+                //   border: "1 px solid black",
+                // },
+              }}
             />
           </PickersSection>
           <NullButton
@@ -182,6 +223,17 @@ export class ColorPicker extends React.Component<
             onChange={(c) => {
               this.props.onPick(c);
               this.setState({ currentColor: c });
+            }}
+          />
+        ) : null}
+        {this.state.currentPicker == PickerType.SVGPatternEditor ? (
+          <PatternEditor patternName={this.state.currentPattern} />
+        ) : null}
+        {this.state.currentPicker == PickerType.SVGPattern ? (
+          <PatternPicker
+            patternName={this.state.currentPattern}
+            onPick={(_patternName: string, pattern: string) => {
+              this.props.onPick(pattern);
             }}
           />
         ) : null}

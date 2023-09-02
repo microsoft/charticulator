@@ -149,9 +149,13 @@ export class GradientPicker extends React.Component<
             <ColorPicker
               defaultValue={this.state.currentColor}
               onPick={(color) => {
-                const newGradient = deepClone(this.state.currentGradient);
-                newGradient.colors[this.state.currentItemIdx] = color;
-                this.selectGradient(newGradient, true);
+                if (typeof color !== "string") {
+                  const newGradient = deepClone(this.state.currentGradient);
+                  newGradient.colors[this.state.currentItemIdx] = color;
+                  this.selectGradient(newGradient, true);
+                } else {
+                  console.log("pattern", color);
+                }
               }}
               parent={this}
             />
