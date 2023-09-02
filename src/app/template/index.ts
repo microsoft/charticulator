@@ -268,6 +268,7 @@ export class ChartTemplateBuilder {
           );
 
           if (
+            templateObject &&
             (templateObject.properties[
               inference.axis.property as string
             ] as any).autoDomainMin !== "undefined"
@@ -277,6 +278,7 @@ export class ChartTemplateBuilder {
             ] as any).autoDomainMin as boolean;
           }
           if (
+            templateObject &&
             (templateObject.properties[
               inference.axis.property as string
             ] as any).autoDomainMax !== "undefined"

@@ -25,6 +25,8 @@ export interface InferParametersOptions extends DataMappingHints {
   reuseRange?: boolean;
   /** Whether to ensure the domainMin == 0 (for numeric scales) */
   startWithZero?: "default" | "always" | "never";
+  /** Keep domain */
+  keepDomain?: boolean;
 }
 
 export abstract class ScaleClass<

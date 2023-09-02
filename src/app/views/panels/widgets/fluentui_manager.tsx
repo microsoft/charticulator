@@ -2076,6 +2076,21 @@ export class FluentUIWidgetManager
     }
     return true;
   }
+
+  public getCurrentGlyphIndex(plotSegmentId: string) {
+    let currentGlyphIndex = 0;
+    const plotSegment = Prototypes.findObjectById(
+      this.store.chart,
+      plotSegmentId
+    );
+    if (!plotSegment) {
+      return 0;
+    }
+    if (Prototypes.isType(plotSegment.classID, "plot-segment")) {
+      currentGlyphIndex = this.store.getSelectedGlyphIndex(plotSegment._id);
+    }
+    return currentGlyphIndex;
+  }
 }
 
 export interface DropZoneViewProps {

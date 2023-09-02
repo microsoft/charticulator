@@ -107,6 +107,25 @@ export class ChartStateManager {
     this.initialize({});
   }
 
+  public appendParentScales(
+    scalesApplication: Specification.ScaleApplication[]
+  ) {
+    if (this.chart) {
+      if (!this.chart.scales) {
+        this.chart.scales = [];
+      }
+
+      // this.chart.scales = this.chart.scales.concat(
+      //   scalesApplication.map((sa) => {
+      //     sa.scale.isParent = true;
+      //     return sa.scale;
+      //   })
+      // );
+
+      this.chart.parentScales = scalesApplication;
+    }
+  }
+
   public resetDifference() {
     this.chartOrigin = deepClone(this.chart);
   }

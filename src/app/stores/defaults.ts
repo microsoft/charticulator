@@ -181,6 +181,7 @@ export function createDefaultChart(
     scaleMappings: [],
     constraints: [],
     resources: [],
+    parentScales: [],
   } as Specification.Chart;
 }
 

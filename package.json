@@ -1,6 +1,6 @@
 {
   "name": "charticulator",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "private": true,
   "author": {
     "name": "Donghao Ren",
@@ -37,15 +37,15 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "npx eslint --fix ./src --ext .js,.jsx,.ts,.tsx",
-      "prettier --write",
-      "license-check-and-add"
+      "npx prettier --write",
+      "npx license-check-and-add"
     ],
     "*.{scss,sass}": [
-      "prettier --write",
-      "license-check-and-add"
+      "npx prettier --write",
+      "npx license-check-and-add"
     ],
     "*.{js,jsx}": [
-      "license-check-and-add"
+      "npx license-check-and-add"
     ]
   },
   "dependencies": {
@@ -154,7 +154,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "npx lint-staged"
     }
   }
 }
