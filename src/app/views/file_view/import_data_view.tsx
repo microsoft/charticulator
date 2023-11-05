@@ -43,7 +43,7 @@ export interface FileUploaderState {
 }
 
 export class FileUploader extends React.Component<
-  FileUploaderProps,
+  React.PropsWithChildren<FileUploaderProps>,
   FileUploaderState
 > {
   private inputElement: HTMLInputElement;
@@ -192,7 +192,7 @@ export interface ImportDataViewState {
 }
 
 export class ImportDataView extends React.Component<
-  ImportDataViewProps,
+  React.PropsWithChildren<ImportDataViewProps>,
   ImportDataViewState
 > {
   public state = {

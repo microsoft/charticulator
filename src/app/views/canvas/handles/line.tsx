@@ -16,7 +16,7 @@ export interface LineHandleViewState {
 }
 
 export class LineHandleView extends React.Component<
-  LineHandleViewProps,
+  React.PropsWithChildren<LineHandleViewProps>,
   LineHandleViewState
 > {
   public refs: {

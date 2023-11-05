@@ -25,7 +25,7 @@ export interface SelectionViewState {
 }
 
 export class SelectionView extends React.Component<
-  SelectionViewProps,
+  React.PropsWithChildren<SelectionViewProps>,
   SelectionViewState
 > {
   public refs: {

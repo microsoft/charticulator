@@ -110,7 +110,7 @@ export class Application {
   private nestedEditor: {
     onOpenEditor: (
       options: Prototypes.Controls.NestedChartEditorOptions,
-      object: Specification.Object<AttributeMap>,
+      object: Specification.IObject<AttributeMap>,
       property: Prototypes.Controls.Property
     ) => void;
   };
@@ -135,7 +135,7 @@ export class Application {
       nestedEditor?: {
         onOpenEditor: (
           options: Prototypes.Controls.NestedChartEditorOptions,
-          object: Specification.Object<AttributeMap>,
+          object: Specification.IObject<AttributeMap>,
           property: Prototypes.Controls.Property
         ) => void;
       };
@@ -161,7 +161,7 @@ export class Application {
           AppStore.EVENT_OPEN_NESTED_EDITOR,
           (
             options: NestedChartEditorOptions,
-            object: Specification.Object<AttributeMap>,
+            object: Specification.IObject<AttributeMap>,
             property: Prototypes.Controls.Property
           ) => {
             this.nestedEditor.onOpenEditor(options, object, property);

@@ -79,7 +79,7 @@ export interface GuidePolarCoordinatorProperties
 }
 
 export interface PolarGuideObject
-  extends Specification.Object<PolarGuideCoordinatorProperties> {
+  extends Specification.IObject<PolarGuideCoordinatorProperties> {
   properties: PolarGuideCoordinatorProperties;
 }
 

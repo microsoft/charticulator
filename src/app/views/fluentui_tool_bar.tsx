@@ -961,11 +961,11 @@ export const LegendButton: React.FC = () => {
 };
 
 export class CheckboxButton extends React.Component<
-  {
+  React.PropsWithChildren<{
     value: boolean;
     text?: string;
     onChange?: (v: boolean) => void;
-  },
+  }>,
   Record<string, unknown>
 > {
   public render() {

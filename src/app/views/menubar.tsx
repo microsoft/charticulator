@@ -5,12 +5,9 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as globals from "../globals";
 import * as R from "../resources";
-import {
-  DefaultButton,
-  Dialog,
-  DialogFooter,
-  PrimaryButton,
-} from "@fluentui/react";
+import { DefaultButton, PrimaryButton } from "@fluentui/react";
+
+import { Dialog, DialogActions, DialogTitle } from "@fluentui/react-components";
 
 import { deepClone, EventSubscription } from "../../core";
 import { Actions } from "../actions";
@@ -46,7 +43,7 @@ interface HelpButtonProps {
 }
 
 export class HelpButton extends React.Component<
-  HelpButtonProps,
+  React.PropsWithChildren<HelpButtonProps>,
   Record<string, unknown>
 > {
   public render() {
@@ -106,8 +103,9 @@ export class HelpButton extends React.Component<
                       </a>
                     </div>
                     <div className="el-item">
-                      <a onClick={contactUsLinkProps.onClick}
-                      >{strings.help.contact}</a>
+                      <a onClick={contactUsLinkProps.onClick}>
+                        {strings.help.contact}
+                      </a>
                     </div>
                     <div className="el-item-version">
                       {strings.help.version(CHARTICULATOR_PACKAGE.version)}
@@ -297,17 +295,17 @@ export class MenuBar extends ContextedComponent<
     return (
       <>
         <Dialog
-          dialogContentProps={{
-            title: strings.dialogs.saveChanges.saveChangesTitle,
-            subText: strings.dialogs.saveChanges.saveChanges("chart"),
-          }}
-          hidden={!this.state.showSaveDialog}
-          minWidth="80%"
-          onDismiss={() => {
-            this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE);
-          }}
+          // dialogContentProps={{
+          //   title: strings.dialogs.saveChanges.saveChangesTitle,
+          //   subText: strings.dialogs.saveChanges.saveChanges("chart"),
+          // }}
+          open={this.state.showSaveDialog}
+          // minWidth="80%"
         >
-          <DialogFooter>
+          <DialogTitle>
+            {strings.dialogs.saveChanges.saveChangesTitle}
+          </DialogTitle>
+          <DialogActions>
             <PrimaryButton
               styles={primaryButtonStyles}
               onClick={() => {
@@ -330,7 +328,7 @@ export class MenuBar extends ContextedComponent<
               }}
               text={strings.menuBar.dontSaveButton}
             />
-          </DialogFooter>
+          </DialogActions>
         </Dialog>
         <MenuButton
           url={R.getSVGIcon("toolbar/save")}

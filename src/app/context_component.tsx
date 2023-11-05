@@ -20,7 +20,7 @@ export const MainContextTypes = {
 };
 
 export class ContextedComponent<TProps, TState> extends React.Component<
-  TProps,
+  React.PropsWithChildren<TProps>,
   TState
 > {
   public context: MainContextInterface;

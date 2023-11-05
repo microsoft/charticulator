@@ -58,7 +58,7 @@ export interface ChartComponentState {
 
 /** A React component that manages a sub-chart */
 export class ChartComponent extends React.Component<
-  ChartComponentProps,
+  React.PropsWithChildren<ChartComponentProps>,
   ChartComponentState
 > {
   protected manager: Prototypes.ChartStateManager;

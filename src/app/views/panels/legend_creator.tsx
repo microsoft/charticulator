@@ -243,7 +243,7 @@ export class LegendCreationPanel extends ContextedComponent<
                   this.store.chartManager.chart.scales,
                   inferred
                 );
-                let newLegend: Specification.Object<Specification.ObjectProperties> = null;
+                let newLegend: Specification.IObject<Specification.ObjectProperties> = null;
                 switch (scaleObject.classID) {
                   case "scale.categorical<string,color>":
                     newLegend = this.store.chartManager.createObject(

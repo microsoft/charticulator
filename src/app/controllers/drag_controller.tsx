@@ -304,7 +304,7 @@ export class DragController extends EventEmitter {
 }
 
 export class DragStateView extends React.Component<
-  { controller: DragController },
+  React.PropsWithChildren<{ controller: DragController }>,
   Record<string, never>
 > {
   private token: EventSubscription;

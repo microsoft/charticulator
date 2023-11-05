@@ -13,7 +13,7 @@ export interface InputColorGradientProps {
 }
 
 export class InputColorGradient extends React.Component<
-  InputColorGradientProps,
+  React.PropsWithChildren<InputColorGradientProps>,
   Record<string, unknown>
 > {
   public render() {

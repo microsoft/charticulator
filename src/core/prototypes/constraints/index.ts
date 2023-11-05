@@ -11,7 +11,7 @@ export abstract class ConstraintTypeClass {
   // Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
   public abstract buildConstraints(
     constraint: Specification.Constraint,
-    elements: Specification.Object[],
+    elements: Specification.IObject[],
     states: Specification.ObjectState[],
     solver: ConstraintSolver
   ): void;
@@ -31,7 +31,7 @@ export class SnapConstraintClass {
   public type: string = "snap";
   public buildConstraints(
     constraint: Specification.Constraint,
-    elements: Specification.Object[],
+    elements: Specification.IObject[],
     states: Specification.ObjectState[],
     solver: ConstraintSolver
   ): void {

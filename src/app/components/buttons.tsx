@@ -23,7 +23,7 @@ export interface ToolButtonProps {
 }
 
 export class ToolButton extends React.Component<
-  ToolButtonProps,
+  React.PropsWithChildren<ToolButtonProps>,
   { dragging: boolean }
 > {
   constructor(props: ToolButtonProps) {
@@ -105,7 +105,7 @@ export class ToolButton extends React.Component<
 }
 
 export class FluentToolButton extends React.Component<
-  ToolButtonProps,
+  React.PropsWithChildren<ToolButtonProps>,
   { dragging: boolean }
 > {
   constructor(props: ToolButtonProps) {

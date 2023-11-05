@@ -60,7 +60,7 @@ export interface DataFieldSelectorState {
 }
 
 export class DataFieldSelector extends React.Component<
-  DataFieldSelectorProps,
+  React.PropsWithChildren<DataFieldSelectorProps>,
   DataFieldSelectorState
 > {
   constructor(props: DataFieldSelectorProps) {

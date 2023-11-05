@@ -19,7 +19,7 @@ import { Glyph, Element, PlotSegment } from "../specification";
 import * as Specification from "../specification";
 
 // Helper functions for digest
-export function objectDigest(obj?: Specification.Object) {
+export function objectDigest(obj?: Specification.IObject) {
   return obj ? [obj.classID, obj._id] : null;
 }
 

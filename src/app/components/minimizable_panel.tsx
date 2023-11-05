@@ -10,7 +10,7 @@ import { DefaultButton } from "@fluentui/react";
 import { PanelHeaderStyles } from "../views/panels/widgets/controls/fluentui_customized_components";
 
 export class MinimizablePanelView extends React.Component<
-  Record<string, unknown>,
+  React.PropsWithChildren<Record<string, unknown>>,
   Record<string, unknown>
 > {
   public render() {
@@ -33,7 +33,7 @@ export interface MinimizablePaneState {
 }
 
 export class MinimizablePane extends React.Component<
-  MinimizablePaneProps,
+  React.PropsWithChildren<MinimizablePaneProps>,
   MinimizablePaneState
 > {
   constructor(props: MinimizablePaneProps) {
@@ -147,7 +147,7 @@ export interface FloatingPanelState {
   minimized: boolean;
 }
 export class FloatingPanel extends React.Component<
-  FloatingPanelProps,
+  React.PropsWithChildren<FloatingPanelProps>,
   FloatingPanelState
 > {
   protected refContainer: HTMLDivElement;

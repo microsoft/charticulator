@@ -63,7 +63,7 @@ export abstract class ObjectClass<
   public static defaultMappingValues: Specification.AttributeMap = {};
 
   /** The stored object */
-  public readonly object: Specification.Object<PropertiesType>;
+  public readonly object: Specification.IObject<PropertiesType>;
   /** The stored object state */
   public readonly state: Specification.ObjectState<AttributesType>;
   /** The parent object class */
@@ -76,7 +76,7 @@ export abstract class ObjectClass<
 
   constructor(
     parent: ObjectClass,
-    object: Specification.Object<PropertiesType>,
+    object: Specification.IObject<PropertiesType>,
     state: Specification.ObjectState<AttributesType>
   ) {
     this.parent = parent;
@@ -133,9 +133,9 @@ export abstract class ObjectClass<
 
   /** Create a default object */
   // eslint-disable-next-line
-  public static createDefault(...args: any[]): Specification.Object {
+  public static createDefault(...args: any[]): Specification.IObject {
     const id = uniqueID();
-    const obj: Specification.Object = {
+    const obj: Specification.IObject = {
       _id: id,
       classID: this.classID,
       properties: {},
@@ -161,7 +161,7 @@ export abstract class ObjectClass<
 export interface ObjectClassConstructor {
   new (
     parent: ObjectClass,
-    object: Specification.Object,
+    object: Specification.IObject,
     state: Specification.ObjectState
   ): ObjectClass;
 
@@ -172,7 +172,7 @@ export interface ObjectClassConstructor {
   defaultProperties: Specification.AttributeMap;
   defaultMappingValues: Specification.AttributeMap;
 
-  createDefault: (...args: any[]) => Specification.Object;
+  createDefault: (...args: any[]) => Specification.IObject;
 }
 
 /** Store the registered object classes */
@@ -186,7 +186,7 @@ export class ObjectClasses {
   /** Create a ObjectClass for a object and its state */
   public static Create(
     parent: ObjectClass,
-    object: Specification.Object,
+    object: Specification.IObject,
     state: Specification.ObjectState
   ): ObjectClass {
     const constructor = ObjectClasses.registeredObjectClasses.get(

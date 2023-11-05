@@ -80,6 +80,18 @@ async function copyFolder(folder1, folder2) {
   }
 }
 
+/** Copy folder1 to folder2 */
+async function copyFile(f1, f2) {
+  if (await fs.ensureFile(f1)) {
+    await fs.copy(
+      f1,
+      f2
+    )
+  } else {
+    console.error(`${f1} not found`);
+  }
+}
+
 // The default dev sequence
 const devSequence = [
   "cleanup",
@@ -115,18 +127,6 @@ let COMMANDS = {
 
   // Copy files
   copy: [
-    async () => {
-      const parserPath = "src/core/expression/parser.d.ts";
-      if (await fs.ensureFile(parserPath)) {
-        await fs.copy(
-          parserPath,
-          "dist/scripts/core/expression/parser.d.ts"
-        )
-      } else {
-        console.error(`${parserPath} not found`);
-      }
-    },
-
     // Copy all of the public files
     isProd
       ? async () => copyFolder("./public", "./dist")
@@ -233,6 +233,7 @@ let COMMANDS = {
     server: "http-server ./dist -a 0.0.0.0 -p 4000 -c-1 -s --ssl --cors"
   },
   dev: () => runCommands(devSequence),
+  // eslint-disable-next-line no-undef
   visual_dev: () => runCommands([...devSequence, ...visualSequence])
 };
 
@@ -250,5 +251,6 @@ if (sequence.length == 0) {
 }
 runCommands(sequence).catch(e => {
   console.log(e.message);
+  // eslint-disable-next-line no-undef
   process.exit(-1);
 });

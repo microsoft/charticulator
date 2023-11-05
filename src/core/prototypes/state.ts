@@ -61,7 +61,7 @@ export class ChartStateManager {
   public classCache = new ObjectClassCache();
   public idIndex = new Map<
     string,
-    [Specification.Object, Specification.ObjectState]
+    [Specification.IObject, Specification.ObjectState]
   >();
   public options: {
     [key: string]: any;
@@ -363,7 +363,7 @@ export class ChartStateManager {
   }
 
   /** Get an object by its unique ID */
-  public getObjectById(id: string): Specification.Object {
+  public getObjectById(id: string): Specification.IObject {
     return this.idIndex.get(id)[0];
   }
 
@@ -599,7 +599,7 @@ export class ChartStateManager {
   }
 
   /** Create a new object */
-  public createObject(classID: string, ...args: any[]): Specification.Object {
+  public createObject(classID: string, ...args: any[]): Specification.IObject {
     let namePrefix = "Object";
     const metadata = ObjectClasses.GetMetadata(classID);
     if (metadata && metadata.displayName) {
@@ -844,11 +844,19 @@ export class ChartStateManager {
         const rowContext = table.getRowContext(i);
         const value = parsed.getValue(rowContext);
         if (data.domainMin < data.domainMax) {
-          if (value >= data.domainMin && value <= data.domainMax) {
+          if (
+            typeof value === "number" &&
+            value >= data.domainMin &&
+            value <= data.domainMax
+          ) {
             filteredIndices.push(i);
           }
         } else {
-          if (value >= data.domainMax && value <= data.domainMin) {
+          if (
+            typeof value === "number" &&
+            value >= data.domainMax &&
+            value <= data.domainMin
+          ) {
             filteredIndices.push(i);
           }
         }
@@ -1130,7 +1138,7 @@ export class ChartStateManager {
   /** Remove constraints that relate to non-existant element */
   public validateConstraints(
     constraints: Specification.Constraint[],
-    elements: Specification.Object[]
+    elements: Specification.IObject[]
   ): Specification.Constraint[] {
     const elementIDs = new Set<string>();
     for (const e of elements) {

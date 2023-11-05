@@ -21,7 +21,10 @@ export interface SliderState {
   dragging: boolean;
 }
 
-export class Slider extends React.Component<SliderProps, SliderState> {
+export class Slider extends React.Component<
+  React.PropsWithChildren<SliderProps>,
+  SliderState
+> {
   public refs: {
     svg: SVGElement;
   };

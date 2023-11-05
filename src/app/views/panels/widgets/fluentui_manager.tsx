@@ -271,7 +271,7 @@ export class FluentUIWidgetManager
 
     return (
       <FluentMappingEditor
-        key={name.replace(/\s/g, '_') + attribute}
+        key={name.replace(/\s/g, "_") + attribute}
         store={this.store}
         parent={this}
         attribute={attribute}
@@ -2097,7 +2097,10 @@ export interface DropZoneViewState {
 }
 
 export class DropZoneView
-  extends React.Component<DropZoneViewProps, DropZoneViewState>
+  extends React.Component<
+    React.PropsWithChildren<DropZoneViewProps>,
+    DropZoneViewState
+  >
   implements Droppable {
   public dropContainer: HTMLDivElement;
   public tokens: EventSubscription[];
@@ -2178,11 +2181,11 @@ export class DropZoneView
 }
 
 export class FluentDetailsButton extends React.Component<
-  {
+  React.PropsWithChildren<{
     widgets: JSX.Element[];
     manager: Prototypes.Controls.WidgetManager;
     label?: string;
-  },
+  }>,
   Record<string, unknown>
 > {
   public inner: DetailsButtonInner;
@@ -2232,7 +2235,7 @@ export class FluentDetailsButton extends React.Component<
 }
 
 export class DetailsButtonInner extends React.Component<
-  { parent: FluentDetailsButton },
+  React.PropsWithChildren<{ parent: FluentDetailsButton }>,
   Record<string, unknown>
 > {
   public render() {

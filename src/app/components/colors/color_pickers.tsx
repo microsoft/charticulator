@@ -18,7 +18,7 @@ interface ColorPickerButtonProps {
 }
 
 export class ColorPickerButton extends React.Component<
-  ColorPickerButtonProps,
+  React.PropsWithChildren<ColorPickerButtonProps>,
   Record<string, unknown>
 > {
   render() {

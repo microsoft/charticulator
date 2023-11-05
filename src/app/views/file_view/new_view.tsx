@@ -13,7 +13,7 @@ interface FileViewNewProps {
 }
 
 export class FileViewNew extends React.Component<
-  FileViewNewProps,
+  React.PropsWithChildren<FileViewNewProps>,
   Record<string, unknown>
 > {
   public render() {

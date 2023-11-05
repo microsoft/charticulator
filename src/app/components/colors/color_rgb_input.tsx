@@ -11,7 +11,7 @@ interface ColorRgbInputProps {
 }
 
 export class ColorRgbInput extends React.Component<
-  ColorRgbInputProps,
+  React.PropsWithChildren<ColorRgbInputProps>,
   Record<string, unknown>
 > {
   private transformColorValue(value: number): string {

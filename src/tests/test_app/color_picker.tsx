@@ -3,7 +3,10 @@
 import * as React from "react";
 import { GradientPicker } from "../../app/components";
 
-export class GradientPickerTestView extends React.Component<{}, {}> {
+export class GradientPickerTestView extends React.Component<
+  React.PropsWithChildren<{}>,
+  {}
+> {
   public render() {
     return (
       <div>

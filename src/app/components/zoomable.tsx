@@ -16,7 +16,7 @@ export interface ZoomableCanvasState {
 }
 
 export class ZoomableCanvas extends React.Component<
-  ZoomableCanvasProps,
+  React.PropsWithChildren<React.PropsWithChildren<ZoomableCanvasProps>>,
   ZoomableCanvasState
 > {
   public refs: {

@@ -180,7 +180,7 @@ export interface PopupViewProps {
 }
 
 export class PopupContainer extends React.Component<
-  PopupViewProps,
+  React.PropsWithChildren<PopupViewProps>,
   Record<string, unknown>
 > {
   public token: EventSubscription;
@@ -306,7 +306,7 @@ interface PopupViewComponentProps {
 }
 
 export class PopupView extends React.Component<
-  PopupViewComponentProps,
+  React.PropsWithChildren<PopupViewComponentProps>,
   Record<string, unknown>
 > {
   private popupContainer: HTMLDivElement;
@@ -498,10 +498,10 @@ export class PopupView extends React.Component<
 }
 
 export class ModalView extends React.Component<
-  {
+  React.PropsWithChildren<{
     context: PopupContext;
     type?: string;
-  },
+  }>,
   Record<string, unknown>
 > {
   public render() {

@@ -5,7 +5,7 @@ import { Graphics } from "../../../core";
 import { renderGraphicalElementSVG } from "../../../app/renderer";
 
 export class PolarLineTestView extends React.Component<
-  {},
+  React.PropsWithChildren<{}>,
   { slider1: number; slider2: number }
 > {
   constructor(props: {}) {

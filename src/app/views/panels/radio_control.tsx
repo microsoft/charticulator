@@ -18,7 +18,7 @@ export interface PanelRadioControlProps {
 }
 
 export class PanelRadioControl extends React.Component<
-  PanelRadioControlProps,
+  React.PropsWithChildren<PanelRadioControlProps>,
   Record<string, unknown>
 > {
   public render() {

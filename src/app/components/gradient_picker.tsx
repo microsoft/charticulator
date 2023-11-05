@@ -34,7 +34,7 @@ export interface GradientPickerState {
 }
 
 export class GradientPicker extends React.Component<
-  GradientPickerProps,
+  React.PropsWithChildren<GradientPickerProps>,
   GradientPickerState
 > {
   public static tabs = [

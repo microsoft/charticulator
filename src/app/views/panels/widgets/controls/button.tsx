@@ -16,7 +16,7 @@ export interface ButtonProps {
 }
 
 export class Button extends React.Component<
-  ButtonProps,
+  React.PropsWithChildren<ButtonProps>,
   Record<string, unknown>
 > {
   public render() {
@@ -77,7 +77,7 @@ export interface CheckBoxProps {
 }
 
 export class CheckBox extends React.Component<
-  CheckBoxProps,
+  React.PropsWithChildren<CheckBoxProps>,
   Record<string, unknown>
 > {
   public render() {

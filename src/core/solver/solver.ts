@@ -204,7 +204,7 @@ export class ChartConstraintSolver {
   }
 
   public addObject(
-    object: Specification.Object,
+    object: Specification.IObject,
     objectState: Specification.ObjectState,
     parentState: Specification.ObjectState,
     rowContext: Expression.Context,

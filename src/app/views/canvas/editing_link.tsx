@@ -44,7 +44,7 @@ export interface EditingLinkState {
 }
 
 export class EditingLink extends React.Component<
-  EditingLinkProps,
+  React.PropsWithChildren<EditingLinkProps>,
   EditingLinkState
 > {
   public refs: {

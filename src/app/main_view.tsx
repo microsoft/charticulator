@@ -75,7 +75,10 @@ export interface MainViewState {
   currentFocusComponentIndex: number;
 }
 
-export class MainView extends React.Component<MainViewProps, MainViewState> {
+export class MainView extends React.Component<
+  React.PropsWithChildren<MainViewProps>,
+  MainViewState
+> {
   public refMenuBar: MenuBar;
 
   private viewConfiguration: MainViewConfig;

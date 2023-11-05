@@ -98,7 +98,7 @@ export class ObjectClassCache {
   }
   public createClass(
     parent: ObjectClass,
-    object: Specification.Object,
+    object: Specification.IObject,
     state: Specification.ObjectState
   ): ObjectClass {
     const newClass = ObjectClasses.Create(parent, object, state);

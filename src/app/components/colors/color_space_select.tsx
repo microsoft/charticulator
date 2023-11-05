@@ -18,7 +18,7 @@ interface ColorSpaceSelectProps {
 }
 
 export class ColorSpaceSelect extends React.Component<
-  ColorSpaceSelectProps,
+  React.PropsWithChildren<ColorSpaceSelectProps>,
   Record<string, unknown>
 > {
   render() {

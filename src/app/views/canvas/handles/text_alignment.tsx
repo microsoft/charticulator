@@ -24,7 +24,7 @@ export interface TextAlignmentHandleViewState {
 }
 
 export class TextAlignmentHandleView extends React.Component<
-  TextAlignmentHandleViewProps,
+  React.PropsWithChildren<TextAlignmentHandleViewProps>,
   TextAlignmentHandleViewState
 > {
   private container: SVGGElement;

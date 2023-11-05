@@ -1,9 +1,11 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
+    "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "esModuleInterop": true,
     "declaration": true,
     "rootDir": "./src",
     "outDir": "./dist/scripts",
@@ -12,9 +14,9 @@
     "target": "es5",
     "downlevelIteration": true,
     "jsx": "react",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "sourceMap": true,
-    "lib": [ "es2017", "dom", "esnext.array", "ES2015.Generator"],
+    "lib": ["es2020", "dom", "esnext.array", "ES2015.Generator"],
     "baseUrl": "./src",
     "paths": {
       "resources/*": ["resources/*"],

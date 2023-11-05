@@ -17,7 +17,7 @@ export interface GroupByEditorState {
   currentValue: Specification.Types.GroupBy;
 }
 export class GroupByEditor extends React.Component<
-  GroupByEditorProps,
+  React.PropsWithChildren<GroupByEditorProps>,
   GroupByEditorState
 > {
   public state: GroupByEditorState = this.getDefaultState(this.props.value);

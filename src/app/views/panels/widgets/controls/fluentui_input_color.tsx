@@ -54,7 +54,7 @@ interface FluentInputColorState {
 }
 
 export class FluentInputColor extends React.Component<
-  InputColorProps,
+  React.PropsWithChildren<InputColorProps>,
   FluentInputColorState
 > {
   constructor(props: InputColorProps) {
@@ -213,7 +213,7 @@ export interface InputColorGradientProps {
 }
 
 export class InputColorGradient extends React.Component<
-  InputColorGradientProps,
+  React.PropsWithChildren<InputColorGradientProps>,
   Record<string, unknown>
 > {
   public render() {

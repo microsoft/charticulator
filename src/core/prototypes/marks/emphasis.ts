@@ -19,7 +19,7 @@ export abstract class EmphasizableMarkClass<
   private defaultMethod: EmphasisMethod;
   constructor(
     parent: ObjectClass,
-    object: Specification.Object<PropertiesType>,
+    object: Specification.IObject<PropertiesType>,
     state: ObjectState<AttributesType>,
     defaultMethod = EmphasisMethod.Saturation
   ) {
@@ -42,7 +42,7 @@ export abstract class EmphasizableMarkClass<
     const method = this.object.properties.emphasisMethod || this.defaultMethod;
     if (method === EmphasisMethod.Saturation && emphasize === false) {
       const opacity = this.state.attributes?.opacity;
-      if (opacity > DEFAULT_POWER_BI_OPACITY || !opacity) {
+      if ((opacity as number) > DEFAULT_POWER_BI_OPACITY || !opacity) {
         style.opacity = DEFAULT_POWER_BI_OPACITY;
       }
     }

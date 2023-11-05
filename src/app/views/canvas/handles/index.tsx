@@ -26,7 +26,7 @@ export interface HandlesViewProps {
 }
 
 export class HandlesView extends React.Component<
-  HandlesViewProps,
+  React.PropsWithChildren<HandlesViewProps>,
   Record<string, unknown>
 > {
   // eslint-disable-next-line

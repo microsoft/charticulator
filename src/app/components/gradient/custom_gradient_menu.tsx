@@ -12,7 +12,12 @@ import {
 } from "../../../core";
 import { ColorPicker, colorToCSS } from "../fluentui_color_picker";
 import { Callout, DefaultButton, TextField } from "@fluentui/react";
-import { ColorCell, ColorRowWrapper, colorTextInputStyles, deleteColorStyles } from "./styles";
+import {
+  ColorCell,
+  ColorRowWrapper,
+  colorTextInputStyles,
+  deleteColorStyles,
+} from "./styles";
 import { GradientView } from "./gradient_palettes";
 import { CustomGradientButtons } from "./custom_gradient_buttons";
 
@@ -29,7 +34,7 @@ interface CustomGradientMenuState {
 }
 
 export class CustomGradientMenu extends React.Component<
-  CustomGradientMenuProps,
+  React.PropsWithChildren<CustomGradientMenuProps>,
   CustomGradientMenuState
 > {
   constructor(props: CustomGradientMenuProps) {

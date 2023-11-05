@@ -100,7 +100,10 @@ export interface FileViewState {
   currentTab: MainTabs;
 }
 
-export class FileView extends React.Component<FileViewProps, FileViewState> {
+export class FileView extends React.Component<
+  React.PropsWithChildren<FileViewProps>,
+  FileViewState
+> {
   public refs: {
     inputSaveChartName: HTMLInputElement;
   };

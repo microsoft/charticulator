@@ -145,7 +145,7 @@ export class PointSnapping {
 }
 
 export class CreatingComponent extends React.Component<
-  CreatingComponentProps,
+  React.PropsWithChildren<CreatingComponentProps>,
   CreatingComponentState
 > {
   public refs: {
@@ -476,7 +476,7 @@ export interface CreatingComponentFromCreatingInteractionProps {
 }
 
 export class CreatingComponentFromCreatingInteraction extends React.Component<
-  CreatingComponentFromCreatingInteractionProps,
+  React.PropsWithChildren<CreatingComponentFromCreatingInteractionProps>,
   Record<string, unknown>
 > {
   public doCreate(inMappings: {

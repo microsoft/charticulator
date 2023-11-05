@@ -11,7 +11,7 @@ export interface InputTextProps {
 }
 
 export class InputText extends React.Component<
-  InputTextProps,
+  React.PropsWithChildren<InputTextProps>,
   Record<string, unknown>
 > {
   public inputElement: HTMLInputElement;

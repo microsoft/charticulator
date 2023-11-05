@@ -25,7 +25,10 @@ export interface TableViewProps {
  *
  * ![Table view](media://table_view_leftside.png)
  */
-export class TableView extends React.Component<TableViewProps, any> {
+export class TableView extends React.Component<
+  React.PropsWithChildren<TableViewProps>,
+  any
+> {
   public render() {
     const table = this.props.table;
     const onTypeChange = this.props.onTypeChange;

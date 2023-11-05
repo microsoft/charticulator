@@ -6,3 +6,4 @@ src/tests/*
 .eslintrc.js
 karma.conf.ts
 webpack.config.js
+src/core/expression/parser.js

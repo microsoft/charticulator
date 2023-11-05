@@ -16,7 +16,7 @@ export interface RelativeLineHandleViewState {
 }
 
 export class RelativeLineHandleView extends React.Component<
-  RelativeLineHandleViewProps,
+  React.PropsWithChildren<RelativeLineHandleViewProps>,
   RelativeLineHandleViewState
 > {
   public refs: {

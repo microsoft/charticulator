@@ -20,10 +20,10 @@ export interface FileViewOpenState {
 }
 
 export class FileViewOpen extends React.Component<
-  {
+  React.PropsWithChildren<{
     onClose: () => void;
     store: AppStore;
-  },
+  }>,
   FileViewOpenState
 > {
   public state: FileViewOpenState = {

@@ -371,7 +371,7 @@ export class AppStore extends BaseStore {
     function scaleFilter(scale: any) {
       return !(
         chart.elements.find((element: any) => {
-          const mappings = (element as Specification.Object).mappings;
+          const mappings = (element as Specification.IObject).mappings;
           if (mappings) {
             return hasMappedProperty(mappings, scale._id);
           }
@@ -380,7 +380,7 @@ export class AppStore extends BaseStore {
         chart.glyphs.find((glyph) => {
           return (
             glyph.marks.find((mark) => {
-              const mappings = (mark as Specification.Object).mappings;
+              const mappings = (mark as Specification.IObject).mappings;
               if (mappings) {
                 return hasMappedProperty(mappings, scale._id);
               }
@@ -2272,7 +2272,7 @@ export class AppStore extends BaseStore {
   }
 
   public getGroupingExpression(
-    object: Specification.Object<Specification.ObjectProperties>
+    object: Specification.IObject<Specification.ObjectProperties>
   ) {
     let groupBy: Specification.Types.GroupBy = null;
     if (Prototypes.isType(object.classID, "plot-segment")) {
@@ -2318,7 +2318,7 @@ export class AppStore extends BaseStore {
   }
 
   public setProperty(config: {
-    object: Specification.Object;
+    object: Specification.IObject;
     property: string;
     field: number | string | (number | string)[];
     value: Specification.AttributeValue;

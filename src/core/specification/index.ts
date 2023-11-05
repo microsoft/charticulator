@@ -218,7 +218,7 @@ export interface ObjectProperties extends AttributeMap {
 }
 
 /** General object */
-export interface Object<
+export interface IObject<
   PropertiesType extends ObjectProperties = ObjectProperties
 > extends Identifiable {
   /** The class ID for the Object */
@@ -229,7 +229,7 @@ export interface Object<
   mappings: Mappings;
 }
 
-export interface ExposableObject extends Object {
+export interface ExposableObject extends IObject {
   exposed: boolean;
 }
 
@@ -237,12 +237,12 @@ export interface ExposableObject extends Object {
 // eslint-disable-next-line
 export interface Element<
   PropertiesType extends ObjectProperties = ObjectProperties
-> extends Object<PropertiesType> {}
+> extends IObject<PropertiesType> {}
 
 /** Glyph: a compound of elements, with constraints between them; a glyph is driven by a group of data rows */
 export interface Glyph<
   PropertiesType extends ObjectProperties = ObjectProperties
-> extends Object<PropertiesType> {
+> extends IObject<PropertiesType> {
   /** The data table this mark correspond to */
   table: string;
   /** Elements within the mark */
@@ -254,7 +254,7 @@ export interface Glyph<
 /** Scale */
 export interface Scale<
   PropertiesType extends ObjectProperties = ObjectProperties
-> extends Object<PropertiesType> {
+> extends IObject<PropertiesType> {
   inputType: DataType;
   outputType: AttributeType;
 }
@@ -262,7 +262,7 @@ export interface Scale<
 /** MarkLayout: the "PlotSegment" */
 export interface PlotSegment<
   PropertiesType extends ObjectProperties = ObjectProperties
-> extends Object<PropertiesType> {
+> extends IObject<PropertiesType> {
   /** The mark to use */
   glyph: string;
   /** The data table to get data rows from */
@@ -279,19 +279,19 @@ export interface PlotSegment<
 // eslint-disable-next-line
 export interface Guide<
   PropertiesType extends ObjectProperties = ObjectProperties
-> extends Object<PropertiesType> {}
+> extends IObject<PropertiesType> {}
 
 /** Guide Coordinator */
 // eslint-disable-next-line
 export interface GuideCoordinator<
   PropertiesType extends ObjectProperties = ObjectProperties
-> extends Object<PropertiesType> {}
+> extends IObject<PropertiesType> {}
 
 /** Links */
 // eslint-disable-next-line
 export interface Links<
   PropertiesType extends ObjectProperties = ObjectProperties
-> extends Object<PropertiesType> {}
+> extends IObject<PropertiesType> {}
 
 /** ChartElement is a PlotSegment or a Guide */
 // eslint-disable-next-line
@@ -315,7 +315,7 @@ export interface Resource {
 /** A chart is a set of chart elements and constraints between them, with guides and scales */
 export interface Chart<
   PropertiesType extends ObjectProperties = ObjectProperties
-> extends Object<PropertiesType> {
+> extends IObject<PropertiesType> {
   /** Marks */
   glyphs: Glyph[];
   /** Scales */

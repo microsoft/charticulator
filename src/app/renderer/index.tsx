@@ -548,6 +548,7 @@ export function renderGraphicalElementSVG(
                 y2={`${rotation.y2}%`}
               >
                 <stop
+                  key={gradientID + "offset0"}
                   offset="0%"
                   style={{
                     stopColor: renderColor(rect.style.fillStartColor),
@@ -555,6 +556,7 @@ export function renderGraphicalElementSVG(
                   }}
                 />
                 <stop
+                  key={gradientID + "offset100"}
                   offset="100%"
                   style={{
                     stopColor: renderColor(rect.style.fillStopColor),
