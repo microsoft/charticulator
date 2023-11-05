@@ -430,7 +430,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
   }
 
   // eslint-disable-next-line
-  public static createDefault(...args: any[]): Specification.Object {
+  public static createDefault(...args: any[]): Specification.IObject {
     const obj = <Specification.Element<NestedChartElementProperties>>(
       super.createDefault(...args)
     );

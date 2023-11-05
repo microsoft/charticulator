@@ -28,7 +28,7 @@ export interface InputNumberProps {
 }
 
 export class InputNumber extends React.Component<
-  InputNumberProps,
+  React.PropsWithChildren<InputNumberProps>,
   Record<string, unknown>
 > {
   private textInput: InputText;

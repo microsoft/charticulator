@@ -27,11 +27,11 @@ import { InputImageProperty, Button } from "../panels/widgets/controls";
 import { noop } from "../../utils/noop";
 
 export class InputGroup extends React.Component<
-  {
+  React.PropsWithChildren<{
     value: string;
     label: string;
     onChange: (newValue: string) => void;
-  },
+  }>,
   Record<string, unknown>
 > {
   private ref: HTMLInputElement;
@@ -156,10 +156,10 @@ export interface FileViewExportState {
 }
 
 export class FileViewExport extends React.Component<
-  {
+  React.PropsWithChildren<{
     onClose: () => void;
     store: AppStore;
-  },
+  }>,
   FileViewExportState
 > {
   public state: FileViewExportState = {
@@ -274,10 +274,10 @@ export interface ExportTemplateViewState {
 }
 
 export class ExportTemplateView extends React.Component<
-  {
+  React.PropsWithChildren<{
     exportKind: string;
     store: AppStore;
-  },
+  }>,
   ExportTemplateViewState
 > {
   public state = this.getDefaultState(this.props.exportKind);

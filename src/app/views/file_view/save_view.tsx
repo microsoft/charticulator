@@ -22,7 +22,7 @@ export interface FileViewSaveAsState {
 }
 
 export class FileViewSaveAs extends React.Component<
-  FileViewSaveAsProps,
+  React.PropsWithChildren<FileViewSaveAsProps>,
   FileViewSaveAsState
 > {
   public state: FileViewSaveAsState = {};

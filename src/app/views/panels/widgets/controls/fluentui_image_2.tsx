@@ -237,7 +237,7 @@ export interface ImageUploaderItem {
 }
 
 export class ImageUploader extends React.Component<
-  ImageUploaderProps,
+  React.PropsWithChildren<ImageUploaderProps>,
   ImageUploaderState
 > {
   public state: ImageUploaderState = { dragOver: false };

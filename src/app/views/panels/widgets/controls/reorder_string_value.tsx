@@ -25,7 +25,7 @@ interface ReorderStringsValueState {
 }
 
 export class ReorderStringsValue extends React.Component<
-  ReorderStringsValueProps,
+  React.PropsWithChildren<ReorderStringsValueProps>,
   ReorderStringsValueState
 > {
   public state: ReorderStringsValueState = {

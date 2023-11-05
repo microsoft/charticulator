@@ -68,7 +68,7 @@ export interface MappingEditorState {
 }
 
 export class FluentMappingEditor extends React.Component<
-  MappingEditorProps,
+  React.PropsWithChildren<MappingEditorProps>,
   MappingEditorState
 > {
   public mappingButton: HTMLElement;
@@ -266,7 +266,7 @@ export class FluentMappingEditor extends React.Component<
       <>
         {this.state.isColorPickerOpen && (
           <Callout
-            target={`#id_${this.props.options.label.replace(/\s/g, '_')}`}
+            target={`#id_${this.props.options.label.replace(/\s/g, "_")}`}
             onDismiss={() => this.changeColorPickerState()}
           >
             <ColorPicker
@@ -687,13 +687,13 @@ export class FluentMappingEditor extends React.Component<
         >
           {parent.styledHorizontal(
             {
-              alignItems: "start",
+              alignItems: "flex-end",
             },
             [1, 0],
             this.renderCurrentAttributeMapping(),
             <span>
               {isDataMapping ? (
-                <FluentButton>
+                <FluentButton marginTop="26px">
                   <DefaultButton
                     iconProps={{
                       iconName: "EraseTool",

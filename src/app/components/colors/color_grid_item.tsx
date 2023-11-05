@@ -28,7 +28,7 @@ interface ColorGridItemProps {
 }
 
 export class ColorGridItem extends React.Component<
-  ColorGridItemProps,
+  React.PropsWithChildren<ColorGridItemProps>,
   Record<string, unknown>
 > {
   render() {

@@ -22,7 +22,7 @@ export interface InputCurveHandleViewState {
 }
 
 export class InputCurveHandleView extends React.Component<
-  InputCurveHandleViewProps,
+  React.PropsWithChildren<InputCurveHandleViewProps>,
   InputCurveHandleViewState
 > {
   public refs: {

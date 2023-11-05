@@ -25,7 +25,7 @@ export interface ScaleEditorProps {
 }
 
 export class ScaleEditor extends React.Component<
-  ScaleEditorProps,
+  React.PropsWithChildren<ScaleEditorProps>,
   Record<string, unknown>
 > {
   public token: EventSubscription;

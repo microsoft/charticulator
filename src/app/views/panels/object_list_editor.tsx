@@ -257,7 +257,7 @@ export interface ReorderListViewState {
 }
 
 export class ReorderListView extends React.Component<
-  ReorderListViewProps,
+  React.PropsWithChildren<ReorderListViewProps>,
   ReorderListViewState
 > {
   private container: HTMLDivElement;

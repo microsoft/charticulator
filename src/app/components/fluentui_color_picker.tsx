@@ -46,7 +46,7 @@ export interface ColorPickerState {
 }
 
 export class ColorPicker extends React.Component<
-  ColorPickerProps,
+  React.PropsWithChildren<ColorPickerProps>,
   ColorPickerState
 > {
   constructor(props: ColorPickerProps) {

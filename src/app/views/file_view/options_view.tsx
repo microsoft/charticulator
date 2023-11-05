@@ -9,7 +9,7 @@ import {
   defaultDigitsGroup,
   parseSafe,
   setFormatOptions,
-  setTimeZone
+  setTimeZone,
 } from "../../../core/common";
 import { LocaleFileFormat } from "../../../core/dataset/dsv_parser";
 import { strings } from "../../../strings";
@@ -120,10 +120,15 @@ export const FileViewOptionsView: React.FC<FileViewOptionsProps> = () => {
               onChange={(e) => {
                 changeLocaleFileFormat({
                   ...localeFileFormat,
-                  utcTimeZone: e.target.options[e.target.selectedIndex].value === "true",
+                  utcTimeZone:
+                    e.target.options[e.target.selectedIndex].value === "true",
                 });
-                setUtcTimeZone(e.target.options[e.target.selectedIndex].value === "true");
-                setTimeZone(e.target.options[e.target.selectedIndex].value === "true")
+                setUtcTimeZone(
+                  e.target.options[e.target.selectedIndex].value === "true"
+                );
+                setTimeZone(
+                  e.target.options[e.target.selectedIndex].value === "true"
+                );
               }}
               value={utcTimeZone ? "true" : "false"}
             >
@@ -187,10 +192,10 @@ export const FileViewOptionsView: React.FC<FileViewOptionsProps> = () => {
 
 // TODO create HOC
 export class FileViewOptions extends React.Component<
-  {
+  React.PropsWithChildren<{
     onClose: () => void;
     store: AppStore;
-  },
+  }>,
   Record<string, unknown>
 > {
   public render() {

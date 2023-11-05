@@ -29,7 +29,7 @@ export interface CustomLegendProperties extends LegendProperties {
   };
 }
 
-export interface CustomLegendObject extends Specification.Object {
+export interface CustomLegendObject extends Specification.IObject {
   properties: CustomLegendProperties;
 }
 

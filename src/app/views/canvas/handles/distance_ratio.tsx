@@ -17,7 +17,7 @@ export interface DistanceRatioHandleViewState {
 }
 
 export class DistanceRatioHandleView extends React.Component<
-  DistanceRatioHandleViewProps,
+  React.PropsWithChildren<DistanceRatioHandleViewProps>,
   DistanceRatioHandleViewState
 > {
   public refs: {

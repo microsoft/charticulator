@@ -38,7 +38,7 @@ export interface ColorSpacePickerState {
 
 // A general three component color picker
 export class ColorSpacePicker extends React.Component<
-  ColorSpacePickerProps,
+  React.PropsWithChildren<ColorSpacePickerProps>,
   ColorSpacePickerState
 > {
   public pickerSize = 200;

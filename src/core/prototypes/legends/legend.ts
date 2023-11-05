@@ -41,7 +41,7 @@ export interface LegendState extends Specification.ObjectState {
   attributes: LegendAttributes;
 }
 
-export interface LegendObject extends Specification.Object {
+export interface LegendObject extends Specification.IObject {
   properties: LegendProperties;
 }
 

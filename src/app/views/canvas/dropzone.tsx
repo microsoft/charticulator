@@ -20,7 +20,10 @@ export interface DropZoneViewState {
 }
 
 export class DropZoneView
-  extends React.Component<DropZoneViewProps, DropZoneViewState>
+  extends React.Component<
+    React.PropsWithChildren<DropZoneViewProps>,
+    DropZoneViewState
+  >
   implements Droppable {
   public refs: {
     container: SVGGElement;

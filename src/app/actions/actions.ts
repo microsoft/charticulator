@@ -739,7 +739,7 @@ export class SetChartAttribute extends Action {
 
 export class SetObjectProperty extends Action {
   constructor(
-    public object: Specification.Object,
+    public object: Specification.IObject,
     public property: string,
     public field: number | string | (number | string)[],
     public value: Specification.AttributeValue,
@@ -764,7 +764,7 @@ export class SetObjectProperty extends Action {
 
 export class DeleteObjectProperty extends Action {
   constructor(
-    public object: Specification.Object,
+    public object: Specification.IObject,
     public property: string,
     public field: number | string | (number | string)[],
     public noUpdateState: boolean = false,
@@ -787,7 +787,7 @@ export class DeleteObjectProperty extends Action {
 
 export class SetObjectMappingScale extends Action {
   constructor(
-    public object: Specification.Object,
+    public object: Specification.IObject,
     public property: string,
     public scaleId: string
   ) {
@@ -968,7 +968,7 @@ export class ClearMessages extends Action {
 
 export class OpenNestedEditor extends Action {
   constructor(
-    public object: Specification.Object<AttributeMap>,
+    public object: Specification.IObject<AttributeMap>,
     public property: Prototypes.Controls.Property,
     public options: NestedChartEditorOptions
   ) {

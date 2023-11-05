@@ -5,7 +5,11 @@
 
 import * as React from "react";
 
-import { IIconOptions, IIconSubset, registerIcons } from "@uifabric/styling";
+import {
+  IIconOptions,
+  IIconSubset,
+  registerIcons,
+} from "@fluentui/react/lib/Styling";
 
 // eslint-disable-next-line max-lines-per-function
 export function initializeIcons(

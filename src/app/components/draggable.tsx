@@ -24,7 +24,7 @@ export interface DraggableElementState {
 }
 
 export class DraggableElement extends React.Component<
-  DraggableElementProps,
+  React.PropsWithChildren<DraggableElementProps>,
   DraggableElementState
 > {
   public refs: {
@@ -89,10 +89,11 @@ export class DraggableElement extends React.Component<
 
 export interface ClickableSVGElementProps {
   onClick?: () => void;
+  children: React.ReactNode;
 }
 
 export class ClickableSVGElement extends React.Component<
-  ClickableSVGElementProps,
+  React.PropsWithChildren<ClickableSVGElementProps>,
   Record<string, unknown>
 > {
   public refs: {

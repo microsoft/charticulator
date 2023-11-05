@@ -72,7 +72,10 @@ export interface DropZoneViewState {
 }
 
 export class DropZoneView
-  extends React.Component<DropZoneViewProps, DropZoneViewState>
+  extends React.Component<
+    React.PropsWithChildren<DropZoneViewProps>,
+    DropZoneViewState
+  >
   implements Droppable {
   public dropContainer: HTMLDivElement;
   public tokens: EventSubscription[];
@@ -153,12 +156,12 @@ export class DropZoneView
 }
 
 export class ReorderStringsValue extends React.Component<
-  {
+  React.PropsWithChildren<{
     items: string[];
     onConfirm: (items: string[], customOrder: boolean) => void;
     allowReset?: boolean;
     onReset?: () => string[];
-  },
+  }>,
   {
     items: string[];
     customOrder: boolean;

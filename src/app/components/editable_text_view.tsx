@@ -19,7 +19,7 @@ export interface EditableTextViewState {
 }
 
 export class EditableTextView extends React.Component<
-  EditableTextViewProps,
+  React.PropsWithChildren<EditableTextViewProps>,
   EditableTextViewState
 > {
   public refs: {

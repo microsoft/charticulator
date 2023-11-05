@@ -2,12 +2,10 @@
 // Licensed under the MIT license.
 import * as React from "react";
 import { useCallback, useState } from "react";
-import {
-  DefaultButton,
-  Dialog,
-  DialogFooter,
-  DialogType,
-} from "@fluentui/react";
+import { DefaultButton } from "@fluentui/react";
+
+import { Dialog, DialogActions } from "@fluentui/react-components";
+
 import * as R from "../../resources";
 import { strings } from "../../../strings";
 import { isInIFrame } from "../../utils";
@@ -22,12 +20,6 @@ import {
 interface DeleteDialogProps {
   context: MainContextInterface;
 }
-
-const dialogContentProps = {
-  type: DialogType.normal,
-  title: strings.dialog.deleteChart,
-  subText: strings.dialog.resetConfirm,
-};
 
 export const DeleteDialog = ({ context }: DeleteDialogProps): JSX.Element => {
   const [isHidden, setIsHidden] = useState<boolean>(true);
@@ -60,19 +52,18 @@ export const DeleteDialog = ({ context }: DeleteDialogProps): JSX.Element => {
         text={strings.menuBar.reset}
         onClick={onClick}
       />
-      <Dialog
-        hidden={isHidden}
-        onDismiss={toggleHideDialog}
-        dialogContentProps={dialogContentProps}
-      >
-        <DialogFooter>
+      <Dialog modalType="modal" open={!isHidden} defaultOpen={false}>
+        {/* <DialogTitle >
+          {dialogContentProps.title}
+        </DialogTitle> */}
+        <DialogActions>
           <DefaultButton
             styles={primaryButtonStyles}
             onClick={onDeleteChart}
             text={strings.button.yes}
           />
           <DefaultButton onClick={toggleHideDialog} text={strings.button.no} />
-        </DialogFooter>
+        </DialogActions>
       </Dialog>
     </>
   );

@@ -10,7 +10,7 @@ export interface ScrollViewState {
 }
 
 export class ScrollView extends React.Component<
-  Record<string, unknown>,
+  React.PropsWithChildren<Record<string, unknown>>,
   ScrollViewState
 > {
   public refs: {

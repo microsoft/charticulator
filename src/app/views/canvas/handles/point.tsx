@@ -20,7 +20,7 @@ export interface PointHandleViewState {
 }
 
 export class PointHandleView extends React.Component<
-  PointHandleViewProps,
+  React.PropsWithChildren<PointHandleViewProps>,
   PointHandleViewState
 > {
   public refs: {

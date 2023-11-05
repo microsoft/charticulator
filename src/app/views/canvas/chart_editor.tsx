@@ -78,7 +78,10 @@ export interface ChartEditorViewState {
  * ![Mark widgets](media://chart_editor.png)
  */
 export class ChartEditorView
-  extends React.Component<ChartEditorViewProps, ChartEditorViewState>
+  extends React.Component<
+    React.PropsWithChildren<ChartEditorViewProps>,
+    ChartEditorViewState
+  >
   implements Droppable {
   public refs: {
     canvasContainer: HTMLDivElement;

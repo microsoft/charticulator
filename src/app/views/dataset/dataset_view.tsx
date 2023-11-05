@@ -50,7 +50,7 @@ export interface DatasetViewProps {
  * ![Mark widgets](media://dataset_view.png)
  */
 export class DatasetView extends React.Component<
-  DatasetViewProps,
+  React.PropsWithChildren<DatasetViewProps>,
   Record<string, unknown>
 > {
   public componentDidMount() {
@@ -102,7 +102,7 @@ const buttonStyles = {
 };
 
 export class ColumnsView extends React.Component<
-  ColumnsViewProps,
+  React.PropsWithChildren<ColumnsViewProps>,
   ColumnsViewState
 > {
   private popupController: PopupController = new PopupController();
@@ -370,7 +370,7 @@ export class ColumnViewState {
 }
 
 export class ColumnView extends React.Component<
-  ColumnViewProps,
+  React.PropsWithChildren<ColumnViewProps>,
   ColumnViewState
 > {
   private columnRef: HTMLElement;

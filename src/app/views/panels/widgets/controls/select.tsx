@@ -65,7 +65,10 @@ export interface SelectProps {
   onChange: (active: string) => void;
 }
 
-export class Select extends React.Component<SelectProps, { active: boolean }> {
+export class Select extends React.Component<
+  React.PropsWithChildren<SelectProps>,
+  { active: boolean }
+> {
   constructor(props: SelectProps) {
     super(props);
     this.state = {
@@ -165,7 +168,7 @@ export class Select extends React.Component<SelectProps, { active: boolean }> {
 }
 
 export class Radio extends React.Component<
-  SelectProps,
+  React.PropsWithChildren<SelectProps>,
   Record<string, unknown>
 > {
   public render() {

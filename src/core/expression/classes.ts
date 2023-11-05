@@ -3,7 +3,7 @@
 
 // eslint-disable-next-line
 export type ValueType = number | boolean | string | Date | Object;
-const pegjs = require("./parser.pegjs");
+import * as pegjs from "./parser.js";
 
 export interface Context {
   getVariable(name: string): ValueType;

@@ -11,7 +11,7 @@ export interface CanvasBarProps {
 }
 
 export class CanvasBar extends React.Component<
-  CanvasBarProps,
+  React.PropsWithChildren<CanvasBarProps>,
   Record<string, unknown>
 > {
   public render() {

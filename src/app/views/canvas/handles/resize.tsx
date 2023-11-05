@@ -24,7 +24,7 @@ export interface ResizeHandleViewState {
 }
 
 export class ResizeHandleView extends React.Component<
-  ResizeHandleViewProps,
+  React.PropsWithChildren<ResizeHandleViewProps>,
   ResizeHandleViewState
 > {
   public refs: {

@@ -23,7 +23,7 @@ export interface FilterEditorState {
   currentValue: Specification.Types.Filter;
 }
 export class FluentUIFilterEditor extends React.Component<
-  FilterEditorProps,
+  React.PropsWithChildren<FilterEditorProps>,
   FilterEditorState
 > {
   public state: FilterEditorState = this.getDefaultState(this.props.value);

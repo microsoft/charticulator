@@ -421,7 +421,7 @@ export namespace TemplateMetadata {
 export function findObjectById(
   spec: Specification.Chart,
   id: string
-): Specification.Object {
+): Specification.IObject {
   if (spec._id == id) {
     return spec;
   }
@@ -450,7 +450,7 @@ export enum ObjectItemKind {
 }
 
 export interface ObjectItem {
-  object: Specification.Object;
+  object: Specification.IObject;
   kind: ObjectItemKind;
 
   chartElement?: Specification.ChartElement;
@@ -490,7 +490,7 @@ export function* forEachMapping(
 }
 
 export function setProperty(
-  object: Specification.Object,
+  object: Specification.IObject,
   property: Specification.Template.PropertyField,
   value: any
 ) {
@@ -508,7 +508,7 @@ export function setProperty(
 }
 
 export function getProperty(
-  object: Specification.Object,
+  object: Specification.IObject,
   property: Specification.Template.PropertyField
 ) {
   if (typeof property == "string") {

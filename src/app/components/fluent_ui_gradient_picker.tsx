@@ -23,7 +23,7 @@ export enum Colorspace {
 }
 
 export class FluentUIGradientPicker extends React.Component<
-  GradientPickerProps,
+  React.PropsWithChildren<GradientPickerProps>,
   GradientPickerState
 > {
   constructor(props: GradientPickerProps) {

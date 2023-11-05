@@ -12,7 +12,7 @@ interface NullButtonProps {
 }
 
 export class NullButton extends React.Component<
-  NullButtonProps,
+  React.PropsWithChildren<NullButtonProps>,
   Record<string, unknown>
 > {
   render() {

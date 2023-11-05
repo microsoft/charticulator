@@ -17,7 +17,7 @@ export interface RelativeLineRatioHandleViewState {
 }
 
 export class GapRatioHandleView extends React.Component<
-  RelativeLineRatioHandleViewProps,
+  React.PropsWithChildren<RelativeLineRatioHandleViewProps>,
   RelativeLineRatioHandleViewState
 > {
   public refs: {

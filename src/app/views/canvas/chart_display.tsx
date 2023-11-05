@@ -16,7 +16,7 @@ export interface ChartDisplayViewProps {
 }
 
 export class ChartDisplayView extends React.Component<
-  ChartDisplayViewProps,
+  React.PropsWithChildren<ChartDisplayViewProps>,
   Record<string, unknown>
 > {
   public render() {

@@ -6,7 +6,7 @@ import { renderGraphicalElementSVG } from "../../../app/renderer";
 import { makeRect, makeGroup } from "../../../core/graphics";
 
 export class ColorFilterTestView extends React.Component<
-  {},
+  React.PropsWithChildren<{}>,
   { slider1: number; slider2: number }
 > {
   constructor(props: {}) {

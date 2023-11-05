@@ -18,7 +18,7 @@ interface GradientPalettesProps {
 }
 
 export class GradientPalettes extends React.Component<
-  GradientPalettesProps,
+  React.PropsWithChildren<GradientPalettesProps>,
   Record<string, unknown>
 > {
   render() {

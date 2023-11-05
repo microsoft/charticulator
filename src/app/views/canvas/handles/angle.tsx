@@ -16,7 +16,7 @@ export interface AngleHandleViewState {
 }
 
 export class AngleHandleView extends React.Component<
-  AngleHandleViewProps,
+  React.PropsWithChildren<AngleHandleViewProps>,
   AngleHandleViewState
 > {
   public refs: {

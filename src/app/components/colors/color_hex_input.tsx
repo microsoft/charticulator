@@ -11,7 +11,7 @@ interface ColorHexInputProps {
 }
 
 export class ColorHexInput extends React.Component<
-  ColorHexInputProps,
+  React.PropsWithChildren<ColorHexInputProps>,
   Record<string, unknown>
 > {
   render() {

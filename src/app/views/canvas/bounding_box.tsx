@@ -19,7 +19,7 @@ export interface BoundingBoxViewProps {
 }
 
 export class BoundingBoxView extends React.Component<
-  BoundingBoxViewProps,
+  React.PropsWithChildren<BoundingBoxViewProps>,
   Record<string, unknown>
 > {
   constructor(props: BoundingBoxViewProps) {

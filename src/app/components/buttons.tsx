@@ -8,11 +8,12 @@ import { SVGImageIcon } from "./icons";
 
 import * as R from "../resources";
 import { strings } from "../../strings";
-import { CommandBarButton } from "@fluentui/react";
+import { ToolbarButton } from "@fluentui/react-components";
+
 import { FluentButton } from "../views/panels/widgets/controls/fluentui_customized_components";
 
 export interface ToolButtonProps {
-  icon?: string;
+  icon?: string | React.JSX.Element;
   text?: string;
   title?: string;
   onClick?: () => void;
@@ -22,90 +23,8 @@ export interface ToolButtonProps {
   compact?: boolean;
 }
 
-export class ToolButton extends React.Component<
-  ToolButtonProps,
-  { dragging: boolean }
-> {
-  constructor(props: ToolButtonProps) {
-    super(props);
-    this.state = {
-      dragging: false,
-    };
-  }
-
-  public render() {
-    const onClick = () => {
-      if (this.props.onClick) {
-        this.props.onClick();
-      }
-    };
-
-    if (this.props.dragData) {
-      return (
-        <DraggableElement
-          dragData={this.props.dragData}
-          onDragStart={() => this.setState({ dragging: true })}
-          onDragEnd={() => this.setState({ dragging: false })}
-          renderDragElement={() => {
-            return [
-              <SVGImageIcon url={this.props.icon} width={32} height={32} />,
-              { x: -16, y: -16 },
-            ];
-          }}
-        >
-          <span
-            className={classNames(
-              "charticulator__button-tool",
-              ["is-active", this.props.active || this.state.dragging],
-              ["is-disabled", this.props.disabled]
-            )}
-            title={this.props.title}
-            onClick={onClick}
-          >
-            {this.props.icon ? <SVGImageIcon url={this.props.icon} /> : null}
-            {this.props.text ? (
-              <span className="el-text">{this.props.text}</span>
-            ) : null}
-          </span>
-          <span
-            style={{
-              position: "relative",
-              bottom: "-7px",
-              left: "-20px",
-            }}
-            onClick={onClick}
-          >
-            {this.props.compact ? (
-              <SVGImageIcon
-                url={R.getSVGIcon("general/triangle-right-bottom")}
-              />
-            ) : null}
-          </span>
-        </DraggableElement>
-      );
-    } else {
-      return (
-        <span
-          className={classNames(
-            "charticulator__button-tool",
-            ["is-active", this.props.active],
-            ["is-disabled", this.props.disabled]
-          )}
-          title={this.props.title}
-          onClick={onClick}
-        >
-          {this.props.icon ? <SVGImageIcon url={this.props.icon} /> : null}
-          {this.props.text ? (
-            <span className="el-text">{this.props.text}</span>
-          ) : null}
-        </span>
-      );
-    }
-  }
-}
-
 export class FluentToolButton extends React.Component<
-  ToolButtonProps,
+  React.PropsWithChildren<ToolButtonProps>,
   { dragging: boolean }
 > {
   constructor(props: ToolButtonProps) {
@@ -129,49 +48,63 @@ export class FluentToolButton extends React.Component<
           onDragStart={() => this.setState({ dragging: true })}
           onDragEnd={() => this.setState({ dragging: false })}
           renderDragElement={() => {
-            return [
-              <SVGImageIcon url={this.props.icon} width={32} height={32} />,
-              { x: -16, y: -16 },
-            ];
+            if (typeof this.props.icon === "string") {
+              return [
+                <SVGImageIcon url={this.props.icon} width={20} height={20} />,
+                { x: -16, y: -16 },
+              ];
+            } else {
+              return [this.props.icon, { x: -16, y: -16 }];
+            }
           }}
         >
           <FluentButton marginTop={"0px"}>
-            <CommandBarButton
+            <ToolbarButton
+              as="button"
+              value={this.props.text}
               onClick={onClick}
-              checked={this.props.active || this.state.dragging}
+              name={this.props.title}
+              // value={this.props.active || this.state.dragging}
               disabled={this.props.disabled}
-              text={this.props.text}
               title={this.props.title}
-              iconProps={{
-                iconName: this.props.icon,
-              }}
-              styles={{
-                root: {
-                  minWidth: "unset",
-                },
-              }}
-            />
+              icon={
+                typeof this.props.icon === "string" ? (
+                  <SVGImageIcon
+                    url={R.getSVGIcon(this.props.icon)}
+                    width={20}
+                    height={20}
+                  />
+                ) : (
+                  this.props.icon
+                )
+              }
+            ></ToolbarButton>
           </FluentButton>
         </DraggableElement>
       );
     } else {
       return (
         <FluentButton marginTop={"0px"}>
-          <CommandBarButton
+          <ToolbarButton
+            name={this.props.title}
+            as="button"
+            value={this.props.text}
+            // value={this.props.active}
             onClick={onClick}
-            checked={this.props.active}
             disabled={this.props.disabled}
-            text={this.props.text}
             title={this.props.title}
-            iconProps={{
-              iconName: this.props.icon,
-            }}
-            styles={{
-              root: {
-                minWidth: "unset",
-              },
-            }}
-          />
+            icon={
+              typeof this.props.icon === "string" ? (
+                <SVGImageIcon
+                  url={R.getSVGIcon(this.props.icon)}
+                  width={20}
+                  height={20}
+                />
+              ) : (
+                this.props.icon
+              )
+            }
+          ></ToolbarButton>
         </FluentButton>
       );
     }

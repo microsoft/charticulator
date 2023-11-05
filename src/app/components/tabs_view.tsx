@@ -12,7 +12,7 @@ export interface TabsViewProps {
 }
 
 export class TabsView extends React.Component<
-  TabsViewProps,
+  React.PropsWithChildren<TabsViewProps>,
   Record<string, unknown>
 > {
   public render() {

@@ -21,7 +21,7 @@ interface ColorDimensionInputProps {
 }
 
 export class ColorDimensionInput extends React.Component<
-  ColorDimensionInputProps,
+  React.PropsWithChildren<ColorDimensionInputProps>,
   Record<string, unknown>
 > {
   render() {

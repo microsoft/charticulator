@@ -33,7 +33,7 @@ interface ReorderStringsValueState {
 }
 
 export class FluentUIReorderStringsValue extends React.Component<
-  ReorderStringsValueProps,
+  React.PropsWithChildren<ReorderStringsValueProps>,
   ReorderStringsValueState
 > {
   public state: ReorderStringsValueState = {

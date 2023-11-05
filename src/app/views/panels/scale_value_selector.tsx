@@ -23,7 +23,7 @@ export interface ScaleValueSelectorState {
 }
 
 export class ScaleValueSelector extends React.Component<
-  ScaleValueSelectorProps,
+  React.PropsWithChildren<ScaleValueSelectorProps>,
   ScaleValueSelectorState
 > {
   public token: EventSubscription;

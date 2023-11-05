@@ -16,7 +16,7 @@ export interface MarginHandleViewState {
 }
 
 export class MarginHandleView extends React.Component<
-  MarginHandleViewProps,
+  React.PropsWithChildren<MarginHandleViewProps>,
   MarginHandleViewState
 > {
   public refs: {

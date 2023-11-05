@@ -18,7 +18,7 @@ import { LegendProperties } from "../../core/prototypes/legends/legend";
 import {
   ChartElement,
   MappingType,
-  Object,
+  IObject,
   PlotSegment,
 } from "../../core/specification";
 import { NumericalNumberLegendAttributes } from "../../core/prototypes/legends/numerical_legend";
@@ -544,7 +544,7 @@ export class Migrator {
         }
         if (Prototypes.isType(item.chartElement.classID, "mark.data-axis")) {
           // eslint-disable-next-line @typescript-eslint/ban-types
-          const element = (item.chartElement as unknown) as Object<
+          const element = (item.chartElement as unknown) as IObject<
             DataAxisProperties
           >;
           if (element.properties.axis) {
@@ -558,7 +558,7 @@ export class Migrator {
       if (item.kind == ObjectItemKind.Mark) {
         if (Prototypes.isType(item.mark.classID, "mark.data-axis")) {
           // eslint-disable-next-line @typescript-eslint/ban-types
-          const element = (item.mark as unknown) as Object<DataAxisProperties>;
+          const element = (item.mark as unknown) as IObject<DataAxisProperties>;
           if (element.properties.axis) {
             element.properties.axis = this.updateAxis(element.properties.axis);
           }
@@ -945,7 +945,7 @@ export class Migrator {
         }
         if (Prototypes.isType(item.chartElement.classID, "mark.data-axis")) {
           // eslint-disable-next-line @typescript-eslint/ban-types
-          const element = (item.chartElement as unknown) as Object<
+          const element = (item.chartElement as unknown) as IObject<
             DataAxisProperties
           >;
           if (element.properties.axis) {
@@ -977,7 +977,7 @@ export class Migrator {
       if (item.kind == ObjectItemKind.Mark) {
         if (Prototypes.isType(item.mark.classID, "mark.data-axis")) {
           // eslint-disable-next-line @typescript-eslint/ban-types
-          const element = (item.mark as unknown) as Object<DataAxisProperties>;
+          const element = (item.mark as unknown) as IObject<DataAxisProperties>;
           if (element.properties.axis) {
             element.properties.axis = this.updateAxis(element.properties.axis);
             element.properties.axis.orderByExpression = this.parseExpression(
@@ -1132,7 +1132,7 @@ export class Migrator {
         }
         if (Prototypes.isType(item.chartElement.classID, "mark.data-axis")) {
           // eslint-disable-next-line @typescript-eslint/ban-types
-          const element = (item.chartElement as unknown) as Object<
+          const element = (item.chartElement as unknown) as IObject<
             DataAxisProperties
           >;
           if (element.properties.axis) {
@@ -1153,7 +1153,7 @@ export class Migrator {
       if (item.kind == ObjectItemKind.Mark) {
         if (Prototypes.isType(item.mark.classID, "mark.data-axis")) {
           // eslint-disable-next-line @typescript-eslint/ban-types
-          const element = (item.mark as unknown) as Object<DataAxisProperties>;
+          const element = (item.mark as unknown) as IObject<DataAxisProperties>;
           if (element.properties.axis) {
             if (element.properties.axis.numberOfTicks == undefined) {
               element.properties.axis.numberOfTicks =

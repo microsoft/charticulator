@@ -54,7 +54,7 @@ export interface ChartContainerComponentState {
 }
 
 export class ChartContainerComponent extends React.Component<
-  ChartContainerComponentProps,
+  React.PropsWithChildren<ChartContainerComponentProps>,
   ChartContainerComponentState
 > {
   public state: ChartContainerComponentState = {

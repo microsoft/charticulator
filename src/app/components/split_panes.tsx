@@ -3,7 +3,7 @@
 import * as React from "react";
 
 export class HorizontalSplitPaneView extends React.Component<
-  Record<string, unknown>,
+  React.PropsWithChildren<Record<string, unknown>>,
   Record<string, unknown>
 > {
   public render() {

@@ -24,10 +24,10 @@ import {
   DataFieldSelectorValue,
 } from "../dataset/data_field_selector";
 import { ReorderListView } from "./object_list_editor";
-import { PanelRadioControl } from "./radio_control";
 import { MappingType } from "../../../core/specification";
-import { PrimaryButton } from "@fluentui/react";
 import { ArrowType } from "../../../core/prototypes/links";
+import { Button, Radio, RadioGroup } from "@fluentui/react-components";
+import { strings } from "../../../strings";
 
 export interface LinkCreationPanelProps {
   onFinish?: () => void;
@@ -79,16 +79,15 @@ export class LinkCreationPanel extends ContextedComponent<
       <div className="charticulator__link-type-table">
         <div className="el-row">
           <h2>Link using:</h2>
-          <PanelRadioControl
-            options={["line", "band"]}
-            icons={["link/line", "link/band"]}
-            labels={["Line", "Band"]}
-            value={this.state.linkType}
-            onChange={(newValue: "line" | "band") =>
-              this.setState({ linkType: newValue })
+          <RadioGroup
+            onChange={(ev, data) =>
+              this.setState({ linkType: data.value as "line" | "band" })
             }
-            showText={true}
-          />
+            value={this.state.linkMode}
+          >
+            <Radio value="line" label="Line" />
+            <Radio value="link/band" label="Band" />
+          </RadioGroup>
         </div>
         {this.state.plotSegments.length > 1 ? (
           <div className="el-row">
@@ -117,15 +116,13 @@ export class LinkCreationPanel extends ContextedComponent<
         this.isLinkDataPresent() ? (
           <div className="el-row">
             <h2>Link Mode:</h2>
-            <PanelRadioControl
-              options={["link-through", "link-table"]}
-              icons={["link/through", "link/table"]}
-              labels={["Sequentially", "By Link Data"]}
+            <RadioGroup
+              onChange={(ev, data) => this.setState({ linkMode: data.value })}
               value={this.state.linkMode}
-              onChange={(newValue) => this.setState({ linkMode: newValue })}
-              showText={true}
-              asList={true}
-            />
+            >
+              <Radio value="link-through" label="Sequentially" />
+              <Radio value="link-table" label="By Link Data" />
+            </RadioGroup>
           </div>
         ) : null}
         {this.state.linkMode == "link-through" ? (
@@ -142,8 +139,9 @@ export class LinkCreationPanel extends ContextedComponent<
           </div>
         ) : null}
         <div className="el-row">
-          <PrimaryButton
-            text="Create Links"
+          <Button
+            appearance="primary"
+            value="Create Links"
             onClick={() => {
               const links = this.getLinkObject();
               if (links != null) {
@@ -157,7 +155,12 @@ export class LinkCreationPanel extends ContextedComponent<
                 });
               }
             }}
-          />
+          >
+            {"Create Links"}
+          </Button>
+          <Button onClick={this.props.onFinish}>
+            {strings.menuBar.cancel}
+          </Button>
           {this.state.errorReport ? (
             <span>{this.state.errorReport}</span>
           ) : null}

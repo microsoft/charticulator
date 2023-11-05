@@ -24,9 +24,9 @@ function getObjectIcon(classID: string) {
 }
 
 export class AttributePanel extends React.Component<
-  {
+  React.PropsWithChildren<{
     store: AppStore;
-  },
+  }>,
   Record<string, unknown>
 > {
   public tokens: EventSubscription[] = [];
@@ -60,7 +60,7 @@ export class AttributePanel extends React.Component<
   // eslint-disable-next-line
   public render() {
     const selection = this.props.store.currentSelection;
-    let object: Specification.Object;
+    let object: Specification.IObject;
     let objectClass: Prototypes.ObjectClass;
     let manager: FluentUIWidgetManager;
     if (selection) {

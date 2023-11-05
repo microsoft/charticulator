@@ -3,6 +3,7 @@
 import * as React from "react";
 import { ButtonRaised } from "./index";
 import { copyToClipboard } from "../utils";
+import { PropsWithChildren } from "react";
 
 export enum TelemetryActionType {
   Exception = "exception",
@@ -21,7 +22,7 @@ export interface ErrorBoundaryProps {
 export const TelemetryContext = React.createContext<TelemetryRecorder>(null);
 
 export class ErrorBoundary extends React.Component<
-  ErrorBoundaryProps,
+  PropsWithChildren<ErrorBoundaryProps>,
   { hasError: boolean; errorString?: string }
 > {
   constructor(props: ErrorBoundaryProps) {

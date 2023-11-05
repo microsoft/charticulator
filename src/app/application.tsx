@@ -43,6 +43,7 @@ import { LocalStorageKeys } from "./globals";
 // Also available from @uifabric/icons (7 and earlier) and @fluentui/font-icons-mdl2 (8+)
 import { initializeIcons } from "../fabric-icons/src/index";
 initializeIcons();
+
 import { defaultVersionOfTemplate } from "./stores/defaults";
 import { MenuBarHandlers, MenubarTabButton } from "./views/menubar";
 import { TelemetryRecorder } from "./components";
@@ -50,6 +51,8 @@ import { AttributeMap, MappingType } from "../core/specification";
 import { NestedChartEditorOptions } from "../core/prototypes/controls";
 import { EditorType } from "./stores/app_store";
 import { LocalizationConfig } from "../container/container";
+
+import { FluentProvider, teamsLightTheme } from "@fluentui/react-components";
 
 export class ApplicationExtensionContext implements ExtensionContext {
   constructor(public app: Application) {}
@@ -110,7 +113,7 @@ export class Application {
   private nestedEditor: {
     onOpenEditor: (
       options: Prototypes.Controls.NestedChartEditorOptions,
-      object: Specification.Object<AttributeMap>,
+      object: Specification.IObject<AttributeMap>,
       property: Prototypes.Controls.Property
     ) => void;
   };
@@ -135,7 +138,7 @@ export class Application {
       nestedEditor?: {
         onOpenEditor: (
           options: Prototypes.Controls.NestedChartEditorOptions,
-          object: Specification.Object<AttributeMap>,
+          object: Specification.IObject<AttributeMap>,
           property: Prototypes.Controls.Property
         ) => void;
       };
@@ -161,7 +164,7 @@ export class Application {
           AppStore.EVENT_OPEN_NESTED_EDITOR,
           (
             options: NestedChartEditorOptions,
-            object: Specification.Object<AttributeMap>,
+            object: Specification.IObject<AttributeMap>,
             property: Prototypes.Controls.Property
           ) => {
             this.nestedEditor.onOpenEditor(options, object, property);
@@ -224,14 +227,18 @@ export class Application {
 
     (window as any).mainStore = this.appStore;
     ReactDOM.render(
-      <MainView
-        store={this.appStore}
-        ref={(e) => (this.mainView = e)}
-        viewConfiguration={this.config.MainView}
-        menuBarHandlers={handlers?.menuBarHandlers}
-        tabButtons={handlers?.tabButtons}
-        telemetry={handlers?.telemetry}
-      />,
+      <>
+        <FluentProvider theme={teamsLightTheme}>
+          <MainView
+            store={this.appStore}
+            ref={(e) => (this.mainView = e)}
+            viewConfiguration={this.config.MainView}
+            menuBarHandlers={handlers?.menuBarHandlers}
+            tabButtons={handlers?.tabButtons}
+            telemetry={handlers?.telemetry}
+          />
+        </FluentProvider>
+      </>,
       document.getElementById(containerID)
     );
 

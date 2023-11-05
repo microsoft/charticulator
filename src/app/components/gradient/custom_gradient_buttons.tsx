@@ -17,9 +17,8 @@ interface CustomGradientButtonsProps {
   selectGradient: (gradient: ColorGradient, emit: boolean) => void;
 }
 
-
 export class CustomGradientButtons extends React.Component<
-  CustomGradientButtonsProps,
+  React.PropsWithChildren<CustomGradientButtonsProps>,
   Record<string, unknown>
 > {
   render() {
