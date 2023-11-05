@@ -84,7 +84,7 @@ export const ContextMenuCallout = ({
                   >
                     <FluentDataBindingMenuLabel
                       style={{
-                        padding: 5,
+                        padding: 2,
                       }}
                     >
                       {item.name}

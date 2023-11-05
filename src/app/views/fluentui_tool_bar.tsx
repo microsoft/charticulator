@@ -20,12 +20,23 @@ import { AppStore } from "../stores";
 import { strings } from "../../strings";
 import { LayoutDirection, UndoRedoLocation } from "../main_view";
 import { useContext } from "react";
-import { Callout, DirectionalHint, IconButton } from "@fluentui/react";
+
+import {
+  ToolbarButton,
+  Popover,
+  PopoverSurface,
+  MenuPopover,
+  Menu,
+  MenuItem,
+  MenuList,
+  MenuTrigger,
+  PopoverTrigger,
+} from "@fluentui/react-components";
+
 import { getSVGIcon } from "../resources";
 import { EditorType } from "../stores/app_store";
 import { useState } from "react";
 import { useEffect } from "react";
-import { Icon } from "@fluentui/react/lib/Icon";
 
 const minWidthToColapseButtons = Object.freeze({
   guides: 1090,
@@ -150,13 +161,13 @@ export const FluentUIToolbar: React.FC<{
               <FluentToolButton
                 title={strings.menuBar.undo}
                 disabled={store.historyManager.statesBefore.length === 0}
-                icon={"Undo"}
+                icon="Undo"
                 onClick={() => new Actions.Undo().dispatch(store.dispatcher)}
               />
               <FluentToolButton
                 title={strings.menuBar.redo}
                 disabled={store.historyManager.statesAfter.length === 0}
-                icon={"Redo"}
+                icon="Redo"
                 onClick={() => new Actions.Redo().dispatch(store.dispatcher)}
               />
             </>
@@ -202,19 +213,19 @@ export const FluentUIToolbar: React.FC<{
             {
               classID: "guide-coordinator-x",
               title: strings.toolbar.guideX,
-              icon: "CharticulatorGuideX",
+              icon: "guide/coordinator-x",
               options: '{"shape":"triangle"}',
             },
             {
               classID: "guide-coordinator-y",
               title: strings.toolbar.guideY,
-              icon: "CharticulatorGuideY",
+              icon: "guide/coordinator-y",
               options: '{"shape":"triangle"}',
             },
             {
               classID: "guide-coordinator-polar",
               title: strings.toolbar.guidePolar,
-              icon: "CharticulatorGuideCoordinator",
+              icon: "guide-coordinator-polar",
               options: "",
             },
           ]}
@@ -511,17 +522,17 @@ export const FluentUIToolbar: React.FC<{
             <ObjectButton
               classID="guide-coordinator-x"
               title={strings.toolbar.guideX}
-              icon="CharticulatorGuideX"
+              icon="guide/coordinator-x"
             />
             <ObjectButton
               classID="guide-coordinator-y"
               title={strings.toolbar.guideY}
-              icon="CharticulatorGuideY"
+              icon="guide/coordinator-y"
             />
             <ObjectButton
               classID="guide-coordinator-polar"
               title={strings.toolbar.guidePolar}
-              icon="CharticulatorGuideCoordinator"
+              icon="guide/coordinator-polar"
             />
           </>
         ) : (
@@ -680,6 +691,7 @@ export class ObjectButton extends ContextedComponent<
   }
 
   public render() {
+    console.log("this.props.icon", this.props.icon);
     return (
       <>
         <DraggableElement
@@ -708,13 +720,21 @@ export class ObjectButton extends ContextedComponent<
             ];
           }}
         >
-          <IconButton
-            iconProps={{
-              iconName: this.props.icon,
-            }}
+          <ToolbarButton
+            icon={
+              typeof this.props.icon === "string" ? (
+                <SVGImageIcon
+                  url={R.getSVGIcon(this.props.icon)}
+                  width={20}
+                  height={20}
+                />
+              ) : (
+                this.props.icon
+              )
+            }
             title={this.props.title}
-            text={this.props.text}
-            checked={this.getIsActive()}
+            value={this.props.text}
+            // toggle={this.getIsActive()}
             onClick={() => {
               this.dispatch(
                 new Actions.SetCurrentTool(
@@ -823,50 +843,67 @@ export class MultiObjectButton extends ContextedComponent<
         onDragEnd={() => this.setState({ dragging: false })}
         renderDragElement={() => {
           return [
-            <Icon iconName={currentTool.icon} aria-hidden="true" />,
+            <SVGImageIcon
+              url={R.getSVGIcon(currentTool.icon)}
+              height={20}
+              width={20}
+              aria-hidden="true"
+            />,
             { x: 16, y: 16 },
           ];
         }}
       >
-        <IconButton
-          split={true}
-          menuProps={{
-            items: this.props.tools.map((tool, index) => {
-              return {
-                key: tool.classID + index,
-                data: {
-                  classID: tool.classID,
-                  options: tool.options,
-                },
-                text: tool.title,
-                iconProps: { iconName: tool.icon },
-              };
-            }),
-            onItemClick: (ev: any, item: any) => {
-              if (item.data) {
-                this.dispatch(
-                  new Actions.SetCurrentTool(
-                    item.data.classID,
-                    item.data.options
-                  )
-                );
+        <Menu>
+          <MenuTrigger disableButtonEnhancement>
+            <ToolbarButton
+              icon={
+                <SVGImageIcon
+                  url={R.getSVGIcon(currentTool.icon)}
+                  height={20}
+                  width={20}
+                ></SVGImageIcon>
               }
-            },
-          }}
-          iconProps={{
-            iconName: currentTool.icon,
-          }}
-          onMenuClick={() => {
-            if (currentTool) {
-              this.dispatch(
-                new Actions.SetCurrentTool(
-                  currentTool.classID,
-                  currentTool.options
-                )
-              );
-            }
-          }}
-        />
+              onClick={() => {
+                if (currentTool) {
+                  this.dispatch(
+                    new Actions.SetCurrentTool(
+                      currentTool.classID,
+                      currentTool.options
+                    )
+                  );
+                }
+              }}
+            />
+          </MenuTrigger>
+
+          <MenuPopover>
+            <MenuList>
+              {this.props.tools.map((tool) => {
+                console.log("tool", tool);
+                return (
+                  <MenuItem
+                    onClick={() => {
+                      if (tool) {
+                        this.dispatch(
+                          new Actions.SetCurrentTool(tool.classID, tool.options)
+                        );
+                      }
+                    }}
+                    icon={
+                      <SVGImageIcon
+                        url={R.getSVGIcon(tool.icon)}
+                        height={20}
+                        width={20}
+                      ></SVGImageIcon>
+                    }
+                  >
+                    {tool.title}{" "}
+                  </MenuItem>
+                );
+              })}
+            </MenuList>
+          </MenuPopover>
+        </Menu>
       </DraggableElement>
     );
   }
@@ -896,37 +933,48 @@ export const ScaffoldButton: React.FC<{
 export const LinkButton: React.FC<{
   label: boolean;
 }> = (props) => {
-  const { store } = React.useContext(MainReactContext);
+  // const { store } = React.useContext(MainReactContext);
   const [isOpen, openDialog] = React.useState(false);
+
+  const button = React.useRef();
 
   return (
     <span id="linkCreator">
-      <IconButton
-        title={strings.toolbar.link}
-        text={props.label ? strings.toolbar.link : ""}
-        iconProps={{
-          iconName: "CharticulatorLine",
+      <Popover
+        open={isOpen}
+        positioning={{
+          positioningRef: button,
+          position: "below",
         }}
-        checked={store.currentTool == "link"}
-        onClick={() => {
-          openDialog(true);
-        }}
-      />
-      {isOpen ? (
-        <Callout
-          target={"#linkCreator"}
-          hidden={!isOpen}
-          onDismiss={() => openDialog(false)}
-        >
+      >
+        <PopoverTrigger>
+          <ToolbarButton
+            ref={button}
+            title={strings.toolbar.link}
+            value={props.label ? strings.toolbar.link : ""}
+            icon={
+              <SVGImageIcon
+                url={R.getSVGIcon("CharticulatorLine")}
+                height={20}
+                width={20}
+              />
+            }
+            // checked={store.currentTool == "link"}
+            onClick={() => {
+              openDialog(!isOpen);
+            }}
+          />
+        </PopoverTrigger>
+        <PopoverSurface>
           <LinkCreationPanel onFinish={() => openDialog(false)} />
-        </Callout>
-      ) : null}
+        </PopoverSurface>
+      </Popover>
     </span>
   );
 };
 
 export const LegendButton: React.FC = () => {
-  const { store } = React.useContext(MainReactContext);
+  // const { store } = React.useContext(MainReactContext);
   const [isOpen, setOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -937,25 +985,26 @@ export const LegendButton: React.FC = () => {
 
   return (
     <span id="createLegend">
-      <IconButton
-        title={strings.toolbar.legend}
-        iconProps={{
-          iconName: "CharticulatorLegend",
-        }}
-        checked={store.currentTool == "legend"}
-        onClick={() => {
-          setOpen(!isOpen);
-        }}
-      />
-      {isOpen ? (
-        <Callout
-          onDismiss={() => setOpen(false)}
-          target="#createLegend"
-          directionalHint={DirectionalHint.bottomLeftEdge}
-        >
+      <Popover open={isOpen}>
+        <PopoverTrigger>
+          <ToolbarButton
+            title={strings.toolbar.legend}
+            icon={
+              <SVGImageIcon
+                url={R.getSVGIcon("CharticulatorLegend")}
+                height={20}
+                width={20}
+              />
+            }
+            onClick={() => {
+              setOpen(!isOpen);
+            }}
+          />
+        </PopoverTrigger>
+        <PopoverSurface>
           <LegendCreationPanel onFinish={() => setOpen(false)} />
-        </Callout>
-      ) : null}
+        </PopoverSurface>
+      </Popover>
     </span>
   );
 };

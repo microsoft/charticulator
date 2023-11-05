@@ -24,10 +24,12 @@ export const defultBindButtonSize = {
 
 export const FluentButton = styled.div<{
   marginTop?: string;
+  marginBottom?: string;
   marginLeft?: string;
   paddingRight?: string;
 }>`
   margin-top: ${({ marginTop }) => marginTop || "24px"};
+  margin-top: ${({ marginBottom }) => marginBottom || "0px"};
   margin-left: ${({ marginLeft }) => marginLeft || "unset"};
   display: inline-block;
   padding: 0px ${({ paddingRight }) => paddingRight || "4px"} 0px 0px;

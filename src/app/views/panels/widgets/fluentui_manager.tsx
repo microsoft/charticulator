@@ -96,7 +96,7 @@ import {
   SearchWrapperOptions,
 } from "../../../../core/prototypes/controls";
 
-import { mergeStyles } from "@fluentui/merge-styles";
+// import { mergeStyles } from "@fluentui/merge-styles";
 import { strings } from "../../../../strings";
 import { InputImage } from "./controls/fluentui_image";
 import { InputImageProperty } from "./controls/fluentui_image_2";
@@ -1353,13 +1353,13 @@ export class FluentUIWidgetManager
               >
                 {options.allowReorder ? (
                   <span className="charticulator__widget-array-view-control charticulator__widget-array-view-order">
-                    <FontIcon
+                    {/* <FontIcon
                       className={mergeStyles({
                         fontSize: "20px",
                         margin: "5px",
                       })}
                       iconName={"CheckListText"}
-                    />
+                    /> */}
                     {/* <SVGImageIcon url={R.getSVGIcon("general/order")} /> */}
                   </span>
                 ) : null}

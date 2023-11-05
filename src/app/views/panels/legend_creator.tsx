@@ -9,11 +9,10 @@ import {
   DataFieldSelector,
   DataFieldSelectorValue,
 } from "../dataset/data_field_selector";
-import { PanelRadioControl } from "./radio_control";
 import { DataKind, TableType } from "../../../core/dataset";
 import { AttributeType, MappingType } from "../../../core/specification";
-import { Label, PrimaryButton } from "@fluentui/react";
 import { strings } from "../../../strings";
+import { Button, Radio, RadioGroup, Label } from "@fluentui/react-components";
 
 export interface LegendCreationPanelProps {
   onFinish?: () => void;
@@ -48,7 +47,18 @@ export class LegendCreationPanel extends ContextedComponent<
         <div className="el-row">
           {/* <h2>Legend type:</h2> */}
           <Label>{strings.legendCreator.legendType}</Label>
-          <PanelRadioControl
+          <RadioGroup
+            onChange={(ev, data) => {
+              this.setState({
+                legendDataSource: data.value as "columnNames" | "columnValues",
+              });
+            }}
+            value={this.state.legendDataSource}
+          >
+            <Radio value="columnValues" label="Column values" />
+            <Radio value="columnNames" label="Column names" />
+          </RadioGroup>
+          {/* <PanelRadioControl
             options={["columnValues", "columnNames"]}
             labels={["Column values", "Column names"]}
             value={this.state.legendDataSource}
@@ -56,7 +66,7 @@ export class LegendCreationPanel extends ContextedComponent<
               this.setState({ legendDataSource: newValue })
             }
             showText={true}
-          />
+          /> */}
         </div>
         {this.state.legendDataSource == "columnValues" ? (
           <div>
@@ -98,8 +108,9 @@ export class LegendCreationPanel extends ContextedComponent<
           </div>
         )}
         <div className="el-row">
-          <PrimaryButton
-            text={strings.legendCreator.createLegend}
+          <Button
+            appearance="primary"
+            value={strings.legendCreator.createLegend}
             title={strings.legendCreator.createLegend}
             // eslint-disable-next-line
             onClick={() => {
@@ -321,7 +332,12 @@ export class LegendCreationPanel extends ContextedComponent<
               this.store.solveConstraintsAndUpdateGraphics();
               this.props.onFinish();
             }}
-          />
+          >
+            {strings.legendCreator.createLegend}
+          </Button>
+          <Button onClick={this.props.onFinish}>
+            {strings.menuBar.cancel}
+          </Button>
           {this.state.errorReport ? (
             <span>{this.state.errorReport}</span>
           ) : null}

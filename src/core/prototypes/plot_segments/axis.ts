@@ -1870,7 +1870,7 @@ export function buildAxisWidgets(
                     }),
                     manager.styledHorizontal(
                       {
-                        alignItems: "start",
+                        alignItems: "flex-end",
                       },
                       [1, 0],
                       manager.sectionHeader(
@@ -2150,7 +2150,7 @@ export function buildAxisWidgets(
                     }),
                     manager.styledHorizontal(
                       {
-                        alignItems: "start",
+                        alignItems: "flex-end",
                       },
                       [1, 0],
                       manager.sectionHeader(
@@ -2731,7 +2731,7 @@ function getTickDataAndTickFormatFields(
     // manager.label(strings.objects.axes.tickData),
     manager.styledHorizontal(
       {
-        alignItems: "start",
+        alignItems: "flex-end",
       },
       [1, 0],
       manager.inputExpression(

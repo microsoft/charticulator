@@ -687,13 +687,13 @@ export class FluentMappingEditor extends React.Component<
         >
           {parent.styledHorizontal(
             {
-              alignItems: "start",
+              alignItems: "flex-end",
             },
             [1, 0],
             this.renderCurrentAttributeMapping(),
             <span>
               {isDataMapping ? (
-                <FluentButton>
+                <FluentButton marginTop="26px">
                   <DefaultButton
                     iconProps={{
                       iconName: "EraseTool",
