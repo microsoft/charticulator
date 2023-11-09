@@ -7,7 +7,7 @@ Charticulator
 Charticulator is a new charting tool that allows you to design charts by interactively specifying
 constraints.
 
-Project Team
+Project Team & contributors
 ----
 
 - [Donghao Ren](https://donghaoren.org/)
@@ -17,6 +17,13 @@ Project Team
 - [Kate Lytvynets](https://github.com/katua)
 - [David Tittsworth](https://github.com/stopyoukid)
 - [Chris Trevino](https://github.com/darthtrevino)
+- [Ilfat Galiev](https://github.com/zbritva)
+- [Dan Marshall](https://github.com/danmarshall)
+- [Ramil Minyukov](https://github.com/MrRamka)
+- [Daniel Marsh-Patrick](https://github.com/dm-p)
+- [doubleamp](https://github.com/doubleamp)
+- [deldersveld](https://github.com/deldersveld)
+- [duncanhealy](https://github.com/duncanhealy)
 
 Build
 ----
