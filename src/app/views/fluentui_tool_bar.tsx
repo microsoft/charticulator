@@ -879,7 +879,6 @@ export class MultiObjectButton extends ContextedComponent<
           <MenuPopover>
             <MenuList>
               {this.props.tools.map((tool, index) => {
-                console.log("tool", tool);
                 return (
                   <MenuItem
                     key={`menu-${index}`}

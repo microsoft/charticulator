@@ -528,11 +528,6 @@ export function renderGraphicalElementSVG(
     }
   }
 
-
-  if (!element.key) {
-    console.warn('no key of ', element);
-  }
-
   switch (element.type) {
     case "rect": {
       const rect = element as Graphics.Rect;
