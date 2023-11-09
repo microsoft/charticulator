@@ -259,6 +259,7 @@ export class DataAxisClass extends MarkClass<
           attrs.x1 + offset.x,
           attrs.y1 + offset.y
         );
+        g.key = `${this.object._id}`;
         return g;
       } else {
         return null;
@@ -285,6 +286,7 @@ export class DataAxisClass extends MarkClass<
         attrs.x1 + offset.x,
         attrs.y1 + offset.y
       );
+      g.key = `${this.object._id}`;
       return g;
     }
   }
@@ -331,7 +333,7 @@ export class DataAxisClass extends MarkClass<
       x1: attrs.x1,
       y1: attrs.y1,
       x2: attrs.x2,
-      y2: attrs.y2,
+      y2: attrs.y2
     };
   }
 

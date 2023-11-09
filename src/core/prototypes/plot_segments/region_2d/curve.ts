@@ -396,6 +396,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
           )
       );
     }
+    g.key = `${this.object._id}`;
     return g;
   }
 

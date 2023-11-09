@@ -327,6 +327,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         g.elements.push(this.getPlotSegmentAxisYDataGraphics(manager));
       }
     }
+    g.key = `${this.object._id}`;
     return g;
   }
 
@@ -355,6 +356,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
   ): Graphics.Group {
     this.chartManager = manager;
     const g = Graphics.makeGroup([]);
+    g.key = `x-gr-${this.object._id}`;
     const attrs = this.state.attributes;
     const props = this.object.properties;
     if (props.xData && props.xData.visible) {
@@ -391,6 +393,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
   ): Graphics.Group {
     this.chartManager = manager;
     const g = Graphics.makeGroup([]);
+    g.key = `y-gr-${this.object._id}`;
     const attrs = this.state.attributes;
     const props = this.object.properties;
 
@@ -430,6 +433,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
   ): Graphics.Group {
     this.chartManager = manager;
     const g = Graphics.makeGroup([]);
+    g.key = `background-${this.object._id}`;
     const attrs = this.state.attributes;
     const props = this.object.properties;
 

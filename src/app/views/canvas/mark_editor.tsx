@@ -1026,6 +1026,7 @@ export class SingleMarkView
             <g key={`m${element._id}`}>
               {bbox ? (
                 <BoundingBoxView
+                  key={`bb-${element._id}`}
                   zoom={this.state.zoom}
                   boundingBox={bbox}
                   active={true}

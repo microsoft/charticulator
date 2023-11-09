@@ -495,6 +495,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
         )
       );
     }
+    g.key = `${this.object._id}`;
     return g;
   }
 
@@ -555,6 +556,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
       );
     }
 
+    g.key = `background-${this.object._id}`;
     return g;
   }
 

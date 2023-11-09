@@ -926,6 +926,7 @@ export class ChartEditorView
           <g key={`m${layout._id}`}>
             {bbox ? (
               <BoundingBoxView
+                key={`mbb-${layout._id}`}
                 zoom={this.state.zoom}
                 boundingBox={bbox}
                 active={true}

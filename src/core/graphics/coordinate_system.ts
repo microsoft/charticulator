@@ -268,13 +268,16 @@ export class CoordinateSystemHelper {
     y1: number,
     x2: number,
     y2: number,
+    key: string,
     style: Style = {},
     rx: number = 0,
-    ry: number = 0
+    ry: number = 0,
   ): Element {
     const cs = this.coordinateSystem;
     if (cs instanceof CartesianCoordinates) {
-      return makeRect(x1, y1, x2, y2, style, rx, ry);
+      const rect = makeRect(x1, y1, x2, y2, style, rx, ry);
+      rect.key = key;
+      return rect;
     } else {
       const path = makePath(style);
       this.lineTo(path, x1, y1, x1, y2, true);
@@ -282,6 +285,7 @@ export class CoordinateSystemHelper {
       this.lineTo(path, x2, y2, x2, y1, false);
       this.lineTo(path, x2, y1, x1, y1, false);
       path.closePath();
+      path.path.key = key;
       return path.path;
     }
   }
@@ -291,11 +295,14 @@ export class CoordinateSystemHelper {
     y1: number,
     x2: number,
     y2: number,
-    style: Style = {}
+    style: Style = {},
+    key: string
   ): Element {
     const cs = this.coordinateSystem;
     if (cs instanceof CartesianCoordinates) {
-      return makeEllipse(x1, y1, x2, y2, style);
+      const ellipse =  makeEllipse(x1, y1, x2, y2, style);
+      ellipse.key = key;
+      return ellipse
     } else {
       const path = makePath(style);
       const cx = (x1 + x2) / 2,
@@ -316,6 +323,7 @@ export class CoordinateSystemHelper {
         );
       }
       path.closePath();
+      path.path.key = key;
       return path.path;
     }
   }
@@ -325,7 +333,8 @@ export class CoordinateSystemHelper {
     y1: number,
     x2: number,
     y2: number,
-    style: Style = {}
+    style: Style = {},
+    key: string
   ): Element {
     const cs = this.coordinateSystem;
     if (cs instanceof CartesianCoordinates) {
@@ -333,6 +342,7 @@ export class CoordinateSystemHelper {
     } else {
       const path = makePath(style);
       this.lineTo(path, x1, y1, x2, y2, true);
+      path.path.key = key;
       return path.path;
     }
   }

@@ -161,7 +161,9 @@ export class TextElementClass extends EmphasizableMarkClass<
               backgroundColorId: attrs.backgroundColorFilterId,
               opacity: attrs.opacity,
               ...this.generateEmphasisStyle(empasized),
-            }
+            },
+            undefined,
+            `${this.object._id}-line-${index}`
           )
         );
       }
@@ -180,7 +182,9 @@ export class TextElementClass extends EmphasizableMarkClass<
           backgroundColorId: attrs.backgroundColorFilterId,
           opacity: attrs.opacity,
           ...this.generateEmphasisStyle(empasized),
-        }
+        },
+        undefined,
+        `${this.object._id}`
       );
     }
     const g = Graphics.makeGroup([text]);
@@ -288,7 +292,7 @@ export class TextElementClass extends EmphasizableMarkClass<
       cy: rect.cy - attrs.y,
       width: rect.width,
       height: rect.height,
-      rotation: rect.rotation,
+      rotation: rect.rotation
     };
   }
 

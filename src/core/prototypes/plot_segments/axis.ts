@@ -528,6 +528,7 @@ export class AxisRenderer {
       side = -side;
     }
     const g = makeGroup([]);
+    g.key = `gridline-${x}-${y}-${angle}`;
     const cos = Math.cos(Geometry.degreesToRadians(angle));
     const sin = Math.sin(Geometry.degreesToRadians(angle));
     const tickSize = size;
@@ -546,7 +547,9 @@ export class AxisRenderer {
       const ty = y + tickPosition * sin;
       const dx = -side * tickSize * sin;
       const dy = side * tickSize * cos;
-      g.elements.push(makeLine(tx, ty, tx + dx, ty + dy, lineStyle));
+      const line= makeLine(tx, ty, tx + dx, ty + dy, lineStyle);
+      line.key = `${g.key}-${tickPosition}`
+      g.elements.push(line);
     }
 
     return g;
@@ -577,6 +580,7 @@ export class AxisRenderer {
     axisOffset?: number
   ): Group {
     const g = makeGroup([]);
+    g.key = `text-x-${x}-y-${y}-ang-${angle}-side-${side}-${axisOffset}`;
     const style = this.style;
     const rangeMin = this.rangeMin;
     const rangeMax = this.rangeMax;
@@ -715,9 +719,11 @@ export class AxisRenderer {
                 backgroundColorId: style.tickTextBackgroudColorId,
               }
             );
+            text.key = `tick-text-pos-${tick.position}-i-${index}`;
             lines.push(text);
           }
           const gText = makeGroup(lines);
+          gText.key = `tick-text-pos-${tick.position}`;
           gText.transform = {
             x: tx + dx,
             y: ty + dy,
@@ -758,9 +764,11 @@ export class AxisRenderer {
                     ),
                     plotSegment: this.plotSegment,
                   }
-                : undefined
+                : undefined,
+                `tick-text-pos-ch-${tick.position}`
             ),
           ]);
+          gText.key = `tick-text-pos-${tick.position}`;
           gText.transform = {
             x: tx + dx,
             y: ty + dy,
@@ -801,9 +809,11 @@ export class AxisRenderer {
                   ),
                   plotSegment: this.plotSegment,
                 }
-              : undefined
+              : undefined,
+              `tick-text-pos-ch-${tick.position}`
           ),
         ]);
+        gText.key = `tick-text-pos-${tick.position}`;
         gText.transform = {
           x: tx + dx,
           y: ty + dy,
@@ -863,9 +873,11 @@ export class AxisRenderer {
                     ),
                     plotSegment: this.plotSegment,
                   }
-                : undefined
+                : undefined,
+                `tick-text-pos-ch-${tick.position}`
             ),
           ]);
+          gText.key = `tick-text-pos-${tick.position}`;
           gText.transform = {
             x: tx + dx,
             y: ty + dy,
@@ -934,11 +946,13 @@ export class AxisRenderer {
                       ),
                       plotSegment: this.plotSegment,
                     }
-                  : undefined
+                  : undefined,
+                  `tick-text-pos-ch-${tick.position}-i-${index}`
               );
               lines.push(text);
             }
             const gText = makeGroup(lines);
+            gText.key = `tick-text-lines-${tick.position}`;
 
             gText.transform = {
               x: tx + dx,
@@ -993,9 +1007,11 @@ export class AxisRenderer {
                       ),
                       plotSegment: this.plotSegment,
                     }
-                  : undefined
+                  : undefined,
+                  `tick-text-pos-ch-${tick.position}`
               ),
             ]);
+            gText.key = `tick-text-pos-${tick.position}`;
             gText.transform = {
               x: tx + dx,
               y: ty + dy,
@@ -1352,6 +1368,7 @@ export class AxisRenderer {
     }
 
     return React.createElement(VirtualScrollBar, <VirtualScrollBarPropertes>{
+      key: `scroll-x:${x}-y:${y}`,
       onScroll,
       handlerBarWidth: AxisRenderer.SCROLL_BAR_SIZE,
       height,
