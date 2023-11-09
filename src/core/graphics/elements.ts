@@ -108,6 +108,7 @@ export interface Selectable {
 }
 
 export interface Element {
+  key?: string; // key for react
   type: string;
   style?: Style;
   selectable?: Selectable;
@@ -270,9 +271,11 @@ export function makeText(
   fontFamily: string,
   fontSize: number,
   style?: Style,
-  selectable?: Selectable
+  selectable?: Selectable,
+  key?: string
 ): Text {
   return {
+    key,
     type: "text",
     cx,
     cy,

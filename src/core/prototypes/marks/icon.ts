@@ -195,6 +195,7 @@ export class IconElementClass extends EmphasizableMarkClass<
     gImage.style = {
       opacity: attrs.opacity,
     };
+    gImage.key = `${this.object._id}`;
     return gImage;
   }
 
@@ -285,7 +286,7 @@ export class IconElementClass extends EmphasizableMarkClass<
       cy: rect.cy - attrs.y,
       width: rect.width,
       height: rect.height,
-      rotation: rect.rotation,
+      rotation: rect.rotation
     };
   }
 

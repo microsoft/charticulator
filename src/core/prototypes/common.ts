@@ -228,6 +228,7 @@ export namespace BoundingBox {
   export interface Description {
     type: string;
     visible?: boolean;
+    key?: string;
   }
 
   export interface Rectangle extends Description {

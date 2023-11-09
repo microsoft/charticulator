@@ -878,10 +878,10 @@ export class MultiObjectButton extends ContextedComponent<
 
           <MenuPopover>
             <MenuList>
-              {this.props.tools.map((tool) => {
-                console.log("tool", tool);
+              {this.props.tools.map((tool, index) => {
                 return (
                   <MenuItem
+                    key={`menu-${index}`}
                     onClick={() => {
                       if (tool) {
                         this.dispatch(
@@ -891,6 +891,7 @@ export class MultiObjectButton extends ContextedComponent<
                     }}
                     icon={
                       <SVGImageIcon
+                        key={`icon-${index}`}
                         url={R.getSVGIcon(tool.icon)}
                         height={20}
                         width={20}

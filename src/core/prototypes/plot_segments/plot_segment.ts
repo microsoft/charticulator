@@ -58,7 +58,9 @@ export abstract class PlotSegmentClass<
     glyphGraphics: Graphics.Element,
     manager: ChartStateManager
   ): Graphics.Element {
-    return Graphics.makeGroup([glyphGraphics, this.getGraphics(manager)]);
+    const group = Graphics.makeGroup([glyphGraphics, this.getGraphics(manager)]);
+    group.key = `ps-${this.object._id}`;
+    return group;
   }
 
   /** Get the graphics that represent this layout of elements in background*/

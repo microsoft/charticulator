@@ -16,6 +16,7 @@ export interface BoundingBoxViewProps {
   onMouseLeave?: () => void;
   coordinateSystem?: Graphics.CoordinateSystem;
   offset?: Point;
+  key: string;
 }
 
 export class BoundingBoxView extends React.Component<
@@ -71,7 +72,8 @@ export class BoundingBoxView extends React.Component<
           cx - rect.width / 2,
           cy - rect.height / 2,
           cx + rect.width / 2,
-          cy + rect.height / 2
+          cy + rect.height / 2,
+          undefined
         );
         return (
           <g
@@ -86,10 +88,12 @@ export class BoundingBoxView extends React.Component<
             {renderGraphicalElementSVG(element, {
               className: "element-shape ghost",
               noStyle: true,
+              key:`bounding-box-1`
             })}
             {renderGraphicalElementSVG(element, {
               className: "element-shape indicator",
               noStyle: true,
+              key:`bounding-box-2`
             })}
           </g>
         );
@@ -176,7 +180,9 @@ export class BoundingBoxView extends React.Component<
             line.x1 + offset.x,
             line.y1 + offset.y,
             line.x2 + offset.x,
-            line.y2 + offset.y
+            line.y2 + offset.y,
+            {},
+            null
           );
           return (
             <g

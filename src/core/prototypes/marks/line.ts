@@ -199,7 +199,8 @@ export class LineElementClass extends EmphasizableMarkClass<
           this.object.properties.strokeStyle
         ),
         ...this.generateEmphasisStyle(emphasize),
-      }
+      },
+      `${this.object._id}`
     );
   }
 
@@ -291,7 +292,7 @@ export class LineElementClass extends EmphasizableMarkClass<
       x1,
       y1,
       x2,
-      y2,
+      y2
     };
   }
 

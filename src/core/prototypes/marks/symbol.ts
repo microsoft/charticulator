@@ -139,6 +139,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
           x2: w / 2,
           y2: w / 2,
           rotation: rotation,
+          key: `${this.object._id}`
         };
         const gr = makeGroup([elem]);
         gr.transform.x = pc.x;
@@ -164,6 +165,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
         path.transformRotation(rotation);
         path.closePath();
         const gr = makeGroup([path.path]);
+        gr.key = `${this.object._id}`;
         gr.transform.x = pc.x;
         gr.transform.y = pc.y;
         return gr;
@@ -182,6 +184,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
         path.transformRotation(rotation);
         path.closePath();
         const gr = makeGroup([path.path]);
+        gr.key = `${this.object._id}`;
         gr.transform.x = pc.x;
         gr.transform.y = pc.y;
         return gr;
@@ -316,7 +319,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
       type: "circle",
       cx: x,
       cy: y,
-      radius: Math.sqrt(size / Math.PI),
+      radius: Math.sqrt(size / Math.PI)
     };
   }
 

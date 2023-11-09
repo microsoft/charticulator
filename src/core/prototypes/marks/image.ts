@@ -357,6 +357,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
           attrs.y1 + offset.y,
           attrs.x2 + offset.x,
           attrs.y2 + offset.y,
+          `${this.object._id}`,
           {
             strokeColor: null,
             fillColor: attrs.fill,
@@ -456,6 +457,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
           attrs.y1 + offset.y,
           attrs.x2 + offset.x,
           attrs.y2 + offset.y,
+          `${this.object._id}`,
           {
             strokeColor: attrs.stroke,
             strokeWidth: attrs.strokeWidth,
@@ -728,7 +730,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
-      rotation: 0,
+      rotation: 0
     };
   }
 

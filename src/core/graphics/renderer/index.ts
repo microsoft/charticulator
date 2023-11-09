@@ -73,9 +73,9 @@ export class ChartRenderer {
     offset: Point,
     glyph: Specification.Glyph,
     state: Specification.GlyphState,
-    index: number
+    glyphIndex: number
   ): Group[] {
-    return zipArray(glyph.marks, state.marks).map(([mark, markState]) => {
+    return zipArray(glyph.marks, state.marks).map(([mark, markState], index) => {
       if (!mark.properties.visible) {
         return null;
       }
@@ -87,6 +87,11 @@ export class ChartRenderer {
         this.manager,
         state.emphasized
       );
+      if (g.key) {
+        g.key += `ps-${plotSegment._id}-gl-${glyphIndex}`
+      } else {
+        g.key = `ps-${plotSegment._id}-gl-${glyphIndex}`
+      }
       if (g != null) {
         g.selectable = {
           plotSegment,
@@ -96,11 +101,13 @@ export class ChartRenderer {
           enableContextMenu: <boolean>cls.object.properties.enableContextMenu,
           enableSelection: <boolean>cls.object.properties.enableSelection,
         };
-        return makeGroup([g]);
+        const group = makeGroup([g]);
+        group.key = `${g.key}-${index}`;
+        return group;
       } else {
         return null;
       }
-    });
+    }).filter(g => g !== null);
   }
 
   /**
@@ -124,7 +131,7 @@ export class ChartRenderer {
     }
 
     const linkGroup = makeGroup([]);
-
+    linkGroup.key = `linkGroup-${chart._id}`;
     graphics.push(linkGroup);
 
     const elementsAndStates = zipArray(chart.elements, chartState.elements);
@@ -161,12 +168,15 @@ export class ChartRenderer {
             mark,
             glyphState,
             glyphIndex
-          );
-          glyphArrays.push(g);
+          ).filter(g => g !== null);
+          if (g !== null) {
+            glyphArrays.push(g);
+          }
         }
         // Transpose glyphArrays so each mark is in a layer
         const glyphElements = transpose(glyphArrays).map((x) => makeGroup(x));
         const gGlyphs = makeGroup(glyphElements);
+        gGlyphs.key = `glyphs-of-${plotSegment._id}`;
         gGlyphs.transform = coordinateSystem.getBaseTransform();
         const g = plotSegmentClass.getPlotSegmentGraphics(
           gGlyphs,
@@ -176,16 +186,18 @@ export class ChartRenderer {
         const gBackgroundElements = makeGroup([]);
         const plotSegmentBackgroundElements = plotSegmentClass.getPlotSegmentBackgroundGraphics(
           this.manager
-        );
+          );
+        gBackgroundElements.key = `bg-ps-${plotSegmentBackgroundElements.key}`;
         gBackgroundElements.elements.push(plotSegmentBackgroundElements);
         const gElement = makeGroup([]);
+        gElement.key = `warpper-${element._id}`
         gElement.elements.push(gBackgroundElements);
         gElement.elements.push(g);
-        gElement.key = element._id;
         graphics.push(gElement);
       } else if (Prototypes.isType(element.classID, "mark")) {
         const cs = new CartesianCoordinates({ x: 0, y: 0 });
         const gElement = makeGroup([]);
+        gElement.key = `${element._id}-${elementState.attributes['x']}-${elementState.attributes['y']}`;
         const elementClass = this.manager.getMarkClass(elementState);
         const g = elementClass.getGraphics(
           cs,
@@ -194,10 +206,10 @@ export class ChartRenderer {
           this.manager
         );
         gElement.elements.push(g);
-        gElement.key = element._id;
         graphics.push(gElement);
       } else {
         const gElement = makeGroup([]);
+        gElement.key = `${element._id}-${elementState.attributes['x']}-${elementState.attributes['y']}`;
         const elementClass = this.manager.getChartElementClass(elementState);
         const g = elementClass.getGraphics(this.manager);
         gElement.elements.push(g);
@@ -216,6 +228,7 @@ export class ChartRenderer {
         opacity: 1,
       }
     );
+    chartEventHandlerRect.key = `chartEventHandlerRect-${chart._id}`;
 
     // don't need to handle other events by chart.
     if (chart.properties.enableContextMenu) {
@@ -273,6 +286,7 @@ export class ChartRenderer {
       this.manager.chart,
       this.manager.chartState
     );
+    group.key= `chart-${this.manager.chart._id}`
     if (this.renderEvents?.afterRendered) {
       this.renderEvents.afterRendered();
     }

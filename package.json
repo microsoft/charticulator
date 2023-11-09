@@ -1,6 +1,6 @@
 {
   "name": "charticulator",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "private": true,
   "author": {
     "name": "Donghao Ren",
@@ -8,7 +8,8 @@
     "url": "https://donghaoren.org"
   },
   "contributors": [
-    "David Tittsworth <datittsw@microsoft.com>"
+    "David Tittsworth <datittsw@microsoft.com>",
+    "Ilfat Galiev <zbritva@gmail.com>"
   ],
   "scripts": {
     "dev": "node build.js",

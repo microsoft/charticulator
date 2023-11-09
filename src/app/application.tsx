@@ -4,7 +4,7 @@
 /* eslint-disable max-lines-per-function */
 
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom/client";
 
 import { MainView } from "./main_view";
 import { AppStore, Migrator } from "./stores";
@@ -110,6 +110,8 @@ export class Application {
   private config: CharticulatorAppConfig;
   private containerID: string;
 
+  private root: ReactDOM.Root;
+
   private nestedEditor: {
     onOpenEditor: (
       options: Prototypes.Controls.NestedChartEditorOptions,
@@ -119,7 +121,7 @@ export class Application {
   };
 
   public destroy() {
-    ReactDOM.unmountComponentAtNode(document.getElementById(this.containerID));
+    this.root.unmount();
   }
 
   public async initialize(
@@ -147,6 +149,8 @@ export class Application {
     this.config = config;
     this.containerID = containerID;
     await initialize(config);
+
+    this.root = ReactDOM.createRoot(document.getElementById(this.containerID));
 
     if (workerConfig.worker) {
       this.worker = workerConfig.worker;
@@ -226,7 +230,7 @@ export class Application {
     }
 
     (window as any).mainStore = this.appStore;
-    ReactDOM.render(
+    this.root.render(
       <>
         <FluentProvider theme={teamsLightTheme}>
           <MainView
@@ -238,8 +242,7 @@ export class Application {
             telemetry={handlers?.telemetry}
           />
         </FluentProvider>
-      </>,
-      document.getElementById(containerID)
+      </>
     );
 
     this.extensionContext = new ApplicationExtensionContext(this);

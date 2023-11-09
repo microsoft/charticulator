@@ -533,7 +533,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
 
         const textElement = applyStyles(
           <Graphics.TextOnPath>{
-            key: index,
+            key: `${this.object._id}-line-${index}`,
             type: "text-on-path",
             pathCmds: cmds,
             text: textContentList[index],
@@ -559,6 +559,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       );
       const cmds = pathMaker.path.cmds;
       textElement = <Graphics.TextOnPath>{
+        key: `${this.object._id}`,
         type: "text-on-path",
         pathCmds: cmds,
         text: attrs.text,
@@ -838,7 +839,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
-      rotation: 0,
+      rotation: 0
     };
   }
 

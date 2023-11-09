@@ -569,11 +569,12 @@ export class RectElementClass extends EmphasizableMarkClass<
             gradientRotation: attrs.gradientRotation,
             opacity: attrs.opacity,
             ...this.generateEmphasisStyle(empasized),
-          }
+          },
+          `${this.object._id}`
         );
       }
       case ShapeType.Triangle: {
-        const path = this.drawTriangleOrCometMarks(helper, offset, empasized);
+        const path = this.drawTriangleOrCometMarks(helper, offset, `${this.object._id}`, empasized);
         return path;
       }
       case ShapeType.Rectangle:
@@ -583,6 +584,7 @@ export class RectElementClass extends EmphasizableMarkClass<
           attrs.y1 + offset.y,
           attrs.x2 + offset.x,
           attrs.y2 + offset.y,
+          `${this.object._id}`,
           {
             strokeColor: attrs.stroke,
             strokeWidth: attrs.strokeWidth,
@@ -883,7 +885,7 @@ export class RectElementClass extends EmphasizableMarkClass<
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
-      rotation: 0,
+      rotation: 0
     };
   }
 
@@ -903,7 +905,8 @@ export class RectElementClass extends EmphasizableMarkClass<
   private drawTriangleOrCometMarks(
     helper: Graphics.CoordinateSystemHelper,
     offset: Point,
-    empasized?: boolean
+    key: string,
+    empasized?: boolean,
   ) {
     const pathMaker = new Graphics.PathMaker();
     const properties = this.object.properties;
@@ -994,6 +997,7 @@ export class RectElementClass extends EmphasizableMarkClass<
       opacity: attrs.opacity,
       ...this.generateEmphasisStyle(empasized),
     };
+    path.key = key;
     return path;
   }
 }

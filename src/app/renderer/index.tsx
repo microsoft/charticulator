@@ -193,13 +193,14 @@ class TextOnPath extends React.PureComponent<{
   style: React.CSSProperties;
   align: "start" | "middle" | "end";
   cmds: any;
+  key: string;
 }> {
   private pathID: string = uniqueID();
 
   public render() {
     return (
-      <g>
-        <defs>
+      <g key={`defs-${this.props.key}`}>
+        <defs key={`defs-${this.props.key}`}>
           <path
             id={this.pathID}
             fill="none"
@@ -207,7 +208,7 @@ class TextOnPath extends React.PureComponent<{
             d={renderSVGPath(this.props.cmds)}
           />
         </defs>
-        <text style={{ ...this.props.style, textAnchor: this.props.align }}>
+        <text key={`t-${this.props.key}`} style={{ ...this.props.style, textAnchor: this.props.align }}>
           <textPath
             href={`#${this.pathID}`}
             startOffset={
@@ -234,6 +235,7 @@ function renderEndSVGArrow(element: Graphics.Path) {
     case ArrowType.DIAMOND_ARROW:
       arrowElement = (
         <path
+          key={element.key}
           d="M 5 0 L 10 5 L 5 10 L 0 5 z"
           fill={renderColor(
             element.style.strokeColor,
@@ -245,6 +247,7 @@ function renderEndSVGArrow(element: Graphics.Path) {
     case ArrowType.OVAL_ARROW:
       arrowElement = (
         <circle
+          key={element.key}
           cx="5"
           cy="5"
           r="5"
@@ -259,6 +262,7 @@ function renderEndSVGArrow(element: Graphics.Path) {
     default:
       arrowElement = (
         <path
+          key={element.key}
           d="M 0 0 L 10 5 L 0 10 z"
           fill={renderColor(
             element.style.strokeColor,
@@ -270,6 +274,7 @@ function renderEndSVGArrow(element: Graphics.Path) {
   }
   return (
     <marker
+      key={element.key}
       id={element.style.endArrowColorId}
       viewBox="0 0 10 10"
       refX="9"
@@ -292,6 +297,7 @@ function renderStartSVGArrow(element: Graphics.Path) {
     case ArrowType.DIAMOND_ARROW:
       arrowElement = (
         <path
+          key={element.key}
           d="M 5 0 L 10 5 L 5 10 L 0 5 z"
           fill={renderColor(
             element.style.strokeColor,
@@ -303,6 +309,7 @@ function renderStartSVGArrow(element: Graphics.Path) {
     case ArrowType.OVAL_ARROW:
       arrowElement = (
         <circle
+          key={element.key}
           cx="5"
           cy="5"
           r="5"
@@ -317,6 +324,7 @@ function renderStartSVGArrow(element: Graphics.Path) {
     default:
       arrowElement = (
         <path
+          key={element.key}
           d="M 10 0 L 10 10 L 0 5 z"
           fill={renderColor(
             element.style.strokeColor,
@@ -329,6 +337,7 @@ function renderStartSVGArrow(element: Graphics.Path) {
 
   return (
     <marker
+      key={element.key}
       id={element.style.startArrowColorId}
       viewBox="0 0 10 10"
       refX="1"
@@ -353,6 +362,7 @@ export function renderSVGDefs(element: Graphics.Element): JSX.Element {
       if (text.style.backgroundColor) {
         return (
           <filter
+            key={`filter-${text.style.backgroundColorId}`}
             x="0"
             y="0"
             width="1"
@@ -535,12 +545,13 @@ export function renderGraphicalElementSVG(
       }
 
       return (
-        <g>
-          <defs>
+        <g key={`g-${element.key || options.key}`}>
+          <defs key={`defs-${element.key || options.key}`}>
             {rect.style.fillColor == null &&
             rect.style.fillStartColor &&
             rect.style.fillStopColor ? (
               <linearGradient
+                key={`gradient-${gradientID}`}
                 id={gradientID}
                 x1={`${rotation.x1}%`}
                 y1={`${rotation.y1}%`}
@@ -567,7 +578,7 @@ export function renderGraphicalElementSVG(
             ) : null}
           </defs>
           <rect
-            key={options.key}
+            key={element.key || options.key}
             {...mouseEvents}
             className={options.className || null}
             style={style}
@@ -586,7 +597,7 @@ export function renderGraphicalElementSVG(
       const circle = element as Graphics.Circle;
       return (
         <circle
-          key={options.key}
+          key={element.key || options.key}
           {...mouseEvents}
           className={options.className || null}
           style={style}
@@ -612,12 +623,13 @@ export function renderGraphicalElementSVG(
       }
 
       return (
-        <g>
-          <defs>
+        <g key={`g-${element.key || options.key}`}>
+          <defs key={`defs-${element.key || options.key}`}>
             {ellipse.style.fillColor == null &&
             ellipse.style.fillStartColor &&
             ellipse.style.fillStopColor ? (
               <linearGradient
+                key={`gradient-${gradientID}`}
                 id={gradientID}
                 x1={`${rotation.x1}%`}
                 y1={`${rotation.y1}%`}
@@ -642,7 +654,7 @@ export function renderGraphicalElementSVG(
             ) : null}
           </defs>
           <ellipse
-            key={options.key}
+            key={element.key || options.key}
             {...mouseEvents}
             className={options.className || null}
             style={style}
@@ -658,7 +670,7 @@ export function renderGraphicalElementSVG(
       const line = element as Graphics.Line;
       return (
         <line
-          key={options.key}
+          key={element.key || options.key}
           {...mouseEvents}
           className={options.className || null}
           style={style}
@@ -673,7 +685,7 @@ export function renderGraphicalElementSVG(
       const polygon = element as Graphics.Polygon;
       return (
         <polygon
-          key={options.key}
+          key={element.key || options.key}
           {...mouseEvents}
           className={options.className || null}
           style={style}
@@ -708,12 +720,13 @@ export function renderGraphicalElementSVG(
       }
 
       return (
-        <g>
-          <defs>
+        <g key={`g-${element.key || options.key}`}>
+          <defs key={`defs-${element.key || options.key}`}>
             {path.style.fillColor == null &&
             path.style.fillStartColor &&
             path.style.fillStopColor ? (
               <linearGradient
+                key={`gradient-${gradientID}`}
                 id={gradientID}
                 x1={`${rotation.x1}%`}
                 y1={`${rotation.y1}%`}
@@ -738,7 +751,7 @@ export function renderGraphicalElementSVG(
             ) : null}
           </defs>
           <path
-            key={options.key}
+            key={element.key || options.key}
             {...mouseEvents}
             className={options.className || null}
             style={style}
@@ -756,6 +769,7 @@ export function renderGraphicalElementSVG(
       style.fontSize = text.fontSize + "px";
       return (
         <TextOnPath
+          key={text.key}
           text={text.text}
           style={style}
           cmds={text.pathCmds}
@@ -775,6 +789,7 @@ export function renderGraphicalElementSVG(
         style2.fill = style.stroke;
         const e1 = (
           <text
+            key={text.key}
             {...mouseEvents}
             className={options.className || null}
             style={style2}
@@ -788,6 +803,7 @@ export function renderGraphicalElementSVG(
         style.stroke = "none";
         const e2 = (
           <text
+            key={text.key}
             {...mouseEvents}
             className={options.className || null}
             style={style}
@@ -798,7 +814,7 @@ export function renderGraphicalElementSVG(
           </text>
         );
         return (
-          <g key={options.key}>
+          <g key={element.key}>
             {e1}
             {e2}
           </g>
@@ -806,7 +822,7 @@ export function renderGraphicalElementSVG(
       } else {
         return (
           <text
-            key={options.key}
+            key={element.key}
             {...mouseEvents}
             className={options.className || null}
             style={style}
@@ -832,7 +848,7 @@ export function renderGraphicalElementSVG(
       }
       return (
         <image
-          key={options.key}
+          key={element.key || options.key}
           {...mouseEvents}
           className={options.className || null}
           style={style}
@@ -897,7 +913,7 @@ export function renderGraphicalElementSVG(
 
       return (
         <ChartComponent
-          key={options.key}
+          key={element.key || options.key}
           chart={component.chart}
           dataset={component.dataset}
           width={component.width}
@@ -920,7 +936,7 @@ export function renderGraphicalElementSVG(
       return (
         <g
           transform={renderTransform(group.transform)}
-          key={group.key || options.key}
+          key={element.key || options.key}
           style={{
             opacity:
               group.style && group.style.opacity != null
@@ -931,7 +947,7 @@ export function renderGraphicalElementSVG(
         >
           {group.elements.map((x, index) => {
             return renderGraphicalElementSVG(x, {
-              key: `m-${group.key || options.key}-${index}`,
+              key: `m-${(x && x.key) || (options && options.key) || group.key}-${index}`,
               chartComponentSync: options.chartComponentSync,
               externalResourceResolver: options.externalResourceResolver,
               onClick: options.onClick,

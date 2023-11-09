@@ -255,7 +255,7 @@ export class RectangleChart extends ChartClass {
   public getBackgroundGraphics() {
     const attrs = this.state.attributes;
     if (this.object.properties.backgroundColor != null) {
-      return Graphics.makeRect(
+      const rect = Graphics.makeRect(
         -attrs.width / 2,
         -attrs.height / 2,
         attrs.width / 2,
@@ -265,6 +265,9 @@ export class RectangleChart extends ChartClass {
           fillOpacity: this.object.properties.backgroundOpacity,
         }
       );
+      rect.key = `bg-${this.object._id}`;
+      
+      return rect;
     }
   }
 

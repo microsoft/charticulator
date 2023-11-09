@@ -293,6 +293,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
       attrs.cx + offset.x,
       attrs.cy + offset.y
     );
+    gContainer.key = `nested-${this.object._id}`
     return gContainer;
   }
 
@@ -412,7 +413,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
-      rotation: 0,
+      rotation: 0
     };
   }
 
