@@ -22,8 +22,8 @@ import {
 import {
   defaultLabelStyle,
   defultBindButtonSize,
-  FluentActionButton,
-  FluentButton,
+  // FluentActionButton,
+  // FluentButton,
 } from "./fluentui_customized_components";
 import {
   ImageMappingDragStateWrapper,
@@ -129,9 +129,9 @@ export class InputImage extends ContextedComponent<
                 {this.props.label}
               </Label>
             ) : null}
-            <FluentActionButton
+            {/* <FluentActionButton
               style={{ width: "100%", height: defultBindButtonSize.height }}
-            >
+            > */}
               <ActionButton
                 styles={{
                   root: {
@@ -149,7 +149,7 @@ export class InputImage extends ContextedComponent<
                   },
                 }}
               />
-            </FluentActionButton>
+            {/* </FluentActionButton> */}
           </div>
         )}
       </span>
@@ -337,7 +337,7 @@ export class ImageUploader extends React.Component<
                 styles={ImageMappingTextFieldStyles}
               />
             </TooltipHost>
-            <FluentButton marginTop="0px">
+            {/* <FluentButton marginTop="0px"> */}
               <DefaultButton
                 styles={{
                   root: {
@@ -350,7 +350,7 @@ export class ImageUploader extends React.Component<
                 }}
                 onClick={this.handleOpenFile}
               />
-            </FluentButton>
+            {/* </FluentButton> */}
           </span>
         )}
       </div>

@@ -80,10 +80,10 @@ import {
   defaultStyle,
   defultBindButtonSize,
   defultComponentsHeight,
-  FluentButton,
-  FluentCheckbox,
-  FluentDatePickerWrapper,
-  FluentLabelHeader,
+  // FluentButton,
+  // FluentCheckbox,
+  // FluentDatePickerWrapper,
+  // FluentLabelHeader,
   labelRender,
   NestedChartButtonsWrapper,
 } from "./controls/fluentui_customized_components";
@@ -517,7 +517,7 @@ export class FluentUIWidgetManager
     const format = this.getDateFormat(property) as string;
 
     return (
-      <FluentDatePickerWrapper>
+      // <FluentDatePickerWrapper>
         <DatePicker
           key={this.getKeyFromProperty(property)}
           firstDayOfWeek={DayOfWeek.Sunday}
@@ -536,7 +536,7 @@ export class FluentUIWidgetManager
             }
           }}
         />
-      </FluentDatePickerWrapper>
+      // </FluentDatePickerWrapper>
     );
   }
 
@@ -776,7 +776,7 @@ export class FluentUIWidgetManager
             {options.headerLabel ? (
               <Label styles={defaultLabelStyle}>{options.headerLabel}</Label>
             ) : null}
-            <FluentCheckbox style={options.styles}>
+            {/* <FluentCheckbox style={options.styles}> */}
               <Checkbox
                 checked={this.getPropertyValue(property) as boolean}
                 label={options.label}
@@ -801,7 +801,7 @@ export class FluentUIWidgetManager
                   }
                 }}
               />
-            </FluentCheckbox>
+            {/* </FluentCheckbox> */}
           </React.Fragment>
         );
       }
@@ -1049,11 +1049,12 @@ export class FluentUIWidgetManager
     styles?: CSSProperties
   ) {
     return (
-      <FluentButton
+      <>
+      {/* <FluentButton
         key={this.getKeyFromProperty(property)}
         marginTop={isHeader ? "0px" : null}
         style={styles}
-      >
+      > */}
         <DefaultButton
           styles={{
             root: {
@@ -1068,7 +1069,8 @@ export class FluentUIWidgetManager
             this.emitSetProperty(property, null);
           }}
         />
-      </FluentButton>
+      {/* </FluentButton> */}
+      </>
     );
   }
 
@@ -1173,7 +1175,7 @@ export class FluentUIWidgetManager
         }}
         className={""}
       >
-        <FluentButton marginTop={"0px"}>
+        {/* <FluentButton marginTop={"0px"}> */}
           <IconButton
             styles={{
               root: {
@@ -1196,7 +1198,7 @@ export class FluentUIWidgetManager
               onRenderMenuList: menuRender,
             }}
           />
-        </FluentButton>
+        {/* </FluentButton> */}
       </DropZoneView>
     );
   }
@@ -1207,12 +1209,12 @@ export class FluentUIWidgetManager
   ): JSX.Element {
     let container: HTMLSpanElement;
     return (
-      <FluentButton
-        ref={(e) => (container = e)}
-        key={this.getKeyFromProperty(property)}
-        marginTop={"1px"}
-        paddingRight={"0px"}
-      >
+      // <FluentButton
+      //   ref={(e) => (container = e)}
+      //   key={this.getKeyFromProperty(property)}
+      //   marginTop={"1px"}
+      //   paddingRight={"0px"}
+      // >
         <DefaultButton
           styles={{
             root: {
@@ -1320,7 +1322,7 @@ export class FluentUIWidgetManager
             );
           }}
         />
-      </FluentButton>
+      // </FluentButton>
     );
   }
 
@@ -1375,7 +1377,7 @@ export class FluentUIWidgetManager
                 </span>
                 {options.allowDelete ? (
                   <span className="charticulator__widget-array-view-control">
-                    <FluentButton marginTop={"0px"}>
+                    {/* <FluentButton marginTop={"0px"}> */}
                       <DefaultButton
                         styles={{
                           root: {
@@ -1390,7 +1392,7 @@ export class FluentUIWidgetManager
                           this.emitSetProperty(property, items);
                         }}
                       />
-                    </FluentButton>
+                    {/* </FluentButton> */}
                   </span>
                 ) : null}
               </div>
@@ -1441,14 +1443,15 @@ export class FluentUIWidgetManager
       return;
     }
     return (
-      <FluentLabelHeader
-        key={title}
-        marginBottom={options?.addMargins ? "5px" : "0px"}
-        marginTop={options?.addMargins ? "5px" : "0px"}
-      >
+      <>
+      {/* // <FluentLabelHeader
+      //   key={title}
+      //   marginBottom={options?.addMargins ? "5px" : "0px"}
+      //   marginTop={options?.addMargins ? "5px" : "0px"}
+      // > */}
         <Label styles={defaultLabelStyle}>{title}</Label>
-      </FluentLabelHeader>
-    );
+      {/* // </FluentLabelHeader> */}
+    </>);
   }
 
   public text(title: string, align: "left" | "center" | "right" = "left") {
@@ -1555,12 +1558,14 @@ export class FluentUIWidgetManager
           )}
         >
           {title ? (
-            <FluentLabelHeader>
+            <>
+            {/* <FluentLabelHeader> */}
               <Label>{title}</Label>
-            </FluentLabelHeader>
+            {/* </FluentLabelHeader> */}
+            </>
           ) : null}
           {widget}
-          <FluentButton marginTop={"0px"} marginLeft={"6px"}>
+          {/* <FluentButton marginTop={"0px"} marginLeft={"6px"}> */}
             <DefaultButton
               key={title}
               iconProps={{
@@ -1580,15 +1585,15 @@ export class FluentUIWidgetManager
                 },
               }}
             />
-          </FluentButton>
+          {/* </FluentButton> */}
         </DropZoneView>
       );
     } else {
       return (
         <div className="charticulator__widget-section-header">
-          <FluentLabelHeader>
+          {/* <FluentLabelHeader> */}
             <Label>{title}</Label>
-          </FluentLabelHeader>
+          {/* </FluentLabelHeader> */}
           {widget}
         </div>
       );
@@ -1687,14 +1692,14 @@ export class FluentUIWidgetManager
             }
           }
           return (
-            <FluentButton
-              marginTop={"0px"}
-              key={
-                this.getKeyFromProperty(options.target?.property) +
-                options?.table +
-                options?.value
-              }
-            >
+            // <FluentButton
+            //   marginTop={"0px"}
+            //   key={
+            //     this.getKeyFromProperty(options.target?.property) +
+            //     options?.table +
+            //     options?.value
+            //   }
+            // >
               <DefaultButton
                 styles={{
                   root: {
@@ -1724,7 +1729,7 @@ export class FluentUIWidgetManager
                   );
                 }}
               />
-            </FluentButton>
+            // </FluentButton>
           );
         case PanelMode.Panel:
           return (
@@ -1957,12 +1962,12 @@ export class FluentUIWidgetManager
   ): JSX.Element {
     let container: HTMLSpanElement;
     return (
-      <FluentButton
-        ref={(e) => (container = e)}
-        key={this.getKeyFromProperty(property)}
-        marginTop={"0px"}
-        paddingRight={"0px"}
-      >
+      // <FluentButton
+      //   ref={(e) => (container = e)}
+      //   key={this.getKeyFromProperty(property)}
+      //   marginTop={"0px"}
+      //   paddingRight={"0px"}
+      // >
         <DefaultButton
           styles={{
             root: {
@@ -2051,7 +2056,7 @@ export class FluentUIWidgetManager
             );
           }}
         />
-      </FluentButton>
+      // </FluentButton>
     );
   }
 

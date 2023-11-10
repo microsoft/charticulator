@@ -7,7 +7,7 @@ import { strings } from "../../../../strings";
 import { Actions } from "../../../actions";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import {
-  FluentCheckbox,
+  // FluentCheckbox,
   labelRender,
 } from "./controls/fluentui_customized_components";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
@@ -195,7 +195,7 @@ export class FluentUIFilterEditor extends React.Component<
                     <div>
                       {keysSorted.map((key) => (
                         <div key={key}>
-                          <FluentCheckbox>
+                          {/* <FluentCheckbox> */}
                             <Checkbox
                               checked={value.categories.values[key]}
                               label={key}
@@ -209,7 +209,7 @@ export class FluentUIFilterEditor extends React.Component<
                                 });
                               }}
                             />
-                          </FluentCheckbox>
+                          {/* </FluentCheckbox> */}
                         </div>
                       ))}
                     </div>

@@ -34,7 +34,7 @@ import {
   defaultStyle,
   defultBindButtonSize,
   defultComponentsHeight,
-  FluentTextField,
+  // FluentTextField,
   labelRender,
 } from "./controls/fluentui_customized_components";
 import { InputImage } from "./controls/fluentui_image";
@@ -151,7 +151,7 @@ export class FluentValueEditor extends ContextedComponent<
         const hex = colorToHTMLColorHEX(color);
         return (
           <span className="el-color-value">
-            <FluentTextField>
+            {/* <FluentTextField> */}
               <TextField
                 styles={defaultStyle}
                 label={this.props.label}
@@ -185,7 +185,7 @@ export class FluentValueEditor extends ContextedComponent<
                   }
                 }}
               />
-            </FluentTextField>
+            {/* </FluentTextField> */}
             <span
               className="el-color-item"
               style={{ backgroundColor: hex }}

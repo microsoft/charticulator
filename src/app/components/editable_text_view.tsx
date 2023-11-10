@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import * as React from "react";
 import {
-  FluentTextField,
+  // FluentTextField,
   labelRender,
 } from "../views/panels/widgets/controls/fluentui_customized_components";
 import { TextField } from "@fluentui/react";
@@ -63,7 +63,7 @@ export class EditableTextView extends React.Component<
   public render() {
     return (
       <div>
-        <FluentTextField>
+        {/* <FluentTextField> */}
           <TextField
             value={this.state.currentText}
             onRenderLabel={labelRender}
@@ -95,7 +95,7 @@ export class EditableTextView extends React.Component<
               },
             }}
           />
-        </FluentTextField>
+        {/* </FluentTextField> */}
       </div>
     );
   }

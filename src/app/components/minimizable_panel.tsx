@@ -6,9 +6,7 @@ import { getSVGIcon } from "../resources";
 import { ButtonFlat } from "./buttons";
 import { default as Hammer } from "hammerjs";
 import { classNames } from "../utils";
-import { DefaultButton } from "@fluentui/react";
 import { Button } from "@fluentui/react-components";
-// import { PanelHeaderStyles } from "../views/panels/widgets/controls/fluentui_customized_components";
 
 import * as R from "../resources";
 import { SVGImageIcon } from "./icons";

@@ -6,8 +6,8 @@ import { DefaultButton, TextField } from "@fluentui/react";
 import {
   defaultStyle,
   defultBindButtonSize,
-  FluentButton,
-  FluentTextField,
+  // FluentButton,
+  // FluentTextField,
   labelRender,
 } from "./fluentui_customized_components";
 import { strings } from "../../../../../strings";
@@ -80,7 +80,7 @@ const EmptyColorInput = ({
 }: EmptyColorInputProps): JSX.Element => {
   return (
     <span className="el-color-value">
-      <FluentTextField>
+      {/* <FluentTextField> */}
         <TextField
           id={`id_${label.replace(/\s/g, '_')}`}
           styles={defaultStyle}
@@ -90,7 +90,7 @@ const EmptyColorInput = ({
           type="text"
           onClick={onClick}
         />
-      </FluentTextField>
+      {/* </FluentTextField> */}
       <EmptyColorButton onClick={onClick} />
     </span>
   );
@@ -108,7 +108,7 @@ export const EmptyColorButton = ({
   styles,
 }: EmptyColorButtonProps): JSX.Element => {
   return (
-    <FluentButton marginTop={styles?.marginTop}>
+    // <FluentButton marginTop={styles?.marginTop}>
       <DefaultButton
         iconProps={{
           iconName: "UnSetColor",
@@ -123,6 +123,6 @@ export const EmptyColorButton = ({
         onClick={onClick}
         title={strings.mappingEditor.chooseColor}
       />
-    </FluentButton>
+    // </FluentButton>
   );
 };

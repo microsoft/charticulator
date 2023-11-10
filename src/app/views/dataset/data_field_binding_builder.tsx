@@ -41,8 +41,8 @@ import {
   defaultLabelStyle,
   defaultStyle,
   defultBindButtonSize,
-  FluentDataBindingMenuItem,
-  FluentDataBindingMenuLabel,
+  // FluentDataBindingMenuItem,
+  // FluentDataBindingMenuLabel,
 } from "../panels/widgets/controls/fluentui_customized_components";
 import { CollapsiblePanel } from "../panels/widgets/controls/collapsiblePanel";
 import React = require("react");
@@ -813,7 +813,8 @@ export class Director {
       }
 
       return (
-        <FluentDataBindingMenuItem
+        <>
+        {/* <FluentDataBindingMenuItem
           key={item.key}
           backgroundColor={
             currentFunction
@@ -821,8 +822,8 @@ export class Director {
               : null
           }
           backgroundColorHover={theme.semanticColors.buttonBackgroundHovered}
-        >
-          <FluentDataBindingMenuLabel>
+        > */}
+          {/* <FluentDataBindingMenuLabel> */}
             <Label
               onClick={(e) => {
                 const agr = item.subMenuProps?.items.find(
@@ -838,7 +839,7 @@ export class Director {
             >
               {item.text}
             </Label>
-          </FluentDataBindingMenuLabel>
+          {/* </FluentDataBindingMenuLabel> */}
           {item.subMenuProps ? (
             <Dropdown
               styles={{
@@ -873,7 +874,8 @@ export class Director {
               }}
             />
           ) : null}
-        </FluentDataBindingMenuItem>
+        {/* // </FluentDataBindingMenuItem> */}
+        </>
       );
     };
 

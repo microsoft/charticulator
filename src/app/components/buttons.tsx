@@ -10,7 +10,7 @@ import * as R from "../resources";
 import { strings } from "../../strings";
 import { ToolbarButton } from "@fluentui/react-components";
 
-import { FluentButton } from "../views/panels/widgets/controls/fluentui_customized_components";
+// import { FluentButton } from "../views/panels/widgets/controls/fluentui_customized_components";
 
 export interface ToolButtonProps {
   icon?: string | React.JSX.Element;
@@ -58,7 +58,7 @@ export class FluentToolButton extends React.Component<
             }
           }}
         >
-          <FluentButton marginTop={"0px"}>
+          {/* <FluentButton marginTop={"0px"}> */}
             <ToolbarButton
               as="button"
               value={this.props.text}
@@ -79,12 +79,12 @@ export class FluentToolButton extends React.Component<
                 )
               }
             ></ToolbarButton>
-          </FluentButton>
+          {/* </FluentButton> */}
         </DraggableElement>
       );
     } else {
       return (
-        <FluentButton marginTop={"0px"}>
+        // <FluentButton marginTop={"0px"}>
           <ToolbarButton
             name={this.props.title}
             as="button"
@@ -105,7 +105,7 @@ export class FluentToolButton extends React.Component<
               )
             }
           ></ToolbarButton>
-        </FluentButton>
+        // </FluentButton>
       );
     }
   }

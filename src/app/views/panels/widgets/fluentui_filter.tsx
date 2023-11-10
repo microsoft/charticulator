@@ -9,7 +9,7 @@ import { PanelMode } from "../../../../core/prototypes/controls";
 import { strings } from "../../../../strings";
 import {
   defultComponentsHeight,
-  FluentButton,
+  // FluentButton,
 } from "./controls/fluentui_customized_components";
 import { FluentUIFilterEditor } from "./fluentui_filter_editor";
 import { CharticulatorPropertyAccessors } from "./types";
@@ -33,7 +33,7 @@ export const FilterPanel: React.FC<{
       }
       return (
         <>
-          <FluentButton marginTop={"0px"}>
+          {/* <FluentButton marginTop={"0px"}> */}
             <DefaultButton
               id="filterTarget"
               text={text}
@@ -50,7 +50,7 @@ export const FilterPanel: React.FC<{
                 },
               }}
             />
-          </FluentButton>
+          {/* </FluentButton> */}
           {isOpen ? (
             <Callout
               onDismiss={() => setOpen(false)}

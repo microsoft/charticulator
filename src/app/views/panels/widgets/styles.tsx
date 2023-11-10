@@ -2,11 +2,11 @@
 // Licensed under the MIT license.
 
 import { IDropdownOption, IDropdownStyles } from "@fluentui/react";
-import {
-  defultComponentsHeight,
-  FluentDropdown,
-  FluentDropdownWrapper,
-} from "./controls/fluentui_customized_components";
+// import {
+  // defultComponentsHeight,
+  // FluentDropdown,
+  // FluentDropdownWrapper,
+// } from "./controls/fluentui_customized_components";
 import { Prototypes } from "../../../../core";
 import { Icon } from "@fluentui/react/lib/Icon";
 import * as React from "react";
@@ -19,7 +19,7 @@ export const dropdownStyles = (
 ): Partial<IDropdownStyles> => {
   return {
     title: {
-      ...defultComponentsHeight,
+      // ...defultComponentsHeight,
       borderWidth: options.hideBorder ? "0px" : null,
     },
     dropdownItemsWrapper: {
@@ -37,8 +37,8 @@ export const onRenderOption = (option: IDropdownOption): JSX.Element => {
   return (
     <>
       {option.data && option.data.icon && (
-        <FluentDropdown>
-          {option.data.isLocalIcons ? (
+        <>
+        {option.data.isLocalIcons ? (
             <span style={iconStyles}>
               <SVGImageIcon url={R.getSVGIcon(option.data.icon)} />
             </span>
@@ -50,7 +50,7 @@ export const onRenderOption = (option: IDropdownOption): JSX.Element => {
               title={option.data.icon}
             />
           )}
-        </FluentDropdown>
+          </>
       )}
       <span>{option.text}</span>
     </>
@@ -61,9 +61,9 @@ export const onRenderTitle = (options: IDropdownOption[]): JSX.Element => {
   const option = options[0];
 
   return (
-    <FluentDropdownWrapper>
+    <>
       {option.data && option.data.icon && (
-        <FluentDropdown>
+          <>
           {option.data.isLocalIcons ? (
             <span style={iconStyles}>
               <SVGImageIcon url={R.getSVGIcon(option.data.icon)} />
@@ -76,9 +76,9 @@ export const onRenderTitle = (options: IDropdownOption[]): JSX.Element => {
               title={option.data.icon}
             />
           )}
-        </FluentDropdown>
+          </>
       )}
       <span>{option.text}</span>
-    </FluentDropdownWrapper>
+    </>
   );
 };

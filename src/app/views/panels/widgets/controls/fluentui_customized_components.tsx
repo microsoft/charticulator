@@ -22,52 +22,52 @@ export const defultBindButtonSize = {
   width: "24px",
 };
 
-export const FluentButton = styled.div<{
-  marginTop?: string;
-  marginBottom?: string;
-  marginLeft?: string;
-  paddingRight?: string;
-}>`
-  margin-top: ${({ marginTop }) => marginTop || "24px"};
-  margin-top: ${({ marginBottom }) => marginBottom || "0px"};
-  margin-left: ${({ marginLeft }) => marginLeft || "unset"};
-  display: inline-block;
-  padding: 0px ${({ paddingRight }) => paddingRight || "4px"} 0px 0px;
-  height: ${defultBindButtonSize.height};
-  line-height: ${defultBindButtonSize.height};
-  button {
-    padding: 4px;
-  }
-`;
+// export const FluentButton = styled.div<{
+//   marginTop?: string;
+//   marginBottom?: string;
+//   marginLeft?: string;
+//   paddingRight?: string;
+// }>`
+//   margin-top: ${({ marginTop }) => marginTop || "24px"};
+//   margin-top: ${({ marginBottom }) => marginBottom || "0px"};
+//   margin-left: ${({ marginLeft }) => marginLeft || "unset"};
+//   display: inline-block;
+//   padding: 0px ${({ paddingRight }) => paddingRight || "4px"} 0px 0px;
+//   height: ${defultBindButtonSize.height};
+//   line-height: ${defultBindButtonSize.height};
+//   button {
+//     padding: 4px;
+//   }
+// `;
 
-export const FluentLabelHeader = styled.div<{
-  marginBottom?: string;
-  marginTop?: string;
-  marginRight?: string;
-}>`
-  margin-bottom: ${({ marginBottom }) => marginBottom || "24px"};
-  margin-top: ${({ marginTop }) => marginTop || "20px"};
-  margin-right: ${({ marginRight: marginLeft }) => marginLeft || "2px"};
-`;
+// export const FluentLabelHeader = styled.div<{
+//   marginBottom?: string;
+//   marginTop?: string;
+//   marginRight?: string;
+// }>`
+//   margin-bottom: ${({ marginBottom }) => marginBottom || "24px"};
+//   margin-top: ${({ marginTop }) => marginTop || "20px"};
+//   margin-right: ${({ marginRight: marginLeft }) => marginLeft || "2px"};
+// `;
 
-export const FluentActionButton = styled.div`
-  button {
-    border: 1px solid;
-    width: 100%;
-    overflow: hidden;
-  }
-`;
+// export const FluentActionButton = styled.div`
+//   button {
+//     border: 1px solid;
+//     width: 100%;
+//     overflow: hidden;
+//   }
+// `;
 
-export const FluentTextField = styled.div`
-  flex: 1;
-  * {
-    flex: 1;
-  }
-`;
+// export const FluentTextField = styled.div`
+//   flex: 1;
+//   * {
+//     flex: 1;
+//   }
+// `;
 
-export const FluentCheckbox = styled.div`
-  margin-bottom: 2px;
-`;
+// export const FluentCheckbox = styled.div`
+//   margin-bottom: 2px;
+// `;
 
 export const FluentRowLayout = styled.div`
   display: flex;
@@ -99,14 +99,14 @@ export const FluentDataBindingMenuLabel = styled.div`
   margin-left: 5px;
 `;
 
-export const FluentColumnLayout = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+// export const FluentColumnLayout = styled.div`
+//   display: flex;
+//   flex-direction: column;
+// `;
 
-export const FluentLayoutItem = styled.div<{ flex: number }>`
-  flex: ${({ flex }) => flex || "1"};
-`;
+// export const FluentLayoutItem = styled.div<{ flex: number }>`
+//   flex: ${({ flex }) => flex || "1"};
+// `;
 
 export const defaultFontWeight = 400;
 
@@ -146,82 +146,82 @@ export const defultComponentsHeight = {
   lineHeight: "unset",
 };
 
-export const groupHeaderStyles: IStyleFunctionOrObject<
-  IGroupHeaderStyleProps,
-  IGroupHeaderStyles
-> = {
-  title: {
-    fontWeight: 600,
-  },
-  headerCount: {
-    display: "none",
-  },
-  groupHeaderContainer: {
-    ...defultComponentsHeight,
-  },
-  expand: {
-    ...defultBindButtonSize,
-    fontSize: "unset",
-  },
-  dropIcon: {
-    display: "none",
-  },
-};
+// export const groupHeaderStyles: IStyleFunctionOrObject<
+//   IGroupHeaderStyleProps,
+//   IGroupHeaderStyles
+// > = {
+//   title: {
+//     fontWeight: 600,
+//   },
+//   headerCount: {
+//     display: "none",
+//   },
+//   groupHeaderContainer: {
+//     ...defultComponentsHeight,
+//   },
+//   expand: {
+//     ...defultBindButtonSize,
+//     fontSize: "unset",
+//   },
+//   dropIcon: {
+//     display: "none",
+//   },
+// };
 
-export const groupStyles: IStyleFunctionOrObject<
-  IGroupedListStyleProps,
-  IGroupedListStyles
-> = {
-  group: {
-    borderTop: "1px #C8C6C4 solid",
-  },
-};
+// export const groupStyles: IStyleFunctionOrObject<
+//   IGroupedListStyleProps,
+//   IGroupedListStyles
+// > = {
+//   group: {
+//     borderTop: "1px #C8C6C4 solid",
+//   },
+// };
 
-export const PlaceholderStyle = styled.div<{ color?: string }>`
-  input {
-    ::-webkit-input-placeholder {
-      /* Chrome/Opera/Safari */
-      color: ${({ color }) => color || "lightgray"};
-    }
-    ::-moz-placeholder {
-      /* Firefox 19+ */
-      color: ${({ color }) => color || "lightgray"};
-    }
-    :-ms-input-placeholder {
-      /* IE 10+ */
-      color: ${({ color }) => color || "lightgray"};
-    }
-    :-moz-placeholder {
-      /* Firefox 18- */
-      color: ${({ color }) => color || "lightgray"};
-    }
-  }
-`;
+// export const PlaceholderStyle = styled.div<{ color?: string }>`
+//   input {
+//     ::-webkit-input-placeholder {
+//       /* Chrome/Opera/Safari */
+//       color: ${({ color }) => color || "lightgray"};
+//     }
+//     ::-moz-placeholder {
+//       /* Firefox 19+ */
+//       color: ${({ color }) => color || "lightgray"};
+//     }
+//     :-ms-input-placeholder {
+//       /* IE 10+ */
+//       color: ${({ color }) => color || "lightgray"};
+//     }
+//     :-moz-placeholder {
+//       /* Firefox 18- */
+//       color: ${({ color }) => color || "lightgray"};
+//     }
+//   }
+// `;
 
-export const FluentDropdown = styled.div`
-  & svg {
-    stroke: rgb(128, 128, 128) !important;
-    fill: rgb(128, 128, 128) !important;
-  }
-  display: inline;
-`;
+// export const FluentDropdown = styled.div`
+//   & svg {
+//     stroke: rgb(128, 128, 128) !important;
+//     fill: rgb(128, 128, 128) !important;
+//   }
+//   display: inline;
+// `;
 
-export const FluentDropdownWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 20px;
-`;
+// export const FluentDropdownWrapper = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   align-items: center;
+//   height: 20px;
+// `;
 
-export const FluentDatePickerWrapper = styled.div`
-  .ms-TextField-fieldGroup {
-    height: 24px;
-  }
-  i {
-    padding: 4px 5px 5px;
-    line-height: unset;
-  }
-`;
+// export const FluentDatePickerWrapper = styled.div`
+//   .ms-TextField-fieldGroup {
+//     height: 24px;
+//   }
+//   i {
+//     padding: 4px 5px 5px;
+//     line-height: unset;
+//   }
+// `;
 
 export const defaultStyle: any = {
   field: {
@@ -272,16 +272,16 @@ export const defaultStyle: any = {
   },
 };
 
-export const PanelHeaderStyles: Partial<IButtonStyles> = {
-  root: {
-    border: "unset",
-    height: 24,
-    width: 24,
-    display: "inline",
-    padding: 0,
-    minWidth: 24,
-  },
-  textContainer: {
-    flexGrow: "unset",
-  },
-};
+// export const PanelHeaderStyles: Partial<IButtonStyles> = {
+//   root: {
+//     border: "unset",
+//     height: 24,
+//     width: 24,
+//     display: "inline",
+//     padding: 0,
+//     minWidth: 24,
+//   },
+//   textContainer: {
+//     flexGrow: "unset",
+//   },
+// };

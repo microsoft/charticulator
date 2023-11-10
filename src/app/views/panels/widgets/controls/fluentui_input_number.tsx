@@ -11,14 +11,15 @@ import {
 import * as React from "react";
 import { prettyNumber } from "../../../../../core";
 import {
+  FluentRowLayout,
   defaultFontWeight,
   defaultLabelStyle,
   defaultStyle,
   defultComponentsHeight,
-  FluentLayoutItem,
-  FluentRowLayout,
+  // FluentLayoutItem,
+  // FluentRowLayout,
   labelRender,
-  PlaceholderStyle,
+  // PlaceholderStyle,
 } from "./fluentui_customized_components";
 import { CSSProperties } from "react";
 
@@ -201,11 +202,11 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
         <Label styles={defaultLabelStyle}>{props.label}</Label>
       ) : null}
       <FluentRowLayout style={props.styles}>
-        <FluentLayoutItem flex={1}>
+        {/* <FluentLayoutItem flex={1}> */}
           {props.showUpdown ? (
             renderUpdown()
           ) : (
-            <PlaceholderStyle>
+            // <PlaceholderStyle>
               <TextField
                 styles={defaultStyle}
                 onRenderLabel={labelRender}
@@ -241,11 +242,12 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
                 }}
                 suffix={props.percentage ? "%" : undefined}
               />
-            </PlaceholderStyle>
+            // </PlaceholderStyle>
           )}
-        </FluentLayoutItem>
+        {/* </FluentLayoutItem> */}
         {props.showSlider ? (
-          <FluentLayoutItem flex={2}>{renderSlider()}</FluentLayoutItem>
+          renderSlider()
+          // <FluentLayoutItem flex={2}>{renderSlider()}</FluentLayoutItem>
         ) : null}
       </FluentRowLayout>
     </>

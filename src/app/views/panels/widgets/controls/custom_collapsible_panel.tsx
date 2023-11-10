@@ -4,7 +4,7 @@
 import * as React from "react";
 import { CSSProperties, useCallback, useMemo, useState } from "react";
 import { DefaultButton, Label } from "@fluentui/react";
-import { PanelHeaderStyles } from "./fluentui_customized_components";
+// import { PanelHeaderStyles } from "./fluentui_customized_components";
 import { AppStore } from "../../../../../app/stores";
 import { getRandomNumber } from "../../../../../core";
 import { ContextMenuCallout } from "./contextMenuCallout";
@@ -56,12 +56,12 @@ export const CustomCollapsiblePanel = ({
   return (
     <div key={`panel-${panelHeader}`}>
       <div id={calloutId} onContextMenu={(e) => onContextMenu(e)}>
-        <PanelHeader
+        {/* <PanelHeader
           header={panelHeader}
           setCollapsed={setCollapsed}
           collapsed={collapsed}
           key={`panelHeader-${panelHeader}`}
-        />
+        /> */}
       </div>
       <div style={styles} key={`panelWidgets-${panelHeader}`}>
         {renderAttributes}
@@ -99,7 +99,7 @@ export const PanelHeader = ({
             },
           },
         }}
-        styles={PanelHeaderStyles}
+        // styles={PanelHeaderStyles}
         onClick={() => {
           setCollapsed(!collapsed);
         }}

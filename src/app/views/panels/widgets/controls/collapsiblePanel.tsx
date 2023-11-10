@@ -12,8 +12,8 @@ import * as React from "react";
 import { useEffect } from "react";
 import {
   FluentGroupedList,
-  groupHeaderStyles,
-  groupStyles,
+  // groupHeaderStyles,
+  // groupStyles,
 } from "./fluentui_customized_components";
 import { AppStore } from "../../../../../app/stores";
 import { Actions } from "../../../../../app";
@@ -73,7 +73,7 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
               <GroupHeader
                 onRenderGroupHeaderCheckbox={() => null}
                 {...props}
-                styles={groupHeaderStyles}
+                // styles={groupHeaderStyles}
                 onToggleCollapse={(group) => {
                   setGroupState(!group.isCollapsed);
                   if (store) {
@@ -146,7 +146,7 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
         ]}
         compact={true}
         styles={{
-          ...groupStyles,
+          // ...groupStyles,
           groupIsDropping: {},
         }}
         focusZoneProps={{

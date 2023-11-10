@@ -33,8 +33,8 @@ import {
   defaultLabelStyle,
   defultBindButtonSize,
   defultComponentsHeight,
-  FluentActionButton,
-  FluentButton,
+  // FluentActionButton,
+  // FluentButton,
   FluentRowLayout,
 } from "./controls/fluentui_customized_components";
 import { ObjectClass } from "../../../../core/prototypes";
@@ -405,7 +405,7 @@ export class FluentMappingEditor extends React.Component<
                     {this.props.options.label}
                   </Label>
                 ) : null}
-                <FluentActionButton>
+                {/* <FluentActionButton> */}
                   <ActionButton
                     elementRef={(e) => (this.mappingButton = e)}
                     styles={{
@@ -444,7 +444,7 @@ export class FluentMappingEditor extends React.Component<
                       }
                     }}
                   />
-                </FluentActionButton>
+                {/* </FluentActionButton> */}
               </>
             );
           } else {
@@ -455,7 +455,7 @@ export class FluentMappingEditor extends React.Component<
                     {this.props.options.label}
                   </Label>
                 ) : null}
-                <FluentActionButton>
+                {/* <FluentActionButton> */}
                   <ActionButton
                     text={scaleMapping.expression}
                     elementRef={(e) => (this.mappingButton = e)}
@@ -463,7 +463,7 @@ export class FluentMappingEditor extends React.Component<
                       iconName: "ColumnFunction",
                     }}
                   />
-                </FluentActionButton>
+                {/* </FluentActionButton> */}
               </>
             );
           }
@@ -496,12 +496,12 @@ export class FluentMappingEditor extends React.Component<
                   </Label>
                 ) : null}
                 <FluentRowLayout>
-                  <FluentActionButton
+                  {/* <FluentActionButton
                     style={{
                       flex: 1,
                       marginRight: "2px",
                     }}
-                  >
+                  > */}
                     <ActionButton
                       elementRef={(e) => (this.mappingButton = e)}
                       styles={{
@@ -540,12 +540,12 @@ export class FluentMappingEditor extends React.Component<
                         }
                       }}
                     />
-                  </FluentActionButton>
-                  <FluentActionButton
+                  {/* </FluentActionButton> */}
+                  {/* <FluentActionButton
                     style={{
                       flex: 1,
                     }}
-                  >
+                  > */}
                     <ActionButton
                       elementRef={(e) => (this.mappingButton = e)}
                       styles={{
@@ -584,7 +584,7 @@ export class FluentMappingEditor extends React.Component<
                         }
                       }}
                     />
-                  </FluentActionButton>
+                  {/* </FluentActionButton> */}
                 </FluentRowLayout>
               </>
             );
@@ -693,7 +693,8 @@ export class FluentMappingEditor extends React.Component<
             this.renderCurrentAttributeMapping(),
             <span>
               {isDataMapping ? (
-                <FluentButton marginTop="26px">
+                <>
+                {/* // <FluentButton marginTop="26px"> */}
                   <DefaultButton
                     iconProps={{
                       iconName: "EraseTool",
@@ -716,12 +717,13 @@ export class FluentMappingEditor extends React.Component<
                       });
                     }}
                   />
-                </FluentButton>
+                {/* </FluentButton> */}
+                </>
               ) : null}
               {(valueIndex === undefined || valueIndex === null) &&
               shouldShowBindData ? (
                 <>
-                  <FluentButton>
+                  {/* <FluentButton> */}
                     <DefaultButton
                       elementRef={(e) => (this.mappingButton = e)}
                       iconProps={{
@@ -743,11 +745,12 @@ export class FluentMappingEditor extends React.Component<
                         onRenderMenuList: menuRender,
                       }}
                     />
-                  </FluentButton>
+                  {/* </FluentButton> */}
                 </>
               ) : null}
               {valueIndex !== undefined && valueIndex !== null ? (
-                <FluentButton>
+                <>
+                {/* // <FluentButton> */}
                   <DefaultButton
                     iconProps={{
                       iconName: "Link",
@@ -766,7 +769,8 @@ export class FluentMappingEditor extends React.Component<
                     }}
                     checked={isDataMapping}
                   />
-                </FluentButton>
+                {/* </FluentButton> */}
+                  </>
               ) : null}
               {this.openDataFieldValueSelection()}
             </span>

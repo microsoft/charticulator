@@ -21,7 +21,7 @@ import {
   defaultLabelStyle,
   defaultStyle,
   defultComponentsHeight,
-  FluentTextField,
+  // FluentTextField,
   labelRender,
 } from "./fluentui_customized_components";
 import { strings } from "../../../../../strings";
@@ -125,7 +125,7 @@ export class FluentInputColor extends React.Component<
     return (
       <span className="charticulator__widget-control-input-color">
         {this.props.pickerBeforeTextField && (hex == "" ? emptyPicker : picker)}
-        <FluentTextField>
+        {/* <FluentTextField> */}
           <TextField
             label={this.props.label}
             onRenderLabel={labelRender}
@@ -176,7 +176,7 @@ export class FluentInputColor extends React.Component<
             }}
             underlined={this.props.underline ?? false}
           />
-        </FluentTextField>
+        {/* </FluentTextField> */}
         {!this.props.pickerBeforeTextField &&
           (hex == "" ? emptyPicker : picker)}
         {this.state.open && (

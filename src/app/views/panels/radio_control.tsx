@@ -2,10 +2,11 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-import { DefaultButton } from "@fluentui/react";
+// import { DefaultButton } from "@fluentui/react";
 import { SVGImageIcon } from "../../../app/components";
 import * as R from "../../../app/resources";
-import { defultComponentsHeight } from "../../../app/views/panels/widgets/controls/fluentui_customized_components";
+// import { defultComponentsHeight } from "../../../app/views/panels/widgets/controls/fluentui_customized_components";
+import { ToggleButton } from "@fluentui/react-components";
 
 export interface PanelRadioControlProps {
   options: string[];
@@ -26,7 +27,7 @@ export class PanelRadioControl extends React.Component<
       <span>
         {this.props.options.map((option, index) => {
           return (
-            <DefaultButton
+            <ToggleButton
               checked={this.props.value == option}
               title={this.props.labels[index]}
               key={option}
@@ -35,33 +36,40 @@ export class PanelRadioControl extends React.Component<
                   this.props.onChange(option);
                 }
               }}
-              iconProps={
-                this.props.icons
-                  ? {
-                      iconName: this.props.icons[index],
-                    }
-                  : null
-              }
-              text={
+              // iconProps={
+              //   this.props.icons
+              //     ? {
+              //         iconName: this.props.icons[index],
+              //       }
+              //     : null
+              // }
+              icon={<SVGImageIcon url={R.getSVGIcon(this.props.icons[index])}/>}
+              // text={
+              //   this.props.labels && this.props.showText
+              //     ? this.props.labels[index]
+              //     : null
+              // }
+              // styles={{
+              //   root: {
+              //     marginRight: 5,
+              //     marginLeft: 5,
+              //     ...defultComponentsHeight,
+              //   },
+              // }}
+              // onRenderIcon={() => {
+              //   return this.props.icons ? (
+              //     <span style={{ marginRight: "0.3rem" }}>
+              //       <SVGImageIcon url={R.getSVGIcon(this.props.icons[index])} />
+              //     </span>
+              //   ) : null;
+              // }}
+            >
+              {
                 this.props.labels && this.props.showText
                   ? this.props.labels[index]
                   : null
               }
-              styles={{
-                root: {
-                  marginRight: 5,
-                  marginLeft: 5,
-                  ...defultComponentsHeight,
-                },
-              }}
-              onRenderIcon={() => {
-                return this.props.icons ? (
-                  <span style={{ marginRight: "0.3rem" }}>
-                    <SVGImageIcon url={R.getSVGIcon(this.props.icons[index])} />
-                  </span>
-                ) : null;
-              }}
-            />
+            </ToggleButton>
           );
         })}
       </span>
