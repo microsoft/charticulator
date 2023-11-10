@@ -7,7 +7,11 @@ import { ButtonFlat } from "./buttons";
 import { default as Hammer } from "hammerjs";
 import { classNames } from "../utils";
 import { DefaultButton } from "@fluentui/react";
-import { PanelHeaderStyles } from "../views/panels/widgets/controls/fluentui_customized_components";
+import { Button } from "@fluentui/react-components";
+// import { PanelHeaderStyles } from "../views/panels/widgets/controls/fluentui_customized_components";
+
+import * as R from "../resources";
+import { SVGImageIcon } from "./icons";
 
 export class MinimizablePanelView extends React.Component<
   React.PropsWithChildren<Record<string, unknown>>,
@@ -51,25 +55,29 @@ export class MinimizablePane extends React.Component<
         className="header"
         onClick={() => this.setState({ minimized: !this.state.minimized })}
       >
-        <DefaultButton
+        <Button
+          appearance="transparent"
           onClick={() => this.setState({ minimized: !this.state.minimized })}
-          iconProps={{
-            iconName: this.state.minimized ? "ChevronRight" : "ChevronDown",
-            styles: {
-              root: {
-                fontSize: "unset",
-                height: 12,
-              },
-            },
-          }}
-          styles={PanelHeaderStyles}
+          icon={<SVGImageIcon url={R.getSVGIcon(this.state.minimized ? "ChevronRight" : "ChevronDown")}/>}
+          // iconProps={{
+          //   iconName: this.state.minimized ? "ChevronRight" : "ChevronDown",
+          //   styles: {
+          //     root: {
+          //       fontSize: "unset",
+          //       height: 12,
+          //     },
+          //   },
+          // }}
+          // styles={PanelHeaderStyles}
         />
         <span className="title">{this.props.title}</span>
         {this.props.onMaximize ? (
           <span className="buttons" onClick={(e) => e.stopPropagation()}>
-            <ButtonFlat
+            <Button
+              appearance="transparent"
               title="Show as separate window"
-              url={getSVGIcon("general/popout")}
+              // url={getSVGIcon("general/popout")}
+              icon={<SVGImageIcon height={20} width={20} url={R.getSVGIcon("general/popout")}/>}
               onClick={() => this.props.onMaximize()}
             />
           </span>
