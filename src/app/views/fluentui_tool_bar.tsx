@@ -721,6 +721,7 @@ export class ObjectButton extends ContextedComponent<
           }}
         >
           <ToolbarButton
+            appearance="subtle"
             icon={
               typeof this.props.icon === "string" ? (
                 <SVGImageIcon
@@ -856,6 +857,7 @@ export class MultiObjectButton extends ContextedComponent<
         <Menu>
           <MenuTrigger disableButtonEnhancement>
             <ToolbarButton
+              appearance="subtle"
               icon={
                 <SVGImageIcon
                   url={R.getSVGIcon(currentTool.icon)}
