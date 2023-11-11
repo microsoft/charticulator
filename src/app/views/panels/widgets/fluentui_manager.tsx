@@ -62,7 +62,7 @@ import {
   DatePicker,
   DayOfWeek,
   DefaultButton,
-  Dropdown,
+  // Dropdown,
   FontIcon,
   getTheme,
   IconButton,
@@ -70,6 +70,12 @@ import {
   TextField,
   TooltipHost,
 } from "@fluentui/react";
+
+import { 
+  Dropdown,
+  Option
+} from "@fluentui/react-components"
+
 import { FluentMappingEditor } from "./fluent_mapping_editor";
 import { CharticulatorPropertyAccessors } from "./types";
 import { FluentInputColor } from "./controls/fluentui_input_color";
@@ -670,42 +676,64 @@ export class FluentUIWidgetManager
     const isLocalIcons = options.isLocalIcons ?? false;
     if (options.type == "dropdown") {
       return (
-        <Dropdown
-          key={`${this.getKeyFromProperty(property)}-${options.label}-${
-            options.type
-          }`}
-          selectedKey={this.getPropertyValue(property) as string}
-          defaultValue={this.getPropertyValue(property) as string}
-          label={options.label}
-          onRenderLabel={labelRender}
-          onRenderOption={onRenderOption}
-          onRenderTitle={onRenderTitle}
-          options={options.options.map((rangeValue, index) => {
-            return {
-              key: rangeValue,
-              text: options.labels[index],
-              data: {
-                icon: options.icons?.[index],
-                iconStyles: {
-                  stroke: "gray",
+        <>
+          <Label>{options.label}</Label>
+          <Dropdown
+            key={`${this.getKeyFromProperty(property)}-${options.label}-${options.type
+              }`}
+            // selectedKey={this.getPropertyValue(property) as string}
+            value={this.getPropertyValue(property) as string}
+            defaultValue={this.getPropertyValue(property) as string}
+            // label={options.label}
+            // onRenderLabel={labelRender}
+            // onRenderOption={onRenderOption}
+            // onRenderTitle={onRenderTitle}
+            // options={options.options.map((rangeValue, index) => {
+            //   return {
+            //     key: rangeValue,
+            //     text: options.labels[index],
+            //     data: {
+            //       icon: options.icons?.[index],
+            //       iconStyles: {
+            //         stroke: "gray",
+            //       },
+            //       isLocalIcons,
+            //     },
+            //   };
+            // })}
+            onOptionSelect={(_, { optionValue: value, optionText }) => {
+              this.emitSetProperty(property, value);
+              this.defaultNotification(options.observerConfig);
+              if (options.onChange) {
+                options.onChange({
+                  key: value,
+                  text: optionText
+                });
+              }
+              return true;
+            }}
+          // styles={{
+          //   ...defaultStyle,
+          //   ...dropdownStyles(options),
+          // }}
+          >
+            {options.options.map((rangeValue, index) => {
+              return {
+                key: rangeValue,
+                text: options.labels[index],
+                data: {
+                  icon: options.icons?.[index],
+                  iconStyles: {
+                    stroke: "gray",
+                  },
+                  isLocalIcons,
                 },
-                isLocalIcons,
-              },
-            };
-          })}
-          onChange={(event, value) => {
-            this.emitSetProperty(property, value.key);
-            this.defaultNotification(options.observerConfig);
-            if (options.onChange) {
-              options.onChange(value);
-            }
-            return true;
-          }}
-          styles={{
-            ...defaultStyle,
-            ...dropdownStyles(options),
-          }}
-        />
+              };
+            }).map(o => {
+              return (<Option key={o.key}>{o.text}</Option>);
+            })}
+          </Dropdown>
+        </>
       );
     } else {
       return (
