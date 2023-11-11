@@ -547,7 +547,7 @@
   }
 
   &__widget {
-    $line-height: 24px;
+    $line-height: 32px;
     $line-header-height: 24px;
 
     // Vertical layout
@@ -1037,6 +1037,7 @@
         flex-direction: row;
         width: 100%;
         margin-left: 1px;
+        align-items: flex-end;
 
         .el-color-display {
           cursor: pointer;

@@ -16,11 +16,15 @@ import { ColorPicker } from "../../../../components/fluentui_color_picker";
 
 import { AppStore } from "../../../../stores";
 
-import { Callout, TextField } from "@fluentui/react";
+import { Callout, Label, TextField } from "@fluentui/react";
+
+import { Input, Popover, PopoverTrigger, PopoverSurface } from "@fluentui/react-components"
+
 import {
   defaultLabelStyle,
   defaultStyle,
   defultComponentsHeight,
+  FluentColumnLayout,
   // FluentTextField,
   labelRender,
 } from "./fluentui_customized_components";
@@ -126,56 +130,61 @@ export class FluentInputColor extends React.Component<
       <span className="charticulator__widget-control-input-color">
         {this.props.pickerBeforeTextField && (hex == "" ? emptyPicker : picker)}
         {/* <FluentTextField> */}
-          <TextField
-            label={this.props.label}
-            onRenderLabel={labelRender}
-            onChange={(event, newValue) => {
-              newValue = newValue.trim();
-              if (newValue == "") {
-                if (this.props.allowNull) {
-                  return this.props.onEnter(null);
-                } else {
-                  return false;
+        <>
+          <FluentColumnLayout>
+            <Label>{this.props.label}</Label>
+            <Input
+              // label={this.props.label}
+              // onRenderLabel={labelRender}
+              onChange={(event, { value: newValue}) => {
+                newValue = newValue.trim();
+                if (newValue == "") {
+                  if (this.props.allowNull) {
+                    return this.props.onEnter(null);
+                  } else {
+                    return false;
+                  }
                 }
-              }
-              this.setState({
-                value: newValue,
-              });
-              try {
-                const color = parseColorOrThrowException(newValue);
-                if (color) {
-                  return this.props.onEnter(color);
-                } else {
-                  return false;
+                this.setState({
+                  value: newValue,
+                });
+                try {
+                  const color = parseColorOrThrowException(newValue);
+                  if (color) {
+                    return this.props.onEnter(color);
+                  } else {
+                    return false;
+                  }
+                } catch (ex) {
+                  //ignore
                 }
-              } catch (ex) {
-                //ignore
-              }
-            }}
-            placeholder={this.props.allowNull ? strings.core.none : ""}
-            value={this.state.value}
-            onKeyDown={(e) => {
-              if (this.props.stopPropagation) {
-                e.stopPropagation();
-              }
-            }}
-            styles={{
-              ...defaultStyle,
-              fieldGroup: {
-                ...defultComponentsHeight,
-                width: this.props.width,
-              },
-              root: {
-                ...defultComponentsHeight,
-              },
-              subComponentStyles: {
-                label: {
-                  ...defaultLabelStyle,
-                },
-              },
-            }}
-            underlined={this.props.underline ?? false}
-          />
+              }}
+              placeholder={this.props.allowNull ? strings.core.none : ""}
+              value={this.state.value}
+              onKeyDown={(e) => {
+                if (this.props.stopPropagation) {
+                  e.stopPropagation();
+                }
+              }}
+              // styles={{
+              //   ...defaultStyle,
+              //   fieldGroup: {
+              //     ...defultComponentsHeight,
+              //     width: this.props.width,
+              //   },
+              //   root: {
+              //     ...defultComponentsHeight,
+              //   },
+              //   subComponentStyles: {
+              //     label: {
+              //       ...defaultLabelStyle,
+              //     },
+              //   },
+              // }}
+              // underlined={this.props.underline ?? false}
+            />
+          </FluentColumnLayout>
+        </>
         {/* </FluentTextField> */}
         {!this.props.pickerBeforeTextField &&
           (hex == "" ? emptyPicker : picker)}
