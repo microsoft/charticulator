@@ -18,8 +18,8 @@ import {
 import styled from "styled-components";
 
 export const defultBindButtonSize = {
-  height: "24px",
-  width: "24px",
+  height: "32px",
+  width: "32px",
 };
 
 // export const FluentButton = styled.div<{
@@ -142,7 +142,7 @@ export const FluentGroupedList = styled.div<{ marginLeft?: number }>`
   }
 `;
 export const defultComponentsHeight = {
-  height: "24px",
+  height: "32px",
   lineHeight: "unset",
 };
 

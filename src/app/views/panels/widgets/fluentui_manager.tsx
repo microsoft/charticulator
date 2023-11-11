@@ -77,7 +77,10 @@ import {
   Checkbox,
   Label,
   Input,
-  Button
+  Button,
+  PopoverTrigger,
+  Popover,
+  PopoverSurface
 } from "@fluentui/react-components"
 
 import { FluentMappingEditor } from "./fluent_mapping_editor";
@@ -687,64 +690,71 @@ export class FluentUIWidgetManager
     const theme = getTheme();
     const isLocalIcons = options.isLocalIcons ?? false;
     if (options.type == "dropdown") {
+      
       return (
         <>
-          <Label>{options.label}</Label>
-          <Dropdown
-            key={`${this.getKeyFromProperty(property)}-${options.label}-${options.type
-              }`}
-            // selectedKey={this.getPropertyValue(property) as string}
-            value={this.getPropertyValue(property) as string}
-            defaultValue={this.getPropertyValue(property) as string}
-            // label={options.label}
-            // onRenderLabel={labelRender}
-            // onRenderOption={onRenderOption}
-            // onRenderTitle={onRenderTitle}
-            // options={options.options.map((rangeValue, index) => {
-            //   return {
-            //     key: rangeValue,
-            //     text: options.labels[index],
-            //     data: {
-            //       icon: options.icons?.[index],
-            //       iconStyles: {
-            //         stroke: "gray",
-            //       },
-            //       isLocalIcons,
-            //     },
-            //   };
-            // })}
-            onOptionSelect={(_, { optionValue: value, optionText }) => {
-              this.emitSetProperty(property, value);
-              this.defaultNotification(options.observerConfig);
-              if (options.onChange) {
-                options.onChange({
-                  key: value,
-                  text: optionText
-                });
-              }
-              return true;
-            }}
-          // styles={{
-          //   ...defaultStyle,
-          //   ...dropdownStyles(options),
-          // }}
-          >
-            {options.options.map((rangeValue, index) => {
-              return {
-                key: rangeValue,
-                text: options.labels[index],
-                data: {
-                  icon: options.icons?.[index],
-                  iconStyles: {
-                    stroke: "gray",
+          <FluentColumnLayout>
+            <Label>{options.label}</Label>
+            <Dropdown
+              key={`${this.getKeyFromProperty(property)}-${options.label}-${options.type
+                }`}
+              style={{
+                minWidth: 'unset',
+                width: '100%'
+              }}
+              // selectedKey={this.getPropertyValue(property) as string}
+              value={this.getPropertyValue(property) as string}
+              defaultValue={this.getPropertyValue(property) as string}
+              // label={options.label}
+              // onRenderLabel={labelRender}
+              // onRenderOption={onRenderOption}
+              // onRenderTitle={onRenderTitle}
+              // options={options.options.map((rangeValue, index) => {
+              //   return {
+              //     key: rangeValue,
+              //     text: options.labels[index],
+              //     data: {
+              //       icon: options.icons?.[index],
+              //       iconStyles: {
+              //         stroke: "gray",
+              //       },
+              //       isLocalIcons,
+              //     },
+              //   };
+              // })}
+              onOptionSelect={(_, { optionValue: value, optionText }) => {
+                this.emitSetProperty(property, value);
+                this.defaultNotification(options.observerConfig);
+                if (options.onChange) {
+                  options.onChange({
+                    key: value,
+                    text: optionText
+                  });
+                }
+                return true;
+              }}
+            // styles={{
+            //   ...defaultStyle,
+            //   ...dropdownStyles(options),
+            // }}
+            >
+              {options.options.map((rangeValue, index) => {
+                return {
+                  key: rangeValue,
+                  text: options.labels[index],
+                  data: {
+                    icon: options.icons?.[index],
+                    iconStyles: {
+                      stroke: "gray",
+                    },
+                    isLocalIcons,
                   },
-                  isLocalIcons,
-                },
-              };
-            }).map(o => {
-              return (<Option key={o.key}>{o.text}</Option>);
-            })}
-          </Dropdown>
+                };
+              }).map(o => {
+                return (<Option key={o.key}>{o.text}</Option>);
+              })}
+            </Dropdown>
+          </FluentColumnLayout>
         </>
       );
     } else {
@@ -1251,7 +1261,7 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.ReOrderWidgetOptions = {}
   ): JSX.Element {
-    let container: HTMLSpanElement;
+    // let container: HTMLSpanElement;
     return (
       // <FluentButton
       //   ref={(e) => (container = e)}
@@ -1259,113 +1269,125 @@ export class FluentUIWidgetManager
       //   marginTop={"1px"}
       //   paddingRight={"0px"}
       // >
-        <DefaultButton
-          styles={{
-            root: {
-              minWidth: "unset",
-              ...defultComponentsHeight,
-            },
-          }}
-          iconProps={{
-            iconName: "SortLines",
-          }}
-          onClick={() => {
-            globals.popupController.popupAt(
-              (context) => {
-                const items = options.items
-                  ? options.items
-                  : (this.getPropertyValue(property) as string[]);
-                return (
-                  <PopupView context={context}>
-                    <FluentUIReorderStringsValue
-                      items={items}
-                      onConfirm={(items, customOrder, sortOrder) => {
-                        this.emitSetProperty(property, items);
-                        if (customOrder) {
-                          this.emitSetProperty(
-                            {
-                              property: property.property,
-                              field: "orderMode",
-                            },
-                            OrderMode.order
-                          );
-                          this.emitSetProperty(
-                            {
-                              property: property.property,
-                              field: "order",
-                            },
-                            items
-                          );
-                        } else {
-                          if (sortOrder) {
-                            this.emitSetProperty(
-                              {
-                                property: property.property,
-                                field: "orderMode",
-                              },
-                              OrderMode.alphabetically
-                            );
-                          } else {
-                            this.emitSetProperty(
-                              {
-                                property: property.property,
-                                field: "orderMode",
-                              },
-                              OrderMode.order
-                            );
-                            this.emitSetProperty(
-                              {
-                                property: property.property,
-                                field: "order",
-                              },
-                              items
-                            );
-                          }
-                        }
-                        context.close();
-                      }}
-                      onReset={() => {
-                        const axisDataBinding = {
-                          ...(this.objectClass.object.properties[
-                            property.property
-                          ] as any),
-                        };
+      <>
+        <Popover>
+          <PopoverTrigger disableButtonEnhancement>
+            <Button
+              // styles={{
+              //   root: {
+              //     minWidth: "unset",
+              //     ...defultComponentsHeight,
+              //   },
+              // }}
+              // iconProps={{
+              //   iconName: "SortLines",
+              // }}
+              icon={<SVGImageIcon url={R.getSVGIcon('SortLines')}/>}
+              // onClick={() => {
+              //   globals.popupController.popupAt(
+              //     (context) => {
+              //       const items = options.items
+              //         ? options.items
+              //         : (this.getPropertyValue(property) as string[]);
+              //       return (
+              //         <PopupView context={context}>
+                        
+              //         </PopupView>
+              //       );
+              //     },
+              //     { anchor: container }
+              //   );
+              // }}
+            />
+          </PopoverTrigger>
+          <PopoverSurface>
+            <FluentUIReorderStringsValue
+              items={options.items
+                ? options.items
+                : (this.getPropertyValue(property) as string[])}
+              onConfirm={(items, customOrder, sortOrder) => {
+                this.emitSetProperty(property, items);
+                if (customOrder) {
+                  this.emitSetProperty(
+                    {
+                      property: property.property,
+                      field: "orderMode",
+                    },
+                    OrderMode.order
+                  );
+                  this.emitSetProperty(
+                    {
+                      property: property.property,
+                      field: "order",
+                    },
+                    items
+                  );
+                } else {
+                  if (sortOrder) {
+                    this.emitSetProperty(
+                      {
+                        property: property.property,
+                        field: "orderMode",
+                      },
+                      OrderMode.alphabetically
+                    );
+                  } else {
+                    this.emitSetProperty(
+                      {
+                        property: property.property,
+                        field: "orderMode",
+                      },
+                      OrderMode.order
+                    );
+                    this.emitSetProperty(
+                      {
+                        property: property.property,
+                        field: "order",
+                      },
+                      items
+                    );
+                  }
+                }
+                // context.close();
+              }}
+              onReset={() => {
+                const axisDataBinding = {
+                  ...(this.objectClass.object.properties[
+                    property.property
+                  ] as any),
+                };
 
-                        axisDataBinding.table = this.store.chartManager.getTable(
-                          (this.objectClass.object as any).table
-                        );
-                        axisDataBinding.metadata = {
-                          kind: axisDataBinding.dataKind,
-                          orderMode: "order",
-                        };
-
-                        const groupBy: Specification.Types.GroupBy = this.store.getGroupingExpression(
-                          this.objectClass.object
-                        );
-                        const values = this.store.chartManager.getGroupedExpressionVector(
-                          (this.objectClass.object as any).table,
-                          groupBy,
-                          axisDataBinding.expression
-                        );
-
-                        const {
-                          categories,
-                        } = this.store.getCategoriesForDataBinding(
-                          axisDataBinding.metadata,
-                          axisDataBinding.type,
-                          values
-                        );
-                        return categories;
-                      }}
-                      {...options}
-                    />
-                  </PopupView>
+                axisDataBinding.table = this.store.chartManager.getTable(
+                  (this.objectClass.object as any).table
                 );
-              },
-              { anchor: container }
-            );
-          }}
-        />
+                axisDataBinding.metadata = {
+                  kind: axisDataBinding.dataKind,
+                  orderMode: "order",
+                };
+
+                const groupBy: Specification.Types.GroupBy = this.store.getGroupingExpression(
+                  this.objectClass.object
+                );
+                const values = this.store.chartManager.getGroupedExpressionVector(
+                  (this.objectClass.object as any).table,
+                  groupBy,
+                  axisDataBinding.expression
+                );
+
+                const {
+                  categories,
+                } = this.store.getCategoriesForDataBinding(
+                  axisDataBinding.metadata,
+                  axisDataBinding.type,
+                  values
+                );
+                return categories;
+              }}
+              {...options}
+            />
+          </PopoverSurface>
+        </Popover>
+      </>
       // </FluentButton>
     );
   }
@@ -2005,7 +2027,7 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.ReOrderWidgetOptions = {}
   ): JSX.Element {
-    let container: HTMLSpanElement;
+    // let container: HTMLSpanElement;
     return (
       // <FluentButton
       //   ref={(e) => (container = e)}
@@ -2013,94 +2035,106 @@ export class FluentUIWidgetManager
       //   marginTop={"0px"}
       //   paddingRight={"0px"}
       // >
-        <DefaultButton
-          styles={{
-            root: {
-              minWidth: "unset",
-              ...defultComponentsHeight,
-            },
-          }}
-          iconProps={{
-            iconName: "SortLines",
-          }}
-          onClick={() => {
-            globals.popupController.popupAt(
-              (context) => {
-                const items = options.items
-                  ? options.items
-                  : (this.getPropertyValue(property) as string[]);
-                return (
-                  <PopupView context={context}>
-                    <FluentUIReorderStringsValue
-                      items={items}
-                      onConfirm={(items) => {
-                        this.emitSetProperty(property, items);
-                        if (options.onConfirmClick) {
-                          options.onConfirmClick(items);
-                        }
-                        this.emitSetProperty(
-                          {
-                            property: property.property,
-                            field: "orderMode",
-                          },
-                          OrderMode.order
-                        );
-                        if (options.onConfirmClick) {
-                          options.onConfirmClick(items);
-                        }
-                        context.close();
-                      }}
-                      onReset={() => {
-                        if (options.onResetCategories) {
-                          return options.onResetCategories;
-                        }
-                        const axisDataBinding = {
-                          ...(this.objectClass.object.properties[
-                            property.property
-                          ] as any),
-                        };
-
-                        axisDataBinding.table = this.store.chartManager.getTable(
-                          (this.objectClass.object as any).table
-                        );
-                        axisDataBinding.metadata = {
-                          kind: axisDataBinding.dataKind,
-                          orderMode: "order",
-                        };
-
-                        const groupBy: Specification.Types.GroupBy = this.store.getGroupingExpression(
-                          this.objectClass.object
-                        );
-                        const values = this.store.chartManager.getGroupedExpressionVector(
-                          (this.objectClass.object as any).table,
-                          groupBy,
-                          axisDataBinding.expression
-                        );
-
-                        const {
-                          categories,
-                        } = this.store.getCategoriesForDataBinding(
-                          axisDataBinding.metadata,
-                          axisDataBinding.type,
-                          values
-                        );
-                        return categories;
-                      }}
-                      {...options}
-                    />
-                  </PopupView>
+      <>
+        <Popover>
+          <PopoverTrigger disableButtonEnhancement>
+            <Button
+              // styles={{
+              //   root: {
+              //     minWidth: "unset",
+              //     ...defultComponentsHeight,
+              //   },
+              // }}
+              // iconProps={{
+              //   iconName: "SortLines",
+              // }}
+              icon={<SVGImageIcon url={R.getSVGIcon('SortLines')}/>}
+              // onClick={() => {
+              //   globals.popupController.popupAt(
+              //     (context) => {
+              //       const items = options.items
+              //         ? options.items
+              //         : (this.getPropertyValue(property) as string[]);
+              //       return (
+              //         <PopupView context={context}>
+                        
+              //         </PopupView>
+              //       );
+              //     },
+              //     {
+              //       anchor: container,
+              //       alignX:
+              //         this.store.editorType == EditorType.Embedded
+              //           ? PopupAlignment.EndInner
+              //           : PopupAlignment.StartInner,
+              //     }
+              //   );
+              // }}
+            />
+          </PopoverTrigger>
+          <PopoverSurface>
+            <FluentUIReorderStringsValue
+              items={options.items
+                ? options.items
+                : (this.getPropertyValue(property) as string[])}
+              onConfirm={(items) => {
+                this.emitSetProperty(property, items);
+                if (options.onConfirmClick) {
+                  options.onConfirmClick(items);
+                }
+                this.emitSetProperty(
+                  {
+                    property: property.property,
+                    field: "orderMode",
+                  },
+                  OrderMode.order
                 );
-              },
-              {
-                anchor: container,
-                alignX:
-                  this.store.editorType == EditorType.Embedded
-                    ? PopupAlignment.EndInner
-                    : PopupAlignment.StartInner,
-              }
-            );
-          }}
-        />
+                if (options.onConfirmClick) {
+                  options.onConfirmClick(items);
+                }
+                // context.close();
+              }}
+              onReset={() => {
+                if (options.onResetCategories) {
+                  return options.onResetCategories;
+                }
+                const axisDataBinding = {
+                  ...(this.objectClass.object.properties[
+                    property.property
+                  ] as any),
+                };
+
+                axisDataBinding.table = this.store.chartManager.getTable(
+                  (this.objectClass.object as any).table
+                );
+                axisDataBinding.metadata = {
+                  kind: axisDataBinding.dataKind,
+                  orderMode: "order",
+                };
+
+                const groupBy: Specification.Types.GroupBy = this.store.getGroupingExpression(
+                  this.objectClass.object
+                );
+                const values = this.store.chartManager.getGroupedExpressionVector(
+                  (this.objectClass.object as any).table,
+                  groupBy,
+                  axisDataBinding.expression
+                );
+
+                const {
+                  categories,
+                } = this.store.getCategoriesForDataBinding(
+                  axisDataBinding.metadata,
+                  axisDataBinding.type,
+                  values
+                );
+                return categories;
+              }}
+              {...options}
+            />
+          </PopoverSurface>
+        </Popover>
+      </>
       // </FluentButton>
     );
   }
