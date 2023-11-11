@@ -9,8 +9,10 @@ import {
   replaceTabBySymbol,
 } from "../../../../../core";
 
-import { TextField } from "@fluentui/react";
-import { defaultStyle, labelRender } from "./fluentui_customized_components";
+// import { TextField } from "@fluentui/react";
+import { Input, Label } from "@fluentui/react-components";
+
+import { FluentColumnLayout, defaultStyle, labelRender } from "./fluentui_customized_components";
 
 export interface InputExpressionProps {
   validate?: (value: string) => Expression.VerifyUserExpressionReport;
@@ -63,58 +65,63 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
   }, [props, setValue]);
 
   return (
-    <span className="charticulator__widget-control-input-expression">
-      <TextField
-        styles={defaultStyle}
-        label={props.label}
-        onRenderLabel={labelRender}
-        placeholder={props.placeholder}
-        type="text"
-        onGetErrorMessage={() => {
-          const validateResults = props.validate?.(value);
-          if (!validateResults.pass) {
-            return validateResults.error;
-          }
-        }}
-        value={replaceSymbolByTab(
-          replaceSymbolByNewLine(
-            value || (props.allowNull && value == "")
-              ? value
-              : props.defaultValue
-          )
-        )}
-        onChange={(event, newValue) => {
-          // Check for parse errors while input
-          if (props.allowNull && newValue?.trim() == "") {
-            setValue(newValue);
-          } else {
-            Expression.verifyUserExpression(
-              replaceTabBySymbol(replaceNewLineBySymbol(newValue)),
-              {
-                textExpression: props.textExpression,
+    // <span className="charticulator__widget-control-input-expression">
+      <>
+        <FluentColumnLayout>
+          <Label>{props.label}</Label>
+          <Input
+            // styles={defaultStyle}
+            // label={props.label}
+            // onRenderLabel={labelRender}
+            placeholder={props.placeholder}
+            type="text"
+            // onGetErrorMessage={() => {
+            //   const validateResults = props.validate?.(value);
+            //   if (!validateResults.pass) {
+            //     return validateResults.error;
+            //   }
+            // }}
+            value={replaceSymbolByTab(
+              replaceSymbolByNewLine(
+                value || (props.allowNull && value == "")
+                  ? value
+                  : props.defaultValue
+              )
+            )}
+            onChange={(event, { value: newValue }) => {
+              // Check for parse errors while input
+              if (props.allowNull && newValue?.trim() == "") {
+                setValue(newValue);
+              } else {
+                Expression.verifyUserExpression(
+                  replaceTabBySymbol(replaceNewLineBySymbol(newValue)),
+                  {
+                    textExpression: props.textExpression,
+                  }
+                );
+                setValue(newValue);
               }
-            );
-            setValue(newValue);
-          }
-        }}
-        onBlur={() => {
-          doEnter();
-        }}
-        onFocus={(e) => {
-          e.target.select();
-        }}
-        onKeyDown={(e) => {
-          if (e.key == "Enter") {
-            doEnter();
-          }
-          if (e.key == "Escape") {
-            doCancel();
-          }
-          if (props.stopPropagation) {
-            e.stopPropagation();
-          }
-        }}
-      />
-    </span>
+            }}
+            onBlur={() => {
+              doEnter();
+            }}
+            onFocus={(e) => {
+              e.target.select();
+            }}
+            onKeyDown={(e) => {
+              if (e.key == "Enter") {
+                doEnter();
+              }
+              if (e.key == "Escape") {
+                doCancel();
+              }
+              if (props.stopPropagation) {
+                e.stopPropagation();
+              }
+            }}
+          />
+        </FluentColumnLayout>
+      </>
+    // </span>
   );
 };
