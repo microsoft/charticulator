@@ -75,7 +75,9 @@ import {
   Dropdown,
   Option,
   Checkbox,
-  Label
+  Label,
+  Input,
+  Button
 } from "@fluentui/react-components"
 
 import { FluentMappingEditor } from "./fluent_mapping_editor";
@@ -170,44 +172,51 @@ export class FluentUIWidgetManager
 
   public searchInput(options: InputTextOptions = {}) {
     return (
-      <TextField
-        styles={{
-          ...(defaultStyle as any),
-          field: {
-            ...defaultStyle.field,
-            height: null,
-            padding: "unset",
-          },
-          root: {
-            marginBottom: 5,
-            marginTop: 5,
-          },
-          prefix: {
-            backgroundColor: "unset",
-          },
-        }}
-        placeholder={options.placeholder}
-        label={options.label}
-        disabled={options.disabled}
-        onRenderLabel={labelRender}
-        onChange={(event, value) => {
-          let newValue = "";
-          if (value?.length > 0) {
-            newValue = value.trim();
-          }
-          this.store.dispatcher.dispatch(new Actions.SearchUpdated(newValue));
-        }}
-        type="text"
-        underlined={options.underline ?? false}
-        borderless={options.borderless ?? false}
-        style={options.styles}
-        prefix=""
-        onRenderPrefix={() => {
-          return <FontIcon aria-label="Search" iconName="Search" />;
-        }}
-        autoComplete="off"
-        defaultValue={this.store.searchString}
-      />
+      <>
+        <Label>{options.label}</Label>
+        <Input
+          // styles={{
+          //   ...(defaultStyle as any),
+          //   field: {
+          //     ...defaultStyle.field,
+          //     height: null,
+          //     padding: "unset",
+          //   },
+          //   root: {
+          //     marginBottom: 5,
+          //     marginTop: 5,
+          //   },
+          //   prefix: {
+          //     backgroundColor: "unset",
+          //   },
+          // }}
+          placeholder={options.placeholder}
+          // label={options.label}
+          disabled={options.disabled}
+          // onRenderLabel={labelRender}
+          onChange={(event, { value }) => {
+            let newValue = "";
+            if (value?.length > 0) {
+              newValue = value.trim();
+            }
+            this.store.dispatcher.dispatch(new Actions.SearchUpdated(newValue));
+          }}
+          type="text"
+          appearance={options.underline ? "underline" : 'outline'}
+          // borderless={options.borderless ?? false}
+          // style={options.styles}
+          prefix=""
+          style={{
+            width: "100%"
+          }}
+          // onRenderPrefix={() => {
+          //   return <FontIcon aria-label="Search" iconName="Search" />;
+          // }}
+          contentBefore={<FontIcon aria-label="Search" iconName="Search" />}
+          autoComplete="off"
+          defaultValue={this.store.searchString}
+        />
+      </>
     );
   }
 
@@ -1735,18 +1744,19 @@ export class FluentUIWidgetManager
             //     options?.value
             //   }
             // >
-              <DefaultButton
-                styles={{
-                  root: {
-                    minWidth: "unset",
-                    ...defultComponentsHeight,
-                  },
-                }}
-                text={text}
-                elementRef={(e) => (button = e)}
-                iconProps={{
-                  iconName: "RowsGroup",
-                }}
+              <Button
+                // styles={{
+                //   root: {
+                //     minWidth: "unset",
+                //     ...defultComponentsHeight,
+                //   },
+                // }}
+                // text={text}
+                ref={(e) => (button = e)}
+                // iconProps={{
+                //   iconName: "RowsGroup",
+                // }}
+                icon={<SVGImageIcon url={R.getSVGIcon('RowsGroup')}/>}
                 onClick={() => {
                   globals.popupController.popupAt(
                     (context) => {
@@ -1763,7 +1773,7 @@ export class FluentUIWidgetManager
                     { anchor: button as Element }
                   );
                 }}
-              />
+              >{text}</Button>
             // </FluentButton>
           );
         case PanelMode.Panel:
