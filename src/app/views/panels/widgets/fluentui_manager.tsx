@@ -57,7 +57,7 @@ import { ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
 
 import {
-  Checkbox,
+  // Checkbox,
   ComboBox,
   DatePicker,
   DayOfWeek,
@@ -66,14 +66,16 @@ import {
   FontIcon,
   getTheme,
   IconButton,
-  Label,
+  // Label,
   TextField,
   TooltipHost,
 } from "@fluentui/react";
 
 import { 
   Dropdown,
-  Option
+  Option,
+  Checkbox,
+  Label
 } from "@fluentui/react-components"
 
 import { FluentMappingEditor } from "./fluent_mapping_editor";
@@ -86,6 +88,7 @@ import {
   defaultStyle,
   defultBindButtonSize,
   defultComponentsHeight,
+  FluentColumnLayout,
   // FluentButton,
   // FluentCheckbox,
   // FluentDatePickerWrapper,
@@ -743,7 +746,7 @@ export class FluentUIWidgetManager
           }`}
         >
           {options.label && options.label.length > 0 ? (
-            <Label styles={defaultLabelStyle}>{options.label}</Label>
+            <Label>{options.label}</Label>
           ) : null}
           {options.options.map((option, index) => {
             return (
@@ -801,35 +804,39 @@ export class FluentUIWidgetManager
       case "checkbox": {
         return (
           <React.Fragment key={this.getKeyFromProperty(property)}>
-            {options.headerLabel ? (
-              <Label styles={defaultLabelStyle}>{options.headerLabel}</Label>
-            ) : null}
-            {/* <FluentCheckbox style={options.styles}> */}
-              <Checkbox
-                checked={this.getPropertyValue(property) as boolean}
-                label={options.label}
-                styles={{
-                  label: defaultLabelStyle,
-                  root: {
-                    ...defultComponentsHeight,
-                  },
-                  ...options.checkBoxStyles,
-                }}
-                onChange={(ev, v) => {
-                  if (properties instanceof Array) {
-                    properties.forEach((property) =>
-                      this.emitSetProperty(property, v)
-                    );
-                  } else {
-                    this.emitSetProperty(property, v);
-                  }
-                  this.defaultNotification(options.observerConfig);
-                  if (options.onChange && !v) {
-                    options.onChange(v);
-                  }
-                }}
-              />
-            {/* </FluentCheckbox> */}
+            <>
+              <FluentColumnLayout>
+                {options.headerLabel ? (
+                  <Label>{options.headerLabel}</Label>
+                ) : null}
+                {/* <FluentCheckbox style={options.styles}> */}
+                  <Checkbox
+                    checked={this.getPropertyValue(property) as boolean}
+                    label={options.label}
+                    // styles={{
+                    //   label: defaultLabelStyle,
+                    //   root: {
+                    //     ...defultComponentsHeight,
+                    //   },
+                    //   ...options.checkBoxStyles,
+                    // }}
+                    onChange={(ev, { checked: v }) => {
+                      if (properties instanceof Array) {
+                        properties.forEach((property) =>
+                          this.emitSetProperty(property, v)
+                        );
+                      } else {
+                        this.emitSetProperty(property, v);
+                      }
+                      this.defaultNotification(options.observerConfig);
+                      if (options.onChange && !v) {
+                        options.onChange(v as boolean);
+                      }
+                    }}
+                  />
+                {/* </FluentCheckbox> */}
+              </FluentColumnLayout>
+            </>
           </React.Fragment>
         );
       }
@@ -1477,7 +1484,7 @@ export class FluentUIWidgetManager
       //   marginBottom={options?.addMargins ? "5px" : "0px"}
       //   marginTop={options?.addMargins ? "5px" : "0px"}
       // > */}
-        <Label styles={defaultLabelStyle}>{title}</Label>
+        <Label>{title}</Label>
       {/* // </FluentLabelHeader> */}
     </>);
   }
@@ -2234,7 +2241,7 @@ export class FluentDetailsButton extends React.Component<
     return (
       <>
         {this.props.label ? (
-          <Label styles={defaultLabelStyle}>{this.props.label}</Label>
+          <Label>{this.props.label}</Label>
         ) : null}
         <DefaultButton
           iconProps={{
