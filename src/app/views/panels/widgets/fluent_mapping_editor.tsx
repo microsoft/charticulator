@@ -25,10 +25,24 @@ import { FluentInputExpression } from "./controls/fluentui_input_expression";
 import {
   DefaultButton,
   ActionButton,
-  Label,
+  // Label,
   IContextualMenuItem,
   Callout,
 } from "@fluentui/react";
+
+import {
+  Label,
+  Popover,
+  PopoverSurface,
+  PopoverTrigger,
+  Button,
+  MenuPopover,
+  MenuTrigger,
+  Menu,
+  MenuList,
+  MenuItem
+} from "@fluentui/react-components"
+
 import {
   defaultLabelStyle,
   defultBindButtonSize,
@@ -52,6 +66,9 @@ import { MappingType } from "../../../../core/specification";
 import { EmptyMapping } from "./controls/fluentui_empty_mapping";
 import { FluentUIWidgetManager } from "./fluentui_manager";
 import { getDropzoneAcceptTables } from "./utils";
+import { SVGImageIcon } from "../../../../app/components";
+
+import * as R from "../../../resources";
 
 export interface MappingEditorProps {
   parent: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
@@ -111,31 +128,35 @@ export class FluentMappingEditor extends React.Component<
       );
       return (
         <>
-          {this.state.isDataFieldValueSelectionOpen && (
-            <Callout
-              target={`#dataFieldValueSelection`}
-              onDismiss={() => this.changeDataFieldValueSelectionState()}
-            >
-              <ScaleValueSelector
-                scale={scaleObject}
-                scaleMapping={mapping as any}
-                store={this.props.store}
-                onSelect={(index) => {
-                  const paresedExpression = Expression.parse(
-                    scaleMapping.expression
-                  ) as FunctionCall;
-                  // change the second param of get function
-                  (paresedExpression.args[1] as any).value = index;
-                  scaleMapping.expression = paresedExpression.toString();
-                  this.props.parent.onEditMappingHandler(
-                    this.props.attribute,
-                    scaleMapping
-                  );
-                  this.changeDataFieldValueSelectionState();
-                }}
-              />
-            </Callout>
-          )}
+          <Popover open={this.state.isDataFieldValueSelectionOpen}>
+            {/* {this.state.isDataFieldValueSelectionOpen && (
+              <Callout
+                target={`#dataFieldValueSelection`}
+                onDismiss={() => this.changeDataFieldValueSelectionState()}
+              > */}
+              <PopoverSurface>
+                <ScaleValueSelector
+                  scale={scaleObject}
+                  scaleMapping={mapping as any}
+                  store={this.props.store}
+                  onSelect={(index) => {
+                    const paresedExpression = Expression.parse(
+                      scaleMapping.expression
+                    ) as FunctionCall;
+                    // change the second param of get function
+                    (paresedExpression.args[1] as any).value = index;
+                    scaleMapping.expression = paresedExpression.toString();
+                    this.props.parent.onEditMappingHandler(
+                      this.props.attribute,
+                      scaleMapping
+                    );
+                    this.changeDataFieldValueSelectionState();
+                  }}
+                />
+              </PopoverSurface>
+            {/* </Callout>
+          )} */}
+          </Popover>
         </>
       );
     }
@@ -264,29 +285,33 @@ export class FluentMappingEditor extends React.Component<
   private renderColorPicker(): JSX.Element {
     return (
       <>
-        {this.state.isColorPickerOpen && (
-          <Callout
-            target={`#id_${this.props.options.label.replace(/\s/g, "_")}`}
-            onDismiss={() => this.changeColorPickerState()}
-          >
-            <ColorPicker
-              store={this.props.store}
-              defaultValue={null}
-              allowNull={true}
-              onPick={(color) => {
-                if (color == null) {
-                  this.clearMapping();
-                } else {
-                  this.setValueMapping(color);
-                }
-              }}
-              closePicker={() => {
-                this.changeColorPickerState();
-              }}
-              parent={this}
-            />
-          </Callout>
-        )}
+        <Popover open={this.state.isColorPickerOpen}>
+          {/* {this.state.isColorPickerOpen && (
+            <Callout
+              target={`#id_${this.props.options.label.replace(/\s/g, "_")}`}
+              onDismiss={() => this.changeColorPickerState()}
+            > */}
+              <PopoverSurface>
+                <ColorPicker
+                  store={this.props.store}
+                  defaultValue={null}
+                  allowNull={true}
+                  onPick={(color) => {
+                    if (color == null) {
+                      this.clearMapping();
+                    } else {
+                      this.setValueMapping(color);
+                    }
+                  }}
+                  closePicker={() => {
+                    this.changeColorPickerState();
+                  }}
+                  parent={this}
+                />
+              </PopoverSurface>
+            {/* </Callout>
+          )} */}
+        </Popover>
       </>
     );
   }
@@ -401,7 +426,7 @@ export class FluentMappingEditor extends React.Component<
             return (
               <>
                 {this.props.options.label ? (
-                  <Label styles={defaultLabelStyle}>
+                  <Label>
                     {this.props.options.label}
                   </Label>
                 ) : null}
@@ -451,7 +476,7 @@ export class FluentMappingEditor extends React.Component<
             return (
               <>
                 {this.props.options.label ? (
-                  <Label styles={defaultLabelStyle}>
+                  <Label>
                     {this.props.options.label}
                   </Label>
                 ) : null}
@@ -491,7 +516,7 @@ export class FluentMappingEditor extends React.Component<
             return (
               <>
                 {this.props.options.label ? (
-                  <Label styles={defaultLabelStyle}>
+                  <Label>
                     {this.props.options.label}
                   </Label>
                 ) : null}

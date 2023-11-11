@@ -74,9 +74,6 @@ export const ContextMenuCallout = ({
                 const theme = getTheme();
                 return (
                   <FluentDataBindingMenuItem
-                    backgroundColorHover={
-                      theme.semanticColors.buttonBackgroundHovered
-                    }
                     onClick={() => {
                       item.onClick();
                       hideCallout(false);

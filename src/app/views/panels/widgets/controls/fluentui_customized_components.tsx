@@ -74,24 +74,11 @@ export const FluentRowLayout = styled.div`
   flex-direction: row;
 `;
 
-export const FluentDataBindingMenuItem = styled.div<{
-  backgroundColor?: string;
-  backgroundColorHover?: string;
-}>`
+export const FluentDataBindingMenuItem = styled.div<{}>`
   display: flex;
   flex-direction: row;
-  align-items: stretch;
+  align-items: center;
   justify-content: center;
-  height: 26px;
-  line-height: unset;
-  background-color: ${({ backgroundColor }) => backgroundColor || null};
-  &:hover {
-    background-color: ${({ backgroundColorHover }) =>
-      backgroundColorHover || null};
-  }
-  .ms-Dropdown-container {
-    margin-top: 2px;
-  }
 `;
 
 export const FluentDataBindingMenuLabel = styled.div`
