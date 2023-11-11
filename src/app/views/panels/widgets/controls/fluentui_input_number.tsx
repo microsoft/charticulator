@@ -1,24 +1,33 @@
 /* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+// import {
+  // TextField,
+  // Slider,
+  // SpinButton,
+  // Label,
+  // Position,
+// } from "@fluentui/react";
+
 import {
-  TextField,
-  Slider,
-  SpinButton,
   Label,
-  Position,
-} from "@fluentui/react";
+  Input,
+  Slider,
+  SpinButton
+} from "@fluentui/react-components"
+
 import * as React from "react";
 import { prettyNumber } from "../../../../../core";
 import {
-  FluentRowLayout,
-  defaultFontWeight,
-  defaultLabelStyle,
-  defaultStyle,
-  defultComponentsHeight,
+  FluentColumnLayout,
+  // FluentRowLayout,
+  // defaultFontWeight,
+  // defaultLabelStyle,
+  // defaultStyle,
+  // defultComponentsHeight,
   // FluentLayoutItem,
   // FluentRowLayout,
-  labelRender,
+  // labelRender,
   // PlaceholderStyle,
 } from "./fluentui_customized_components";
 import { CSSProperties } from "react";
@@ -116,24 +125,24 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
     }
     return (
       <Slider
-        styles={{
-          root: {
-            ...defultComponentsHeight,
-          },
-          slideBox: {
-            ...defultComponentsHeight,
-          },
-        }}
+        // styles={{
+        //   root: {
+        //     ...defultComponentsHeight,
+        //   },
+        //   slideBox: {
+        //     ...defultComponentsHeight,
+        //   },
+        // }}
         min={sliderMin}
         max={sliderMax}
         value={+value}
-        showValue={true}
+        // showValue={true}
         step={
           props.percentage ? 0.01 : props.step != undefined ? props.step : 1
         }
-        onChange={(newValue: number) => {
-          setValue(+newValue.toFixed(4));
-          reportValue(newValue);
+        onChange={(e, { value }) => {
+          setValue(+value.toFixed(4));
+          reportValue(value);
         }}
       />
     );
@@ -143,54 +152,62 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
     const tick = props.updownTick || 0.1;
     return (
       <>
+        {!props.showSlider ? <Label>{props.label}</Label> : null }
         <SpinButton
-          label={!props.showSlider ? props.label : null}
-          labelPosition={Position.top}
-          value={formatNumber(+value)}
-          iconProps={
-            props.updownStyle == "font"
-              ? {
-                  iconName: "Font",
-                }
-              : null
-          }
+          // label={!props.showSlider ? props.label : null}
+          // labelPosition={Position.top}
+          // value={formatNumber(+value)}
+          value={+value}
+          // icon={props.updownStyle ? <SVGImageIcon url={R.getSVGIcon('Font')}/> : null}
+          // iconProps={
+          //   props.updownStyle == "font"
+          //     ? {
+          //         iconName: "Font",
+          //       }
+          //     : null
+          // }
           step={tick}
-          onIncrement={(value) => {
-            if (reportValue(parseNumber(value) + tick)) {
-              setValue(parseNumber(value) + tick);
-            }
-          }}
-          onDecrement={(value) => {
-            if (reportValue(parseNumber(value) - tick)) {
-              setValue(parseNumber(value) - tick);
-            }
-          }}
-          onValidate={(value) => {
-            const num = parseNumber(value);
-            if (reportValue(num)) {
-              let val = num;
-              if (props.minimum != null) {
-                val = Math.max(props.minimum, num);
+          // onIncrement={(value) => {
+          //   if (reportValue(parseNumber(value) + tick)) {
+          //     setValue(parseNumber(value) + tick);
+          //   }
+          // }}
+          // onDecrement={(value) => {
+          //   if (reportValue(parseNumber(value) - tick)) {
+          //     setValue(parseNumber(value) - tick);
+          //   }
+          // }}
+          onChange={(e, { value }) => {
+              if (reportValue(value)) {
+                setValue(value);
               }
-              if (props.maximum != null) {
-                val = Math.min(props.maximum, num);
-              }
-              setValue(val);
-              return formatNumber(parseNumber(value));
-            }
           }}
-          styles={{
-            ...defaultStyle,
-            label: {
-              lineHeight: "unset",
-              fontWeight: defaultFontWeight,
-              height: 25,
-            },
-            spinButtonWrapper: {
-              height: (defaultStyle as any).fieldGroup.height,
-              lineHeight: (defaultStyle as any).fieldGroup.lineHeight,
-            },
-          }}
+          // onValidate={(value) => {
+          //   const num = parseNumber(value);
+          //   if (reportValue(num)) {
+          //     let val = num;
+          //     if (props.minimum != null) {
+          //       val = Math.max(props.minimum, num);
+          //     }
+          //     if (props.maximum != null) {
+          //       val = Math.min(props.maximum, num);
+          //     }
+          //     setValue(val);
+          //     return formatNumber(parseNumber(value));
+          //   }
+          // }}
+          // styles={{
+          //   ...defaultStyle,
+          //   label: {
+          //     lineHeight: "unset",
+          //     fontWeight: defaultFontWeight,
+          //     height: 25,
+          //   },
+          //   spinButtonWrapper: {
+          //     height: (defaultStyle as any).fieldGroup.height,
+          //     lineHeight: (defaultStyle as any).fieldGroup.lineHeight,
+          //   },
+          // }}
         />
       </>
     );
@@ -199,18 +216,22 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
   return (
     <>
       {props.showSlider ? (
-        <Label styles={defaultLabelStyle}>{props.label}</Label>
+        <Label
+        // styles={defaultLabelStyle}
+        >{props.label}</Label>
       ) : null}
-      <FluentRowLayout style={props.styles}>
+      <FluentColumnLayout style={props.styles}>
         {/* <FluentLayoutItem flex={1}> */}
           {props.showUpdown ? (
             renderUpdown()
           ) : (
             // <PlaceholderStyle>
-              <TextField
-                styles={defaultStyle}
-                onRenderLabel={labelRender}
-                label={!props.showSlider ? props.label : null}
+            <>
+              {!props.showSlider ? <Label>{props.label}</Label> : null}
+              <Input
+                // styles={defaultStyle}
+                // onRenderLabel={labelRender}
+                // label={!props.showSlider ? props.label : null}
                 placeholder={props.placeholder}
                 value={
                   typeof value === "string" &&
@@ -222,7 +243,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
                     ? null
                     : formatNumber(+value)
                 }
-                onChange={(event, str) => {
+                onChange={(event, { value: str }) => {
                   if (
                     (str != "" && str.indexOf(".") === str.length - 1) ||
                     (str.indexOf("-") === 0 && str.length === 1)
@@ -240,8 +261,9 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
                     e.stopPropagation();
                   }
                 }}
-                suffix={props.percentage ? "%" : undefined}
+                // suffix={props.percentage ? "%" : undefined}
               />
+              </>
             // </PlaceholderStyle>
           )}
         {/* </FluentLayoutItem> */}
@@ -249,7 +271,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
           renderSlider()
           // <FluentLayoutItem flex={2}>{renderSlider()}</FluentLayoutItem>
         ) : null}
-      </FluentRowLayout>
+      </FluentColumnLayout>
     </>
   );
 };
