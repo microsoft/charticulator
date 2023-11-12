@@ -1109,16 +1109,17 @@ export class FluentUIWidgetManager
         marginTop={isHeader ? "0px" : null}
         style={styles}
       > */}
-        <DefaultButton
-          styles={{
-            root: {
-              minWidth: "unset",
-              ...defultBindButtonSize,
-            },
-          }}
-          iconProps={{
-            iconName: icon || "EraseTool",
-          }}
+        <Button
+          // styles={{
+          //   root: {
+          //     minWidth: "unset",
+          //     ...defultBindButtonSize,
+          //   },
+          // }}
+          // iconProps={{
+          //   iconName: icon || "EraseTool",
+          // }}
+          icon={<SVGImageIcon url={R.getSVGIcon(icon || 'general/eraser')}/>}
           onClick={() => {
             this.emitSetProperty(property, null);
           }}
