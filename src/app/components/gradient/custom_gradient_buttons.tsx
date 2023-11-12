@@ -7,7 +7,7 @@ import { strings } from "../../../strings";
 import { ColorGradient, deepClone } from "../../../core";
 import {
   CustomGradientButtonsWrapper,
-  defaultActionButtonsStyles,
+  // defaultActionButtonsStyles,
   dropdownStyles,
 } from "./styles";
 import { Colorspace } from "../fluent_ui_gradient_picker";
