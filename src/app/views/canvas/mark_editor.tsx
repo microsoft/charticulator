@@ -186,6 +186,13 @@ export class MarkEditorView extends ContextedComponent<
         )}
         <div className="canvas-controls">
           <div className="canvas-controls-left">
+            <Button
+              icon="general/plus"
+              title={strings.canvas.newGlyph}
+              onClick={() => {
+                this.dispatch(new Actions.AddGlyph("glyph.rectangle"));
+              }}
+            />
             <span className="glyph-tabs">
               {this.store.chart.glyphs.map((glyph) => (
                 <span
@@ -208,13 +215,6 @@ export class MarkEditorView extends ContextedComponent<
                 </span>
               ))}
             </span>
-            <Button
-              icon="general/plus"
-              title={strings.canvas.newGlyph}
-              onClick={() => {
-                this.dispatch(new Actions.AddGlyph("glyph.rectangle"));
-              }}
-            />
           </div>
           <div className="canvas-controls-right">
             <Button
