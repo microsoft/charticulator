@@ -16,9 +16,9 @@ import { ColorPicker } from "../../../../components/fluentui_color_picker";
 
 import { AppStore } from "../../../../stores";
 
-import { Callout, Label, TextField } from "@fluentui/react";
+// import { Callout, Label, TextField } from "@fluentui/react";
 
-import { Input, Popover, PopoverTrigger, PopoverSurface } from "@fluentui/react-components"
+import { Input, Popover, PopoverTrigger, PopoverSurface, Label } from "@fluentui/react-components"
 
 import {
   defaultLabelStyle,
@@ -131,7 +131,9 @@ export class FluentInputColor extends React.Component<
         {this.props.pickerBeforeTextField && (hex == "" ? emptyPicker : picker)}
         {/* <FluentTextField> */}
         <>
-          <FluentColumnLayout>
+          <FluentColumnLayout style={{
+            flex: 1
+          }}>
             <Label>{this.props.label}</Label>
             <Input
               // label={this.props.label}
@@ -186,7 +188,7 @@ export class FluentInputColor extends React.Component<
           </FluentColumnLayout>
         </>
         {/* </FluentTextField> */}
-        {!this.props.pickerBeforeTextField &&
+        {/* {!this.props.pickerBeforeTextField &&
           (hex == "" ? emptyPicker : picker)}
         {this.state.open && (
           <Callout
@@ -210,7 +212,31 @@ export class FluentInputColor extends React.Component<
               }}
             />
           </Callout>
-        )}
+        )} */}
+        <Popover open={this.state.open}>
+          <PopoverTrigger>
+            {!this.props.pickerBeforeTextField &&
+            (hex == "" ? emptyPicker : picker)}
+          </PopoverTrigger>
+          <PopoverSurface>
+          <ColorPicker
+              store={this.props.store}
+              allowNull={true}
+              onPick={(color) => {
+                if (color == null) {
+                  this.props.onEnter(null);
+                } else {
+                  this.props.onEnter(color);
+                }
+              }}
+              defaultValue={colorFromHTMLColor(hex)}
+              parent={this}
+              closePicker={() => {
+                this.setState({ open: !this.state.open });
+              }}
+            />
+          </PopoverSurface>
+        </Popover>
       </span>
     );
   }
