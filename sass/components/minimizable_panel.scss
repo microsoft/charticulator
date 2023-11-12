@@ -6,6 +6,7 @@
   flex-direction: column;
   flex: 1;
   overflow: hidden;
+  overflow-y: scroll;
 
   $header-height: 28px;
 
@@ -74,17 +75,17 @@
 
     &.minimizable-pane-scrollable {
       & > .content {
-        overflow-y: scroll;
+        // overflow-y: scroll;
       }
     }
 
     &.minimizable-pane-autosize {
       flex: 1;
-      overflow: hidden;
+      // overflow: hidden;
 
       & > .content {
         flex: 1;
-        overflow-y: scroll;
+        // overflow-y: scroll;
       }
     }
   }
