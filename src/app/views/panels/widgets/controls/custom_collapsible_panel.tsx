@@ -7,7 +7,7 @@ import { CSSProperties, useCallback, useMemo, useState } from "react";
 // import { PanelHeaderStyles } from "./fluentui_customized_components";
 import { AppStore } from "../../../../../app/stores";
 import { getRandomNumber } from "../../../../../core";
-import { ContextMenuCallout } from "./contextMenuCallout";
+// import { ContextMenuCallout } from "./contextMenuCallout";
 import { Button, Label } from "@fluentui/react-components";
 import { SVGImageIcon } from "../../../../components";
 import * as R from "../../../../resources";
@@ -69,12 +69,12 @@ export const CustomCollapsiblePanel = ({
       <div style={styles} key={`panelWidgets-${panelHeader}`}>
         {renderAttributes}
       </div>
-      <ContextMenuCallout
+      {/* <ContextMenuCallout
         store={store}
         calloutId={calloutId}
         hideCallout={(value) => setCalloutVisible(value)}
         calloutVisible={calloutVisible}
-      />
+      /> */}
     </div>
   );
 };

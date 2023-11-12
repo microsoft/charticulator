@@ -19,7 +19,7 @@ import { AppStore } from "../../../../../app/stores";
 import { Actions } from "../../../../../app";
 import { CollapseOrExpandPanels } from "../../../../../core/specification/types";
 import { getRandomNumber } from "../../../../../core";
-import { ContextMenuCallout } from "./contextMenuCallout";
+// import { ContextMenuCallout } from "./contextMenuCallout";
 import { Label } from "@fluentui/react-components";
 
 interface CollapsiblePanelProps {
@@ -154,12 +154,12 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
           handleTabKey: 1,
         }}
       />
-      <ContextMenuCallout
+      {/* <ContextMenuCallout
         store={store}
         calloutId={calloutId}
         hideCallout={(value) => setCalloutVisible(value)}
         calloutVisible={calloutVisible}
-      />
+      /> */}
     </FluentGroupedList>
   );
 };
