@@ -702,9 +702,9 @@ export class FluentUIWidgetManager
                 minWidth: 'unset',
                 width: '100%'
               }}
-              // selectedKey={this.getPropertyValue(property) as string}
               value={this.getPropertyValue(property) as string}
-              defaultValue={this.getPropertyValue(property) as string}
+              selectedOptions={[this.getPropertyValue(property) as string]}
+              // value={this.getPropertyValue(property) as string}
               // label={options.label}
               // onRenderLabel={labelRender}
               // onRenderOption={onRenderOption}
@@ -751,7 +751,9 @@ export class FluentUIWidgetManager
                   },
                 };
               }).map(o => {
-                return (<Option key={o.key}>{o.text}</Option>);
+                return (<Option text={o.text} value={o.key} key={o.key}>
+                    <SVGImageIcon url={R.getSVGIcon(o.data.icon)}/>{o.text}
+                  </Option>);
               })}
             </Dropdown>
           </FluentColumnLayout>

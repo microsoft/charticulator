@@ -49,6 +49,7 @@ import { SnappingGuidesVisualTypes } from "../../../core/prototypes";
 import { classNames } from "../../utils";
 import { FluentUIWidgetManager } from "../panels/widgets/fluentui_manager";
 import { Callout, DirectionalHint } from "@fluentui/react";
+import { Popover, PopoverSurface, PopoverTrigger, PositioningImperativeRef } from "@fluentui/react-components";
 
 export interface ChartEditorViewProps {
   store: AppStore;
@@ -1050,38 +1051,26 @@ export class ChartEditorView
                 }
                 return (
                   <React.Fragment key={`canvas`}>
-                    <div
-                      className="charticulator__canvas-popup"
-                      key={`m${index}`}
-                      id={`anchor${index}`}
-                      style={{
-                        left: pt.x.toFixed(0) + "px",
-                        bottom:
-                          (this.state.viewHeight - pt.y + 5).toFixed(0) + "px",
-                      }}
-                    ></div>
-                    <Callout
-                      target={`#anchor${index}`}
-                      directionalHint={DirectionalHint.topLeftEdge}
-                      styles={{
-                        root: {
-                          padding: 10,
-                        },
-                        calloutMain: {
-                          overflow: "hidden",
-                        },
-                      }}
-                      onDismiss={() =>
-                        this.setState({
-                          canvasToolbar: false,
-                        })
-                      }
-                    >
-                      {manager.horizontal(
-                        controls.widgets.map(() => 0),
-                        ...controls.widgets
-                      )}
-                    </Callout>
+                    <Popover open={true}>
+                      <PopoverTrigger>
+                        <div
+                          className="charticulator__canvas-popup"
+                          key={`m${index}`}
+                          id={`anchor${index}`}
+                          style={{
+                            left: pt.x.toFixed(0) + "px",
+                            bottom:
+                              (this.state.viewHeight - pt.y + 5).toFixed(0) + "px",
+                          }}
+                        ></div>
+                      </PopoverTrigger>
+                      <PopoverSurface>
+                        {manager.horizontal(
+                          controls.widgets.map(() => 0),
+                          ...controls.widgets
+                        )}
+                      </PopoverSurface>
+                    </Popover>
                   </React.Fragment>
                 );
               }
