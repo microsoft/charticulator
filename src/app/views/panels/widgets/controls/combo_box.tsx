@@ -2,17 +2,18 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-import {
-  IComboBoxOption,
-  ComboBox as FluentCombobox,
-  Label,
-} from "@fluentui/react";
+// import {
+//   IComboBoxOption,
+//   ComboBox as FluentCombobox,
+//   Label,
+// } from "@fluentui/react";
 import { fontList } from "../../../../../core";
-import {
-  defaultLabelStyle,
-  defaultStyle,
-  defultComponentsHeight,
-} from "./fluentui_customized_components";
+// import {
+//   defaultLabelStyle,
+//   defaultStyle,
+//   defultComponentsHeight,
+// } from "./fluentui_customized_components";
+import { Combobox, Option, Label } from "@fluentui/react-components";
 
 export interface ComboBoxFontFamilyProps {
   defaultValue: string;
@@ -28,23 +29,26 @@ export const FluentComboBoxFontFamily: React.FC<ComboBoxFontFamilyProps> = (
     props.defaultValue
   );
 
-  const optionsWithCustomStyling: IComboBoxOption[] = React.useMemo<
-    IComboBoxOption[]
+  const optionsWithCustomStyling: Record<string, any>[] = React.useMemo<
+    Record<string, any>[]
   >(() => {
     const currentFontList = [...new Set([...fontList, currentValue])];
 
     return currentFontList.map((fontName: string) => ({
       key: fontName,
       text: fontName,
-      styles: {
-        optionText: {
-          fontFamily: fontName,
-        },
-        root: {
-          ...defultComponentsHeight,
-          minHeight: defultComponentsHeight.height,
-        },
-      },
+      data: {
+        fontFamily: fontName,
+      }
+      // styles: {
+      //   optionText: {
+      //     fontFamily: fontName,
+      //   },
+      //   root: {
+      //     ...defultComponentsHeight,
+      //     minHeight: defultComponentsHeight.height,
+      //   },
+      // },
     }));
   }, [currentValue]);
 
@@ -62,23 +66,40 @@ export const FluentComboBoxFontFamily: React.FC<ComboBoxFontFamilyProps> = (
   );
 
   return (
-    <FluentCombobox
-      styles={{
-        ...defaultStyle,
-        root: {
-          ...defultComponentsHeight,
-        },
-      }}
-      selectedKey={currentValue}
-      label={props.label}
-      onRenderLabel={({ props }) => (
-        <Label styles={defaultLabelStyle}>{props.label}</Label>
-      )}
-      autoComplete="on"
-      options={optionsWithCustomStyling}
-      onChange={onEnter}
-      onAbort={onCancel}
-      allowFreeform
-    />
+    <>
+      <Label>
+        {props.label}
+      </Label>
+      <Combobox
+        // styles={{
+        //   ...defaultStyle,
+        //   root: {
+        //     ...defultComponentsHeight,
+        //   },
+        // }}
+        value={currentValue}
+        // label={props.label}
+        // onRenderLabel={({ props }) => (
+        //   <Label styles={defaultLabelStyle}>{props.label}</Label>
+        // )}
+        autoComplete="on"
+        // options={optionsWithCustomStyling}
+        onOptionSelect={(e, { optionValue }) => {
+          onEnter(e, optionValue);
+        }}
+        onAbort={onCancel}
+        // allowFreeform
+      >{
+        optionsWithCustomStyling.map(o => {
+          return (
+            <Option value={o.key as string} text={o.text}>
+              <span style={{
+                fontFamily: o.data.fontFamily
+              }}>{o.text}</span>
+            </Option>
+          )
+        })
+      }</Combobox>
+    </>
   );
 };
