@@ -1260,8 +1260,6 @@ export class FluentUIWidgetManager
       icon: 'SortLines'
     });
 
-    debugger;
-
     return (
       <DropZoneView
         key={this.getKeyFromProperty(property)}
@@ -1641,7 +1639,6 @@ export class FluentUIWidgetManager
         this as FluentUIWidgetManager,
         options.acceptLinksTable ?? false
       );
-      debugger;
       return (
         <DropZoneView
           key={title}

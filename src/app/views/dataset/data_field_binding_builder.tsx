@@ -864,9 +864,6 @@ export class Director {
       return { mapping, currentColumn };
     }
     
-    if (scaleMapping === null) {
-      debugger;
-    }
     return <Menu>
       <MenuTrigger>
         <MenuButton

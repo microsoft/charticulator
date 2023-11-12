@@ -363,9 +363,6 @@ export class FluentMappingEditor extends React.Component<
       return { mapping, currentColumn };
     }
     
-    if (scaleMapping === null) {
-      debugger;
-    }
     return <Menu>
       <MenuTrigger>
         <MenuButton

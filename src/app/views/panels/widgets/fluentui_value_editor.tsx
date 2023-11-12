@@ -384,7 +384,6 @@ export class FluentValueEditor extends ContextedComponent<
       case Specification.AttributeType.Boolean: {
         const boolean = value as boolean;
         if (this.props.onEmitMapping) {
-          debugger;
           return (
             <>
               <Label>
