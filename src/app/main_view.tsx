@@ -237,7 +237,6 @@ export class MainView extends React.Component<
               <MinimizablePane
                 title={strings.mainView.layersPanelTitle}
                 scroll={true}
-                maxHeight={200}
                 onMaximize={() => this.setState({ layersViewMaximized: true })}
               >
                 <ErrorBoundary telemetryRecorder={this.props.telemetry}>
