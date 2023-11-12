@@ -61,7 +61,7 @@ import {
   ComboBox,
   DatePicker,
   DayOfWeek,
-  DefaultButton,
+  // DefaultButton,
   // Dropdown,
   FontIcon,
   getTheme,
@@ -1141,16 +1141,17 @@ export class FluentUIWidgetManager
       return;
     }
     return (
-      <DefaultButton
+      <Button
         key={this.getKeyFromProperty(property)}
-        iconProps={{
-          iconName: icon,
-        }}
-        text={text}
+        // iconProps={{
+        //   iconName: icon,
+        // }}
+        icon={<SVGImageIcon url={R.getSVGIcon(icon)}/>}
+        title={text}
         onClick={() => {
           this.emitSetProperty(property, value);
         }}
-      />
+      >{text}</Button>
     );
   }
 
@@ -1221,7 +1222,11 @@ export class FluentUIWidgetManager
       defaultValue,
       this.store
     );
-    const menuRender = this.director.getMenuRender();
+    const menuRender = this.director.menuRender(menu, null, {
+      icon: 'SortLines'
+    });
+
+    debugger;
 
     return (
       <DropZoneView
@@ -1233,7 +1238,7 @@ export class FluentUIWidgetManager
         className={""}
       >
         {/* <FluentButton marginTop={"0px"}> */}
-          <IconButton
+          {/* <IconButton
             styles={{
               root: {
                 minWidth: "unset",
@@ -1254,7 +1259,8 @@ export class FluentUIWidgetManager
               },
               onRenderMenuList: menuRender,
             }}
-          />
+          /> */}
+          {menuRender}
         {/* </FluentButton> */}
       </DropZoneView>
     );
@@ -1447,15 +1453,16 @@ export class FluentUIWidgetManager
                 {options.allowDelete ? (
                   <span className="charticulator__widget-array-view-control">
                     {/* <FluentButton marginTop={"0px"}> */}
-                      <DefaultButton
-                        styles={{
-                          root: {
-                            minWidth: "unset",
-                          },
-                        }}
-                        iconProps={{
-                          iconName: "Delete",
-                        }}
+                      <Button
+                        // styles={{
+                        //   root: {
+                        //     minWidth: "unset",
+                        //   },
+                        // }}
+                        // iconProps={{
+                        //   iconName: "Delete",
+                        // }}
+                        icon={<SVGImageIcon url={R.getSVGIcon('Delete')}/>}
                         onClick={() => {
                           items.splice(index, 1);
                           this.emitSetProperty(property, items);
@@ -1590,7 +1597,7 @@ export class FluentUIWidgetManager
         defaultValue,
         this.store
       );
-      const menuRender = this.director.getMenuRender();
+      const menuRender = this.director.menuRender(menu);
 
       const className = options.noLineHeight
         ? "charticulator__widget-section-header-no-height charticulator__widget-section-header-dropzone"
@@ -1600,6 +1607,7 @@ export class FluentUIWidgetManager
         this as FluentUIWidgetManager,
         options.acceptLinksTable ?? false
       );
+      debugger;
       return (
         <DropZoneView
           key={title}
@@ -1635,7 +1643,7 @@ export class FluentUIWidgetManager
           ) : null}
           {widget}
           {/* <FluentButton marginTop={"0px"} marginLeft={"6px"}> */}
-            <DefaultButton
+            {/* <DefaultButton
               key={title}
               iconProps={{
                 iconName: "Link",
@@ -1653,7 +1661,8 @@ export class FluentUIWidgetManager
                   ...defultBindButtonSize,
                 },
               }}
-            />
+            /> */}
+            {menuRender}
           {/* </FluentButton> */}
         </DropZoneView>
       );
@@ -2290,11 +2299,12 @@ export class FluentDetailsButton extends React.Component<
         {this.props.label ? (
           <Label>{this.props.label}</Label>
         ) : null}
-        <DefaultButton
-          iconProps={{
-            iconName: "More",
-          }}
-          componentRef={(e) =>
+        <Button
+          // iconProps={{
+          //   iconName: "More",
+          // }}
+          icon={<SVGImageIcon url={R.getSVGIcon('general/more-horizontal')}/>}
+          ref={(e) =>
             (btn = ReactDOM.findDOMNode(e as any) as Element)
           }
           onClick={() => {

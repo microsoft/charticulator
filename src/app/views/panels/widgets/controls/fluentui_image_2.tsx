@@ -13,7 +13,7 @@ import { classNames } from "../../../../utils";
 import { strings } from "../../../../../strings";
 import {
   ActionButton,
-  DefaultButton,
+  // DefaultButton,
   Image as FluentUIImage,
   Label,
   TextField,
@@ -30,6 +30,8 @@ import {
   ImageMappingTextFieldStyles,
   ToolTipHostStyles,
 } from "./styles";
+import { SVGImageIcon } from "../../../../components";
+import { Button } from "@fluentui/react-components";
 
 export interface ImageDescription {
   src: string;
@@ -338,16 +340,17 @@ export class ImageUploader extends React.Component<
               />
             </TooltipHost>
             {/* <FluentButton marginTop="0px"> */}
-              <DefaultButton
-                styles={{
-                  root: {
-                    minWidth: "unset",
-                    ...defultBindButtonSize,
-                  },
-                }}
-                iconProps={{
-                  iconName: "OpenFolderHorizontal",
-                }}
+              <Button
+                // styles={{
+                //   root: {
+                //     minWidth: "unset",
+                //     ...defultBindButtonSize,
+                //   },
+                // }}
+                // iconProps={{
+                //   iconName: "OpenFolderHorizontal",
+                // }}
+                icon={<SVGImageIcon url={R.getSVGIcon('OpenFolderHorizontal')}/>}
                 onClick={this.handleOpenFile}
               />
             {/* </FluentButton> */}

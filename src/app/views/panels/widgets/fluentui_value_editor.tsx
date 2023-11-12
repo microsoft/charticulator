@@ -4,12 +4,12 @@
 
 import {
   // Callout,
-  DefaultButton,
+  // DefaultButton,
   Dropdown,
   IContextualMenuItem,
   IContextualMenuListProps,
   IRenderFunction,
-  Label,
+  // Label,
   TextField,
 } from "@fluentui/react";
 import * as React from "react";
@@ -39,7 +39,9 @@ import {
 } from "./controls/fluentui_customized_components";
 import { InputImage } from "./controls/fluentui_image";
 import { FluentInputNumber } from "./controls/fluentui_input_number";
-import { Popover, PopoverSurface, PopoverTrigger } from "@fluentui/react-components";
+import { Button, Label, Popover, PopoverSurface, PopoverTrigger } from "@fluentui/react-components";
+import { SVGImageIcon } from "../../../../app/components";
+import * as R from "../../../resources";
 
 export interface ValueEditorProps {
   value: Specification.AttributeValue;
@@ -64,7 +66,7 @@ export interface ValueEditorProps {
   numberOptions?: InputNumberOptions;
   stopPropagation?: boolean;
   mainMenuItems?: IContextualMenuItem[];
-  menuRender: IRenderFunction<IContextualMenuListProps>;
+  menuRender: React.JSX.Element;
 }
 
 interface ValueEditorState {
@@ -362,12 +364,13 @@ export class FluentValueEditor extends ContextedComponent<
       case Specification.AttributeType.Boolean: {
         const boolean = value as boolean;
         if (this.props.onEmitMapping) {
+          debugger;
           return (
             <>
-              <Label styles={defaultLabelStyle}>
+              <Label>
                 {strings.objects.visibleOn.visibility}
               </Label>
-              <DefaultButton
+              {/* <DefaultButton
                 styles={{
                   root: {
                     ...defultComponentsHeight,
@@ -379,20 +382,21 @@ export class FluentValueEditor extends ContextedComponent<
                   items: this.props.mainMenuItems ?? [],
                   onRenderMenuList: this.props.menuRender ?? null,
                 }}
-              />
+              /> */}
+              {this.props.menuRender}
             </>
           );
         } else {
           return (
             <>
-              <Label styles={defaultLabelStyle}>
+              <Label>
                 {strings.objects.visibleOn.visibility}
               </Label>
-              <DefaultButton
-                checked={false}
-                iconProps={{
-                  iconName: boolean ? "CheckboxComposite" : "Checkbox",
-                }}
+              <Button
+                // iconProps={{
+                //   iconName: boolean ? "CheckboxComposite" : "Checkbox",
+                // }}
+                icon={<SVGImageIcon url={R.getSVGIcon(boolean ? "CheckboxComposite" : "Checkbox")}/>}
                 onClick={() => {
                   this.emitSetValue(!boolean);
                 }}

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Checkbox, DefaultButton, Dropdown } from "@fluentui/react";
+import { Checkbox, Dropdown } from "@fluentui/react";
 import * as React from "react";
 import { Expression, Prototypes, Specification } from "../../../../core";
 import { strings } from "../../../../strings";
@@ -12,6 +12,7 @@ import {
 } from "./controls/fluentui_customized_components";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 import { CharticulatorPropertyAccessors } from "./types";
+import { Button } from "@fluentui/react-components";
 
 export interface FilterEditorProps {
   manager: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
@@ -149,8 +150,8 @@ export class FluentUIFilterEditor extends React.Component<
                   manager.label(strings.filter.values),
                   <div className="charticulator__filter-editor-values-selector">
                     <div className="el-buttons">
-                      <DefaultButton
-                        text={strings.filter.selectAll}
+                      <Button
+                        title={strings.filter.selectAll}
                         onClick={() => {
                           for (const key in value.categories.values) {
                             if (
@@ -169,9 +170,9 @@ export class FluentUIFilterEditor extends React.Component<
                             },
                           });
                         }}
-                      />{" "}
-                      <DefaultButton
-                        text={strings.filter.clear}
+                      >{strings.filter.selectAll}</Button>{" "}
+                      <Button
+                        title={strings.filter.clear}
                         onClick={() => {
                           for (const key in value.categories.values) {
                             if (
@@ -190,7 +191,7 @@ export class FluentUIFilterEditor extends React.Component<
                             },
                           });
                         }}
-                      />
+                      >{strings.filter.clear}</Button>
                     </div>
                     <div>
                       {keysSorted.map((key) => (

@@ -23,8 +23,8 @@ import { FunctionCall } from "../../../../core/expression";
 import { FluentValueEditor } from "./fluentui_value_editor";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 import {
-  DefaultButton,
-  ActionButton,
+  // DefaultButton,
+  // ActionButton,
   // Label,
   IContextualMenuItem,
   // Callout,
@@ -252,7 +252,7 @@ export class FluentMappingEditor extends React.Component<
       table,
       options.acceptKinds
     );
-    const menuRender = this.director.getMenuRender();
+    const menuRender = this.director.menuRender(mainMenuItems, mapping);
 
     return (
       <>
@@ -320,10 +320,47 @@ export class FluentMappingEditor extends React.Component<
   }
 
   // TODO handle derived columns
-  private menuRender(mainMenuItems: IContextualMenuItem[], scaleMapping?: Specification.ScaleMapping | Specification.ScaleValueExpressionMapping, options?: {
+  private _menuRender(mainMenuItems: IContextualMenuItem[], scaleMapping?: Specification.ScaleMapping | Specification.ScaleValueExpressionMapping, options?: {
     icon: string
   }) {
     let anchor = null;
+
+    function getCurrentMapping(items) {
+      // find current mapping
+      let mapping = null;
+      const currentColumn = items
+        .filter((item) => item.subMenuProps) // exclude None
+        .flatMap((items) => {
+          if (
+            items.subMenuProps &&
+            items.subMenuProps.items.find((i) => i.key === "year")
+          ) {
+            return items.subMenuProps.items;
+          } else {
+            return items;
+          }
+        })
+        .find(
+          (item) =>
+            item.subMenuProps.items.filter((i) => i.isChecked && i.subMenuProps)
+              .length > 0
+        ); // Exclude unselected columns
+  
+      if (currentColumn) {
+        const aggregationFunction = currentColumn.subMenuProps.items.find(
+          (i) => i.isChecked && i.subMenuProps
+        );
+  
+        const currentMapping = aggregationFunction.subMenuProps.items.find(
+          (i) => i.key === "mapping"
+        ); // Select mapping of column
+  
+        // set current mapping
+        mapping = currentMapping;
+      }
+  
+      return { mapping, currentColumn };
+    }
     
     if (scaleMapping === null) {
       debugger;
@@ -344,7 +381,7 @@ export class FluentMappingEditor extends React.Component<
       <MenuPopover>
         <MenuList>
           {mainMenuItems.map(m => {
-            const { mapping, currentColumn } = this.getCurrentMapping(mainMenuItems);
+            const { mapping, currentColumn } = getCurrentMapping(mainMenuItems);
             if (m.subMenuProps) {
               return (
                 <MenuItem>
@@ -404,7 +441,7 @@ export class FluentMappingEditor extends React.Component<
                 <MenuItem key={m.key} onClick={(e) => {
                   if (scaleMapping && scaleMapping.expression.startsWith("get")) {
                     event.preventDefault();
-                    this.changeDataFieldValueSelectionState();
+                    // this.changeDataFieldValueSelectionState();
                   } else {
                     m.onClick(e, m);
                   }
@@ -417,43 +454,6 @@ export class FluentMappingEditor extends React.Component<
         </MenuList>
       </MenuPopover>
     </Menu>;
-  }
-
-  private getCurrentMapping(items) {
-    // find current mapping
-    let mapping = null;
-    const currentColumn = items
-      .filter((item) => item.subMenuProps) // exclude None
-      .flatMap((items) => {
-        if (
-          items.subMenuProps &&
-          items.subMenuProps.items.find((i) => i.key === "year")
-        ) {
-          return items.subMenuProps.items;
-        } else {
-          return items;
-        }
-      })
-      .find(
-        (item) =>
-          item.subMenuProps.items.filter((i) => i.isChecked && i.subMenuProps)
-            .length > 0
-      ); // Exclude unselected columns
-
-    if (currentColumn) {
-      const aggregationFunction = currentColumn.subMenuProps.items.find(
-        (i) => i.isChecked && i.subMenuProps
-      );
-
-      const currentMapping = aggregationFunction.subMenuProps.items.find(
-        (i) => i.key === "mapping"
-      ); // Select mapping of column
-
-      // set current mapping
-      mapping = currentMapping;
-    }
-
-    return { mapping, currentColumn };
   }
 
   private renderCurrentAttributeMapping() {
@@ -578,7 +578,7 @@ export class FluentMappingEditor extends React.Component<
                   {/* <FluentActionButton> */}
                   {/* TODO copy to menurender */}
                   <>
-                    {this.menuRender(mainMenuItems, scaleMapping, {
+                    {this.director.menuRender(mainMenuItems, scaleMapping, {
                       icon: 'ColumnFunction'
                     })}
                     {/* </FluentActionButton> */}
@@ -743,7 +743,7 @@ export class FluentMappingEditor extends React.Component<
                   {/* <FluentActionButton> */}
                   {/* TODO copy to menurender */}
                   <>
-                    {this.menuRender(mainMenuItems, scaleMapping, {
+                    {this.director.menuRender(mainMenuItems, scaleMapping, {
                       icon: 'ColumnFunction'
                     })}
                     {/* </FluentActionButton> */}
@@ -914,7 +914,7 @@ export class FluentMappingEditor extends React.Component<
                       onRenderMenuList: menuRender,
                     }}
                   /> */}
-                  {this.menuRender(mainMenuItems, null, {
+                  {this.director.menuRender(mainMenuItems, null, {
                     icon: 'general/bind-data'
                   })}
                   {/* </FluentButton> */}

@@ -14,7 +14,7 @@ import {
 } from "../../../core";
 import { AppStore } from "../../stores";
 import {
-  Callout,
+  // Callout,
   ContextualMenu,
   DirectionalHint,
   Dropdown,
@@ -38,6 +38,7 @@ import { strings } from "../../../strings";
 import { DataType, MappingType } from "../../../core/specification";
 import { AggregationFunctionDescription } from "../../../core/expression";
 import {
+  FluentRowLayout,
   defaultLabelStyle,
   defaultStyle,
   defultBindButtonSize,
@@ -46,6 +47,9 @@ import {
 } from "../panels/widgets/controls/fluentui_customized_components";
 import { CollapsiblePanel } from "../panels/widgets/controls/collapsiblePanel";
 import React = require("react");
+import { Menu, MenuButton, MenuItem, MenuList, MenuPopover, MenuTrigger, Popover, PopoverSurface, PopoverTrigger } from "@fluentui/react-components";
+import { SVGImageIcon } from "../../components";
+import * as R from "../../resources";
 
 export interface IDefaultValue {
   table: string;
@@ -797,7 +801,144 @@ export class Director {
     return this.builder.getMenuItems();
   }
 
-  public getMenuRender(): IRenderFunction<IContextualMenuListProps> {
+  // TODO handle derived columns
+  public menuRender(mainMenuItems: IContextualMenuItem[], scaleMapping?: Specification.Mapping, options?: {
+    icon: string
+  }) {
+    let anchor = null;
+
+    function getCurrentMapping(items) {
+      // find current mapping
+      let mapping = null;
+      const currentColumn = items
+        .filter((item) => item.subMenuProps) // exclude None
+        .flatMap((items) => {
+          if (
+            items.subMenuProps &&
+            items.subMenuProps.items.find((i) => i.key === "year")
+          ) {
+            return items.subMenuProps.items;
+          } else {
+            return items;
+          }
+        })
+        .find(
+          (item) =>
+            item.subMenuProps.items.filter((i) => i.isChecked && i.subMenuProps)
+              .length > 0
+        ); // Exclude unselected columns
+
+      if (currentColumn) {
+        const aggregationFunction = currentColumn.subMenuProps.items.find(
+          (i) => i.isChecked && i.subMenuProps
+        );
+
+        const currentMapping = aggregationFunction.subMenuProps.items.find(
+          (i) => i.key === "mapping"
+        ); // Select mapping of column
+
+        // set current mapping
+        mapping = currentMapping;
+      }
+
+      return { mapping, currentColumn };
+    }
+    
+    if (scaleMapping === null) {
+      debugger;
+    }
+    return <Menu>
+      <MenuTrigger>
+        <MenuButton
+          style={{
+            flex: 1
+          }}
+          ref={r => anchor = r}
+          title={strings.mappingEditor.bindData}
+          icon={<SVGImageIcon url={R.getSVGIcon(options?.icon)} />}
+        >
+          {(scaleMapping as Specification.ScaleMapping)?.expression || ''}
+        </MenuButton>
+      </MenuTrigger>
+      <MenuPopover>
+        <MenuList>
+          {mainMenuItems.map(m => {
+            const { mapping, currentColumn } = getCurrentMapping(mainMenuItems);
+            if (m.subMenuProps) {
+              return (
+                <MenuItem>
+                  <React.Fragment key={m.key}>
+                    <FluentRowLayout style={{
+                      alignItems: 'center'
+                    }}>
+                      {!mapping ? (
+                        <Label style={{
+                          flex: 1
+                        }}>
+                          {m.text}
+                        </Label>
+                      ) : null}
+                      <Popover positioning={anchor} open={mapping != null}>
+                        <PopoverTrigger>
+                          <Label style={{
+                            flex: 1
+                          }}>
+                            {m.text}
+                          </Label>
+                        </PopoverTrigger>
+                        {mapping && m === currentColumn ?
+                          (<PopoverSurface>
+                            {mapping.onRender(mapping, () => null)}
+                          </PopoverSurface>)
+                          : null}
+                      </Popover>
+                      <Menu>
+                        <MenuTrigger>
+                          <MenuButton style={{
+                            flex: 1
+                          }}>
+                            {m.subMenuProps.items.find((i) => i.isChecked)?.text || 'Unselected'}
+                          </MenuButton>
+                        </MenuTrigger>
+                        <MenuPopover>
+                          <MenuList>
+                            {m.subMenuProps.items.map(m => {
+                              return (<React.Fragment key={m.key}>
+                                <MenuItem key={m.key} onClick={(e) => {
+                                  m.onClick(e, m);
+                                }}>
+                                  {m.text}
+                                </MenuItem>
+                              </React.Fragment>);
+                            })}
+                          </MenuList>
+                        </MenuPopover>
+                      </Menu>
+                    </FluentRowLayout>
+                  </React.Fragment>
+                </MenuItem>
+              );
+            } else {
+              return (<>
+                <MenuItem key={m.key} onClick={(e) => {
+                  if (scaleMapping && (scaleMapping as Specification.ScaleMapping).expression.startsWith("get")) {
+                    event.preventDefault();
+                    // this.changeDataFieldValueSelectionState();
+                  } else {
+                    m.onClick(e, m);
+                  }
+                } }>
+                  {m.text}
+                </MenuItem>
+              </>);
+            }
+          })}
+        </MenuList>
+      </MenuPopover>
+    </Menu>;
+  }
+
+  public _getMenuRender(): IRenderFunction<IContextualMenuListProps> {
     const theme = getTheme();
 
     const CustomMenuRender: React.FC<{
@@ -918,12 +1059,19 @@ export class Director {
       return (
         <div id={calloutKey}>
           {mapping ? (
-            <Callout
+            <>
+            {/* <Callout
               target={`#${calloutKey}`}
               directionalHint={DirectionalHint.leftCenter}
             >
               {mapping.onRender(mapping, () => null)}
-            </Callout>
+            </Callout> */}
+            <Popover open={mapping != null}>
+              <PopoverSurface>
+                {mapping.onRender(mapping, () => null)}
+              </PopoverSurface>
+            </Popover>
+            </>
           ) : null}
           {!props.items.find(
             (item) => item.key === "first" || item.key === "avg"

@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-import { DefaultButton, Dropdown, IDropdownOption } from "@fluentui/react";
+import { Dropdown, IDropdownOption } from "@fluentui/react";
 import { strings } from "../../../strings";
 import { ColorGradient, deepClone } from "../../../core";
 import {
@@ -11,6 +11,9 @@ import {
   dropdownStyles,
 } from "./styles";
 import { Colorspace } from "../fluent_ui_gradient_picker";
+import { SVGImageIcon } from "../icons";
+import * as R from "../../resources";
+import { Button } from "@fluentui/react-components";
 
 interface CustomGradientButtonsProps {
   currentGradient: ColorGradient;
@@ -30,32 +33,34 @@ export class CustomGradientButtons extends React.Component<
     return (
       <CustomGradientButtonsWrapper>
         <div>
-          <DefaultButton
-            iconProps={{
-              iconName: "Add",
-            }}
-            text={strings.scaleEditor.add}
+          <Button
+            // iconProps={{
+              // iconName: "Add",
+            // }}
+            title={strings.scaleEditor.add}
+            icon={<SVGImageIcon url={R.getSVGIcon('ChromeClose')}/>}
             onClick={() => {
               const newGradient = deepClone(currentGradient);
               newGradient.colors.push({ r: 150, g: 150, b: 150 });
               this.props.selectGradient(newGradient, true);
             }}
-            styles={defaultActionButtonsStyles}
-          />
+            // styles={defaultActionButtonsStyles}
+          >{strings.scaleEditor.add}</Button>
         </div>
         <div>
-          <DefaultButton
-            iconProps={{
-              iconName: "Sort",
-            }}
-            text={strings.scaleEditor.reverse}
+          <Button
+            // iconProps={{
+            //   iconName: "Sort",
+            // }}
+            icon={<SVGImageIcon url={R.getSVGIcon('Sort')}/>}
+            title={strings.scaleEditor.reverse}
             onClick={() => {
               const newGradient = deepClone(currentGradient);
               newGradient.colors.reverse();
               this.props.selectGradient(newGradient, true);
             }}
-            styles={defaultActionButtonsStyles}
-          />
+            // styles={defaultActionButtonsStyles}
+          >{strings.scaleEditor.reverse}</Button>
         </div>
         <Dropdown
           options={dropdownItems}

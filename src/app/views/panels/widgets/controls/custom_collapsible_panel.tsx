@@ -3,11 +3,14 @@
 
 import * as React from "react";
 import { CSSProperties, useCallback, useMemo, useState } from "react";
-import { DefaultButton, Label } from "@fluentui/react";
+// import { DefaultButton, Label } from "@fluentui/react";
 // import { PanelHeaderStyles } from "./fluentui_customized_components";
 import { AppStore } from "../../../../../app/stores";
 import { getRandomNumber } from "../../../../../core";
 import { ContextMenuCallout } from "./contextMenuCallout";
+import { Button, Label } from "@fluentui/react-components";
+import { SVGImageIcon } from "../../../../components";
+import * as R from "../../../../resources";
 
 interface CollapsiblePanelProps {
   widgets: JSX.Element[];
@@ -89,29 +92,24 @@ export const PanelHeader = ({
 }: PanelHeaderProps): JSX.Element => {
   return (
     <div onClick={() => setCollapsed(!collapsed)}>
-      <DefaultButton
-        iconProps={{
-          iconName: collapsed ? "ChevronRight" : "ChevronDown",
-          styles: {
-            root: {
-              fontSize: "unset",
-              height: 12,
-            },
-          },
-        }}
+      <Button
+        // iconProps={{
+        //   iconName: collapsed ? "ChevronRight" : "ChevronDown",
+        //   styles: {
+        //     root: {
+        //       fontSize: "unset",
+        //       height: 12,
+        //     },
+        //   },
+        // }}
+        icon={<SVGImageIcon url={R.getSVGIcon(collapsed ? "ChevronRight" : "ChevronDown")}/>}
+
         // styles={PanelHeaderStyles}
         onClick={() => {
           setCollapsed(!collapsed);
         }}
       />
-      <Label
-        styles={{
-          root: {
-            display: "inline-block",
-            cursor: "pointer",
-          },
-        }}
-      >
+      <Label>
         {header}
       </Label>
     </div>

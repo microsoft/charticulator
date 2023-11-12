@@ -5,11 +5,13 @@ import { AppStore } from "../../../../../app/stores";
 import { strings } from "../../../../../strings";
 import { Actions } from "../../../../../app";
 import { CollapseOrExpandPanels } from "../../../../../core/specification/types";
-import { Callout, getTheme, List } from "@fluentui/react";
+// import { Callout, getTheme, List } from "@fluentui/react";
+import { List } from "@fluentui/react";
 import {
   FluentDataBindingMenuItem,
   FluentDataBindingMenuLabel,
 } from "./fluentui_customized_components";
+import { Popover, PopoverSurface, PopoverTrigger } from "@fluentui/react-components";
 
 interface ContextMenuCalloutProps {
   store?: AppStore;
@@ -59,7 +61,7 @@ export const ContextMenuCallout = ({
 
   return (
     <>
-      {calloutVisible && (
+      {/* {calloutVisible && (
         <Callout
           target={`#${calloutId}`}
           isBeakVisible={false}
@@ -92,7 +94,37 @@ export const ContextMenuCallout = ({
             />
           </div>
         </Callout>
-      )}
+      )} */}
+      <Popover open={calloutVisible}>
+        {/* <PopoverTrigger>
+
+        </PopoverTrigger> */}
+        <PopoverSurface>
+        <div>
+            <List
+              items={menuItems}
+              onRenderCell={(item) => {
+                return (
+                  <FluentDataBindingMenuItem
+                    onClick={() => {
+                      item.onClick();
+                      hideCallout(false);
+                    }}
+                  >
+                    <FluentDataBindingMenuLabel
+                      style={{
+                        padding: 2,
+                      }}
+                    >
+                      {item.name}
+                    </FluentDataBindingMenuLabel>
+                  </FluentDataBindingMenuItem>
+                );
+              }}
+            />
+          </div>
+        </PopoverSurface>
+      </Popover>
     </>
   );
 };

@@ -28,9 +28,9 @@ export const defaultPaletteButtonsStyles: IButtonStyles = {
   },
 };
 
-export const NullButtonWrapper = styled.div`
-  border-top: 1px solid #e6e6e6;
-`;
+// export const NullButtonWrapper = styled.div`
+//   border-top: 1px solid #e6e6e6;
+// `;
 
 export const ColorGridRowWrapper = styled.div`
   display: flex;

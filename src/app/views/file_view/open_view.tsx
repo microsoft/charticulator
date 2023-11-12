@@ -11,8 +11,9 @@ import { Actions } from "../../actions";
 import { showOpenFileDialog, readFileAsString } from "../../utils";
 import { strings } from "../../../strings";
 import { AppStore } from "../../stores";
-import { DefaultButton } from "@fluentui/react";
+// import { DefaultButton } from "@fluentui/react";
 import { primaryButtonStyles } from "../../../core";
+import { Button } from "@fluentui/react-components";
 
 export interface FileViewOpenState {
   chartList: ItemDescription[];
@@ -187,12 +188,13 @@ export class FileViewOpen extends React.Component<
       <section className="charticulator__file-view-content is-fix-width">
         <h1>{strings.mainTabs.open}</h1>
         <div style={{ marginBottom: "12px" }}>
-          <DefaultButton
-            iconProps={{
-              iconName: "OpenFolderHorizontal",
-            }}
-            styles={primaryButtonStyles}
-            text={strings.fileOpen.open}
+          <Button
+            // iconProps={{
+            //   iconName: "OpenFolderHorizontal",
+            // }}
+            icon={<SVGImageIcon url={R.getSVGIcon('OpenFolderHorizontal')}/>}
+            // styles={primaryButtonStyles}
+            title={strings.fileOpen.open}
             onClick={async () => {
               const file = await showOpenFileDialog(["chart"]);
               const str = await readFileAsString(file);
@@ -202,7 +204,7 @@ export class FileViewOpen extends React.Component<
               );
               this.props.onClose();
             }}
-          />
+          >{strings.fileOpen.open}</Button>
         </div>
 
         {this.renderChartList()}

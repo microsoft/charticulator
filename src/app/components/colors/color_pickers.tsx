@@ -2,9 +2,10 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-import { DefaultButton } from "@fluentui/react";
+// import { DefaultButton } from "@fluentui/react";
 import { defaultPaletteButtonsStyles } from "./styles";
 import { ColorPickerState } from "../fluentui_color_picker";
+import { Button, ToggleButton } from "@fluentui/react-components";
 
 export enum PickerType {
   HCL = "hcl",
@@ -25,12 +26,12 @@ export class ColorPickerButton extends React.Component<
     const text =
       this.props.type === PickerType.HCL ? "HCL Picker" : "HSV Picker";
     return (
-      <DefaultButton
-        text={text}
+      <ToggleButton
+        title={text}
         onClick={this.props.onClick}
         checked={this.props.state.currentPicker == this.props.type}
-        styles={defaultPaletteButtonsStyles}
-      />
+        // styles={defaultPaletteButtonsStyles}
+      >{text}</ToggleButton>
     );
   }
 }
