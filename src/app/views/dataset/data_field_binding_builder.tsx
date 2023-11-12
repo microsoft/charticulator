@@ -22,7 +22,7 @@ import {
   IContextualMenuItem,
   IContextualMenuListProps,
   IRenderFunction,
-  Label,
+  // Label,
 } from "@fluentui/react";
 import {
   DerivedColumnDescription,
@@ -47,7 +47,7 @@ import {
 } from "../panels/widgets/controls/fluentui_customized_components";
 import { CollapsiblePanel } from "../panels/widgets/controls/collapsiblePanel";
 import React = require("react");
-import { Menu, MenuButton, MenuItem, MenuList, MenuPopover, MenuTrigger, Popover, PopoverSurface, PopoverTrigger } from "@fluentui/react-components";
+import { Label, Menu, MenuButton, MenuItem, MenuList, MenuPopover, MenuTrigger, Popover, PopoverSurface, PopoverTrigger } from "@fluentui/react-components";
 import { SVGImageIcon } from "../../components";
 import * as R from "../../resources";
 
@@ -976,7 +976,7 @@ export class Director {
                   item.onClick(e as any, item);
                 }
               }}
-              styles={defaultLabelStyle}
+              // styles={defaultLabelStyle}
             >
               {item.text}
             </Label>
@@ -1086,7 +1086,7 @@ export class Director {
                     <CollapsiblePanel
                       key={item.key}
                       header={() => (
-                        <Label styles={defaultLabelStyle}>{item.text}</Label>
+                        <Label>{item.text}</Label>
                       )}
                       isCollapsed={expand === null}
                       widgets={item.subMenuProps.items.map((item) => {

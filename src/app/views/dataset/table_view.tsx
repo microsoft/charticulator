@@ -10,7 +10,8 @@
 import * as React from "react";
 import { Dataset } from "../../../core";
 import { getConvertableTypes } from "../../utils";
-import { Dropdown } from "@fluentui/react";
+import { Dropdown, Option } from "@fluentui/react-components";
+// import { Dropdown } from "@fluentui/react";
 
 export interface TableViewProps {
   table: Dataset.Table;
@@ -63,24 +64,42 @@ export class TableView extends React.Component<
                     <td key={`${c.name}-${index}`}>
                       {
                         <Dropdown
-                          onChange={(ev, newType) => {
-                            onTypeChange(c.name, newType.key as string);
+                          style={{
+                            minWidth: 'unset'
+                          }}
+                          onOptionSelect={(ev, { optionText, optionValue }) => {
+                            onTypeChange(c.name, optionValue as string);
                             this.forceUpdate();
                           }}
-                          styles={{
-                            title: {
-                              borderWidth: "0px",
-                            },
-                          }}
-                          selectedKey={c.type}
-                          options={convertableTypes.map((type) => {
-                            const str = type.toString();
-                            return {
-                              key: type,
-                              text: str[0].toUpperCase() + str.slice(1),
-                            };
-                          })}
-                        />
+                          // styles={{
+                          //   title: {
+                          //     borderWidth: "0px",
+                          //   },
+                          // }}
+                          value={c.type}
+                          selectedOptions={[c.type]}
+                          // options={convertableTypes.map((type) => {
+                          //   const str = type.toString();
+                          //   return {
+                          //     key: type,
+                          //     text: str[0].toUpperCase() + str.slice(1),
+                          //   };
+                          // })}
+                        >
+                          {
+                            convertableTypes.map((type) => {
+                              const str = type.toString();
+                              return {
+                                key: type,
+                                text: str[0].toUpperCase() + str.slice(1),
+                              };
+                            }).map(o => {
+                              return (
+                                <Option value={o.key} text={o.text}>{o.text}</Option>
+                              )
+                            })
+                          }
+                        </Dropdown>
                       }
                     </td>
                   );

@@ -321,19 +321,22 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       return;
     }
 
-    const originTable = this.originDataset.tables.find(
-      (table) => table.name === action.tableName
-    );
-    let originColumn = originTable.columns.find(
-      (column) => column.name === action.column
-    );
-    if (originColumn.metadata.rawColumnName) {
-      originColumn = originTable.columns.find(
-        (column) => column.name === originColumn.metadata.rawColumnName
+    let originTable = undefined;
+    if (this.originDataset) {
+      originTable = this.originDataset.tables.find(
+        (table) => table.name === action.tableName
       );
+      let originColumn = originTable.columns.find(
+        (column) => column.name === action.column
+      );
+      if (originColumn.metadata.rawColumnName) {
+        originColumn = originTable.columns.find(
+          (column) => column.name === originColumn.metadata.rawColumnName
+        );
+      }
     }
 
-    const result = convertColumns(table, column, originTable, action.type);
+    const result = convertColumns(table, column, originTable || table, action.type);
     if (result) {
       this.messageState.set("columnConvertError", result);
     }
