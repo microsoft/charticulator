@@ -5,7 +5,7 @@ import {
   GroupHeader,
   IGroupHeaderProps,
   IRenderFunction,
-  Label,
+  // Label,
   SelectionMode,
 } from "@fluentui/react";
 import * as React from "react";
@@ -20,6 +20,7 @@ import { Actions } from "../../../../../app";
 import { CollapseOrExpandPanels } from "../../../../../core/specification/types";
 import { getRandomNumber } from "../../../../../core";
 import { ContextMenuCallout } from "./contextMenuCallout";
+import { Label } from "@fluentui/react-components";
 
 interface CollapsiblePanelProps {
   header: string | IRenderFunction<IGroupHeaderProps>;

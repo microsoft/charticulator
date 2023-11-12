@@ -80,7 +80,8 @@ import {
   Button,
   PopoverTrigger,
   Popover,
-  PopoverSurface
+  PopoverSurface,
+  ToggleButton
 } from "@fluentui/react-components"
 
 import { FluentMappingEditor } from "./fluent_mapping_editor";
@@ -771,23 +772,24 @@ export class FluentUIWidgetManager
           ) : null}
           {options.options.map((option, index) => {
             return (
-              <IconButton
+              <ToggleButton
                 key={`${this.getKeyFromProperty(property)}-${options.label}-${
                   options.type
                 }-${index}`}
-                iconProps={{
-                  iconName: options.icons[index],
-                }}
-                style={{
-                  stroke: `${theme.palette.themePrimary} !important`,
-                }}
-                styles={{
-                  label: null,
-                  root: {
-                    minWidth: "unset",
-                    ...defultBindButtonSize,
-                  },
-                }}
+                // iconProps={{
+                //   iconName: options.icons[index],
+                // }}
+                icon={<SVGImageIcon url={R.getSVGIcon(options.icons[index])}/>}
+                // style={{
+                //   stroke: `${theme.palette.themePrimary} !important`,
+                // }}
+                // styles={{
+                //   label: null,
+                //   root: {
+                //     minWidth: "unset",
+                //     ...defultBindButtonSize,
+                //   },
+                // }}
                 title={options.labels[index]}
                 checked={option === (this.getPropertyValue(property) as string)}
                 onClick={() => {
