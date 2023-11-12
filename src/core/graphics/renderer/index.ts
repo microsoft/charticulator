@@ -87,12 +87,12 @@ export class ChartRenderer {
         this.manager,
         state.emphasized
       );
-      if (g.key) {
-        g.key += `ps-${plotSegment._id}-gl-${glyphIndex}`
-      } else {
-        g.key = `ps-${plotSegment._id}-gl-${glyphIndex}`
-      }
       if (g != null) {
+        if (g.key) {
+          g.key += `ps-${plotSegment._id}-gl-${glyphIndex}`
+        } else {
+          g.key = `ps-${plotSegment._id}-gl-${glyphIndex}`
+        }
         g.selectable = {
           plotSegment,
           glyphIndex: index,
