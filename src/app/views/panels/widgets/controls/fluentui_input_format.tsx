@@ -13,7 +13,7 @@ import {
   replaceSymbolByNewLine,
   replaceTabBySymbol,
 } from "../../../../../core";
-import { FluentColumnLayout, defaultStyle, labelRender } from "./fluentui_customized_components";
+import { FluentColumnLayout } from "./fluentui_customized_components";
 import { InputExpressionProps } from "./fluentui_input_expression";
 
 export interface InputFormatProps {

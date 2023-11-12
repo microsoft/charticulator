@@ -2,16 +2,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import {
+// import {
   // Callout,
   // DefaultButton,
-  Dropdown,
-  IContextualMenuItem,
-  IContextualMenuListProps,
-  IRenderFunction,
+  // Dropdown,
+  // IContextualMenuItem, IContextualMenuProps,
+  // IContextualMenuListProps,
+  // IRenderFunction,
   // Label,
-  TextField,
-} from "@fluentui/react";
+  // TextField,
+// } from "@fluentui/react";
 import * as React from "react";
 import {
   Color,
@@ -30,18 +30,21 @@ import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
 import { strings } from "../../../../strings";
 import {
-  defaultLabelStyle,
-  defaultStyle,
-  defultBindButtonSize,
-  defultComponentsHeight,
+  FluentColumnLayout,
+  // defaultLabelStyle,
+  // defaultStyle,
+  // defultBindButtonSize,
+  // defultComponentsHeight,
   // FluentTextField,
-  labelRender,
+  // labelRender,
 } from "./controls/fluentui_customized_components";
 import { InputImage } from "./controls/fluentui_image";
 import { FluentInputNumber } from "./controls/fluentui_input_number";
-import { Button, Label, Popover, PopoverSurface, PopoverTrigger } from "@fluentui/react-components";
+import { Button, Dropdown, Input, Label, Popover, PopoverSurface, PopoverTrigger, Option } from "@fluentui/react-components";
 import { SVGImageIcon } from "../../../../app/components";
 import * as R from "../../../resources";
+import { IContextualMenuItem } from "../../dataset/data_field_binding_builder";
+
 
 export interface ValueEditorProps {
   value: Specification.AttributeValue;
@@ -155,14 +158,16 @@ export class FluentValueEditor extends ContextedComponent<
         return (
           <span className="el-color-value">
             {/* <FluentTextField> */}
-              <TextField
-                styles={defaultStyle}
-                label={this.props.label}
+            <FluentColumnLayout>
+              <Label>{this.props.label}</Label>
+              <Input
+                // styles={defaultStyle}
+                // label={this.props.label}
                 placeholder={this.props.placeholder}
-                onRenderLabel={labelRender}
+                // onRenderLabel={labelRender}
                 value={this.state.value}
                 type="text"
-                onChange={(event, newValue) => {
+                onChange={(event, { value: newValue}) => {
                   newValue = newValue.trim();
                   if (newValue == "") {
                     this.emitClearValue();
@@ -188,6 +193,7 @@ export class FluentValueEditor extends ContextedComponent<
                   }
                 }}
               />
+              </FluentColumnLayout>
             {/* </FluentTextField> */}
             {/* {this.state.open && (
               <Callout
@@ -304,28 +310,29 @@ export class FluentValueEditor extends ContextedComponent<
           );
         } else {
           return (
-            <>
-              <TextField
-                label={this.props.label}
-                defaultValue={str}
-                onRenderLabel={labelRender}
+            <FluentColumnLayout>
+              <Label>{this.props.label}</Label>
+              <Input
+                // label={this.props.label}
+                value={str}
+                // onRenderLabel={labelRender}
                 placeholder={placeholderText}
-                onChange={(event, newValue) => {
-                  if (newValue == null) {
+                onChange={(event, { value }) => {
+                  if (value == null) {
                     this.emitClearValue();
                   } else {
-                    this.emitSetValue(newValue);
+                    this.emitSetValue(value);
                   }
                   return true;
                 }}
-                styles={defaultStyle}
+                // styles={defaultStyle}
                 onKeyDown={(e) => {
                   if (this.props.stopPropagation) {
                     e.stopPropagation();
                   }
                 }}
               />
-            </>
+            </FluentColumnLayout>
           );
         }
       }
@@ -333,32 +340,45 @@ export class FluentValueEditor extends ContextedComponent<
         const str = value as string;
         const strings = this.props.hints.rangeEnum;
         return (
+          <FluentColumnLayout>
+            <Label>{this.props.label}</Label>
           <Dropdown
-            styles={{
-              ...(defaultStyle as any),
-              title: {
-                ...defaultStyle.title,
-                lineHeight: defultBindButtonSize.height,
-              },
+            // styles={{
+            //   ...(defaultStyle as any),
+            //   title: {
+            //     ...defaultStyle.title,
+            //     lineHeight: defultBindButtonSize.height,
+            //   },
+            // }}
+            // label={this.props.label}
+            // onRenderLabel={labelRender}
+            value={str}
+            // options={strings.map((str) => {
+            //   return {
+            //     key: str,
+            //     text: str,
+            //   };
+            // })}
+            onOptionSelect={(event, {  optionValue }) => {
+              if (value == null) {
+                this.emitClearValue();
+              } else {
+                this.emitSetValue(optionValue);
+              }
+              return true;
             }}
-            label={this.props.label}
-            onRenderLabel={labelRender}
-            selectedKey={str}
-            options={strings.map((str) => {
+          ></Dropdown>
+          {
+            strings.map((str) => {
               return {
                 key: str,
                 text: str,
               };
-            })}
-            onChange={(event, value) => {
-              if (value == null) {
-                this.emitClearValue();
-              } else {
-                this.emitSetValue(value.key);
-              }
-              return true;
-            }}
-          />
+            }).map( o => {
+              return (<Option value={o.key} text={o.key}>{o.text}</Option>)
+            })
+          }
+          </FluentColumnLayout>
         );
       }
       case Specification.AttributeType.Boolean: {

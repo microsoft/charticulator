@@ -3,7 +3,7 @@
 
 import * as React from "react";
 // import { DefaultButton } from "@fluentui/react";
-import { defaultPaletteButtonsStyles } from "./styles";
+// import { defaultPaletteButtonsStyles } from "./styles";
 import { ColorPickerState } from "../fluentui_color_picker";
 import { Button, ToggleButton } from "@fluentui/react-components";
 

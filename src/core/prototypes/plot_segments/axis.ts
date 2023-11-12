@@ -1563,11 +1563,11 @@ export function buildAxisAppearanceWidgets(
               {
                 type: "checkbox",
                 label: strings.objects.axes.showTickLine,
-                checkBoxStyles: {
-                  root: {
-                    marginTop: 5,
-                  },
-                },
+                // checkBoxStyles: {
+                //   root: {
+                //     marginTop: 5,
+                //   },
+                // },
                 searchSection: [
                   strings.objects.style,
                   options.mainCollapsePanelHeader,
@@ -1579,11 +1579,11 @@ export function buildAxisAppearanceWidgets(
               {
                 type: "checkbox",
                 label: strings.objects.axes.showBaseline,
-                checkBoxStyles: {
-                  root: {
-                    marginTop: 5,
-                  },
-                },
+                // checkBoxStyles: {
+                //   root: {
+                //     marginTop: 5,
+                //   },
+                // },
                 searchSection: [
                   strings.objects.style,
                   options.mainCollapsePanelHeader,

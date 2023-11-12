@@ -1,20 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import * as React from "react";
-import {
-  IButtonStyles,
-  IDropdownProps,
-  IGroupedListStyleProps,
-  IGroupedListStyles,
-  IGroupHeaderStyleProps,
-  IGroupHeaderStyles,
-  ILabelStyles,
-  IRenderFunction,
-  IStyleFunctionOrObject,
-  ITextFieldProps,
-  Label,
-} from "@fluentui/react";
+// import * as React from "react";
+// import {
+  // IButtonStyles,
+  // IDropdownProps,
+  // IGroupedListStyleProps,
+  // IGroupedListStyles,
+  // IGroupHeaderStyleProps,
+  // IGroupHeaderStyles,
+  // ILabelStyles,
+  // IRenderFunction,
+  // IStyleFunctionOrObject,
+  // ITextFieldProps,
+  // Label,
+// } from "@fluentui/react";
 import styled from "styled-components";
 
 export const defultBindButtonSize = {
@@ -97,16 +97,16 @@ export const FluentColumnLayout = styled.div`
 
 export const defaultFontWeight = 400;
 
-export const defaultLabelStyle: ILabelStyles = {
-  root: {
-    fontWeight: defaultFontWeight,
-    lineHeight: "unset",
-  },
-};
+// export const defaultLabelStyle: ILabelStyles = {
+//   root: {
+//     fontWeight: defaultFontWeight,
+//     lineHeight: "unset",
+//   },
+// };
 
-export const labelRender: IRenderFunction<ITextFieldProps & IDropdownProps> = ({
-  label,
-}) => (label ? <Label styles={defaultLabelStyle}>{label}</Label> : null);
+// export const labelRender: IRenderFunction<ITextFieldProps & IDropdownProps> = ({
+//   label,
+// }) => (label ? <Label styles={defaultLabelStyle}>{label}</Label> : null);
 
 export const NestedChartButtonsWrapper = styled.div`
   margin-top: 5px;

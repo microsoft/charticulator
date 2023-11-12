@@ -12,7 +12,7 @@ import {
 // import { TextField } from "@fluentui/react";
 import { Input, Label } from "@fluentui/react-components";
 
-import { FluentColumnLayout, defaultStyle, labelRender } from "./fluentui_customized_components";
+import { FluentColumnLayout } from "./fluentui_customized_components";
 
 export interface InputExpressionProps {
   validate?: (value: string) => Expression.VerifyUserExpressionReport;

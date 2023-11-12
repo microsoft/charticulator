@@ -83,7 +83,8 @@ import {
   Popover,
   PopoverSurface,
   ToggleButton,
-  Field
+  Field,
+  Tooltip
 } from "@fluentui/react-components"
 
 import { DatePicker } from "@fluentui/react-datepicker-compat"
@@ -135,7 +136,7 @@ import { OrderMode } from "../../../../core/specification/types";
 import { CustomCollapsiblePanel } from "./controls/custom_collapsible_panel";
 import { FluentUIReorderStringsValue } from "./controls/fluentui_reorder_string_value";
 import { InputColorGradient } from "./controls/input_gradient";
-import { dropdownStyles, onRenderOption, onRenderTitle } from "./styles";
+// import { dropdownStyles, onRenderOption, onRenderTitle } from "./styles";
 import { getDropzoneAcceptTables } from "./utils";
 import { EditorType } from "../../../stores/app_store";
 
@@ -1904,7 +1905,7 @@ export class FluentUIWidgetManager
               }}
             >{editNestedChartText}</Button>,
             <Button
-              text={importTemplate}
+              // text={importTemplate}
               onClick={async () => {
                 const file = await showOpenFileDialog(["tmplt", "json"]);
                 const str = await readFileAsString(file);
@@ -2041,8 +2042,7 @@ export class FluentUIWidgetManager
     widget: JSX.Element,
     tooltipContent: JSX.Element
   ): JSX.Element {
-    throw new Error('Not implemented');
-    // return <TooltipHost content={tooltipContent}>{widget}</TooltipHost>;
+    return <Tooltip relationship="label" content={tooltipContent}>{widget}</Tooltip>;
   }
 
   public customCollapsiblePanel(

@@ -5,11 +5,11 @@ import * as React from "react";
 import { ReorderListView } from "../../object_list_editor";
 import { ButtonRaised, SVGImageIcon } from "../../../../components";
 import { strings } from "../../../../../strings";
-import { TooltipHost } from "@fluentui/react";
+// import { TooltipHost } from "@fluentui/react";
 // import { defultComponentsHeight } from "./fluentui_customized_components";
 import { getRandomNumber } from "../../../../../core";
 import { DataType } from "../../../../../core/specification";
-import { Button } from "@fluentui/react-components";
+import { Button, Label, Tooltip } from "@fluentui/react-components";
 
 import * as R from "../../../../resources";
 
@@ -63,7 +63,7 @@ export class FluentUIReorderStringsValue extends React.Component<
           >
             {items.map((x) => (
               <div key={x + getRandomNumber()} className="el-item">
-                <TooltipHost content={x}>{x}</TooltipHost>
+                <Tooltip relationship="label" content={x}><Label>{x}</Label></Tooltip>
               </div>
             ))}
           </ReorderListView>

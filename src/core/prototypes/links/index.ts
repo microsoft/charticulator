@@ -775,11 +775,11 @@ export abstract class LinksClass extends ChartElementClass {
           {
             type: "checkbox",
             label: strings.objects.links.closeLink,
-            checkBoxStyles: {
-              root: {
-                marginTop: 5,
-              },
-            },
+            // checkBoxStyles: {
+            //   root: {
+            //     marginTop: 5,
+            //   },
+            // },
             searchSection: strings.objects.general,
           }
         )

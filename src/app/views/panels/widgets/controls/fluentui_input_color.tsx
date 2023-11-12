@@ -21,12 +21,12 @@ import { AppStore } from "../../../../stores";
 import { Input, Popover, PopoverTrigger, PopoverSurface, Label } from "@fluentui/react-components"
 
 import {
-  defaultLabelStyle,
-  defaultStyle,
-  defultComponentsHeight,
+  // defaultLabelStyle,
+  // defaultStyle,
+  // defultComponentsHeight,
   FluentColumnLayout,
   // FluentTextField,
-  labelRender,
+  // labelRender,
 } from "./fluentui_customized_components";
 import { strings } from "../../../../../strings";
 import { FluentUIGradientPicker } from "../../../../components/fluent_ui_gradient_picker";

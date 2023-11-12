@@ -5,11 +5,11 @@ import * as React from "react";
 // import { DefaultButton, Label, TextField } from "@fluentui/react";
 import {
   FluentColumnLayout,
-  defaultStyle,
-  defultBindButtonSize,
+  // defaultStyle,
+  // defultBindButtonSize,
   // FluentButton,
   // FluentTextField,
-  labelRender,
+  // labelRender,
 } from "./fluentui_customized_components";
 import { strings } from "../../../../../strings";
 import { Prototypes, Specification } from "../../../../../core";

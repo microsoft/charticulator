@@ -4,7 +4,7 @@ import {
   GroupedList,
   GroupHeader,
   IGroupHeaderProps,
-  IRenderFunction,
+  // IRenderFunction,
   // Label,
   SelectionMode,
 } from "@fluentui/react";
@@ -23,7 +23,7 @@ import { ContextMenuCallout } from "./contextMenuCallout";
 import { Label } from "@fluentui/react-components";
 
 interface CollapsiblePanelProps {
-  header: string | IRenderFunction<IGroupHeaderProps>;
+  header: string;
   widgets: JSX.Element[];
   isCollapsed?: boolean;
   alignVertically?: boolean;

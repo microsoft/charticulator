@@ -1,18 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Checkbox, Dropdown } from "@fluentui/react";
+// import { Checkbox, Dropdown } from "@fluentui/react";
 import * as React from "react";
 import { Expression, Prototypes, Specification } from "../../../../core";
 import { strings } from "../../../../strings";
 import { Actions } from "../../../actions";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import {
+  FluentColumnLayout,
   // FluentCheckbox,
-  labelRender,
+  // labelRender,
 } from "./controls/fluentui_customized_components";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 import { CharticulatorPropertyAccessors } from "./types";
-import { Button } from "@fluentui/react-components";
+import { Button, Checkbox, Dropdown, Label, Option } from "@fluentui/react-components";
+// import { Label } from "@fluentui/react";
 
 export interface FilterEditorProps {
   manager: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
@@ -197,11 +199,12 @@ export class FluentUIFilterEditor extends React.Component<
                       {keysSorted.map((key) => (
                         <div key={key}>
                           {/* <FluentCheckbox> */}
+                          {/* <FluentColumnLayout> */}
                             <Checkbox
                               checked={value.categories.values[key]}
                               label={key}
-                              onChange={(ev, newValue) => {
-                                value.categories.values[key] = newValue;
+                              onChange={(ev, { checked }) => {
+                                value.categories.values[key] = checked as boolean;
                                 this.emitUpdateFilter({
                                   categories: {
                                     expression: value.categories.expression,
@@ -210,6 +213,7 @@ export class FluentUIFilterEditor extends React.Component<
                                 });
                               }}
                             />
+                          {/* </FluentColumnLayout> */}
                           {/* </FluentCheckbox> */}
                         </div>
                       ))}
@@ -226,32 +230,34 @@ export class FluentUIFilterEditor extends React.Component<
         <div className="attribute-editor">
           <div className="header">{strings.filter.editFilter}</div>
           {manager.vertical(
+            <FluentColumnLayout>
+              <Label>{strings.filter.filterType}</Label>
             <Dropdown
-              label={strings.filter.filterType}
-              styles={{
-                root: {
-                  minWidth: 105,
-                },
-              }}
-              onRenderLabel={labelRender}
-              options={[
-                strings.filter.none,
-                strings.filter.categories,
-                strings.filter.expression,
-              ].map((type) => {
-                return {
-                  key: type.toLowerCase(),
-                  text: type,
-                };
-              })}
-              selectedKey={this.state.type}
-              onChange={(event, newValue) => {
-                if (this.state.type != newValue.key) {
-                  if (newValue.key == "none") {
+              // label={strings.filter.filterType}
+              // styles={{
+              //   root: {
+              //     minWidth: 105,
+              //   },
+              // }}
+              // onRenderLabel={labelRender}
+              // options={[
+              //   strings.filter.none,
+              //   strings.filter.categories,
+              //   strings.filter.expression,
+              // ].map((type) => {
+              //   return {
+              //     key: type.toLowerCase(),
+              //     text: type,
+              //   };
+              // })}
+              value={this.state.type}
+              onOptionSelect={(event, { optionValue }) => {
+                if (this.state.type != optionValue) {
+                  if (optionValue == "none") {
                     this.emitUpdateFilter(null);
                   } else {
                     this.setState({
-                      type: newValue.key as string,
+                      type: optionValue as string,
                       currentValue: {
                         expression: "",
                         categories: {
@@ -263,7 +269,21 @@ export class FluentUIFilterEditor extends React.Component<
                   }
                 }
               }}
-            />,
+            >{
+              [
+                strings.filter.none,
+                strings.filter.categories,
+                strings.filter.expression,
+              ].map((type) => {
+                return {
+                  key: type.toLowerCase(),
+                  text: type,
+                };
+              }).map(o => {
+                return (<Option value={o.key} text={o.text}>{o.text}</Option>)
+              })
+            }</Dropdown>
+            </FluentColumnLayout>,
             ...typedControls
           )}
         </div>

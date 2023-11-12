@@ -22,13 +22,13 @@ import { ScaleValueSelector } from "../scale_value_selector";
 import { FunctionCall } from "../../../../core/expression";
 import { FluentValueEditor } from "./fluentui_value_editor";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
-import {
+// import {
   // DefaultButton,
   // ActionButton,
   // Label,
-  IContextualMenuItem,
+  // IContextualMenuItem,
   // Callout,
-} from "@fluentui/react";
+// } from "@fluentui/react";
 
 import {
   Label,
@@ -46,9 +46,9 @@ import {
 } from "@fluentui/react-components"
 
 import {
-  defaultLabelStyle,
-  defultBindButtonSize,
-  defultComponentsHeight,
+  // defaultLabelStyle,
+  // defultBindButtonSize,
+  // defultComponentsHeight,
   FluentColumnLayout,
   // FluentActionButton,
   // FluentButton,
@@ -61,6 +61,7 @@ import {
 } from "../../dataset/fluent_ui_data_field_selector";
 import {
   Director,
+  IContextualMenuItem,
   IDefaultValue,
   MenuItemBuilder,
 } from "../../dataset/data_field_binding_builder";

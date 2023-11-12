@@ -38,7 +38,7 @@ import { FileViewImport, MappingMode } from "../file_view/import_view";
 import { strings } from "../../../strings";
 import { EditorType } from "../../stores/app_store";
 // import { Callout, DefaultButton } from "@fluentui/react";
-import { defultBindButtonSize } from "../panels/widgets/controls/fluentui_customized_components";
+// import { defultBindButtonSize } from "../panels/widgets/controls/fluentui_customized_components";
 import { Button, Popover, PopoverSurface, PopoverTrigger } from "@fluentui/react-components";
 
 export interface DatasetViewProps {
@@ -92,15 +92,15 @@ export interface ColumnsViewState {
   tableViewIsOpened: boolean;
 }
 
-const buttonStyles = {
-  root: {
-    height: `${defultBindButtonSize}px`,
-    width: `${defultBindButtonSize}px`,
-    minWidth: `${defultBindButtonSize}px`,
-    padding: "0px",
-    border: "none",
-  },
-};
+// const buttonStyles = {
+//   root: {
+//     height: `${defultBindButtonSize}px`,
+//     width: `${defultBindButtonSize}px`,
+//     minWidth: `${defultBindButtonSize}px`,
+//     padding: "0px",
+//     border: "none",
+//   },
+// };
 
 export class ColumnsView extends React.Component<
   React.PropsWithChildren<ColumnsViewProps>,

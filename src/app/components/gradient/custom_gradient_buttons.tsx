@@ -2,18 +2,18 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-import { Dropdown, IDropdownOption } from "@fluentui/react";
+// import { Dropdown, IDropdownOption } from "@fluentui/react";
 import { strings } from "../../../strings";
 import { ColorGradient, deepClone } from "../../../core";
 import {
   CustomGradientButtonsWrapper,
   // defaultActionButtonsStyles,
-  dropdownStyles,
+  // dropdownStyles,
 } from "./styles";
 import { Colorspace } from "../fluent_ui_gradient_picker";
 import { SVGImageIcon } from "../icons";
 import * as R from "../../resources";
-import { Button } from "@fluentui/react-components";
+import { Button, Dropdown, Option } from "@fluentui/react-components";
 
 interface CustomGradientButtonsProps {
   currentGradient: ColorGradient;
@@ -26,7 +26,10 @@ export class CustomGradientButtons extends React.Component<
 > {
   render() {
     const currentGradient = this.props.currentGradient;
-    const dropdownItems: IDropdownOption[] = [
+    const dropdownItems: {
+      key: string,
+      text: string
+    }[] = [
       { key: Colorspace.HCL, text: "HCL" },
       { key: Colorspace.LAB, text: "Lab" },
     ];
@@ -63,17 +66,22 @@ export class CustomGradientButtons extends React.Component<
           >{strings.scaleEditor.reverse}</Button>
         </div>
         <Dropdown
-          options={dropdownItems}
-          onChange={(event, option) => {
-            if (option) {
+          // options={dropdownItems}
+          onOptionSelect={(event, { optionText, optionValue }) => {
+            if (optionValue) {
               const newGradient = deepClone(currentGradient);
-              newGradient.colorspace = option.key as Colorspace;
+              newGradient.colorspace = optionValue as Colorspace;
               this.props.selectGradient(newGradient, true);
             }
           }}
-          defaultSelectedKey={currentGradient.colorspace}
-          styles={dropdownStyles}
-        />
+          // defaultSelectedKey={currentGradient.colorspace}
+          value={currentGradient.colorspace}
+          // styles={dropdownStyles}
+        >
+          {
+            dropdownItems.map(o => <Option value={o.key} text={o.text}>{o.text}</Option>)
+          }
+        </Dropdown>
       </CustomGradientButtonsWrapper>
     );
   }

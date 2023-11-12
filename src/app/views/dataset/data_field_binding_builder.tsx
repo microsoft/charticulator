@@ -13,17 +13,18 @@ import {
   Specification,
 } from "../../../core";
 import { AppStore } from "../../stores";
-import {
+// import {
   // Callout,
-  ContextualMenu,
+  // ContextualMenu,
   // DirectionalHint,
   // Dropdown,
   // getTheme,
-  IContextualMenuItem,
-  IContextualMenuListProps,
-  IRenderFunction,
+  // IContextualMenuItem,
+  // IContextualMenuListProps,
+  // IContextualMenuProps,
+  // IRenderFunction,
   // Label,
-} from "@fluentui/react";
+// } from "@fluentui/react";
 import {
   DerivedColumnDescription,
   isKindAcceptable,
@@ -39,15 +40,15 @@ import { DataType, MappingType } from "../../../core/specification";
 import { AggregationFunctionDescription } from "../../../core/expression";
 import {
   FluentRowLayout,
-  defaultLabelStyle,
-  defaultStyle,
-  defultBindButtonSize,
+  // defaultLabelStyle,
+  // defaultStyle,
+  // defultBindButtonSize,
   // FluentDataBindingMenuItem,
   // FluentDataBindingMenuLabel,
 } from "../panels/widgets/controls/fluentui_customized_components";
-import { CollapsiblePanel } from "../panels/widgets/controls/collapsiblePanel";
+// import { CollapsiblePanel } from "../panels/widgets/controls/collapsiblePanel";
 import React = require("react");
-import { Dropdown, Label, Menu, MenuButton, MenuItem, MenuList, MenuPopover, MenuTrigger, Option, Popover, PopoverSurface, PopoverTrigger } from "@fluentui/react-components";
+import { Label, Menu, MenuButton, MenuItem, MenuList, MenuPopover, MenuTrigger, Option, Popover, PopoverSurface, PopoverTrigger } from "@fluentui/react-components";
 import { SVGImageIcon } from "../../components";
 import * as R from "../../resources";
 
@@ -56,6 +57,25 @@ export interface IDefaultValue {
   // lambdaExpression?: string;
   expression?: string;
   type?: MappingType;
+}
+
+export interface IContextualMenuItem {
+  key: string;
+  text?: string;
+  split?: boolean;
+  disabled?: boolean;
+  checked?: boolean;
+  isChecked?: boolean;
+  canCheck?: boolean;
+  data?: any;
+  onClick?: (ev?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>, item?: IContextualMenuItem) => boolean | void;
+  subMenuProps?: {
+    items: IContextualMenuItem[]
+  };
+}
+
+export interface IContextualMenuListProps {
+  items: IContextualMenuItem[];
 }
 
 interface Builder {
@@ -597,7 +617,7 @@ class MenuItemsCreator {
                               isChecked: isSelected,
                               canCheck: true,
                               onClick: onClickFn,
-                              split: mappingConfig.isMappingEditor,
+                              // split: mappingConfig.isMappingEditor,
                               subMenuProps:
                                 mappingConfig.scaleEditorSubMenuProps,
                             };
@@ -938,197 +958,198 @@ export class Director {
     </Menu>;
   }
 
-  public _getMenuRender(): IRenderFunction<IContextualMenuListProps> {
-    // const theme = getTheme();
+  // public _getMenuRender(): IRenderFunction<IContextualMenuListProps> {
+  //   // const theme = getTheme();
 
-    const CustomMenuRender: React.FC<{
-      item: IContextualMenuItem;
-      defaultKey: string;
-    }> = ({ item, defaultKey }) => {
-      let currentFunction: IContextualMenuItem;
-      if (item.subMenuProps) {
-        currentFunction = item.subMenuProps.items.find((i) => i.isChecked);
-        if (currentFunction) {
-          defaultKey = currentFunction.key;
-        }
-      }
+  //   const CustomMenuRender: React.FC<{
+  //     item: IContextualMenuItem;
+  //     defaultKey: string;
+  //   }> = ({ item, defaultKey }) => {
+  //     let currentFunction: IContextualMenuItem;
+  //     if (item.subMenuProps) {
+  //       currentFunction = item.subMenuProps.items.find((i) => i.isChecked);
+  //       if (currentFunction) {
+  //         defaultKey = currentFunction.key;
+  //       }
+  //     }
 
-      return (
-        <>
-        {/* <FluentDataBindingMenuItem
-          key={item.key}
-          backgroundColor={
-            currentFunction
-              ? theme.semanticColors.buttonBackgroundChecked
-              : null
-          }
-          backgroundColorHover={theme.semanticColors.buttonBackgroundHovered}
-        > */}
-          {/* <FluentDataBindingMenuLabel> */}
-            <Label
-              onClick={(e) => {
-                const agr = item.subMenuProps?.items.find(
-                  (item) => item.key === defaultKey
-                );
-                if (agr) {
-                  agr.onClick(e as any, agr);
-                } else {
-                  item.onClick(e as any, item);
-                }
-              }}
-              // styles={defaultLabelStyle}
-            >
-              {item.text}
-            </Label>
-          {/* </FluentDataBindingMenuLabel> */}
-          {item.subMenuProps ? (
-            <Dropdown
-              // styles={{
-              //   ...(defaultStyle as any),
-              //   title: {
-              //     ...defaultStyle.title,
-              //     lineHeight: defultBindButtonSize.height,
-              //     borderWidth: "0px",
-              //   },
-              //   dropdownOptionText: {
-              //     boxSizing: "unset",
-              //     lineHeight: defultBindButtonSize.height,
-              //   },
-              //   callout: {
-              //     minWidth: 180,
-              //   },
-              // }}
-              value={defaultKey}
-              selectedOptions={[defaultKey]}
-              // options={item.subMenuProps.items.map((i) => ({
-              //   key: i.key,
-              //   text: i.text,
-              // }))}
-              onOptionSelect={(e, { optionText, optionValue }) => {
-                const agr = item.subMenuProps.items.find(
-                  (item) => item.key === optionValue
-                );
-                if (agr) {
-                  agr.onClick(e as any, agr);
-                } else {
-                  item.onClick(e as any, item);
-                }
-              }}
-            >{
-              item.subMenuProps.items.map((i) => ({
-                key: i.key,
-                text: i.text,
-              })).map(o => {
-                return (
-                  <Option value={o.key} text={o.text}>{o.text}</Option>
-                )
-              })
-            }</Dropdown>
-          ) : null}
-        {/* // </FluentDataBindingMenuItem> */}
-        </>
-      );
-    };
+  //     return (
+  //       <>
+  //       {/* <FluentDataBindingMenuItem
+  //         key={item.key}
+  //         backgroundColor={
+  //           currentFunction
+  //             ? theme.semanticColors.buttonBackgroundChecked
+  //             : null
+  //         }
+  //         backgroundColorHover={theme.semanticColors.buttonBackgroundHovered}
+  //       > */}
+  //         {/* <FluentDataBindingMenuLabel> */}
+  //           <Label
+  //             onClick={(e) => {
+  //               const agr = item.subMenuProps?.items.find(
+  //                 (item) => item.key === defaultKey
+  //               );
+  //               if (agr) {
+  //                 agr.onClick(e as any, agr);
+  //               } else {
+  //                 item.onClick(e as any, item);
+  //               }
+  //             }}
+  //             // styles={defaultLabelStyle}
+  //           >
+  //             {item.text}
+  //           </Label>
+  //         {/* </FluentDataBindingMenuLabel> */}
+  //         {item.subMenuProps ? (
+  //           <Dropdown
+  //             // styles={{
+  //             //   ...(defaultStyle as any),
+  //             //   title: {
+  //             //     ...defaultStyle.title,
+  //             //     lineHeight: defultBindButtonSize.height,
+  //             //     borderWidth: "0px",
+  //             //   },
+  //             //   dropdownOptionText: {
+  //             //     boxSizing: "unset",
+  //             //     lineHeight: defultBindButtonSize.height,
+  //             //   },
+  //             //   callout: {
+  //             //     minWidth: 180,
+  //             //   },
+  //             // }}
+  //             value={defaultKey}
+  //             selectedOptions={[defaultKey]}
+  //             // options={item.subMenuProps.items.map((i) => ({
+  //             //   key: i.key,
+  //             //   text: i.text,
+  //             // }))}
+  //             onOptionSelect={(e, { optionText, optionValue }) => {
+  //               const agr = item.subMenuProps.items.find(
+  //                 (item) => item.key === optionValue
+  //               );
+  //               if (agr) {
+  //                 agr.onClick(e as any, agr);
+  //               } else {
+  //                 item.onClick(e as any, item);
+  //               }
+  //             }}
+  //           >{
+  //             item.subMenuProps.items.map((i) => ({
+  //               key: i.key,
+  //               text: i.text,
+  //             })).map(o => {
+  //               return (
+  //                 <Option value={o.key} text={o.text}>{o.text}</Option>
+  //               )
+  //             })
+  //           }</Dropdown>
+  //         ) : null}
+  //       {/* // </FluentDataBindingMenuItem> */}
+  //       </>
+  //     );
+  //   };
 
-    return (props) => {
-      const calloutKey = "mappingMenuAnchor";
+  //   return (props) => {
+  //     const calloutKey = "mappingMenuAnchor";
 
-      // find current mapping
-      let mapping = null;
-      const currentColumn = props.items
-        .filter((item) => item.subMenuProps) // exclude None
-        .flatMap((items) => {
-          if (
-            items.subMenuProps &&
-            items.subMenuProps.items.find((i) => i.key === "year")
-          ) {
-            return items.subMenuProps.items;
-          } else {
-            return items;
-          }
-        })
-        .find(
-          (item) =>
-            item.subMenuProps.items.filter((i) => i.isChecked && i.subMenuProps)
-              .length > 0
-        ); // Exclude unselected columns
+  //     // find current mapping
+  //     let mapping = null;
+  //     const currentColumn = props.items
+  //       .filter((item) => item.subMenuProps) // exclude None
+  //       .flatMap((items) => {
+  //         if (
+  //           items.subMenuProps &&
+  //           items.subMenuProps.items.find((i) => i.key === "year")
+  //         ) {
+  //           return items.subMenuProps.items;
+  //         } else {
+  //           return items;
+  //         }
+  //       })
+  //       .find(
+  //         (item) =>
+  //           item.subMenuProps.items.filter((i) => i.isChecked && i.subMenuProps)
+  //             .length > 0
+  //       ); // Exclude unselected columns
 
-      if (currentColumn) {
-        const aggregationFunction = currentColumn.subMenuProps.items.find(
-          (i) => i.isChecked && i.subMenuProps
-        );
+  //     if (currentColumn) {
+  //       const aggregationFunction = currentColumn.subMenuProps.items.find(
+  //         (i) => i.isChecked && i.subMenuProps
+  //       );
 
-        const currentMapping = aggregationFunction.subMenuProps.items.find(
-          (i) => i.key === "mapping"
-        ); // Select mapping of column
+  //       const currentMapping = aggregationFunction.subMenuProps.items.find(
+  //         (i) => i.key === "mapping"
+  //       ); // Select mapping of column
 
-        // set current mapping
-        mapping = currentMapping;
-      }
+  //       // set current mapping
+  //       mapping = currentMapping;
+  //     }
 
-      return (
-        <div id={calloutKey}>
-          {mapping ? (
-            <>
-            {/* <Callout
-              target={`#${calloutKey}`}
-              directionalHint={DirectionalHint.leftCenter}
-            >
-              {mapping.onRender(mapping, () => null)}
-            </Callout> */}
-            <Popover open={mapping != null}>
-              <PopoverSurface>
-                {mapping.onRender(mapping, () => null)}
-              </PopoverSurface>
-            </Popover>
-            </>
-          ) : null}
-          {!props.items.find(
-            (item) => item.key === "first" || item.key === "avg"
-          ) ? (
-            <>
-              {props.items.map((item) => {
-                if (item.subMenuProps?.items.find((i) => i.key === "year")) {
-                  const expand = item.subMenuProps.items.find((columns) =>
-                    columns.subMenuProps.items.find((func) => func.isChecked)
-                  );
-                  debugger;
-                  return (
-                    <CollapsiblePanel
-                      key={item.key}
-                      header={() => (
-                        <Label>{item.text}</Label>
-                      )}
-                      isCollapsed={expand === null}
-                      widgets={item.subMenuProps.items.map((item) => {
-                        const currentKey = item.subMenuProps?.items[0].key;
-                        return (
-                          <CustomMenuRender
-                            key={item.key}
-                            item={item}
-                            defaultKey={currentKey}
-                          />
-                        );
-                      })}
-                    />
-                  );
-                } else {
-                  const currentKey = item.subMenuProps?.items[0].key;
-                  return (
-                    <CustomMenuRender
-                      key={item.key}
-                      item={item}
-                      defaultKey={currentKey}
-                    />
-                  );
-                }
-              })}
-            </>
-          ) : (
-            <ContextualMenu {...props} />
-          )}
-        </div>
-      );
-    };
-  }
+  //     return (
+  //       <div id={calloutKey}>
+  //         {mapping ? (
+  //           <>
+  //           {/* <Callout
+  //             target={`#${calloutKey}`}
+  //             directionalHint={DirectionalHint.leftCenter}
+  //           >
+  //             {mapping.onRender(mapping, () => null)}
+  //           </Callout> */}
+  //           <Popover open={mapping != null}>
+  //             <PopoverSurface>
+  //               {mapping.onRender(mapping, () => null)}
+  //             </PopoverSurface>
+  //           </Popover>
+  //           </>
+  //         ) : null}
+  //         {!props.items.find(
+  //           (item) => item.key === "first" || item.key === "avg"
+  //         ) ? (
+  //           <>
+  //             {props.items.map((item) => {
+  //               if (item.subMenuProps?.items.find((i) => i.key === "year")) {
+  //                 const expand = item.subMenuProps.items.find((columns) =>
+  //                   columns.subMenuProps.items.find((func) => func.isChecked)
+  //                 );
+  //                 debugger;
+  //                 return (
+  //                   <CollapsiblePanel
+  //                     key={item.key}
+  //                     header={() => (
+  //                       <Label>{item.text}</Label>
+  //                     )}
+  //                     isCollapsed={expand === null}
+  //                     widgets={item.subMenuProps.items.map((item) => {
+  //                       const currentKey = item.subMenuProps?.items[0].key;
+  //                       return (
+  //                         <CustomMenuRender
+  //                           key={item.key}
+  //                           item={item}
+  //                           defaultKey={currentKey}
+  //                         />
+  //                       );
+  //                     })}
+  //                   />
+  //                 );
+  //               } else {
+  //                 const currentKey = item.subMenuProps?.items[0].key;
+  //                 return (
+  //                   <CustomMenuRender
+  //                     key={item.key}
+  //                     item={item}
+  //                     defaultKey={currentKey}
+  //                   />
+  //                 );
+  //               }
+  //             })}
+  //           </>
+  //         ) : (
+  //           // <ContextualMenu {...props} />
+  //           <p>"ContextualMenu"</p>
+  //         )}
+  //       </div>
+  //     );
+  //   };
+  // }
 }

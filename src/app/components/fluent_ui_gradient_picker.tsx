@@ -7,6 +7,11 @@ import { Pivot, PivotItem } from "@fluentui/react";
 import { CustomGradientMenu } from "./gradient/custom_gradient_menu";
 import { GradientPalettes } from "./gradient/gradient_palettes";
 
+import {
+  Tab,
+  TabList,
+} from "@fluentui/react-components";
+
 export interface GradientPickerProps {
   defaultValue?: ColorGradient;
   onPick?: (gradient: ColorGradient) => void;

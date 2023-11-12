@@ -1,32 +1,32 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { IButtonStyles } from "@fluentui/react";
+// import { IButtonStyles } from "@fluentui/react";
 import styled from "styled-components";
 
-export const defaultNoneButtonStyles: IButtonStyles = {
-  root: {
-    border: "unset",
-    width: "100%",
-    padding: "unset",
-    height: 24,
-  },
-  label: {
-    textAlign: "start",
-  },
-};
+// export const defaultNoneButtonStyles: IButtonStyles = {
+//   root: {
+//     border: "unset",
+//     width: "100%",
+//     padding: "unset",
+//     height: 24,
+//   },
+//   label: {
+//     textAlign: "start",
+//   },
+// };
 
-export const defaultPaletteButtonsStyles: IButtonStyles = {
-  root: {
-    border: "unset",
-    height: 24,
-    width: "100%",
-  },
-  label: {
-    textAlign: "start",
-    fontWeight: 400,
-  },
-};
+// export const defaultPaletteButtonsStyles: IButtonStyles = {
+//   root: {
+//     border: "unset",
+//     height: 24,
+//     width: "100%",
+//   },
+//   label: {
+//     textAlign: "start",
+//     fontWeight: 400,
+//   },
+// };
 
 // export const NullButtonWrapper = styled.div`
 //   border-top: 1px solid #e6e6e6;
