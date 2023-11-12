@@ -16,9 +16,9 @@ import { AppStore } from "../../stores";
 import {
   // Callout,
   ContextualMenu,
-  DirectionalHint,
-  Dropdown,
-  getTheme,
+  // DirectionalHint,
+  // Dropdown,
+  // getTheme,
   IContextualMenuItem,
   IContextualMenuListProps,
   IRenderFunction,
@@ -47,7 +47,7 @@ import {
 } from "../panels/widgets/controls/fluentui_customized_components";
 import { CollapsiblePanel } from "../panels/widgets/controls/collapsiblePanel";
 import React = require("react");
-import { Label, Menu, MenuButton, MenuItem, MenuList, MenuPopover, MenuTrigger, Popover, PopoverSurface, PopoverTrigger } from "@fluentui/react-components";
+import { Dropdown, Label, Menu, MenuButton, MenuItem, MenuList, MenuPopover, MenuTrigger, Option, Popover, PopoverSurface, PopoverTrigger } from "@fluentui/react-components";
 import { SVGImageIcon } from "../../components";
 import * as R from "../../resources";
 
@@ -939,7 +939,7 @@ export class Director {
   }
 
   public _getMenuRender(): IRenderFunction<IContextualMenuListProps> {
-    const theme = getTheme();
+    // const theme = getTheme();
 
     const CustomMenuRender: React.FC<{
       item: IContextualMenuItem;
@@ -983,29 +983,30 @@ export class Director {
           {/* </FluentDataBindingMenuLabel> */}
           {item.subMenuProps ? (
             <Dropdown
-              styles={{
-                ...(defaultStyle as any),
-                title: {
-                  ...defaultStyle.title,
-                  lineHeight: defultBindButtonSize.height,
-                  borderWidth: "0px",
-                },
-                dropdownOptionText: {
-                  boxSizing: "unset",
-                  lineHeight: defultBindButtonSize.height,
-                },
-                callout: {
-                  minWidth: 180,
-                },
-              }}
-              selectedKey={defaultKey}
-              options={item.subMenuProps.items.map((i) => ({
-                key: i.key,
-                text: i.text,
-              }))}
-              onChange={(e, opt) => {
+              // styles={{
+              //   ...(defaultStyle as any),
+              //   title: {
+              //     ...defaultStyle.title,
+              //     lineHeight: defultBindButtonSize.height,
+              //     borderWidth: "0px",
+              //   },
+              //   dropdownOptionText: {
+              //     boxSizing: "unset",
+              //     lineHeight: defultBindButtonSize.height,
+              //   },
+              //   callout: {
+              //     minWidth: 180,
+              //   },
+              // }}
+              value={defaultKey}
+              selectedOptions={[defaultKey]}
+              // options={item.subMenuProps.items.map((i) => ({
+              //   key: i.key,
+              //   text: i.text,
+              // }))}
+              onOptionSelect={(e, { optionText, optionValue }) => {
                 const agr = item.subMenuProps.items.find(
-                  (item) => item.key === opt.key
+                  (item) => item.key === optionValue
                 );
                 if (agr) {
                   agr.onClick(e as any, agr);
@@ -1013,7 +1014,16 @@ export class Director {
                   item.onClick(e as any, item);
                 }
               }}
-            />
+            >{
+              item.subMenuProps.items.map((i) => ({
+                key: i.key,
+                text: i.text,
+              })).map(o => {
+                return (
+                  <Option value={o.key} text={o.text}>{o.text}</Option>
+                )
+              })
+            }</Dropdown>
           ) : null}
         {/* // </FluentDataBindingMenuItem> */}
         </>
@@ -1082,6 +1092,7 @@ export class Director {
                   const expand = item.subMenuProps.items.find((columns) =>
                     columns.subMenuProps.items.find((func) => func.isChecked)
                   );
+                  debugger;
                   return (
                     <CollapsiblePanel
                       key={item.key}
