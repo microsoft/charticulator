@@ -186,7 +186,37 @@ export class MarkEditorView extends ContextedComponent<
         )}
         <div className="canvas-controls">
           <div className="canvas-controls-left">
+          <Button
+              icon="ZoomIn"
+              title={strings.canvas.zoomIn}
+              onClick={() => {
+                this.refSingleMarkView.doZoom(1.1);
+              }}
+            />
             <Button
+              icon="ZoomOut"
+              title={strings.canvas.zoomOut}
+              onClick={() => {
+                this.refSingleMarkView.doZoom(1 / 1.1);
+              }}
+            />
+            <Button
+              icon="ZoomToFit"
+              title={strings.canvas.zoomAuto}
+              onClick={() => {
+                this.refSingleMarkView.doZoomAuto();
+              }}
+            />
+            <Button
+              icon="rect-zoom"
+              title={"Rectangle zoom"}
+              onClick={() => {
+                this.dispatch(new Actions.SetCurrentTool("rectangle-zoom"));
+              }}
+            />
+          </div>
+          <div className="canvas-controls-right">
+          <Button
               icon="general/plus"
               title={strings.canvas.newGlyph}
               onClick={() => {
@@ -215,36 +245,6 @@ export class MarkEditorView extends ContextedComponent<
                 </span>
               ))}
             </span>
-          </div>
-          <div className="canvas-controls-right">
-            <Button
-              icon="ZoomIn"
-              title={strings.canvas.zoomIn}
-              onClick={() => {
-                this.refSingleMarkView.doZoom(1.1);
-              }}
-            />
-            <Button
-              icon="ZoomOut"
-              title={strings.canvas.zoomOut}
-              onClick={() => {
-                this.refSingleMarkView.doZoom(1 / 1.1);
-              }}
-            />
-            <Button
-              icon="ZoomToFit"
-              title={strings.canvas.zoomAuto}
-              onClick={() => {
-                this.refSingleMarkView.doZoomAuto();
-              }}
-            />
-            <Button
-              icon="rect-zoom"
-              title={"Rectangle zoom"}
-              onClick={() => {
-                this.dispatch(new Actions.SetCurrentTool("rectangle-zoom"));
-              }}
-            />
           </div>
         </div>
       </div>
