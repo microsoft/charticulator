@@ -3,7 +3,7 @@
 // Licensed under the MIT license.
 
 import {
-  Callout,
+  // Callout,
   DefaultButton,
   Dropdown,
   IContextualMenuItem,
@@ -39,6 +39,7 @@ import {
 } from "./controls/fluentui_customized_components";
 import { InputImage } from "./controls/fluentui_image";
 import { FluentInputNumber } from "./controls/fluentui_input_number";
+import { Popover, PopoverSurface, PopoverTrigger } from "@fluentui/react-components";
 
 export interface ValueEditorProps {
   value: Specification.AttributeValue;
@@ -186,15 +187,7 @@ export class FluentValueEditor extends ContextedComponent<
                 }}
               />
             {/* </FluentTextField> */}
-            <span
-              className="el-color-item"
-              style={{ backgroundColor: hex }}
-              id="color_picker"
-              onClick={() => {
-                this.setState({ open: !this.state.open });
-              }}
-            />
-            {this.state.open && (
+            {/* {this.state.open && (
               <Callout
                 target={`#color_picker`}
                 onDismiss={() => this.setState({ open: !this.state.open })}
@@ -216,7 +209,37 @@ export class FluentValueEditor extends ContextedComponent<
                   }}
                 />
               </Callout>
-            )}
+            )} */}
+            <Popover open={this.state.open}>
+              <PopoverTrigger>
+                <span
+                  className="el-color-item"
+                  style={{ backgroundColor: hex }}
+                  id="color_picker"
+                  onClick={() => {
+                    this.setState({ open: !this.state.open });
+                  }}
+                />
+              </PopoverTrigger>
+              <PopoverSurface>
+                <ColorPicker
+                    store={this.store}
+                    allowNull={true}
+                    defaultValue={colorFromHTMLColor(hex)}
+                    onPick={(color) => {
+                      if (color == null) {
+                        this.emitClearValue();
+                      } else {
+                        this.emitSetValue(color);
+                      }
+                    }}
+                    parent={this}
+                    closePicker={() => {
+                      this.setState({ open: !this.state.open });
+                    }}
+                  />
+              </PopoverSurface>
+            </Popover>
           </span>
         );
       }

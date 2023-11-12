@@ -800,7 +800,7 @@ export class FluentMappingEditor extends React.Component<
       options.acceptKinds
     );
     console.log('mainMenuItems', mainMenuItems);
-    const menuRender = this.director.getMenuRender();
+    // const menuRender = this.director.getMenuRender();
     const acceptTables = getDropzoneAcceptTables(
       this.props.parent as FluentUIWidgetManager,
       options.acceptLinksTable
