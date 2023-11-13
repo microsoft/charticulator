@@ -1,15 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-// import { Button } from "@fluentui/react";
 import * as React from "react";
 import { CurrentChartView } from ".";
-import {
-  deepClone,
-  Specification,
-  Prototypes,
-  // primaryButtonStyles,
-} from "../../../core";
+import { deepClone, Specification, Prototypes } from "../../../core";
 import { ensureColumnsHaveExamples } from "../../../core/dataset/examples";
 import { findObjectById } from "../../../core/prototypes";
 import { strings } from "../../../strings";
@@ -90,38 +84,42 @@ export class ExportImageView extends React.Component<
             // iconProps={{
             //   iconName: "Export",
             // }}
-            icon={<SVGImageIcon url={R.getSVGIcon('Export')}/>}
+            icon={<SVGImageIcon url={R.getSVGIcon("Export")} />}
             // styles={primaryButtonStyles}
             onClick={() => {
-              new Actions.Export("png", { scale: this.getScaler() })
+              new Actions.Export("png", { scale: this.getScaler() });
             }}
-          >{strings.fileExport.typePNG}</Button>
-          {" "}
+          >
+            {strings.fileExport.typePNG}
+          </Button>{" "}
           <Button
             title={strings.fileExport.typeJPEG}
             // iconProps={{
             //   iconName: "Export",
             // }}
-            icon={<SVGImageIcon url={R.getSVGIcon('Export')}/>}
+            icon={<SVGImageIcon url={R.getSVGIcon("Export")} />}
             // styles={primaryButtonStyles}
             onClick={() => {
               this.props.store.dispatcher.dispatch(
                 new Actions.Export("jpeg", { scale: this.getScaler() })
               );
             }}
-          >{strings.fileExport.typeJPEG}</Button>
-          {" "}
+          >
+            {strings.fileExport.typeJPEG}
+          </Button>{" "}
           <Button
             title={strings.fileExport.typeSVG}
             // iconProps={{
             //   iconName: "Export",
             // }}
-            icon={<SVGImageIcon url={R.getSVGIcon('Export')}/>}
+            icon={<SVGImageIcon url={R.getSVGIcon("Export")} />}
             // styles={primaryButtonStyles}
             onClick={() => {
               this.props.store.dispatcher.dispatch(new Actions.Export("svg"));
             }}
-          >{strings.fileExport.typeSVG}</Button>
+          >
+            {strings.fileExport.typeSVG}
+          </Button>
         </div>
       </div>
     );
@@ -144,12 +142,14 @@ export class ExportHTMLView extends React.Component<
             // iconProps={{
             //   iconName: "Export",
             // }}
-            icon={<SVGImageIcon url={R.getSVGIcon('Export')}/>}
+            icon={<SVGImageIcon url={R.getSVGIcon("Export")} />}
             // styles={primaryButtonStyles}
             onClick={() => {
               this.props.store.dispatcher.dispatch(new Actions.Export("html"));
             }}
-          >{strings.fileExport.typeHTML}</Button>
+          >
+            {strings.fileExport.typeHTML}
+          </Button>
         </div>
       </div>
     );
@@ -835,7 +835,7 @@ export class ExportTemplateView extends React.Component<
             // iconProps={{
             //   iconName: "Export",
             // }}
-            icon={<SVGImageIcon url={R.getSVGIcon('Export')}/>}
+            icon={<SVGImageIcon url={R.getSVGIcon("Export")} />}
             // styles={primaryButtonStyles}
             onClick={() => {
               this.props.store.dispatcher.dispatch(
@@ -846,7 +846,9 @@ export class ExportTemplateView extends React.Component<
                 )
               );
             }}
-          >{this.props.exportKind}</Button>
+          >
+            {this.props.exportKind}
+          </Button>
         </div>
       </div>
     );

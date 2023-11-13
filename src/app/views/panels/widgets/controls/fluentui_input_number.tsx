@@ -1,35 +1,12 @@
 /* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-// import {
-  // TextField,
-  // Slider,
-  // SpinButton,
-  // Label,
-  // Position,
-// } from "@fluentui/react";
 
-import {
-  Label,
-  Input,
-  Slider,
-  SpinButton
-} from "@fluentui/react-components"
+import { Label, Input, Slider, SpinButton } from "@fluentui/react-components";
 
 import * as React from "react";
 import { prettyNumber } from "../../../../../core";
-import {
-  FluentColumnLayout,
-  // FluentRowLayout,
-  // defaultFontWeight,
-  // defaultLabelStyle,
-  // defaultStyle,
-  // defultComponentsHeight,
-  // FluentLayoutItem,
-  // FluentRowLayout,
-  // labelRender,
-  // PlaceholderStyle,
-} from "./fluentui_customized_components";
+import { FluentColumnLayout } from "./fluentui_customized_components";
 import { CSSProperties } from "react";
 
 export interface InputNumberProps {
@@ -152,7 +129,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
     const tick = props.updownTick || 0.1;
     return (
       <>
-        {!props.showSlider ? <Label>{props.label}</Label> : null }
+        {!props.showSlider ? <Label>{props.label}</Label> : null}
         <SpinButton
           // label={!props.showSlider ? props.label : null}
           // labelPosition={Position.top}
@@ -178,9 +155,9 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
           //   }
           // }}
           onChange={(e, { value }) => {
-              if (reportValue(value)) {
-                setValue(value);
-              }
+            if (reportValue(value)) {
+              setValue(value);
+            }
           }}
           // onValidate={(value) => {
           //   const num = parseNumber(value);
@@ -218,59 +195,60 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
       {props.showSlider ? (
         <Label
         // styles={defaultLabelStyle}
-        >{props.label}</Label>
+        >
+          {props.label}
+        </Label>
       ) : null}
       <FluentColumnLayout style={props.styles}>
         {/* <FluentLayoutItem flex={1}> */}
-          {props.showUpdown ? (
-            renderUpdown()
-          ) : (
-            // <PlaceholderStyle>
-            <>
-              {!props.showSlider ? <Label>{props.label}</Label> : null}
-              <Input
-                // styles={defaultStyle}
-                // onRenderLabel={labelRender}
-                // label={!props.showSlider ? props.label : null}
-                placeholder={props.placeholder}
-                value={
-                  typeof value === "string" &&
-                  ((value as string).indexOf(".") === value.length - 1 ||
-                    ((value as string).indexOf("-") === 0 &&
-                      value.length === 1))
-                    ? value
-                    : value == null
-                    ? null
-                    : formatNumber(+value)
+        {props.showUpdown ? (
+          renderUpdown()
+        ) : (
+          // <PlaceholderStyle>
+          <>
+            {!props.showSlider ? <Label>{props.label}</Label> : null}
+            <Input
+              // styles={defaultStyle}
+              // onRenderLabel={labelRender}
+              // label={!props.showSlider ? props.label : null}
+              placeholder={props.placeholder}
+              value={
+                typeof value === "string" &&
+                ((value as string).indexOf(".") === value.length - 1 ||
+                  ((value as string).indexOf("-") === 0 && value.length === 1))
+                  ? value
+                  : value == null
+                  ? null
+                  : formatNumber(+value)
+              }
+              onChange={(event, { value: str }) => {
+                if (
+                  (str != "" && str.indexOf(".") === str.length - 1) ||
+                  (str.indexOf("-") === 0 && str.length === 1)
+                ) {
+                  setValue(str);
+                } else {
+                  const num = parseNumber(str);
+                  if (reportValue(num)) {
+                    setValue(num);
+                  }
                 }
-                onChange={(event, { value: str }) => {
-                  if (
-                    (str != "" && str.indexOf(".") === str.length - 1) ||
-                    (str.indexOf("-") === 0 && str.length === 1)
-                  ) {
-                    setValue(str);
-                  } else {
-                    const num = parseNumber(str);
-                    if (reportValue(num)) {
-                      setValue(num);
-                    }
-                  }
-                }}
-                onKeyDown={(e) => {
-                  if (props.stopPropagation) {
-                    e.stopPropagation();
-                  }
-                }}
-                // suffix={props.percentage ? "%" : undefined}
-              />
-              </>
-            // </PlaceholderStyle>
-          )}
+              }}
+              onKeyDown={(e) => {
+                if (props.stopPropagation) {
+                  e.stopPropagation();
+                }
+              }}
+              // suffix={props.percentage ? "%" : undefined}
+            />
+          </>
+          // </PlaceholderStyle>
+        )}
         {/* </FluentLayoutItem> */}
-        {props.showSlider ? (
-          renderSlider()
-          // <FluentLayoutItem flex={2}>{renderSlider()}</FluentLayoutItem>
-        ) : null}
+        {props.showSlider
+          ? renderSlider()
+          : // <FluentLayoutItem flex={2}>{renderSlider()}</FluentLayoutItem>
+            null}
       </FluentColumnLayout>
     </>
   );

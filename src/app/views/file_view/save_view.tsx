@@ -9,8 +9,6 @@ import { SVGImageIcon } from "../../components";
 import { Actions } from "../../actions";
 import { strings } from "../../../strings";
 import { AppStore } from "../../stores";
-// import { DefaultButton } from "@fluentui/react";
-import { primaryButtonStyles } from "../../../container";
 import { Button } from "@fluentui/react-components";
 
 export interface FileViewSaveAsProps {
@@ -56,7 +54,7 @@ export class FileViewSaveAs extends React.Component<
               // iconProps={{
               //   iconName: "Save",
               // }}
-              icon={<SVGImageIcon url={R.getSVGIcon('Save')}/>}
+              icon={<SVGImageIcon url={R.getSVGIcon("Save")} />}
               // styles={primaryButtonStyles}
               title={strings.fileSave.saveButton}
               onClick={() => {
@@ -81,7 +79,9 @@ export class FileViewSaveAs extends React.Component<
                   }
                 );
               }}
-            >{strings.fileSave.saveButton}</Button>
+            >
+              {strings.fileSave.saveButton}
+            </Button>
           </div>
           {this.state.error ? (
             <div className="error">{this.state.error}</div>

@@ -48,8 +48,11 @@ import { MappingType, ValueMapping } from "../../../core/specification";
 import { SnappingGuidesVisualTypes } from "../../../core/prototypes";
 import { classNames } from "../../utils";
 import { FluentUIWidgetManager } from "../panels/widgets/fluentui_manager";
-// import { Callout, DirectionalHint } from "@fluentui/react";
-import { Popover, PopoverSurface, PopoverTrigger } from "@fluentui/react-components";
+import {
+  Popover,
+  PopoverSurface,
+  PopoverTrigger,
+} from "@fluentui/react-components";
 
 export interface ChartEditorViewProps {
   store: AppStore;
@@ -1060,7 +1063,8 @@ export class ChartEditorView
                           style={{
                             left: pt.x.toFixed(0) + "px",
                             bottom:
-                              (this.state.viewHeight - pt.y + 5).toFixed(0) + "px",
+                              (this.state.viewHeight - pt.y + 5).toFixed(0) +
+                              "px",
                           }}
                         ></div>
                       </PopoverTrigger>

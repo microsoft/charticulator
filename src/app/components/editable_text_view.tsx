@@ -1,11 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
-// import {
-  // FluentTextField,
-  // labelRender,
-// } from "../views/panels/widgets/controls/fluentui_customized_components";
-// import { Label, TextField } from "@fluentui/react";
 import { Input } from "@fluentui/react-components";
 
 export interface EditableTextViewProps {
@@ -65,7 +60,7 @@ export class EditableTextView extends React.Component<
     return (
       <div>
         {/* <FluentTextField> */}
-          <>
+        <>
           {/* <Label>{}</Label> */}
           <Input
             value={this.state.currentText}
@@ -98,7 +93,7 @@ export class EditableTextView extends React.Component<
             //   },
             // }}
           />
-          </>
+        </>
         {/* </FluentTextField> */}
       </div>
     );

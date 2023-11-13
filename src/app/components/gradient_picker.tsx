@@ -16,9 +16,13 @@ import { InputField } from "./color_space_picker";
 import { TabsView } from "./tabs_view";
 import { ReorderListView } from "../views/panels/object_list_editor";
 import { Button } from "../views/panels/widgets/controls";
-// import { Callout, Dropdown } from "@fluentui/react";
 import { Colorspace } from "./fluent_ui_gradient_picker";
-import { Popover, PopoverSurface, Dropdown, Option } from "@fluentui/react-components";
+import {
+  Popover,
+  PopoverSurface,
+  Dropdown,
+  Option,
+} from "@fluentui/react-components";
 
 export interface GradientPickerProps {
   defaultValue?: ColorGradient;
@@ -279,7 +283,7 @@ export class GradientPicker extends React.Component<
                 }}
               /> */}
               <Dropdown
-                onOptionSelect={(_, { optionValue: value, optionText }) => {
+                onOptionSelect={(_, { optionValue: value }) => {
                   if (value) {
                     const newGradient = deepClone(this.state.currentGradient);
                     newGradient.colorspace = value as Colorspace;
@@ -290,16 +294,20 @@ export class GradientPicker extends React.Component<
                 {[
                   { key: Colorspace.HCL, text: "HCL" },
                   { key: Colorspace.LAB, text: "Lab" },
-                ].map((option, index) => {
-                  return {
-                    key: option.key,
-                    text: option.text,
-                  };
-                }).map(o => {
-                  return (<Option text={o.text} value={o.key} key={o.key}>
-                    {o.text}
-                  </Option>);
-                })}
+                ]
+                  .map((option) => {
+                    return {
+                      key: option.key,
+                      text: option.text,
+                    };
+                  })
+                  .map((o) => {
+                    return (
+                      <Option text={o.text} value={o.key} key={o.key}>
+                        {o.text}
+                      </Option>
+                    );
+                  })}
               </Dropdown>
             </div>
           </section>

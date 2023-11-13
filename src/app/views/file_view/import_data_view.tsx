@@ -11,7 +11,6 @@ import {
   KeyColumn,
   LinkSourceKeyColumn,
   LinkTargetKeyColumn,
-  primaryButtonStyles,
 } from "../../../core";
 import {
   classNames,
@@ -29,7 +28,6 @@ import { TableType } from "../../../core/dataset";
 import { AppStore } from "../../stores";
 import { AddMessage, RemoveMessage } from "../../actions/actions";
 import { strings } from "../../../strings";
-// import { DefaultButton } from "@fluentui/react";
 import { Button } from "@fluentui/react-components";
 
 export interface FileUploaderProps {
@@ -409,7 +407,7 @@ export class ImportDataView extends React.Component<
                 // iconProps={{
                 //   iconName: "ChromeClose",
                 // }}
-                icon={<SVGImageIcon url={R.getSVGIcon('ChromeClose')}/>}
+                icon={<SVGImageIcon url={R.getSVGIcon("ChromeClose")} />}
                 // styles={primaryButtonStyles}
                 // title={strings.fileImport.removeButtonTitle}
                 onClick={() => {
@@ -418,7 +416,9 @@ export class ImportDataView extends React.Component<
                     dataTableOrigin: null,
                   });
                 }}
-              >{strings.fileImport.removeButtonText}</Button>
+              >
+                {strings.fileImport.removeButtonText}
+              </Button>
             </div>
             {this.state.imagesTable ? (
               <div className="charticulator__import-data-view-table">
@@ -511,8 +511,7 @@ export class ImportDataView extends React.Component<
               // iconProps={{
               //   iconName: "ChromeClose",
               // }}
-              icon={<SVGImageIcon url={R.getSVGIcon('ChromeClose')}/>}
-
+              icon={<SVGImageIcon url={R.getSVGIcon("ChromeClose")} />}
               title={strings.fileImport.removeButtonTitle}
               // styles={primaryButtonStyles}
               onClick={() => {
@@ -523,7 +522,9 @@ export class ImportDataView extends React.Component<
                 this.checkSourceAndTargetColumns(null);
                 this.checkKeyColumn(this.state.dataTable, null);
               }}
-            >{strings.fileImport.removeButtonText}</Button>
+            >
+              {strings.fileImport.removeButtonText}
+            </Button>
           </div>
         ) : (
           <FileUploader
@@ -547,7 +548,7 @@ export class ImportDataView extends React.Component<
             // iconProps={{
             //   iconName: "CheckMark",
             // }}
-            icon={<SVGImageIcon url={R.getSVGIcon('ChromeClose')}/>}
+            icon={<SVGImageIcon url={R.getSVGIcon("ChromeClose")} />}
             // styles={primaryButtonStyles}
             title={strings.fileImport.doneButtonTitle}
             disabled={
@@ -575,7 +576,9 @@ export class ImportDataView extends React.Component<
                 this.props.onConfirmImport(dataset);
               }
             }}
-          >{strings.fileImport.doneButtonText}</Button>
+          >
+            {strings.fileImport.doneButtonText}
+          </Button>
         </div>
         <div className="charticulator__credits">
           <p

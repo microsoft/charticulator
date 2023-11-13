@@ -3,11 +3,8 @@
 
 import * as React from "react";
 import { CSSProperties, useCallback, useMemo, useState } from "react";
-// import { DefaultButton, Label } from "@fluentui/react";
-// import { PanelHeaderStyles } from "./fluentui_customized_components";
 import { AppStore } from "../../../../../app/stores";
 import { getRandomNumber } from "../../../../../core";
-// import { ContextMenuCallout } from "./contextMenuCallout";
 import { Button, Label } from "@fluentui/react-components";
 import { SVGImageIcon } from "../../../../components";
 import * as R from "../../../../resources";
@@ -24,9 +21,8 @@ export const CustomCollapsiblePanel = ({
   widgets,
   header,
   styles,
-  store,
 }: CollapsiblePanelProps): JSX.Element => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed] = useState(false);
   const [calloutVisible, setCalloutVisible] = useState(false);
 
   const renderAttributes = useMemo(() => {
@@ -102,16 +98,17 @@ export const PanelHeader = ({
         //     },
         //   },
         // }}
-        icon={<SVGImageIcon url={R.getSVGIcon(collapsed ? "ChevronRight" : "ChevronDown")}/>}
-
+        icon={
+          <SVGImageIcon
+            url={R.getSVGIcon(collapsed ? "ChevronRight" : "ChevronDown")}
+          />
+        }
         // styles={PanelHeaderStyles}
         onClick={() => {
           setCollapsed(!collapsed);
         }}
       />
-      <Label>
-        {header}
-      </Label>
+      <Label>{header}</Label>
     </div>
   );
 };

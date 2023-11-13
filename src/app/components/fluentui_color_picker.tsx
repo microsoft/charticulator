@@ -9,7 +9,6 @@ import {
   predefinedPalettes,
 } from "../resources";
 import { AppStore } from "../stores";
-// import { Label } from "@fluentui/react";
 import { ColorGrid } from "./colors/color_grid";
 import { NullButton } from "./colors/null_button";
 import { ColorPickerButton, PickerType } from "./colors/color_pickers";

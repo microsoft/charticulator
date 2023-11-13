@@ -1,20 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-// import { Checkbox, Dropdown } from "@fluentui/react";
+
 import * as React from "react";
 import { Expression, Prototypes, Specification } from "../../../../core";
 import { strings } from "../../../../strings";
 import { Actions } from "../../../actions";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
-import {
-  FluentColumnLayout,
-  // FluentCheckbox,
-  // labelRender,
-} from "./controls/fluentui_customized_components";
+import { FluentColumnLayout } from "./controls/fluentui_customized_components";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 import { CharticulatorPropertyAccessors } from "./types";
-import { Button, Checkbox, Dropdown, Label, Option } from "@fluentui/react-components";
-// import { Label } from "@fluentui/react";
+import {
+  Button,
+  Checkbox,
+  Dropdown,
+  Label,
+  Option,
+} from "@fluentui/react-components";
 
 export interface FilterEditorProps {
   manager: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
@@ -172,7 +173,9 @@ export class FluentUIFilterEditor extends React.Component<
                             },
                           });
                         }}
-                      >{strings.filter.selectAll}</Button>{" "}
+                      >
+                        {strings.filter.selectAll}
+                      </Button>{" "}
                       <Button
                         title={strings.filter.clear}
                         onClick={() => {
@@ -193,26 +196,28 @@ export class FluentUIFilterEditor extends React.Component<
                             },
                           });
                         }}
-                      >{strings.filter.clear}</Button>
+                      >
+                        {strings.filter.clear}
+                      </Button>
                     </div>
                     <div>
                       {keysSorted.map((key) => (
                         <div key={key}>
                           {/* <FluentCheckbox> */}
                           {/* <FluentColumnLayout> */}
-                            <Checkbox
-                              checked={value.categories.values[key]}
-                              label={key}
-                              onChange={(ev, { checked }) => {
-                                value.categories.values[key] = checked as boolean;
-                                this.emitUpdateFilter({
-                                  categories: {
-                                    expression: value.categories.expression,
-                                    values: value.categories.values,
-                                  },
-                                });
-                              }}
-                            />
+                          <Checkbox
+                            checked={value.categories.values[key]}
+                            label={key}
+                            onChange={(ev, { checked }) => {
+                              value.categories.values[key] = checked as boolean;
+                              this.emitUpdateFilter({
+                                categories: {
+                                  expression: value.categories.expression,
+                                  values: value.categories.values,
+                                },
+                              });
+                            }}
+                          />
                           {/* </FluentColumnLayout> */}
                           {/* </FluentCheckbox> */}
                         </div>
@@ -232,57 +237,63 @@ export class FluentUIFilterEditor extends React.Component<
           {manager.vertical(
             <FluentColumnLayout>
               <Label>{strings.filter.filterType}</Label>
-            <Dropdown
-              // label={strings.filter.filterType}
-              // styles={{
-              //   root: {
-              //     minWidth: 105,
-              //   },
-              // }}
-              // onRenderLabel={labelRender}
-              // options={[
-              //   strings.filter.none,
-              //   strings.filter.categories,
-              //   strings.filter.expression,
-              // ].map((type) => {
-              //   return {
-              //     key: type.toLowerCase(),
-              //     text: type,
-              //   };
-              // })}
-              value={this.state.type}
-              onOptionSelect={(event, { optionValue }) => {
-                if (this.state.type != optionValue) {
-                  if (optionValue == "none") {
-                    this.emitUpdateFilter(null);
-                  } else {
-                    this.setState({
-                      type: optionValue as string,
-                      currentValue: {
-                        expression: "",
-                        categories: {
+              <Dropdown
+                // label={strings.filter.filterType}
+                // styles={{
+                //   root: {
+                //     minWidth: 105,
+                //   },
+                // }}
+                // onRenderLabel={labelRender}
+                // options={[
+                //   strings.filter.none,
+                //   strings.filter.categories,
+                //   strings.filter.expression,
+                // ].map((type) => {
+                //   return {
+                //     key: type.toLowerCase(),
+                //     text: type,
+                //   };
+                // })}
+                value={this.state.type}
+                onOptionSelect={(event, { optionValue }) => {
+                  if (this.state.type != optionValue) {
+                    if (optionValue == "none") {
+                      this.emitUpdateFilter(null);
+                    } else {
+                      this.setState({
+                        type: optionValue as string,
+                        currentValue: {
                           expression: "",
-                          values: {},
+                          categories: {
+                            expression: "",
+                            values: {},
+                          },
                         },
-                      },
-                    });
+                      });
+                    }
                   }
-                }
-              }}
-            >{
-              [
-                strings.filter.none,
-                strings.filter.categories,
-                strings.filter.expression,
-              ].map((type) => {
-                return {
-                  key: type.toLowerCase(),
-                  text: type,
-                };
-              }).map(o => {
-                return (<Option value={o.key} text={o.text}>{o.text}</Option>)
-              })
-            }</Dropdown>
+                }}
+              >
+                {[
+                  strings.filter.none,
+                  strings.filter.categories,
+                  strings.filter.expression,
+                ]
+                  .map((type) => {
+                    return {
+                      key: type.toLowerCase(),
+                      text: type,
+                    };
+                  })
+                  .map((o) => {
+                    return (
+                      <Option value={o.key} text={o.text}>
+                        {o.text}
+                      </Option>
+                    );
+                  })}
+              </Dropdown>
             </FluentColumnLayout>,
             ...typedControls
           )}

@@ -2,10 +2,8 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-// import { DefaultButton } from "@fluentui/react";
 import { SVGImageIcon } from "../../../app/components";
 import * as R from "../../../app/resources";
-// import { defultComponentsHeight } from "../../../app/views/panels/widgets/controls/fluentui_customized_components";
 import { ToggleButton } from "@fluentui/react-components";
 
 export interface PanelRadioControlProps {
@@ -43,7 +41,9 @@ export class PanelRadioControl extends React.Component<
               //       }
               //     : null
               // }
-              icon={<SVGImageIcon url={R.getSVGIcon(this.props.icons[index])}/>}
+              icon={
+                <SVGImageIcon url={R.getSVGIcon(this.props.icons[index])} />
+              }
               // text={
               //   this.props.labels && this.props.showText
               //     ? this.props.labels[index]
@@ -64,11 +64,9 @@ export class PanelRadioControl extends React.Component<
               //   ) : null;
               // }}
             >
-              {
-                this.props.labels && this.props.showText
-                  ? this.props.labels[index]
-                  : null
-              }
+              {this.props.labels && this.props.showText
+                ? this.props.labels[index]
+                : null}
             </ToggleButton>
           );
         })}

@@ -2,8 +2,6 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-// import { ComboBox, IComboBoxOption } from "@fluentui/react";
-// import { defultComponentsHeight } from "../../views/panels/widgets/controls/fluentui_customized_components";
 import { Color } from "../../../core";
 import {
   ColorSpaceDescription,
@@ -24,8 +22,8 @@ export class ColorSpaceSelect extends React.Component<
 > {
   render() {
     const options: {
-      key: string,
-      text: string
+      key: string;
+      text: string;
     }[] = this.props.colorSpaces.map((x) => {
       return { key: x.name, text: x.name };
     });
@@ -49,9 +47,13 @@ export class ColorSpaceSelect extends React.Component<
             }
           }
         }}
-      >{
-        options.map(o => <Option value={o.key} text={o.text}>{o.text}</Option>)
-      }</Combobox>
+      >
+        {options.map((o) => (
+          <Option value={o.key} text={o.text}>
+            {o.text}
+          </Option>
+        ))}
+      </Combobox>
     );
   }
 }

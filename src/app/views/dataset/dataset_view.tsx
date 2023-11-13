@@ -37,9 +37,12 @@ import { ChartTemplate } from "../../../container";
 import { FileViewImport, MappingMode } from "../file_view/import_view";
 import { strings } from "../../../strings";
 import { EditorType } from "../../stores/app_store";
-// import { Callout, DefaultButton } from "@fluentui/react";
-// import { defultBindButtonSize } from "../panels/widgets/controls/fluentui_customized_components";
-import { Button, Popover, PopoverSurface, PopoverTrigger } from "@fluentui/react-components";
+import {
+  Button,
+  Popover,
+  PopoverSurface,
+  PopoverTrigger,
+} from "@fluentui/react-components";
 
 export interface DatasetViewProps {
   store: AppStore;
@@ -132,7 +135,7 @@ export class ColumnsView extends React.Component<
                 // iconProps={{
                 //   iconName: "general/replace",
                 // }}
-                icon={<SVGImageIcon url={R.getSVGIcon('general/replace')}/>}
+                icon={<SVGImageIcon url={R.getSVGIcon("general/replace")} />}
                 // styles={buttonStyles}
                 title={strings.dataset.replaceWithCSV}
                 // eslint-disable-next-line
@@ -345,17 +348,21 @@ export class ColumnsView extends React.Component<
             <Popover>
               <PopoverTrigger>
                 <Button
-                icon={<SVGImageIcon url={R.getSVGIcon('general/more-horizontal')}/>}
-                title={strings.dataset.showDataValues}
-                onClick={() => {
-                  this.setState({
-                    tableViewIsOpened: !this.state.tableViewIsOpened,
-                  });
-                }}
-              />
+                  icon={
+                    <SVGImageIcon
+                      url={R.getSVGIcon("general/more-horizontal")}
+                    />
+                  }
+                  title={strings.dataset.showDataValues}
+                  onClick={() => {
+                    this.setState({
+                      tableViewIsOpened: !this.state.tableViewIsOpened,
+                    });
+                  }}
+                />
               </PopoverTrigger>
               <PopoverSurface>
-              <div className="charticulator__dataset-view-detail">
+                <div className="charticulator__dataset-view-detail">
                   <h2>{table.displayName || table.name}</h2>
                   <p>
                     {strings.dataset.dimensions(

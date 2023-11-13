@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-// import { TextField } from "@fluentui/react";
-
-import { Input, Label } from "@fluentui/react-components"
+import { Input, Label } from "@fluentui/react-components";
 
 import * as React from "react";
 import {
@@ -61,55 +59,55 @@ export const FluentInputFormat: React.FC<InputExpressionProps> = (
 
   return (
     // <span className="charticulator__widget-control-input-expression">
-      <>
-        <FluentColumnLayout>
-          <Label>{props.label}</Label>
-          <Input
-            // styles={defaultStyle}
-            // label={props.label}
-            // onRenderLabel={labelRender}
-            placeholder={props.placeholder}
-            type="text"
-            // onGetErrorMessage={() => {
-            //   const validateResults = props.validate?.(value);
-            //   if (!validateResults.pass) {
-            //     return validateResults.error;
-            //   }
-            // }}
-            defaultValue={replaceSymbolByTab(
-              replaceSymbolByNewLine(value || props.defaultValue)
-            )}
-            onChange={(event, { value: newValue }) => {
-              // Check for parse errors while input
-              if (props.allowNull && newValue?.trim() == "") {
-                setValue(newValue);
-              } else {
-                Expression.verifyUserExpression(
-                  replaceTabBySymbol(replaceNewLineBySymbol(newValue)),
-                  {
-                    textExpression: props.textExpression,
-                  }
-                );
-                setValue(newValue);
-              }
-            }}
-            onBlur={() => {
+    <>
+      <FluentColumnLayout>
+        <Label>{props.label}</Label>
+        <Input
+          // styles={defaultStyle}
+          // label={props.label}
+          // onRenderLabel={labelRender}
+          placeholder={props.placeholder}
+          type="text"
+          // onGetErrorMessage={() => {
+          //   const validateResults = props.validate?.(value);
+          //   if (!validateResults.pass) {
+          //     return validateResults.error;
+          //   }
+          // }}
+          defaultValue={replaceSymbolByTab(
+            replaceSymbolByNewLine(value || props.defaultValue)
+          )}
+          onChange={(event, { value: newValue }) => {
+            // Check for parse errors while input
+            if (props.allowNull && newValue?.trim() == "") {
+              setValue(newValue);
+            } else {
+              Expression.verifyUserExpression(
+                replaceTabBySymbol(replaceNewLineBySymbol(newValue)),
+                {
+                  textExpression: props.textExpression,
+                }
+              );
+              setValue(newValue);
+            }
+          }}
+          onBlur={() => {
+            doEnter();
+          }}
+          onFocus={(e) => {
+            e.target.select();
+          }}
+          onKeyDown={(e) => {
+            if (e.key == "Enter") {
               doEnter();
-            }}
-            onFocus={(e) => {
-              e.target.select();
-            }}
-            onKeyDown={(e) => {
-              if (e.key == "Enter") {
-                doEnter();
-              }
-              if (e.key == "Escape") {
-                doCancel();
-              }
-            }}
-          />
-        </FluentColumnLayout>
-      </>
+            }
+            if (e.key == "Escape") {
+              doCancel();
+            }
+          }}
+        />
+      </FluentColumnLayout>
+    </>
     // </span>
   );
 };

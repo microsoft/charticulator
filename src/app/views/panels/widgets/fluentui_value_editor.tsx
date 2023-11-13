@@ -2,16 +2,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-// import {
-  // Callout,
-  // DefaultButton,
-  // Dropdown,
-  // IContextualMenuItem, IContextualMenuProps,
-  // IContextualMenuListProps,
-  // IRenderFunction,
-  // Label,
-  // TextField,
-// } from "@fluentui/react";
 import * as React from "react";
 import {
   Color,
@@ -29,22 +19,22 @@ import { FluentComboBoxFontFamily } from "./controls";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
 import { strings } from "../../../../strings";
-import {
-  FluentColumnLayout,
-  // defaultLabelStyle,
-  // defaultStyle,
-  // defultBindButtonSize,
-  // defultComponentsHeight,
-  // FluentTextField,
-  // labelRender,
-} from "./controls/fluentui_customized_components";
+import { FluentColumnLayout } from "./controls/fluentui_customized_components";
 import { InputImage } from "./controls/fluentui_image";
 import { FluentInputNumber } from "./controls/fluentui_input_number";
-import { Button, Dropdown, Input, Label, Popover, PopoverSurface, PopoverTrigger, Option } from "@fluentui/react-components";
+import {
+  Button,
+  Dropdown,
+  Input,
+  Label,
+  Popover,
+  PopoverSurface,
+  PopoverTrigger,
+  Option,
+} from "@fluentui/react-components";
 import { SVGImageIcon } from "../../../../app/components";
 import * as R from "../../../resources";
 import { IContextualMenuItem } from "../../dataset/data_field_binding_builder";
-
 
 export interface ValueEditorProps {
   value: Specification.AttributeValue;
@@ -167,7 +157,7 @@ export class FluentValueEditor extends ContextedComponent<
                 // onRenderLabel={labelRender}
                 value={this.state.value}
                 type="text"
-                onChange={(event, { value: newValue}) => {
+                onChange={(event, { value: newValue }) => {
                   newValue = newValue.trim();
                   if (newValue == "") {
                     this.emitClearValue();
@@ -193,7 +183,7 @@ export class FluentValueEditor extends ContextedComponent<
                   }
                 }}
               />
-              </FluentColumnLayout>
+            </FluentColumnLayout>
             {/* </FluentTextField> */}
             {/* {this.state.open && (
               <Callout
@@ -231,21 +221,21 @@ export class FluentValueEditor extends ContextedComponent<
               </PopoverTrigger>
               <PopoverSurface>
                 <ColorPicker
-                    store={this.store}
-                    allowNull={true}
-                    defaultValue={colorFromHTMLColor(hex)}
-                    onPick={(color) => {
-                      if (color == null) {
-                        this.emitClearValue();
-                      } else {
-                        this.emitSetValue(color);
-                      }
-                    }}
-                    parent={this}
-                    closePicker={() => {
-                      this.setState({ open: !this.state.open });
-                    }}
-                  />
+                  store={this.store}
+                  allowNull={true}
+                  defaultValue={colorFromHTMLColor(hex)}
+                  onPick={(color) => {
+                    if (color == null) {
+                      this.emitClearValue();
+                    } else {
+                      this.emitSetValue(color);
+                    }
+                  }}
+                  parent={this}
+                  closePicker={() => {
+                    this.setState({ open: !this.state.open });
+                  }}
+                />
               </PopoverSurface>
             </Popover>
           </span>
@@ -342,42 +332,46 @@ export class FluentValueEditor extends ContextedComponent<
         return (
           <FluentColumnLayout>
             <Label>{this.props.label}</Label>
-          <Dropdown
-            // styles={{
-            //   ...(defaultStyle as any),
-            //   title: {
-            //     ...defaultStyle.title,
-            //     lineHeight: defultBindButtonSize.height,
-            //   },
-            // }}
-            // label={this.props.label}
-            // onRenderLabel={labelRender}
-            value={str}
-            // options={strings.map((str) => {
-            //   return {
-            //     key: str,
-            //     text: str,
-            //   };
-            // })}
-            onOptionSelect={(event, {  optionValue }) => {
-              if (value == null) {
-                this.emitClearValue();
-              } else {
-                this.emitSetValue(optionValue);
-              }
-              return true;
-            }}
-          ></Dropdown>
-          {
-            strings.map((str) => {
-              return {
-                key: str,
-                text: str,
-              };
-            }).map( o => {
-              return (<Option value={o.key} text={o.key}>{o.text}</Option>)
-            })
-          }
+            <Dropdown
+              // styles={{
+              //   ...(defaultStyle as any),
+              //   title: {
+              //     ...defaultStyle.title,
+              //     lineHeight: defultBindButtonSize.height,
+              //   },
+              // }}
+              // label={this.props.label}
+              // onRenderLabel={labelRender}
+              value={str}
+              // options={strings.map((str) => {
+              //   return {
+              //     key: str,
+              //     text: str,
+              //   };
+              // })}
+              onOptionSelect={(event, { optionValue }) => {
+                if (value == null) {
+                  this.emitClearValue();
+                } else {
+                  this.emitSetValue(optionValue);
+                }
+                return true;
+              }}
+            ></Dropdown>
+            {strings
+              .map((str) => {
+                return {
+                  key: str,
+                  text: str,
+                };
+              })
+              .map((o) => {
+                return (
+                  <Option value={o.key} text={o.key}>
+                    {o.text}
+                  </Option>
+                );
+              })}
           </FluentColumnLayout>
         );
       }
@@ -386,9 +380,7 @@ export class FluentValueEditor extends ContextedComponent<
         if (this.props.onEmitMapping) {
           return (
             <>
-              <Label>
-                {strings.objects.visibleOn.visibility}
-              </Label>
+              <Label>{strings.objects.visibleOn.visibility}</Label>
               {/* <DefaultButton
                 styles={{
                   root: {
@@ -408,14 +400,18 @@ export class FluentValueEditor extends ContextedComponent<
         } else {
           return (
             <>
-              <Label>
-                {strings.objects.visibleOn.visibility}
-              </Label>
+              <Label>{strings.objects.visibleOn.visibility}</Label>
               <Button
                 // iconProps={{
                 //   iconName: boolean ? "CheckboxComposite" : "Checkbox",
                 // }}
-                icon={<SVGImageIcon url={R.getSVGIcon(boolean ? "CheckboxComposite" : "Checkbox")}/>}
+                icon={
+                  <SVGImageIcon
+                    url={R.getSVGIcon(
+                      boolean ? "CheckboxComposite" : "Checkbox"
+                    )}
+                  />
+                }
                 onClick={() => {
                   this.emitSetValue(!boolean);
                 }}

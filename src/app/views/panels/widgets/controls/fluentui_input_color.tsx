@@ -16,18 +16,15 @@ import { ColorPicker } from "../../../../components/fluentui_color_picker";
 
 import { AppStore } from "../../../../stores";
 
-// import { Callout, Label, TextField } from "@fluentui/react";
-
-import { Input, Popover, PopoverTrigger, PopoverSurface, Label } from "@fluentui/react-components"
-
 import {
-  // defaultLabelStyle,
-  // defaultStyle,
-  // defultComponentsHeight,
-  FluentColumnLayout,
-  // FluentTextField,
-  // labelRender,
-} from "./fluentui_customized_components";
+  Input,
+  Popover,
+  PopoverTrigger,
+  PopoverSurface,
+  Label,
+} from "@fluentui/react-components";
+
+import { FluentColumnLayout } from "./fluentui_customized_components";
 import { strings } from "../../../../../strings";
 import { FluentUIGradientPicker } from "../../../../components/fluent_ui_gradient_picker";
 import { EmptyColorButton } from "./fluentui_empty_mapping";
@@ -118,12 +115,12 @@ export class FluentInputColor extends React.Component<
     );
   }
 
+  /* eslint-disable max-lines-per-function */
   public render() {
     let hex: string = "";
     if (this.props.defaultValue) {
       hex = colorToHTMLColorHEX(this.props.defaultValue);
     }
-    const pickerId = this.props.labelKey.replace(/\W/g, "_");
     const picker: JSX.Element = this.renderPicker();
     const emptyPicker: JSX.Element = this.renderEmptyColorPicker();
     return (
@@ -131,14 +128,16 @@ export class FluentInputColor extends React.Component<
         {this.props.pickerBeforeTextField && (hex == "" ? emptyPicker : picker)}
         {/* <FluentTextField> */}
         <>
-          <FluentColumnLayout style={{
-            flex: 1
-          }}>
+          <FluentColumnLayout
+            style={{
+              flex: 1,
+            }}
+          >
             <Label>{this.props.label}</Label>
             <Input
               // label={this.props.label}
               // onRenderLabel={labelRender}
-              onChange={(event, { value: newValue}) => {
+              onChange={(event, { value: newValue }) => {
                 newValue = newValue.trim();
                 if (newValue == "") {
                   if (this.props.allowNull) {
@@ -216,10 +215,10 @@ export class FluentInputColor extends React.Component<
         <Popover open={this.state.open}>
           <PopoverTrigger>
             {!this.props.pickerBeforeTextField &&
-            (hex == "" ? emptyPicker : picker)}
+              (hex == "" ? emptyPicker : picker)}
           </PopoverTrigger>
           <PopoverSurface>
-          <ColorPicker
+            <ColorPicker
               store={this.props.store}
               allowNull={true}
               onPick={(color) => {

@@ -2,14 +2,9 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-// import { Dropdown, IDropdownOption } from "@fluentui/react";
 import { strings } from "../../../strings";
 import { ColorGradient, deepClone } from "../../../core";
-import {
-  CustomGradientButtonsWrapper,
-  // defaultActionButtonsStyles,
-  // dropdownStyles,
-} from "./styles";
+import { CustomGradientButtonsWrapper } from "./styles";
 import { Colorspace } from "../fluent_ui_gradient_picker";
 import { SVGImageIcon } from "../icons";
 import * as R from "../../resources";
@@ -27,8 +22,8 @@ export class CustomGradientButtons extends React.Component<
   render() {
     const currentGradient = this.props.currentGradient;
     const dropdownItems: {
-      key: string,
-      text: string
+      key: string;
+      text: string;
     }[] = [
       { key: Colorspace.HCL, text: "HCL" },
       { key: Colorspace.LAB, text: "Lab" },
@@ -38,24 +33,26 @@ export class CustomGradientButtons extends React.Component<
         <div>
           <Button
             // iconProps={{
-              // iconName: "Add",
+            // iconName: "Add",
             // }}
             title={strings.scaleEditor.add}
-            icon={<SVGImageIcon url={R.getSVGIcon('ChromeClose')}/>}
+            icon={<SVGImageIcon url={R.getSVGIcon("ChromeClose")} />}
             onClick={() => {
               const newGradient = deepClone(currentGradient);
               newGradient.colors.push({ r: 150, g: 150, b: 150 });
               this.props.selectGradient(newGradient, true);
             }}
             // styles={defaultActionButtonsStyles}
-          >{strings.scaleEditor.add}</Button>
+          >
+            {strings.scaleEditor.add}
+          </Button>
         </div>
         <div>
           <Button
             // iconProps={{
             //   iconName: "Sort",
             // }}
-            icon={<SVGImageIcon url={R.getSVGIcon('Sort')}/>}
+            icon={<SVGImageIcon url={R.getSVGIcon("Sort")} />}
             title={strings.scaleEditor.reverse}
             onClick={() => {
               const newGradient = deepClone(currentGradient);
@@ -63,11 +60,13 @@ export class CustomGradientButtons extends React.Component<
               this.props.selectGradient(newGradient, true);
             }}
             // styles={defaultActionButtonsStyles}
-          >{strings.scaleEditor.reverse}</Button>
+          >
+            {strings.scaleEditor.reverse}
+          </Button>
         </div>
         <Dropdown
           // options={dropdownItems}
-          onOptionSelect={(event, { optionText, optionValue }) => {
+          onOptionSelect={(event, { optionValue }) => {
             if (optionValue) {
               const newGradient = deepClone(currentGradient);
               newGradient.colorspace = optionValue as Colorspace;
@@ -78,9 +77,11 @@ export class CustomGradientButtons extends React.Component<
           value={currentGradient.colorspace}
           // styles={dropdownStyles}
         >
-          {
-            dropdownItems.map(o => <Option value={o.key} text={o.text}>{o.text}</Option>)
-          }
+          {dropdownItems.map((o) => (
+            <Option value={o.key} text={o.text}>
+              {o.text}
+            </Option>
+          ))}
         </Dropdown>
       </CustomGradientButtonsWrapper>
     );

@@ -13,7 +13,6 @@ import { ReservedMappingKeyNamePrefix } from "../../../core/prototypes/legends/c
 import { strings } from "../../../strings";
 import { AttributeMap } from "../../../core/specification";
 import { ObjectClass } from "../../../core/prototypes";
-// import { DefaultButton } from "@fluentui/react";
 import { EventType } from "./widgets/observer";
 import { ScaleEditorWrapper } from "./panel_styles";
 import { Button } from "@fluentui/react-components";
@@ -102,7 +101,7 @@ export class ScaleEditor extends React.Component<
                     // iconProps={{
                     //   iconName: "Add",
                     // }}
-                    icon={<SVGImageIcon url={R.getSVGIcon('Add')}/>}
+                    icon={<SVGImageIcon url={R.getSVGIcon("Add")} />}
                     title={strings.scaleEditor.add}
                     onClick={() => {
                       manager.eventManager.notify(
@@ -134,12 +133,14 @@ export class ScaleEditor extends React.Component<
                         true
                       ).dispatch(this.props.store.dispatcher);
                     }}
-                  >{strings.scaleEditor.add}</Button>
+                  >
+                    {strings.scaleEditor.add}
+                  </Button>
                   <Button
                     // iconProps={{
                     //   iconName: "Remove",
                     // }}
-                    icon={<SVGImageIcon url={R.getSVGIcon('Remove')}/>}
+                    icon={<SVGImageIcon url={R.getSVGIcon("Remove")} />}
                     disabled={(currentSelection?.length ?? 0) === 0}
                     title={strings.scaleEditor.removeSelected}
                     onClick={() => {
@@ -156,7 +157,9 @@ export class ScaleEditor extends React.Component<
                         );
                       }
                     }}
-                  >{strings.scaleEditor.removeSelected}</Button>
+                  >
+                    {strings.scaleEditor.removeSelected}
+                  </Button>
                 </>
               ) : null}
               {canAddLegend ? (
@@ -164,7 +167,9 @@ export class ScaleEditor extends React.Component<
                   // iconProps={{
                   //   iconName: "CharticulatorLegend",
                   // }}
-                  icon={<SVGImageIcon url={R.getSVGIcon('CharticulatorLegend')}/>}
+                  icon={
+                    <SVGImageIcon url={R.getSVGIcon("CharticulatorLegend")} />
+                  }
                   title={
                     store.isLegendExistForScale(scale._id)
                       ? strings.scaleEditor.removeLegend
@@ -177,11 +182,11 @@ export class ScaleEditor extends React.Component<
                       this.props.plotSegment
                     ).dispatch(store.dispatcher);
                   }}
-                >{
-                  store.isLegendExistForScale(scale._id)
+                >
+                  {store.isLegendExistForScale(scale._id)
                     ? strings.scaleEditor.removeLegend
-                    : strings.scaleEditor.addLegend
-                }</Button>
+                    : strings.scaleEditor.addLegend}
+                </Button>
               ) : null}
             </div>
           </section>

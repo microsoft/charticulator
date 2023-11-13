@@ -11,8 +11,6 @@ import { Actions } from "../../actions";
 import { showOpenFileDialog, readFileAsString } from "../../utils";
 import { strings } from "../../../strings";
 import { AppStore } from "../../stores";
-// import { DefaultButton } from "@fluentui/react";
-import { primaryButtonStyles } from "../../../core";
 import { Button } from "@fluentui/react-components";
 
 export interface FileViewOpenState {
@@ -192,7 +190,7 @@ export class FileViewOpen extends React.Component<
             // iconProps={{
             //   iconName: "OpenFolderHorizontal",
             // }}
-            icon={<SVGImageIcon url={R.getSVGIcon('OpenFolderHorizontal')}/>}
+            icon={<SVGImageIcon url={R.getSVGIcon("OpenFolderHorizontal")} />}
             // styles={primaryButtonStyles}
             title={strings.fileOpen.open}
             onClick={async () => {
@@ -204,7 +202,9 @@ export class FileViewOpen extends React.Component<
               );
               this.props.onClose();
             }}
-          >{strings.fileOpen.open}</Button>
+          >
+            {strings.fileOpen.open}
+          </Button>
         </div>
 
         {this.renderChartList()}

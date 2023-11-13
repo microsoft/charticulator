@@ -11,7 +11,6 @@ import * as React from "react";
 import { Dataset } from "../../../core";
 import { getConvertableTypes } from "../../utils";
 import { Dropdown, Option } from "@fluentui/react-components";
-// import { Dropdown } from "@fluentui/react";
 
 export interface TableViewProps {
   table: Dataset.Table;
@@ -30,6 +29,7 @@ export class TableView extends React.Component<
   React.PropsWithChildren<TableViewProps>,
   any
 > {
+  /* eslint-disable max-lines-per-function */
   public render() {
     const table = this.props.table;
     const onTypeChange = this.props.onTypeChange;
@@ -65,9 +65,9 @@ export class TableView extends React.Component<
                       {
                         <Dropdown
                           style={{
-                            minWidth: 'unset'
+                            minWidth: "unset",
                           }}
-                          onOptionSelect={(ev, { optionText, optionValue }) => {
+                          onOptionSelect={(ev, { optionValue }) => {
                             onTypeChange(c.name, optionValue as string);
                             this.forceUpdate();
                           }}
@@ -86,19 +86,21 @@ export class TableView extends React.Component<
                           //   };
                           // })}
                         >
-                          {
-                            convertableTypes.map((type) => {
+                          {convertableTypes
+                            .map((type) => {
                               const str = type.toString();
                               return {
                                 key: type,
                                 text: str[0].toUpperCase() + str.slice(1),
                               };
-                            }).map(o => {
-                              return (
-                                <Option value={o.key} text={o.text}>{o.text}</Option>
-                              )
                             })
-                          }
+                            .map((o) => {
+                              return (
+                                <Option value={o.key} text={o.text}>
+                                  {o.text}
+                                </Option>
+                              );
+                            })}
                         </Dropdown>
                       }
                     </td>

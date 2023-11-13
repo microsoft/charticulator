@@ -2,15 +2,7 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-// import { DefaultButton, Label, TextField } from "@fluentui/react";
-import {
-  FluentColumnLayout,
-  // defaultStyle,
-  // defultBindButtonSize,
-  // FluentButton,
-  // FluentTextField,
-  // labelRender,
-} from "./fluentui_customized_components";
+import { FluentColumnLayout } from "./fluentui_customized_components";
 import { strings } from "../../../../../strings";
 import { Prototypes, Specification } from "../../../../../core";
 import { Button, Input, Label } from "@fluentui/react-components";
@@ -40,16 +32,16 @@ export const EmptyMapping = ({
             <EmptyColorInput onClick={onClick} label={options.label} />
           ) : (
             <>
-            <FluentColumnLayout>
-              <Label>{options.label}</Label>
-              <Input
-                id={`id_${options.label.replace(/\s/g, '_')}`}
-                // styles={defaultStyle}
-                // label={options.label}
-                // onRenderLabel={labelRender}
-                placeholder={strings.core.auto}
-                onClick={onClick}
-              />
+              <FluentColumnLayout>
+                <Label>{options.label}</Label>
+                <Input
+                  id={`id_${options.label.replace(/\s/g, "_")}`}
+                  // styles={defaultStyle}
+                  // label={options.label}
+                  // onRenderLabel={labelRender}
+                  placeholder={strings.core.auto}
+                  onClick={onClick}
+                />
               </FluentColumnLayout>
             </>
           )}
@@ -66,7 +58,7 @@ export const EmptyMapping = ({
               <FluentColumnLayout>
                 <Label>{options.label}</Label>
                 <Input
-                  id={`id_${options.label.replace(/\s/g, '_')}`}
+                  id={`id_${options.label.replace(/\s/g, "_")}`}
                   // styles={defaultStyle}
                   // label={options.label}
                   // onRenderLabel={labelRender}
@@ -96,14 +88,14 @@ const EmptyColorInput = ({
   return (
     <div className="el-color-value">
       {/* <FluentTextField> */}
-      <FluentColumnLayout style={{
-        flex: 1
-      }}>
-        <Label>
-          {label}
-        </Label>
+      <FluentColumnLayout
+        style={{
+          flex: 1,
+        }}
+      >
+        <Label>{label}</Label>
         <Input
-          id={`id_${label.replace(/\s/g, '_')}`}
+          id={`id_${label.replace(/\s/g, "_")}`}
           // styles={defaultStyle}
           // label={label}
           // onRenderLabel={labelRender}
@@ -111,7 +103,7 @@ const EmptyColorInput = ({
           type="text"
           onClick={onClick}
         />
-      {/* </FluentTextField> */}
+        {/* </FluentTextField> */}
       </FluentColumnLayout>
       <EmptyColorButton onClick={onClick} />
     </div>
@@ -127,25 +119,24 @@ interface EmptyColorButtonProps {
 
 export const EmptyColorButton = ({
   onClick,
-  styles,
 }: EmptyColorButtonProps): JSX.Element => {
   return (
     // <FluentButton marginTop={styles?.marginTop}>
-      <Button
-        // iconProps={{
-        //   iconName: "UnSetColor",
-        // }}
-        icon={<SVGImageIcon url={R.getSVGIcon('UnSetColor')}/>}
-        // styles={{
-        //   root: {
-        //     minWidth: "unset",
-        //     ...defultBindButtonSize,
-        //     marginLeft: 5,
-        //   },
-        // }}
-        onClick={onClick}
-        title={strings.mappingEditor.chooseColor}
-      />
+    <Button
+      // iconProps={{
+      //   iconName: "UnSetColor",
+      // }}
+      icon={<SVGImageIcon url={R.getSVGIcon("UnSetColor")} />}
+      // styles={{
+      //   root: {
+      //     minWidth: "unset",
+      //     ...defultBindButtonSize,
+      //     marginLeft: 5,
+      //   },
+      // }}
+      onClick={onClick}
+      title={strings.mappingEditor.chooseColor}
+    />
     // </FluentButton>
   );
 };

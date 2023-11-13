@@ -6,7 +6,6 @@ import { Point } from "../common";
 import * as Specification from "../specification";
 import * as Dataset from "../dataset";
 import { CSSProperties } from "react";
-// import { ICheckboxStyles, IDropdownOption } from "@fluentui/react";
 import { DataType } from "../specification";
 
 export type Widget = any;
@@ -44,10 +43,7 @@ export interface InputSelectOptions extends SearchSection {
   hideBorder?: boolean;
   shiftCallout?: number;
   observerConfig?: ObserverConfig;
-  onChange?: (value: {
-    key: string;
-    text: string;
-  }) => void;
+  onChange?: (value: { key: string; text: string }) => void;
 }
 
 export interface InputFontComboboxOptions extends SearchSection {

@@ -2,17 +2,7 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-// import {
-//   IComboBoxOption,
-//   ComboBox as FluentCombobox,
-//   Label,
-// } from "@fluentui/react";
 import { fontList } from "../../../../../core";
-// import {
-//   defaultLabelStyle,
-//   defaultStyle,
-//   defultComponentsHeight,
-// } from "./fluentui_customized_components";
 import { Combobox, Option, Label } from "@fluentui/react-components";
 
 export interface ComboBoxFontFamilyProps {
@@ -39,7 +29,7 @@ export const FluentComboBoxFontFamily: React.FC<ComboBoxFontFamilyProps> = (
       text: fontName,
       data: {
         fontFamily: fontName,
-      }
+      },
       // styles: {
       //   optionText: {
       //     fontFamily: fontName,
@@ -67,9 +57,7 @@ export const FluentComboBoxFontFamily: React.FC<ComboBoxFontFamilyProps> = (
 
   return (
     <>
-      <Label>
-        {props.label}
-      </Label>
+      <Label>{props.label}</Label>
       <Combobox
         // styles={{
         //   ...defaultStyle,
@@ -89,17 +77,21 @@ export const FluentComboBoxFontFamily: React.FC<ComboBoxFontFamilyProps> = (
         }}
         onAbort={onCancel}
         // allowFreeform
-      >{
-        optionsWithCustomStyling.map(o => {
+      >
+        {optionsWithCustomStyling.map((o) => {
           return (
             <Option value={o.key as string} text={o.text}>
-              <span style={{
-                fontFamily: o.data.fontFamily
-              }}>{o.text}</span>
+              <span
+                style={{
+                  fontFamily: o.data.fontFamily,
+                }}
+              >
+                {o.text}
+              </span>
             </Option>
-          )
-        })
-      }</Combobox>
+          );
+        })}
+      </Combobox>
     </>
   );
 };

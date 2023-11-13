@@ -2,8 +2,6 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-// import { DefaultButton } from "@fluentui/react";
-// import { defaultNoneButtonStyles, NullButtonWrapper } from "./styles";
 import { Color } from "../../../core";
 import { Button } from "@fluentui/react-components";
 import { SVGImageIcon } from "../icons";
@@ -23,19 +21,21 @@ export class NullButton extends React.Component<
       <>
         {this.props.allowNull ? (
           // <NullButtonWrapper>
-            <Button
-              title={"none"}
-              // iconProps={{
-              //   iconName: "ChromeClose",
-              // }}
-              icon={<SVGImageIcon url={R.getSVGIcon('ChromeClose')}/>}
-              // styles={defaultNoneButtonStyles}
-              onClick={() => {
-                this.props.onPick(null);
-              }}
-            >{"none"}</Button>
-          // </NullButtonWrapper>
-        ) : null}
+          <Button
+            title={"none"}
+            // iconProps={{
+            //   iconName: "ChromeClose",
+            // }}
+            icon={<SVGImageIcon url={R.getSVGIcon("ChromeClose")} />}
+            // styles={defaultNoneButtonStyles}
+            onClick={() => {
+              this.props.onPick(null);
+            }}
+          >
+            {"none"}
+          </Button>
+        ) : // </NullButtonWrapper>
+        null}
       </>
     );
   }

@@ -3037,7 +3037,7 @@ export class Region2DConstraintBuilder {
           );
         }
         // temporary disabled
-        if (false && type != Region2DSublayoutType.Overlap) {
+        if (type != Region2DSublayoutType.Overlap) {
           extra.push(m.sep());
           extra.push(
             m.orderByWidget(

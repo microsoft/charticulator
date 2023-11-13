@@ -11,16 +11,15 @@ import {
   deepClone,
 } from "../../../core";
 import { ColorPicker, colorToCSS } from "../fluentui_color_picker";
-// import { Callout, DefaultButton, TextField } from "@fluentui/react";
-import {
-  ColorCell,
-  ColorRowWrapper,
-  // colorTextInputStyles,
-  // deleteColorStyles,
-} from "./styles";
+import { ColorCell, ColorRowWrapper } from "./styles";
 import { GradientView } from "./gradient_palettes";
 import { CustomGradientButtons } from "./custom_gradient_buttons";
-import { Button, Input, Popover, PopoverSurface } from "@fluentui/react-components";
+import {
+  Button,
+  Input,
+  Popover,
+  PopoverSurface,
+} from "@fluentui/react-components";
 import { SVGImageIcon } from "../icons";
 
 import * as R from "../../resources";
@@ -101,7 +100,7 @@ export class CustomGradientMenu extends React.Component<
                     // iconProps={{
                     //   iconName: "ChromeClose",
                     // }}
-                    icon={<SVGImageIcon url={R.getSVGIcon('ChromeClose')}/>}
+                    icon={<SVGImageIcon url={R.getSVGIcon("ChromeClose")} />}
                     // styles={deleteColorStyles}
                     onClick={() => {
                       if (currentGradient.colors.length > 1) {
@@ -158,9 +157,9 @@ export class CustomGradientMenu extends React.Component<
             />
           </Callout>
         )} */}
-        <Popover open={this.state.isPickerOpen} >
+        <Popover open={this.state.isPickerOpen}>
           <PopoverSurface>
-          <ColorPicker
+            <ColorPicker
               defaultValue={this.state.currentColor}
               onPick={(color) => {
                 const newGradient = deepClone(this.props.currentGradient);
