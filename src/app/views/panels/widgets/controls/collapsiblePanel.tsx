@@ -159,7 +159,7 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
         openItems={!groupState ? ["1"] : []}
         onToggle={(e, data) => {
           const isCollapsed = !!data.openItems.find((o) => o === "1");
-          setGroupState(isCollapsed);
+          setGroupState(!isCollapsed);
           if (store) {
             store.dispatcher.dispatch(
               new Actions.ExpandOrCollapsePanelsUpdated(
