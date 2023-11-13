@@ -212,7 +212,7 @@ export class FluentValueEditor extends ContextedComponent<
               <PopoverTrigger>
                 <span
                   className="el-color-item"
-                  style={{ backgroundColor: hex }}
+                  style={{ backgroundColor: hex, width: 30, height: 30 }}
                   id="color_picker"
                   onClick={() => {
                     this.setState({ open: !this.state.open });

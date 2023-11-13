@@ -6,9 +6,10 @@ import { FluentColumnLayout } from "./fluentui_customized_components";
 import { strings } from "../../../../../strings";
 import { Prototypes, Specification } from "../../../../../core";
 import { Button, Input, Label } from "@fluentui/react-components";
-import { SVGImageIcon } from "../../../../../app/components";
+import { ColorFill20Regular } from "@fluentui/react-icons";
 
-import * as R from "../../../../resources";
+// import * as R from "../../../../resources";
+// import { ColorFill20Regular } from "@fluentui/react-icons";
 
 interface EmptyMappingProps {
   renderColorPicker: () => JSX.Element;
@@ -126,7 +127,8 @@ export const EmptyColorButton = ({
       // iconProps={{
       //   iconName: "UnSetColor",
       // }}
-      icon={<SVGImageIcon url={R.getSVGIcon("UnSetColor")} />}
+      // icon={<SVGImageIcon url={R.getSVGIcon("UnSetColor")} />}
+      icon={<ColorFill20Regular />}
       // styles={{
       //   root: {
       //     minWidth: "unset",

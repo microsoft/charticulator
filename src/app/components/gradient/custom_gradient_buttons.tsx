@@ -6,9 +6,10 @@ import { strings } from "../../../strings";
 import { ColorGradient, deepClone } from "../../../core";
 import { CustomGradientButtonsWrapper } from "./styles";
 import { Colorspace } from "../fluent_ui_gradient_picker";
-import { SVGImageIcon } from "../icons";
-import * as R from "../../resources";
+// import { SVGImageIcon } from "../icons";
+// import * as R from "../../resources";
 import { Button, Dropdown, Option } from "@fluentui/react-components";
+import { Add20Regular, ReOrder20Regular } from "@fluentui/react-icons";
 
 interface CustomGradientButtonsProps {
   currentGradient: ColorGradient;
@@ -36,7 +37,7 @@ export class CustomGradientButtons extends React.Component<
             // iconName: "Add",
             // }}
             title={strings.scaleEditor.add}
-            icon={<SVGImageIcon url={R.getSVGIcon("ChromeClose")} />}
+            icon={<Add20Regular />}
             onClick={() => {
               const newGradient = deepClone(currentGradient);
               newGradient.colors.push({ r: 150, g: 150, b: 150 });
@@ -52,7 +53,7 @@ export class CustomGradientButtons extends React.Component<
             // iconProps={{
             //   iconName: "Sort",
             // }}
-            icon={<SVGImageIcon url={R.getSVGIcon("Sort")} />}
+            icon={<ReOrder20Regular />}
             title={strings.scaleEditor.reverse}
             onClick={() => {
               const newGradient = deepClone(currentGradient);

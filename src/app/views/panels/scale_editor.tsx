@@ -17,6 +17,7 @@ import { EventType } from "./widgets/observer";
 import { ScaleEditorWrapper } from "./panel_styles";
 import { Button } from "@fluentui/react-components";
 import * as R from "../../resources";
+import { Add20Regular, Delete20Regular } from "@fluentui/react-icons";
 
 export interface ScaleEditorProps {
   scale: Specification.Scale;
@@ -101,7 +102,7 @@ export class ScaleEditor extends React.Component<
                     // iconProps={{
                     //   iconName: "Add",
                     // }}
-                    icon={<SVGImageIcon url={R.getSVGIcon("Add")} />}
+                    icon={<Add20Regular />}
                     title={strings.scaleEditor.add}
                     onClick={() => {
                       manager.eventManager.notify(
@@ -140,7 +141,7 @@ export class ScaleEditor extends React.Component<
                     // iconProps={{
                     //   iconName: "Remove",
                     // }}
-                    icon={<SVGImageIcon url={R.getSVGIcon("Remove")} />}
+                    icon={<Delete20Regular />}
                     disabled={(currentSelection?.length ?? 0) === 0}
                     title={strings.scaleEditor.removeSelected}
                     onClick={() => {

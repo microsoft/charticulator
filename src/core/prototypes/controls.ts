@@ -35,7 +35,7 @@ export interface InputSelectOptions extends SearchSection {
   showLabel?: boolean;
   labelPosition?: LabelPosition;
   options: string[];
-  icons?: string[];
+  icons?: string[] | React.ReactNode[];
   isLocalIcons?: boolean;
   labels?: string[];
   tooltip?: string;
@@ -65,7 +65,7 @@ export interface InputTextOptions extends SearchSection {
 
 export interface InputBooleanOptions extends SearchSection {
   type: "checkbox" | "highlight" | "checkbox-fill-width";
-  icon?: string;
+  icon?: string | React.ReactNode;
   headerLabel?: string;
   label?: string;
   observerConfig?: ObserverConfig;

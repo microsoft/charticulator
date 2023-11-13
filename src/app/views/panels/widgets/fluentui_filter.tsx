@@ -6,7 +6,7 @@ import { Prototypes } from "../../../../core";
 import { PanelMode } from "../../../../core/prototypes/controls";
 
 import { strings } from "../../../../strings";
-import * as R from "../../../resources";
+// import * as R from "../../../resources";
 
 import { FluentUIFilterEditor } from "./fluentui_filter_editor";
 import { CharticulatorPropertyAccessors } from "./types";
@@ -16,7 +16,8 @@ import {
   PopoverSurface,
   PopoverTrigger,
 } from "@fluentui/react-components";
-import { SVGImageIcon } from "../../../components";
+// import { SVGImageIcon } from "../../../components";
+import { Filter20Regular } from "@fluentui/react-icons";
 
 export const FilterPanel: React.FC<{
   text: string;
@@ -46,7 +47,8 @@ export const FilterPanel: React.FC<{
                 // iconProps={{
                 //   iconName: "Filter",
                 // }}
-                icon={<SVGImageIcon url={R.getSVGIcon("Filter")} />}
+                // icon={<SVGImageIcon url={R.getSVGIcon("Filter")} />}
+                icon={<Filter20Regular />}
                 onClick={() => {
                   setOpen(!isOpen);
                 }}

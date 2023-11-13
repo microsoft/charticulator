@@ -29,6 +29,7 @@ import { AppStore } from "../../stores";
 import { AddMessage, RemoveMessage } from "../../actions/actions";
 import { strings } from "../../../strings";
 import { Button } from "@fluentui/react-components";
+import { Check20Regular } from "@fluentui/react-icons";
 
 export interface FileUploaderProps {
   onChange: (file: File) => void;
@@ -548,7 +549,7 @@ export class ImportDataView extends React.Component<
             // iconProps={{
             //   iconName: "CheckMark",
             // }}
-            icon={<SVGImageIcon url={R.getSVGIcon("ChromeClose")} />}
+            icon={<Check20Regular />}
             // styles={primaryButtonStyles}
             title={strings.fileImport.doneButtonTitle}
             disabled={

@@ -863,7 +863,7 @@ export class Director {
     }
 
     return (
-      <Menu>
+      <Menu persistOnItemClick>
         <MenuTrigger>
           <MenuButton
             style={{

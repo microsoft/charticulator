@@ -36,6 +36,15 @@ import {
   TextboxElementProperties,
 } from "./textbox.attrs";
 import { RectangleGlyph } from "../glyphs";
+import {
+  AlignBottom20Regular,
+  AlignCenterHorizontal20Regular,
+  AlignCenterVertical20Regular,
+  AlignLeft20Regular,
+  AlignRight20Regular,
+  AlignTop20Regular,
+} from "@fluentui/react-icons";
+import React from "react";
 
 export { TextboxElementAttributes, TextboxElementProperties };
 
@@ -177,9 +186,9 @@ export class TextboxElementClass extends EmphasizableMarkClass<
               type: "radio",
               options: ["start", "middle", "end"],
               icons: [
-                "AlignHorizontalLeft",
-                "AlignHorizontalCenter",
-                "AlignHorizontalRight",
+                React.createElement(AlignLeft20Regular),
+                React.createElement(AlignCenterVertical20Regular),
+                React.createElement(AlignRight20Regular),
               ],
               labels: [
                 strings.alignment.left,
@@ -207,9 +216,9 @@ export class TextboxElementClass extends EmphasizableMarkClass<
               type: "radio",
               options: ["start", "middle", "end"],
               icons: [
-                "AlignVerticalBottom",
-                "AlignVerticalCenter",
-                "AlignVerticalTop",
+                React.createElement(AlignBottom20Regular),
+                React.createElement(AlignCenterHorizontal20Regular),
+                React.createElement(AlignTop20Regular),
               ],
               labels: [
                 strings.alignment.bottom,
@@ -257,9 +266,9 @@ export class TextboxElementClass extends EmphasizableMarkClass<
                   type: "radio",
                   options: ["end", "middle", "start"],
                   icons: [
-                    "AlignVerticalBottom",
-                    "AlignVerticalCenter",
-                    "AlignVerticalTop",
+                    React.createElement(AlignBottom20Regular),
+                    React.createElement(AlignCenterHorizontal20Regular),
+                    React.createElement(AlignTop20Regular),
                   ],
                   labels: [
                     strings.alignment.bottom,
@@ -839,7 +848,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
-      rotation: 0
+      rotation: 0,
     };
   }
 

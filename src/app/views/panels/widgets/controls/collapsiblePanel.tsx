@@ -156,7 +156,7 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
       <Accordion
         collapsible
         multiple
-        openItems={groupState ? ["1"] : []}
+        openItems={!groupState ? ["1"] : []}
         onToggle={(e, data) => {
           const isCollapsed = !!data.openItems.find((o) => o === "1");
           setGroupState(isCollapsed);

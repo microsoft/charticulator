@@ -109,6 +109,7 @@ import { CustomCollapsiblePanel } from "./controls/custom_collapsible_panel";
 import { FluentUIReorderStringsValue } from "./controls/fluentui_reorder_string_value";
 import { InputColorGradient } from "./controls/input_gradient";
 import { getDropzoneAcceptTables } from "./utils";
+import { GroupList20Regular } from "@fluentui/react-icons";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -758,7 +759,11 @@ export class FluentUIWidgetManager
                 .map((o) => {
                   return (
                     <Option text={o.text} value={o.key} key={o.key}>
-                      <SVGImageIcon url={R.getSVGIcon(o.data.icon)} />
+                      {typeof o.data.icon === "string" ? (
+                        <SVGImageIcon url={R.getSVGIcon(o.data.icon)} />
+                      ) : (
+                        o.data.icon
+                      )}
                       {o.text}
                     </Option>
                   );
@@ -786,7 +791,17 @@ export class FluentUIWidgetManager
                 // iconProps={{
                 //   iconName: options.icons[index],
                 // }}
-                icon={<SVGImageIcon url={R.getSVGIcon(options.icons[index])} />}
+                icon={
+                  <>
+                    {typeof options.icons[index] === "string" ? (
+                      <SVGImageIcon
+                        url={R.getSVGIcon(options.icons[index] as string)}
+                      />
+                    ) : (
+                      options.icons[index]
+                    )}
+                  </>
+                }
                 // style={{
                 //   stroke: `${theme.palette.themePrimary} !important`,
                 // }}
@@ -879,7 +894,15 @@ export class FluentUIWidgetManager
               // iconProps={{
               //   iconName: options.icon,
               // }}
-              icon={<SVGImageIcon url={R.getSVGIcon("options.icon")} />}
+              icon={
+                <>
+                  {typeof options.icon === "string" ? (
+                    <SVGImageIcon url={R.getSVGIcon(options.icon as string)} />
+                  ) : (
+                    options.icon
+                  )}
+                </>
+              }
               title={options.label}
               // label={options.label}
               // styles={{
@@ -1800,7 +1823,8 @@ export class FluentUIWidgetManager
               // iconProps={{
               //   iconName: "RowsGroup",
               // }}
-              icon={<SVGImageIcon url={R.getSVGIcon("RowsGroup")} />}
+              // icon={<SVGImageIcon url={R.getSVGIcon("RowsGroup")} />}
+              icon={<GroupList20Regular />}
               onClick={() => {
                 globals.popupController.popupAt(
                   (context) => {

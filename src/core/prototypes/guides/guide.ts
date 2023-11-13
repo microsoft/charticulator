@@ -18,6 +18,15 @@ import { ObjectClassMetadata } from "../index";
 import { RectangleGlyph } from "../glyphs";
 import { RectangleChart } from "../charts";
 import { strings } from "../../../strings";
+import React from "react";
+import {
+  AlignBottom20Regular,
+  AlignCenterHorizontal20Regular,
+  AlignCenterVertical20Regular,
+  AlignLeft20Regular,
+  AlignRight20Regular,
+  AlignTop20Regular,
+} from "@fluentui/react-icons";
 
 export type GuideAxis = "x" | "y";
 
@@ -388,7 +397,7 @@ export class GuideClass extends ChartElementClass<
 
     let labels: string[];
     let options: string[];
-    let icons: string[];
+    let icons: string[] | React.ReactNode[];
     if (this.object.properties.axis === "x") {
       const hOptions: Specification.baselineH[] = ["left", "center", "right"];
       options = hOptions;
@@ -399,9 +408,9 @@ export class GuideClass extends ChartElementClass<
       ];
 
       icons = [
-        "AlignHorizontalLeft",
-        "AlignHorizontalCenter",
-        "AlignHorizontalRight",
+        React.createElement(AlignLeft20Regular),
+        React.createElement(AlignCenterVertical20Regular),
+        React.createElement(AlignRight20Regular),
       ];
     } else {
       const vOptions: Specification.baselineV[] = ["top", "middle", "bottom"];
@@ -412,9 +421,9 @@ export class GuideClass extends ChartElementClass<
         strings.alignment.bottom,
       ];
       icons = [
-        "AlignVerticalTop",
-        "AlignVerticalCenter",
-        "AlignVerticalBottom",
+        React.createElement(AlignTop20Regular),
+        React.createElement(AlignCenterHorizontal20Regular),
+        React.createElement(AlignBottom20Regular),
       ];
     }
     widgets.push(
