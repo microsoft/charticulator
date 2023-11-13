@@ -1109,7 +1109,6 @@ export class Director {
   //                 const expand = item.subMenuProps.items.find((columns) =>
   //                   columns.subMenuProps.items.find((func) => func.isChecked)
   //                 );
-  //                 debugger;
   //                 return (
   //                   <CollapsiblePanel
   //                     key={item.key}

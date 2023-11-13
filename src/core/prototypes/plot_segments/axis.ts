@@ -1870,7 +1870,7 @@ export function buildAxisWidgets(
           widgets.push(
             manager.verticalGroup(
               {
-                header: strings.objects.general,
+                header: `${axisName}: ${strings.objects.general}`,
               },
               [
                 manager.searchWrapper(
@@ -2148,7 +2148,7 @@ export function buildAxisWidgets(
           widgets.push(
             manager.verticalGroup(
               {
-                header: strings.objects.general,
+                header: `${axisName}: ${strings.objects.general}`,
                 searchSection: mainCollapsePanelHeader,
               },
               [
@@ -2315,7 +2315,7 @@ export function buildAxisWidgets(
       // )
       manager.verticalGroup(
         {
-          header: strings.objects.general,
+          header: `${axisName}: ${strings.objects.general}`,
         },
         [
           manager.searchWrapper(

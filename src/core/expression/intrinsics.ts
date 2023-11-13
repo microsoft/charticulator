@@ -257,7 +257,6 @@ operators["unary:not"] = makeArrayCapable1((a: boolean) => !a);
 // TODO convert to class with static methods
 // functions.date = {
 //   parse: makeArrayCapable1((x: string) => {
-//     debugger;
 //     parseDate(x, isUtcTimeZone() ? 0 : new Date().getTimezoneOffset())
 //   }),
 
