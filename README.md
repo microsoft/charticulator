@@ -1,5 +1,5 @@
 
-<!-- [![Build Status](https://travis-ci.org/Microsoft/charticulator.svg?branch=master)](https://travis-ci.org/Microsoft/charticulator) -->
+[![Deploy static content to Pages](https://github.com/zBritva/charticulator/actions/workflows/static.yml/badge.svg)](https://github.com/zBritva/charticulator/actions/workflows/static.yml)
 
 Charticulator
 ====
