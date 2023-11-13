@@ -1,11 +1,12 @@
 
-[![Build Status](https://travis-ci.org/Microsoft/charticulator.svg?branch=master)](https://travis-ci.org/Microsoft/charticulator)
+[![Deploy static content to Pages](https://github.com/zBritva/charticulator/actions/workflows/static.yml/badge.svg)](https://github.com/zBritva/charticulator/actions/workflows/static.yml)
 
 Charticulator
 ====
 
-Charticulator is a new charting tool that allows you to design charts by interactively specifying
-constraints.
+Charticulator is a new charting tool that allows you to design charts by interactively specifying constraints.
+
+Deployed `beta` branch available on [https://zbritva.github.io/charticulator/](https://zbritva.github.io/charticulator/)
 
 Project Team & contributors
 ----
