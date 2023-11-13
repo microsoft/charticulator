@@ -15,8 +15,8 @@ import { ColorPicker, colorToCSS } from "../fluentui_color_picker";
 import {
   ColorCell,
   ColorRowWrapper,
-  colorTextInputStyles,
-  deleteColorStyles,
+  // colorTextInputStyles,
+  // deleteColorStyles,
 } from "./styles";
 import { GradientView } from "./gradient_palettes";
 import { CustomGradientButtons } from "./custom_gradient_buttons";

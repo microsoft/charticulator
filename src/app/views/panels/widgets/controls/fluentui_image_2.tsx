@@ -27,8 +27,8 @@ import {
 } from "./fluentui_customized_components";
 import {
   ImageMappingDragStateWrapper,
-  ImageMappingTextFieldStyles,
-  ToolTipHostStyles,
+  // ImageMappingTextFieldStyles,
+  // ToolTipHostStyles,
 } from "./styles";
 import { SVGImageIcon } from "../../../../components";
 import { Button, Input, Label, Tooltip, Image as FluentUIImage } from "@fluentui/react-components";
