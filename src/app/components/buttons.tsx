@@ -59,38 +59,12 @@ export class FluentToolButton extends React.Component<
           }}
         >
           {/* <FluentButton marginTop={"0px"}> */}
-            <ToolbarButton
-              as="button"
-              value={this.props.text}
-              onClick={onClick}
-              name={this.props.title}
-              // value={this.props.active || this.state.dragging}
-              disabled={this.props.disabled}
-              title={this.props.title}
-              icon={
-                typeof this.props.icon === "string" ? (
-                  <SVGImageIcon
-                    url={R.getSVGIcon(this.props.icon)}
-                    width={20}
-                    height={20}
-                  />
-                ) : (
-                  this.props.icon
-                )
-              }
-            ></ToolbarButton>
-          {/* </FluentButton> */}
-        </DraggableElement>
-      );
-    } else {
-      return (
-        // <FluentButton marginTop={"0px"}>
           <ToolbarButton
-            name={this.props.title}
             as="button"
             value={this.props.text}
-            // value={this.props.active}
             onClick={onClick}
+            name={this.props.title}
+            // value={this.props.active || this.state.dragging}
             disabled={this.props.disabled}
             title={this.props.title}
             icon={
@@ -105,6 +79,32 @@ export class FluentToolButton extends React.Component<
               )
             }
           ></ToolbarButton>
+          {/* </FluentButton> */}
+        </DraggableElement>
+      );
+    } else {
+      return (
+        // <FluentButton marginTop={"0px"}>
+        <ToolbarButton
+          name={this.props.title}
+          as="button"
+          value={this.props.text}
+          // value={this.props.active}
+          onClick={onClick}
+          disabled={this.props.disabled}
+          title={this.props.title}
+          icon={
+            typeof this.props.icon === "string" ? (
+              <SVGImageIcon
+                url={R.getSVGIcon(this.props.icon)}
+                width={20}
+                height={20}
+              />
+            ) : (
+              this.props.icon
+            )
+          }
+        ></ToolbarButton>
         // </FluentButton>
       );
     }
@@ -200,95 +200,6 @@ export class MenuButton extends BaseButton<IconButtonProps> {
           }}
         >
           <SVGImageIcon url={props.url} />
-        </span>
-      );
-    }
-  }
-}
-
-export class ButtonFlat extends BaseButton<IconButtonProps> {
-  public render() {
-    const props = this.props;
-    if (props.url) {
-      if (props.text) {
-        return (
-          <button
-            className="charticulator__button-flat"
-            title={props.title}
-            onClick={this._doClick}
-          >
-            <SVGImageIcon url={props.url} />
-            <span className="el-text">{props.text}</span>
-          </button>
-        );
-      } else {
-        return (
-          <button
-            className="charticulator__button-flat"
-            title={props.title}
-            onClick={this._doClick}
-          >
-            <SVGImageIcon url={props.url} />
-          </button>
-        );
-      }
-    } else {
-      return (
-        <button
-          className="charticulator__button-flat"
-          title={props.title}
-          onClick={this._doClick}
-        >
-          <span className="el-text">{props.text}</span>
-        </button>
-      );
-    }
-  }
-}
-
-export class ButtonFlatPanel extends BaseButton<IconButtonProps> {
-  public render() {
-    const props = this.props;
-    if (props.url) {
-      if (props.text) {
-        return (
-          <span
-            className={classNames("charticulator__button-flat-panel", [
-              "is-disabled",
-              this.props.disabled,
-            ])}
-            title={props.title}
-            onClick={this._doClick}
-          >
-            <SVGImageIcon url={props.url} />
-            <span className="el-text">{props.text}</span>
-          </span>
-        );
-      } else {
-        return (
-          <span
-            className={classNames("charticulator__button-flat-panel", [
-              "is-disabled",
-              this.props.disabled,
-            ])}
-            title={props.title}
-            onClick={this._doClick}
-          >
-            <SVGImageIcon url={props.url} />
-          </span>
-        );
-      }
-    } else {
-      return (
-        <span
-          className={classNames("charticulator__button-flat-panel", [
-            "is-disabled",
-            this.props.disabled,
-          ])}
-          title={props.title}
-          onClick={this._doClick}
-        >
-          <span className="el-text">{props.text}</span>
         </span>
       );
     }

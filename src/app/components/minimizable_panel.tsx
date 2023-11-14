@@ -2,14 +2,13 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-import { getSVGIcon } from "../resources";
-import { ButtonFlat } from "./buttons";
 import { default as Hammer } from "hammerjs";
 import { classNames } from "../utils";
 import { Button } from "@fluentui/react-components";
 
 import * as R from "../resources";
 import { SVGImageIcon } from "./icons";
+import { ArrowMinimize24Regular, Stack24Regular } from "@fluentui/react-icons";
 
 export class MinimizablePanelView extends React.Component<
   React.PropsWithChildren<Record<string, unknown>>,
@@ -56,7 +55,13 @@ export class MinimizablePane extends React.Component<
         <Button
           appearance="transparent"
           onClick={() => this.setState({ minimized: !this.state.minimized })}
-          icon={<SVGImageIcon url={R.getSVGIcon(this.state.minimized ? "ChevronRight" : "ChevronDown")}/>}
+          icon={
+            <SVGImageIcon
+              url={R.getSVGIcon(
+                this.state.minimized ? "ChevronRight" : "ChevronDown"
+              )}
+            />
+          }
           // iconProps={{
           //   iconName: this.state.minimized ? "ChevronRight" : "ChevronDown",
           //   styles: {
@@ -75,7 +80,13 @@ export class MinimizablePane extends React.Component<
               appearance="transparent"
               title="Show as separate window"
               // url={getSVGIcon("general/popout")}
-              icon={<SVGImageIcon height={20} width={20} url={R.getSVGIcon("general/popout")}/>}
+              icon={
+                <SVGImageIcon
+                  height={20}
+                  width={20}
+                  url={R.getSVGIcon("general/popout")}
+                />
+              }
               onClick={() => this.props.onMaximize()}
             />
           </span>
@@ -300,16 +311,18 @@ export class FloatingPanel extends React.Component<
         >
           <span className="title">{this.props.title}</span>
           <span className="buttons" onClick={(e) => e.stopPropagation()}>
-            <ButtonFlat
-              url={getSVGIcon("general/minus")}
+            <Button
+              appearance="subtle"
+              icon={<ArrowMinimize24Regular />}
               title="Minimize"
               onClick={() =>
                 this.setState({ minimized: !this.state.minimized })
               }
             />
             {this.props.onClose ? (
-              <ButtonFlat
-                url={getSVGIcon(this.props.closeButtonIcon || "general/popout")}
+              <Button
+                appearance="subtle"
+                icon={<Stack24Regular />}
                 title="Restore to panel"
                 onClick={() => this.props.onClose()}
               />

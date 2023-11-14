@@ -23,7 +23,6 @@ import {
   Specification,
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
-import { ButtonRaised } from "../../../components";
 import { SVGImageIcon } from "../../../components/icons";
 import { getAlignment, PopupView } from "../../../controllers";
 import {
@@ -1178,7 +1177,6 @@ export class FluentUIWidgetManager
     if (!this.shouldDrawComponent([text])) {
       return;
     }
-    let mappingButton: Element = null;
 
     const objectClass = this.objectClass;
     const mapping = objectClass.object.mappings[attribute] as ScaleMapping;
@@ -1186,27 +1184,18 @@ export class FluentUIWidgetManager
     const scaleObject = getById(this.store.chart.scales, mapping.scale);
 
     return (
-      <ButtonRaised
-        key={attribute}
-        ref={(e) => (mappingButton = ReactDOM.findDOMNode(e) as Element)}
-        text={text}
-        onClick={() => {
-          globals.popupController.popupAt(
-            (context) => {
-              return (
-                <PopupView context={context}>
-                  <ScaleValueSelector
-                    scale={scaleObject}
-                    scaleMapping={mapping}
-                    store={this.store}
-                  />
-                </PopupView>
-              );
-            },
-            { anchor: mappingButton }
-          );
-        }}
-      />
+      <Popover>
+        <PopoverTrigger>
+          <Button key={attribute}>{text}</Button>
+        </PopoverTrigger>
+        <PopoverSurface>
+          <ScaleValueSelector
+            scale={scaleObject}
+            scaleMapping={mapping}
+            store={this.store}
+          />
+        </PopoverSurface>
+      </Popover>
     );
   }
 

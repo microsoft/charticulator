@@ -26,7 +26,6 @@ import {
   MarkSelection,
   Selection,
 } from "../../stores";
-import { Button } from "../panels/widgets/controls";
 import { BoundingBoxView } from "./bounding_box";
 import {
   CreatingComponent,
@@ -49,10 +48,17 @@ import { SnappingGuidesVisualTypes } from "../../../core/prototypes";
 import { classNames } from "../../utils";
 import { FluentUIWidgetManager } from "../panels/widgets/fluentui_manager";
 import {
+  Button,
   Popover,
   PopoverSurface,
   PopoverTrigger,
 } from "@fluentui/react-components";
+import {
+  ZoomFit24Regular,
+  ZoomIn24Regular,
+  ZoomOut24Regular,
+} from "@fluentui/react-icons";
+import { SVGImageIcon } from "../../components";
 
 export interface ChartEditorViewProps {
   store: AppStore;
@@ -1453,13 +1459,15 @@ export class ChartEditorView
           <div className="canvas-controls-left" />
           <div className="canvas-controls-right">
             <Button
-              icon="ZoomIn"
+              icon={<ZoomIn24Regular />}
+              title={strings.canvas.zoomIn}
               onClick={() => {
                 this.doZoom(1.1);
               }}
             />
             <Button
-              icon="ZoomOut"
+              icon={<ZoomOut24Regular />}
+              title={strings.canvas.zoomOut}
               onClick={() => {
                 this.doZoom(1 / 1.1);
               }}
@@ -1480,7 +1488,31 @@ export class ChartEditorView
               }}
             />
             <Button
+              icon={<ZoomFit24Regular />}
+              onClick={() => {
+                const newZoom = this.getFitViewZoom(
+                  this.state.viewWidth,
+                  this.state.viewHeight
+                );
+                if (!newZoom) {
+                  return;
+                }
+                this.setState({
+                  zoom: newZoom,
+                });
+              }}
+            />
+            <Button
               icon="rect-zoom"
+              title={"Rectangle zoom"}
+              onClick={() => {
+                new Actions.SetCurrentTool("rectangle-zoom").dispatch(
+                  this.props.store.dispatcher
+                );
+              }}
+            />
+            <Button
+              icon={<SVGImageIcon url={R.getSVGIcon("rect-zoom")} />}
               title={"Rectangle zoom"}
               onClick={() => {
                 new Actions.SetCurrentTool("rectangle-zoom").dispatch(

@@ -10,7 +10,7 @@
 import * as React from "react";
 import { Dataset, Expression, Specification } from "../../../core";
 import { DragData, Actions } from "../../actions";
-import { ButtonFlat, DraggableElement, SVGImageIcon } from "../../components";
+import { DraggableElement, SVGImageIcon } from "../../components";
 import {
   ModalView,
   PopupAlignment,
@@ -43,6 +43,10 @@ import {
   PopoverSurface,
   PopoverTrigger,
 } from "@fluentui/react-components";
+import {
+  ChevronDown24Regular,
+  ChevronLeft24Regular,
+} from "@fluentui/react-icons";
 
 export interface DatasetViewProps {
   store: AppStore;
@@ -602,16 +606,19 @@ export class ColumnView extends React.Component<
               Expression.fields(Expression.variable("x"), c.name)
             ).toString(),
             c.type,
-            <ButtonFlat
+            <Button
+              appearance="subtle"
               title={strings.dataset.showDerivedFields}
-              stopPropagation={true}
-              url={
-                this.state.isExpanded
-                  ? R.getSVGIcon("ChevronDown")
-                  : R.getSVGIcon("ChevronLeft")
+              icon={
+                this.state.isExpanded ? (
+                  <ChevronDown24Regular />
+                ) : (
+                  <ChevronLeft24Regular />
+                )
               }
-              onClick={() => {
+              onClick={(e) => {
                 this.setState({ isExpanded: !this.state.isExpanded });
+                e.stopPropagation();
               }}
             />,
             c.metadata,

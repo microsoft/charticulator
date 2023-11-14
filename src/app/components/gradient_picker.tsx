@@ -15,14 +15,18 @@ import { ColorPicker, colorToCSS } from "./fluentui_color_picker";
 import { InputField } from "./color_space_picker";
 import { TabsView } from "./tabs_view";
 import { ReorderListView } from "../views/panels/object_list_editor";
-import { Button } from "../views/panels/widgets/controls";
 import { Colorspace } from "./fluent_ui_gradient_picker";
 import {
   Popover,
   PopoverSurface,
   Dropdown,
   Option,
+  Button,
 } from "@fluentui/react-components";
+import { SVGImageIcon } from "./icons";
+
+import * as R from "../resources";
+import { ArrowSort24Regular } from "@fluentui/react-icons";
 
 export interface GradientPickerProps {
   defaultValue?: ColorGradient;
@@ -233,7 +237,9 @@ export class GradientPicker extends React.Component<
                         }}
                       />
                       <Button
-                        icon={"ChromeClose"}
+                        icon={
+                          <SVGImageIcon url={R.getSVGIcon("ChromeClose")} />
+                        }
                         onClick={() => {
                           if (this.state.currentGradient.colors.length > 1) {
                             const newGradient = deepClone(
@@ -252,23 +258,25 @@ export class GradientPicker extends React.Component<
             </div>
             <div className="row">
               <Button
-                icon={"general/plus"}
-                text="Add"
+                icon={<SVGImageIcon url={R.getSVGIcon("general/plus")} />}
                 onClick={() => {
                   const newGradient = deepClone(this.state.currentGradient);
                   newGradient.colors.push({ r: 150, g: 150, b: 150 });
                   this.selectGradient(newGradient, true);
                 }}
-              />{" "}
+              >
+                "Add"
+              </Button>{" "}
               <Button
-                icon={"Sort"}
-                text="Reverse"
+                icon={<ArrowSort24Regular />}
                 onClick={() => {
                   const newGradient = deepClone(this.state.currentGradient);
                   newGradient.colors.reverse();
                   this.selectGradient(newGradient, true);
                 }}
-              />{" "}
+              >
+                "Reverse"
+              </Button>{" "}
               {/* <Dropdown
                 options={[
                   { key: Colorspace.HCL, text: "HCL" },

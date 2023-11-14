@@ -3,13 +3,15 @@
 
 import * as React from "react";
 import { ReorderListView } from "../../object_list_editor";
-import { ButtonRaised, SVGImageIcon } from "../../../../components";
 import { strings } from "../../../../../strings";
 import { getRandomNumber } from "../../../../../core";
 import { DataType } from "../../../../../core/specification";
 import { Button, Label, Tooltip } from "@fluentui/react-components";
-
-import * as R from "../../../../resources";
+import {
+  ArrowSort24Regular,
+  Delete24Regular,
+  TextSortDescending24Regular,
+} from "@fluentui/react-icons";
 
 interface ReorderStringsValueProps {
   items: string[];
@@ -70,46 +72,19 @@ export class FluentUIReorderStringsValue extends React.Component<
         </div>
         <div className="el-row">
           <Button
-            // iconProps={{
-            //   iconName: "SortLines",
-            // }}
-            icon={<SVGImageIcon url={R.getSVGIcon("SortLines")} />}
-            // text={strings.reOrder.sort}
+            icon={<TextSortDescending24Regular />}
             onClick={() => {
               this.setState({
-                items:
-                  [...this.props.sortedCategories] ?? this.state.items.sort(),
-                customOrder: false,
+                items: this.state.items.sort(),
                 sortOrder: true,
+                customOrder: false,
               });
-              if (this.props.onButtonHandler) {
-                this.props.onButtonHandler();
-              }
             }}
-            // styles={{
-            //   root: {
-            //     minWidth: "unset",
-            //     ...defultComponentsHeight,
-            //     padding: 0,
-            //     marginRight: 5,
-            //   },
-            // }}
           >
             {strings.reOrder.sort}
           </Button>
           <Button
-            // iconProps={{
-            //   iconName: "Sort",
-            // }}
-            icon={<SVGImageIcon url={R.getSVGIcon("Sort")} />}
-            // styles={{
-            //   root: {
-            //     minWidth: "unset",
-            //     ...defultComponentsHeight,
-            //     padding: 0,
-            //     marginRight: 5,
-            //   },
-            // }}
+            icon={<ArrowSort24Regular />}
             title={strings.reOrder.reverse}
             onClick={() => {
               this.setState({
@@ -126,18 +101,7 @@ export class FluentUIReorderStringsValue extends React.Component<
           {this.props.allowReset && (
             <>
               <Button
-                // iconProps={{
-                //   iconName: "Clear",
-                // }}
-                icon={<SVGImageIcon url={R.getSVGIcon("Clear")} />}
-                // styles={{
-                //   root: {
-                //     minWidth: "unset",
-                //     ...defultComponentsHeight,
-                //     padding: 0,
-                //   },
-                // }}
-                // text={strings.reOrder.reset}
+                icon={<Delete24Regular />}
                 onClick={() => {
                   if (this.props.onReset) {
                     const items = this.props.onReset();
@@ -146,9 +110,6 @@ export class FluentUIReorderStringsValue extends React.Component<
                       customOrder: false,
                       sortOrder: false,
                     });
-                    if (this.props.onButtonHandler) {
-                      this.props.onButtonHandler();
-                    }
                   }
                 }}
               >
@@ -158,8 +119,7 @@ export class FluentUIReorderStringsValue extends React.Component<
           )}
         </div>
         <div className="el-row">
-          <ButtonRaised
-            text="OK"
+          <Button
             onClick={() => {
               this.props.onConfirm(
                 this.state.items,
@@ -167,7 +127,9 @@ export class FluentUIReorderStringsValue extends React.Component<
                 this.state.sortOrder
               );
             }}
-          />
+          >
+            "OK"
+          </Button>
         </div>
       </div>
     );
