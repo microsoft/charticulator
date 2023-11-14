@@ -46,6 +46,7 @@ import {
 import {
   ChevronDown24Regular,
   ChevronLeft24Regular,
+  MoreHorizontal24Regular,
 } from "@fluentui/react-icons";
 
 export interface DatasetViewProps {
@@ -136,11 +137,8 @@ export class ColumnsView extends React.Component<
             </span>
             {this.props.store.editorType === EditorType.Chart ? (
               <Button
-                // iconProps={{
-                //   iconName: "general/replace",
-                // }}
+                appearance="subtle"
                 icon={<SVGImageIcon url={R.getSVGIcon("general/replace")} />}
-                // styles={buttonStyles}
                 title={strings.dataset.replaceWithCSV}
                 // eslint-disable-next-line
                 onClick={() => {
@@ -297,66 +295,11 @@ export class ColumnsView extends React.Component<
                 }}
               />
             ) : null}
-            {/* <DefaultButton
-              iconProps={{
-                iconName: "More",
-              }}
-              styles={buttonStyles}
-              id={`charticulator__dataset-view-detail-${this.props.table.displayName}`}
-              title={strings.dataset.showDataValues}
-              // ={false}
-              onClick={() => {
-                this.setState({
-                  tableViewIsOpened: !this.state.tableViewIsOpened,
-                });
-              }}
-            />
-            {this.state.tableViewIsOpened ? (
-              <Callout
-                target={`#charticulator__dataset-view-detail-${this.props.table.displayName}`}
-                onDismiss={() => {
-                  this.setState({
-                    tableViewIsOpened: false,
-                  });
-                }}
-              >
-                <div className="charticulator__dataset-view-detail">
-                  <h2>{table.displayName || table.name}</h2>
-                  <p>
-                    {strings.dataset.dimensions(
-                      table.rows.length,
-                      table.columns.length
-                    )}
-                  </p>
-                  <TableView
-                    table={table}
-                    onTypeChange={
-                      this.props.store.editorType === EditorType.Chart
-                        ? (column, type) => {
-                            const store = this.props.store;
-
-                            store.dispatcher.dispatch(
-                              new Actions.ConvertColumnDataType(
-                                table.name,
-                                column,
-                                type as DataType
-                              )
-                            );
-                          }
-                        : null
-                    }
-                  />
-                </div>
-              </Callout>
-            ) : null} */}
             <Popover>
               <PopoverTrigger>
                 <Button
-                  icon={
-                    <SVGImageIcon
-                      url={R.getSVGIcon("general/more-horizontal")}
-                    />
-                  }
+                  appearance="subtle"
+                  icon={<MoreHorizontal24Regular />}
                   title={strings.dataset.showDataValues}
                   onClick={() => {
                     this.setState({
