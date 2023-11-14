@@ -351,7 +351,7 @@ export class AxisRenderer {
     }
     const ticks = scale.ticks(tickNumber);
 
-    const defaultFormat = scale.tickFormat(tickNumber);
+    const defaultFormat = scale.tickFormat(tickNumber, tickFormat);
 
     const resolvedFormat = AxisRenderer.getTickFormat(
       tickFormat,
@@ -452,9 +452,9 @@ export class AxisRenderer {
       }
     }
     const ticks = scale.ticks(tickNumber);
-    const tickFormat = scale.tickFormat(
+    const tickFromatInternal = scale.tickFormat(
       tickNumber,
-      tickFormatString?.replace(tickFormatParserExpression(), "$1")
+      tickFormatString?.replace(tickFormatParserExpression(), "$1") || '%x'
     );
     const r: TickDescription[] = [];
     for (let i = 0; i < ticks.length; i++) {
@@ -465,7 +465,7 @@ export class AxisRenderer {
       if (!isNaN(tx)) {
         r.push({
           position: tx,
-          label: tickFormat(ticks[i]),
+          label: tickFromatInternal(ticks[i]),
         });
       }
     }
