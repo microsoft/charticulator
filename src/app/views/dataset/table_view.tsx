@@ -76,7 +76,7 @@ export class TableView extends React.Component<
                           //     borderWidth: "0px",
                           //   },
                           // }}
-                          value={c.type}
+                          value={c.type[0].toUpperCase() + c.type.slice(1)}
                           selectedOptions={[c.type]}
                           // options={convertableTypes.map((type) => {
                           //   const str = type.toString();

@@ -27,25 +27,10 @@ import {
   Popover,
   PopoverSurface,
   Button,
-  MenuPopover,
-  MenuTrigger,
-  Menu,
-  MenuList,
-  MenuItem,
-  MenuButton,
-  PopoverTrigger,
   ToggleButton,
 } from "@fluentui/react-components";
 
-import {
-  // defaultLabelStyle,
-  // defultBindButtonSize,
-  // defultComponentsHeight,
-  FluentColumnLayout,
-  // FluentActionButton,
-  // FluentButton,
-  FluentRowLayout,
-} from "./controls/fluentui_customized_components";
+import { FluentColumnLayout } from "./controls/fluentui_customized_components";
 import { ObjectClass } from "../../../../core/prototypes";
 import {
   DataFieldSelector,

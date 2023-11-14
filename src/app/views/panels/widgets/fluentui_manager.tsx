@@ -694,6 +694,12 @@ export class FluentUIWidgetManager
     // const theme = getTheme();
     const isLocalIcons = options.isLocalIcons ?? false;
     if (options.type == "dropdown") {
+      const propertyValue = this.getPropertyValue(property) as string;
+      const propertyIndex = options.options.findIndex(
+        (o) => o === propertyValue
+      );
+      const propertyLabel = options.labels[propertyIndex];
+
       return (
         <>
           <FluentColumnLayout>
@@ -706,26 +712,8 @@ export class FluentUIWidgetManager
                 minWidth: "unset",
                 width: "100%",
               }}
-              value={this.getPropertyValue(property) as string}
+              value={propertyLabel}
               selectedOptions={[this.getPropertyValue(property) as string]}
-              // value={this.getPropertyValue(property) as string}
-              // label={options.label}
-              // onRenderLabel={labelRender}
-              // onRenderOption={onRenderOption}
-              // onRenderTitle={onRenderTitle}
-              // options={options.options.map((rangeValue, index) => {
-              //   return {
-              //     key: rangeValue,
-              //     text: options.labels[index],
-              //     data: {
-              //       icon: options.icons?.[index],
-              //       iconStyles: {
-              //         stroke: "gray",
-              //       },
-              //       isLocalIcons,
-              //     },
-              //   };
-              // })}
               onOptionSelect={(_, { optionValue: value, optionText }) => {
                 this.emitSetProperty(property, value);
                 this.defaultNotification(options.observerConfig);
@@ -737,10 +725,6 @@ export class FluentUIWidgetManager
                 }
                 return true;
               }}
-              // styles={{
-              //   ...defaultStyle,
-              //   ...dropdownStyles(options),
-              // }}
             >
               {options.options
                 .map((rangeValue, index) => {
