@@ -90,37 +90,40 @@ export class AttributePanel extends React.Component<
         }
         const glyph = selection.glyph;
         const mark = selection.mark;
-        object = mark;
-        objectClass = this.props.store.chartManager.getMarkClass(
-          this.props.store.chartManager.findMarkState(
-            selection.plotSegment,
-            selection.glyph,
-            selection.mark,
-            this.props.store.getSelectedGlyphIndex(selection.plotSegment._id)
-          )
-        );
-        manager = new FluentUIWidgetManager(this.props.store, objectClass);
-        manager.onEditMappingHandler = (attribute, mapping) => {
-          new Actions.SetMarkAttribute(
-            glyph,
-            mark,
-            attribute,
-            mapping
-          ).dispatch(this.props.store.dispatcher);
-        };
-        manager.onMapDataHandler = (attribute, data, hints) => {
-          new Actions.MapDataToMarkAttribute(
-            glyph,
-            mark,
-            attribute,
-            objectClass.attributes[attribute].type,
-            data.expression,
-            data.valueType,
-            data.metadata,
-            hints,
-            data.table.name
-          ).dispatch(this.props.store.dispatcher);
-        };
+        const found = Prototypes.findObjectById(this.props.store.chart, mark._id);
+        if (found) {
+          object = mark;
+          objectClass = this.props.store.chartManager.getMarkClass(
+            this.props.store.chartManager.findMarkState(
+              selection.plotSegment,
+              selection.glyph,
+              selection.mark,
+              this.props.store.getSelectedGlyphIndex(selection.plotSegment._id)
+            )
+          );
+          manager = new FluentUIWidgetManager(this.props.store, objectClass);
+          manager.onEditMappingHandler = (attribute, mapping) => {
+            new Actions.SetMarkAttribute(
+              glyph,
+              mark,
+              attribute,
+              mapping
+            ).dispatch(this.props.store.dispatcher);
+          };
+          manager.onMapDataHandler = (attribute, data, hints) => {
+            new Actions.MapDataToMarkAttribute(
+              glyph,
+              mark,
+              attribute,
+              objectClass.attributes[attribute].type,
+              data.expression,
+              data.valueType,
+              data.metadata,
+              hints,
+              data.table.name
+            ).dispatch(this.props.store.dispatcher);
+          };
+        }
       }
       if (selection instanceof ChartElementSelection) {
         const markLayout = selection.chartElement as Specification.PlotSegment;
