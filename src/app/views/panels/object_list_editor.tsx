@@ -112,6 +112,7 @@ export class ObjectListEditor extends ContextedComponent<
                     )
                   }
                   title="Toggle visibility"
+                  appearance="subtle"
                   onClick={() => {
                     this.dispatch(
                       new Actions.SetObjectProperty(
@@ -127,6 +128,7 @@ export class ObjectListEditor extends ContextedComponent<
                 <Button
                   icon={<Eraser24Regular />}
                   title="Remove"
+                  appearance="subtle"
                   onClick={() => {
                     this.dispatch(new Actions.DeleteChartElement(element));
                   }}
@@ -208,6 +210,7 @@ export class ObjectListEditor extends ContextedComponent<
                         <EyeOff24Regular />
                       )
                     }
+                    appearance="subtle"
                     title="Toggle visibility"
                     onClick={() => {
                       this.dispatch(
@@ -224,6 +227,7 @@ export class ObjectListEditor extends ContextedComponent<
                   <Button
                     icon={<Eraser24Regular />}
                     title="Remove"
+                    appearance="subtle"
                     onClick={() => {
                       this.dispatch(
                         new Actions.RemoveMarkFromGlyph(glyph, mark)

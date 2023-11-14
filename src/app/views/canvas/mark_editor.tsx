@@ -157,6 +157,7 @@ export class MarkEditorView extends ContextedComponent<
     }
   }
 
+  // eslint-disable-next-line max-lines-per-function
   public render() {
     let currentGlyph = this.store.currentGlyph;
     if (
@@ -194,6 +195,7 @@ export class MarkEditorView extends ContextedComponent<
         <div className="canvas-controls">
           <div className="canvas-controls-left">
             <Button
+              appearance="subtle"
               icon={<ZoomIn24Regular />}
               title={strings.canvas.zoomIn}
               onClick={() => {
@@ -201,6 +203,7 @@ export class MarkEditorView extends ContextedComponent<
               }}
             />
             <Button
+              appearance="subtle"
               icon={<ZoomOut24Regular />}
               title={strings.canvas.zoomOut}
               onClick={() => {
@@ -208,6 +211,7 @@ export class MarkEditorView extends ContextedComponent<
               }}
             />
             <Button
+              appearance="subtle"
               icon={<ZoomFit24Regular />}
               title={strings.canvas.zoomAuto}
               onClick={() => {
@@ -215,6 +219,7 @@ export class MarkEditorView extends ContextedComponent<
               }}
             />
             <Button
+              appearance="subtle"
               icon={<SVGImageIcon url={R.getSVGIcon("rect-zoom")} />}
               title={"Rectangle zoom"}
               onClick={() => {
@@ -224,6 +229,7 @@ export class MarkEditorView extends ContextedComponent<
           </div>
           <div className="canvas-controls-right">
             <Button
+              appearance="subtle"
               icon={<SVGImageIcon url={R.getSVGIcon("general/plus")} />}
               title={strings.canvas.newGlyph}
               onClick={() => {

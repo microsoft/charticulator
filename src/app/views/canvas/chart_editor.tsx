@@ -1459,6 +1459,7 @@ export class ChartEditorView
           <div className="canvas-controls-left" />
           <div className="canvas-controls-right">
             <Button
+              appearance="subtle"
               icon={<ZoomIn24Regular />}
               title={strings.canvas.zoomIn}
               onClick={() => {
@@ -1466,6 +1467,7 @@ export class ChartEditorView
               }}
             />
             <Button
+              appearance="subtle"
               icon={<ZoomOut24Regular />}
               title={strings.canvas.zoomOut}
               onClick={() => {
@@ -1473,21 +1475,7 @@ export class ChartEditorView
               }}
             />
             <Button
-              icon="ZoomToFit"
-              onClick={() => {
-                const newZoom = this.getFitViewZoom(
-                  this.state.viewWidth,
-                  this.state.viewHeight
-                );
-                if (!newZoom) {
-                  return;
-                }
-                this.setState({
-                  zoom: newZoom,
-                });
-              }}
-            />
-            <Button
+              appearance="subtle"
               icon={<ZoomFit24Regular />}
               onClick={() => {
                 const newZoom = this.getFitViewZoom(
@@ -1503,15 +1491,7 @@ export class ChartEditorView
               }}
             />
             <Button
-              icon="rect-zoom"
-              title={"Rectangle zoom"}
-              onClick={() => {
-                new Actions.SetCurrentTool("rectangle-zoom").dispatch(
-                  this.props.store.dispatcher
-                );
-              }}
-            />
-            <Button
+              appearance="subtle"
               icon={<SVGImageIcon url={R.getSVGIcon("rect-zoom")} />}
               title={"Rectangle zoom"}
               onClick={() => {
