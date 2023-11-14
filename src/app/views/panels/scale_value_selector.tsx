@@ -106,6 +106,7 @@ export class ScaleValueSelector extends React.Component<
                   (key, selectedIndex) => {
                     return (
                       <div
+                        key={`scale-mapping-${key}`}
                         className={
                           this.props.onSelect &&
                           this.state.selectedIndex === selectedIndex

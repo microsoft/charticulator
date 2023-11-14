@@ -50,6 +50,7 @@ import { getDropzoneAcceptTables } from "./utils";
 import { SVGImageIcon } from "../../../../app/components";
 
 import * as R from "../../../resources";
+import { Eraser20Regular, LinkMultiple20Regular } from "@fluentui/react-icons";
 
 export interface MappingEditorProps {
   parent: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
@@ -110,11 +111,6 @@ export class FluentMappingEditor extends React.Component<
       return (
         <>
           <Popover open={this.state.isDataFieldValueSelectionOpen}>
-            {/* {this.state.isDataFieldValueSelectionOpen && (
-              <Callout
-                target={`#dataFieldValueSelection`}
-                onDismiss={() => this.changeDataFieldValueSelectionState()}
-              > */}
             <PopoverSurface>
               <ScaleValueSelector
                 scale={scaleObject}
@@ -135,8 +131,6 @@ export class FluentMappingEditor extends React.Component<
                 }}
               />
             </PopoverSurface>
-            {/* </Callout>
-          )} */}
           </Popover>
         </>
       );
@@ -267,11 +261,6 @@ export class FluentMappingEditor extends React.Component<
     return (
       <>
         <Popover open={this.state.isColorPickerOpen}>
-          {/* {this.state.isColorPickerOpen && (
-            <Callout
-              target={`#id_${this.props.options.label.replace(/\s/g, "_")}`}
-              onDismiss={() => this.changeColorPickerState()}
-            > */}
           <PopoverSurface>
             <ColorPicker
               store={this.props.store}
@@ -290,8 +279,6 @@ export class FluentMappingEditor extends React.Component<
               parent={this}
             />
           </PopoverSurface>
-          {/* </Callout>
-          )} */}
         </Popover>
       </>
     );
@@ -401,7 +388,6 @@ export class FluentMappingEditor extends React.Component<
             table,
             options.acceptKinds
           );
-          // const menuRender = this.director.getMenuRender();
 
           if (scaleMapping.scale) {
             return (
@@ -420,13 +406,10 @@ export class FluentMappingEditor extends React.Component<
                       {this.props.options.label}
                     </Label>
                   ) : null}
-                  {/* <FluentActionButton> */}
-                  {/* TODO copy to menurender */}
                   <>
                     {this.director.menuRender(mainMenuItems, scaleMapping, {
                       icon: "ColumnFunction",
                     })}
-                    {/* </FluentActionButton> */}
                   </>
                 </FluentColumnLayout>
               </>
@@ -437,18 +420,12 @@ export class FluentMappingEditor extends React.Component<
                 {this.props.options.label ? (
                   <Label>{this.props.options.label}</Label>
                 ) : null}
-                {/* <FluentActionButton> */}
                 <Button
-                  // text={scaleMapping.expression}
                   ref={(e) => (this.mappingButton = e)}
-                  // iconProps={{
-                  //   iconName: "ColumnFunction",
-                  // }}
                   icon={<SVGImageIcon url={R.getSVGIcon("ColumnFunction")} />}
                 >
                   {scaleMapping.expression}
                 </Button>
-                {/* </FluentActionButton> */}
               </>
             );
           }
@@ -471,108 +448,6 @@ export class FluentMappingEditor extends React.Component<
               table,
               options.acceptKinds
             );
-            // const menuRender = this.director.getMenuRender();
-
-            // return (
-            //   <>
-            //     {this.props.options.label ? (
-            //       <Label>
-            //         {this.props.options.label}
-            //       </Label>
-            //     ) : null}
-            //     <FluentRowLayout>
-            //       {/* <FluentActionButton
-            //         style={{
-            //           flex: 1,
-            //           marginRight: "2px",
-            //         }}
-            //       > */}
-            //         <ActionButton
-            //           elementRef={(e) => (this.mappingButton = e)}
-            //           styles={{
-            //             menuIcon: {
-            //               display: "none !important",
-            //               ...defultComponentsHeight,
-            //             },
-            //             root: {
-            //               ...defultComponentsHeight,
-            //             },
-            //           }}
-            //           title={strings.mappingEditor.keyColumnExpression}
-            //           menuProps={{
-            //             items: mainMenuItems,
-            //             onRenderMenuList: menuRender,
-            //             onMenuOpened: () => {
-            //               const currentMapping = parent.getAttributeMapping(
-            //                 attribute
-            //               );
-            //               FluentMappingEditor.openEditor(
-            //                 (currentMapping as Specification.ScaleValueExpressionMapping)
-            //                   ?.expression,
-            //                 false,
-            //                 this.mappingButton
-            //               );
-            //             },
-            //           }}
-            //           text={scaleMapping.expression}
-            //           iconProps={{
-            //             iconName: "ColumnFunction",
-            //           }}
-            //           onMenuClick={(event) => {
-            //             if (scaleMapping.expression.startsWith("get")) {
-            //               event.preventDefault();
-            //               this.changeDataFieldValueSelectionState();
-            //             }
-            //           }}
-            //         />
-            //       {/* </FluentActionButton> */}
-            //       {/* <FluentActionButton
-            //         style={{
-            //           flex: 1,
-            //         }}
-            //       > */}
-            //         <ActionButton
-            //           elementRef={(e) => (this.mappingButton = e)}
-            //           styles={{
-            //             menuIcon: {
-            //               display: "none !important",
-            //               ...defultComponentsHeight,
-            //             },
-            //             root: {
-            //               ...defultComponentsHeight,
-            //             },
-            //           }}
-            //           title={strings.mappingEditor.bindData}
-            //           menuProps={{
-            //             items: mainMenuItems,
-            //             onRenderMenuList: menuRender,
-            //             onMenuOpened: () => {
-            //               const currentMapping = parent.getAttributeMapping(
-            //                 attribute
-            //               );
-            //               FluentMappingEditor.openEditor(
-            //                 (currentMapping as Specification.ScaleValueExpressionMapping)
-            //                   ?.valueExpression,
-            //                 false,
-            //                 this.mappingButton
-            //               );
-            //             },
-            //           }}
-            //           text={scaleMapping.valueExpression}
-            //           iconProps={{
-            //             iconName: "ColumnFunction",
-            //           }}
-            //           onMenuClick={(event) => {
-            //             if (scaleMapping.expression.startsWith("get")) {
-            //               event.preventDefault();
-            //               this.changeDataFieldValueSelectionState();
-            //             }
-            //           }}
-            //         />
-            //       {/* </FluentActionButton> */}
-            //     </FluentRowLayout>
-            //   </>
-            // );
             return (
               <>
                 <FluentColumnLayout
@@ -589,19 +464,15 @@ export class FluentMappingEditor extends React.Component<
                       {this.props.options.label}
                     </Label>
                   ) : null}
-                  {/* <FluentActionButton> */}
-                  {/* TODO copy to menurender */}
                   <>
                     {this.director.menuRender(mainMenuItems, scaleMapping, {
                       icon: "ColumnFunction",
                     })}
-                    {/* </FluentActionButton> */}
                   </>
                 </FluentColumnLayout>
               </>
             );
           }
-          break;
         default: {
           return <span>(...)</span>;
         }
@@ -647,8 +518,6 @@ export class FluentMappingEditor extends React.Component<
       table,
       options.acceptKinds
     );
-    console.log("mainMenuItems", mainMenuItems);
-    // const menuRender = this.director.getMenuRender();
     const acceptTables = getDropzoneAcceptTables(
       this.props.parent as FluentUIWidgetManager,
       options.acceptLinksTable
@@ -712,19 +581,8 @@ export class FluentMappingEditor extends React.Component<
             >
               {isDataMapping ? (
                 <>
-                  {/* // <FluentButton marginTop="26px"> */}
                   <Button
-                    // iconProps={{
-                    //   iconName: "EraseTool",
-                    // }}
-                    icon={<SVGImageIcon url={R.getSVGIcon("general/eraser")} />}
-                    // styles={{
-                    //   root: {
-                    //     minWidth: "unset",
-                    //     ...defultBindButtonSize,
-                    //   },
-                    // }}
-                    // checked={false}
+                    icon={<Eraser20Regular/>}
                     title={strings.mappingEditor.remove}
                     onClick={() => {
                       if (parent.getAttributeMapping(attribute)) {
@@ -736,55 +594,21 @@ export class FluentMappingEditor extends React.Component<
                       });
                     }}
                   />
-                  {/* </FluentButton> */}
                 </>
               ) : null}
               {(valueIndex === undefined || valueIndex === null) &&
               shouldShowBindData ? (
                 <>
-                  {/* <FluentButton> */}
-                  {/* <DefaultButton
-                    elementRef={(e) => (this.mappingButton = e)}
-                    iconProps={{
-                      iconName: "Link",
-                    }}
-                    styles={{
-                      menuIcon: {
-                        display: "none !important",
-                      },
-                      root: {
-                        minWidth: "unset",
-                        ...defultBindButtonSize,
-                      },
-                    }}
-                    title={strings.mappingEditor.bindData}
-                    checked={isDataMapping}
-                    menuProps={{
-                      items: mainMenuItems,
-                      onRenderMenuList: menuRender,
-                    }}
-                  /> */}
                   {this.director.menuRender(mainMenuItems, null, {
                     icon: "general/bind-data",
                   })}
-                  {/* </FluentButton> */}
                 </>
               ) : null}
               {valueIndex !== undefined && valueIndex !== null ? (
                 <>
-                  {/* // <FluentButton> */}
                   <ToggleButton
-                    // iconProps={{
-                    //   iconName: "Link",
-                    // }}
-                    icon={<SVGImageIcon url={R.getSVGIcon("Link")} />}
+                    icon={<LinkMultiple20Regular />}
                     id="dataFieldValueSelection"
-                    // styles={{
-                    //   root: {
-                    //     minWidth: "unset",
-                    //     ...defultBindButtonSize,
-                    //   },
-                    // }}
                     title={strings.mappingEditor.bindDataValue}
                     ref={(e) => (this.mappingButton = e)}
                     onClick={() => {
@@ -792,7 +616,6 @@ export class FluentMappingEditor extends React.Component<
                     }}
                     checked={isDataMapping}
                   ></ToggleButton>
-                  {/* </FluentButton> */}
                 </>
               ) : null}
               {this.openDataFieldValueSelection()}

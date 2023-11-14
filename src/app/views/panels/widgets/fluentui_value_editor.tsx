@@ -32,9 +32,8 @@ import {
   PopoverTrigger,
   Option,
 } from "@fluentui/react-components";
-import { SVGImageIcon } from "../../../../app/components";
-import * as R from "../../../resources";
 import { IContextualMenuItem } from "../../dataset/data_field_binding_builder";
+import { CheckboxChecked20Regular, CheckboxUnchecked20Filled } from "@fluentui/react-icons";
 
 export interface ValueEditorProps {
   value: Specification.AttributeValue;
@@ -333,22 +332,7 @@ export class FluentValueEditor extends ContextedComponent<
           <FluentColumnLayout>
             <Label>{this.props.label}</Label>
             <Dropdown
-              // styles={{
-              //   ...(defaultStyle as any),
-              //   title: {
-              //     ...defaultStyle.title,
-              //     lineHeight: defultBindButtonSize.height,
-              //   },
-              // }}
-              // label={this.props.label}
-              // onRenderLabel={labelRender}
               value={str}
-              // options={strings.map((str) => {
-              //   return {
-              //     key: str,
-              //     text: str,
-              //   };
-              // })}
               onOptionSelect={(event, { optionValue }) => {
                 if (value == null) {
                   this.emitClearValue();
@@ -381,19 +365,6 @@ export class FluentValueEditor extends ContextedComponent<
           return (
             <>
               <Label>{strings.objects.visibleOn.visibility}</Label>
-              {/* <DefaultButton
-                styles={{
-                  root: {
-                    ...defultComponentsHeight,
-                  },
-                  menuIcon: { display: "none !important" },
-                }}
-                text={strings.attributesPanel.conditionedBy}
-                menuProps={{
-                  items: this.props.mainMenuItems ?? [],
-                  onRenderMenuList: this.props.menuRender ?? null,
-                }}
-              /> */}
               {this.props.menuRender}
             </>
           );
@@ -402,15 +373,8 @@ export class FluentValueEditor extends ContextedComponent<
             <>
               <Label>{strings.objects.visibleOn.visibility}</Label>
               <Button
-                // iconProps={{
-                //   iconName: boolean ? "CheckboxComposite" : "Checkbox",
-                // }}
                 icon={
-                  <SVGImageIcon
-                    url={R.getSVGIcon(
-                      boolean ? "CheckboxComposite" : "Checkbox"
-                    )}
-                  />
+                  boolean ? <CheckboxChecked20Regular /> : <CheckboxUnchecked20Filled />
                 }
                 onClick={() => {
                   this.emitSetValue(!boolean);

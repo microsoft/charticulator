@@ -8,9 +8,6 @@ import { Prototypes, Specification } from "../../../../../core";
 import { Button, Input, Label } from "@fluentui/react-components";
 import { ColorFill20Regular } from "@fluentui/react-icons";
 
-// import * as R from "../../../../resources";
-// import { ColorFill20Regular } from "@fluentui/react-icons";
-
 interface EmptyMappingProps {
   renderColorPicker: () => JSX.Element;
   onClick: () => void;
@@ -37,9 +34,6 @@ export const EmptyMapping = ({
                 <Label>{options.label}</Label>
                 <Input
                   id={`id_${options.label.replace(/\s/g, "_")}`}
-                  // styles={defaultStyle}
-                  // label={options.label}
-                  // onRenderLabel={labelRender}
                   placeholder={strings.core.auto}
                   onClick={onClick}
                 />
@@ -60,9 +54,6 @@ export const EmptyMapping = ({
                 <Label>{options.label}</Label>
                 <Input
                   id={`id_${options.label.replace(/\s/g, "_")}`}
-                  // styles={defaultStyle}
-                  // label={options.label}
-                  // onRenderLabel={labelRender}
                   placeholder={strings.core.none}
                   onClick={onClick}
                 />
@@ -88,7 +79,6 @@ const EmptyColorInput = ({
 }: EmptyColorInputProps): JSX.Element => {
   return (
     <div className="el-color-value">
-      {/* <FluentTextField> */}
       <FluentColumnLayout
         style={{
           flex: 1,
@@ -97,14 +87,10 @@ const EmptyColorInput = ({
         <Label>{label}</Label>
         <Input
           id={`id_${label.replace(/\s/g, "_")}`}
-          // styles={defaultStyle}
-          // label={label}
-          // onRenderLabel={labelRender}
           placeholder={strings.core.none}
           type="text"
           onClick={onClick}
         />
-        {/* </FluentTextField> */}
       </FluentColumnLayout>
       <EmptyColorButton onClick={onClick} />
     </div>
@@ -122,23 +108,10 @@ export const EmptyColorButton = ({
   onClick,
 }: EmptyColorButtonProps): JSX.Element => {
   return (
-    // <FluentButton marginTop={styles?.marginTop}>
     <Button
-      // iconProps={{
-      //   iconName: "UnSetColor",
-      // }}
-      // icon={<SVGImageIcon url={R.getSVGIcon("UnSetColor")} />}
       icon={<ColorFill20Regular />}
-      // styles={{
-      //   root: {
-      //     minWidth: "unset",
-      //     ...defultBindButtonSize,
-      //     marginLeft: 5,
-      //   },
-      // }}
       onClick={onClick}
       title={strings.mappingEditor.chooseColor}
     />
-    // </FluentButton>
   );
 };

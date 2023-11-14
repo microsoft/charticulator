@@ -268,7 +268,7 @@ export class FluentUIWidgetManager
 
     return (
       <FluentMappingEditor
-        key={name.replace(/\s/g, "_") + attribute}
+        key={`${this.objectClass.object._id}-${attribute}`}
         store={this.store}
         parent={this}
         attribute={attribute}
@@ -1923,7 +1923,7 @@ export class FluentUIWidgetManager
     return (
       <div className="charticulator__widget-vertical">
         {widgets.map((x, id) => (
-          <span className="el-layout-item" key={id}>
+          <span className="el-layout-item" key={`${id}-${x.key}`}>
             {x}
           </span>
         ))}
