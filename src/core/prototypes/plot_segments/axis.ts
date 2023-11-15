@@ -65,7 +65,7 @@ import { CompiledGroupBy } from "../group_by";
 import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/types";
 import { type2DerivedColumns } from "../../../app/views/dataset/common";
 import { CartesianPlotSegment } from "../plot_segments/region_2d";
-import React = require("react");
+import * as React from "react";
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },

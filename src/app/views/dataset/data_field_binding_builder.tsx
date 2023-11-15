@@ -27,7 +27,7 @@ import { strings } from "../../../strings";
 import { DataType, MappingType } from "../../../core/specification";
 import { AggregationFunctionDescription } from "../../../core/expression";
 import { FluentRowLayout } from "../panels/widgets/controls/fluentui_customized_components";
-import React = require("react");
+import * as React from "react";
 import {
   Label,
   Menu,
