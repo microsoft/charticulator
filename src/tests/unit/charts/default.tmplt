@@ -1,4 +1,5 @@
 {
+  "default": true,
   "specification": {
     "_id": "gbc1n178t1a",
     "classID": "chart.rectangle",
