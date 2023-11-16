@@ -1,15 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { DefaultButton } from "@fluentui/react";
 import * as React from "react";
 import { CurrentChartView } from ".";
-import {
-  deepClone,
-  Specification,
-  Prototypes,
-  primaryButtonStyles,
-} from "../../../core";
+import { deepClone, Specification, Prototypes } from "../../../core";
 import { ensureColumnsHaveExamples } from "../../../core/dataset/examples";
 import { findObjectById } from "../../../core/prototypes";
 import { strings } from "../../../strings";
@@ -23,9 +17,11 @@ import * as R from "../../resources";
 import { AppStore } from "../../stores";
 import { ExportTemplateTarget } from "../../template";
 import { classNames } from "../../utils";
-import { InputImageProperty, Button } from "../panels/widgets/controls";
+import { InputImageProperty } from "../panels/widgets/controls";
 import { noop } from "../../utils/noop";
+import { Button } from "@fluentui/react-components";
 
+import { ArrowExport20Regular } from "@fluentui/react-icons";
 export class InputGroup extends React.Component<
   React.PropsWithChildren<{
     value: string;
@@ -84,40 +80,47 @@ export class ExportImageView extends React.Component<
           }}
         />
         <div className="buttons">
-          <DefaultButton
-            text={strings.fileExport.typePNG}
-            iconProps={{
-              iconName: "Export",
-            }}
-            styles={primaryButtonStyles}
+          <Button
+            title={strings.fileExport.typePNG}
+            // iconProps={{
+            //   iconName: "Export",
+            // }}
+            icon={<ArrowExport20Regular />}
+            // styles={primaryButtonStyles}
             onClick={() => {
-              this.props.store.dispatcher.dispatch(
-                new Actions.Export("png", { scale: this.getScaler() })
-              );
+              new Actions.Export("png", { scale: this.getScaler() });
             }}
-          />{" "}
-          <DefaultButton
-            text={strings.fileExport.typeJPEG}
-            iconProps={{
-              iconName: "Export",
-            }}
-            styles={primaryButtonStyles}
+          >
+            {strings.fileExport.typePNG}
+          </Button>{" "}
+          <Button
+            title={strings.fileExport.typeJPEG}
+            // iconProps={{
+            //   iconName: "Export",
+            // }}
+            icon={<ArrowExport20Regular />}
+            // styles={primaryButtonStyles}
             onClick={() => {
               this.props.store.dispatcher.dispatch(
                 new Actions.Export("jpeg", { scale: this.getScaler() })
               );
             }}
-          />{" "}
-          <DefaultButton
-            text={strings.fileExport.typeSVG}
-            iconProps={{
-              iconName: "Export",
-            }}
-            styles={primaryButtonStyles}
+          >
+            {strings.fileExport.typeJPEG}
+          </Button>{" "}
+          <Button
+            title={strings.fileExport.typeSVG}
+            // iconProps={{
+            //   iconName: "Export",
+            // }}
+            icon={<ArrowExport20Regular />}
+            // styles={primaryButtonStyles}
             onClick={() => {
               this.props.store.dispatcher.dispatch(new Actions.Export("svg"));
             }}
-          />
+          >
+            {strings.fileExport.typeSVG}
+          </Button>
         </div>
       </div>
     );
@@ -135,16 +138,19 @@ export class ExportHTMLView extends React.Component<
       <div className="el-horizontal-layout-item is-fix-width">
         <CurrentChartView store={this.props.store} />
         <div className="buttons">
-          <DefaultButton
-            text={strings.fileExport.typeHTML}
-            iconProps={{
-              iconName: "Export",
-            }}
-            styles={primaryButtonStyles}
+          <Button
+            title={strings.fileExport.typeHTML}
+            // iconProps={{
+            //   iconName: "Export",
+            // }}
+            icon={<ArrowExport20Regular />}
+            // styles={primaryButtonStyles}
             onClick={() => {
               this.props.store.dispatcher.dispatch(new Actions.Export("html"));
             }}
-          />
+          >
+            {strings.fileExport.typeHTML}
+          </Button>
         </div>
       </div>
     );
@@ -206,7 +212,7 @@ export class FileViewExport extends React.Component<
                   }
                 }}
               >
-                <SVGImageIcon url={R.getSVGIcon("toolbar/export")} />
+                <ArrowExport20Regular />
                 <span className="el-text">{strings.fileExport.asImage}</span>
               </div>
               <div
@@ -222,7 +228,7 @@ export class FileViewExport extends React.Component<
                   }
                 }}
               >
-                <SVGImageIcon url={R.getSVGIcon("toolbar/export")} />
+                <ArrowExport20Regular />
                 <span className="el-text">{strings.fileExport.asHTML}</span>
               </div>
               {this.props.store.listExportTemplateTargets().map((name) => (
@@ -240,7 +246,7 @@ export class FileViewExport extends React.Component<
                     }
                   }}
                 >
-                  <SVGImageIcon url={R.getSVGIcon("toolbar/export")} />
+                  <ArrowExport20Regular />
                   <span className="el-text">{name}</span>
                 </div>
               ))}
@@ -825,12 +831,13 @@ export class ExportTemplateView extends React.Component<
         <h2>{strings.fileExport.labelProperties(this.props.exportKind)}</h2>
         {this.renderTargetProperties()}
         <div className="buttons">
-          <DefaultButton
-            text={this.props.exportKind}
-            iconProps={{
-              iconName: "Export",
-            }}
-            styles={primaryButtonStyles}
+          <Button
+            title={this.props.exportKind}
+            // iconProps={{
+            //   iconName: "Export",
+            // }}
+            icon={<ArrowExport20Regular />}
+            // styles={primaryButtonStyles}
             onClick={() => {
               this.props.store.dispatcher.dispatch(
                 new Actions.ExportTemplate(
@@ -840,7 +847,9 @@ export class ExportTemplateView extends React.Component<
                 )
               );
             }}
-          />
+          >
+            {this.props.exportKind}
+          </Button>
         </div>
       </div>
     );

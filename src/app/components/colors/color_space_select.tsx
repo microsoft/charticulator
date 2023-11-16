@@ -2,13 +2,12 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-import { ComboBox, IComboBoxOption } from "@fluentui/react";
-import { defultComponentsHeight } from "../../views/panels/widgets/controls/fluentui_customized_components";
 import { Color } from "../../../core";
 import {
   ColorSpaceDescription,
   ColorSpacePickerState,
 } from "../color_space_picker";
+import { Combobox, Option } from "@fluentui/react-components";
 
 interface ColorSpaceSelectProps {
   onChange?: (newValue: Color) => void;
@@ -22,18 +21,21 @@ export class ColorSpaceSelect extends React.Component<
   Record<string, unknown>
 > {
   render() {
-    const options: IComboBoxOption[] = this.props.colorSpaces.map((x) => {
+    const options: {
+      key: string;
+      text: string;
+    }[] = this.props.colorSpaces.map((x) => {
       return { key: x.name, text: x.name };
     });
 
     return (
-      <ComboBox
-        options={options}
-        defaultSelectedKey={this.props.state.desc.name}
-        onChange={(event, option) => {
-          if (option) {
+      <Combobox
+        // options={options}
+        value={this.props.state.desc.name}
+        onOptionSelect={(event, { optionValue }) => {
+          if (optionValue) {
             for (const sp of this.props.colorSpaces) {
-              if (sp.name == option.key) {
+              if (sp.name == optionValue) {
                 const [r, g, b] = this.props.state.desc.toRGB(
                   this.props.state.x1,
                   this.props.state.x2,
@@ -45,15 +47,13 @@ export class ColorSpaceSelect extends React.Component<
             }
           }
         }}
-        styles={{
-          root: {
-            ...defultComponentsHeight,
-          },
-          input: {
-            width: "100px !important",
-          },
-        }}
-      />
+      >
+        {options.map((o) => (
+          <Option value={o.key} text={o.text}>
+            {o.text}
+          </Option>
+        ))}
+      </Combobox>
     );
   }
 }

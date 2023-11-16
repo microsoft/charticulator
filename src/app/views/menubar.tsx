@@ -5,9 +5,8 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as globals from "../globals";
 import * as R from "../resources";
-import { DefaultButton, PrimaryButton } from "@fluentui/react";
 
-import { Dialog, DialogActions, DialogTitle } from "@fluentui/react-components";
+import { Dialog, DialogActions, DialogTitle, Button } from "@fluentui/react-components";
 
 import { deepClone, EventSubscription } from "../../core";
 import { Actions } from "../actions";
@@ -26,7 +25,7 @@ import { AppStore } from "../stores";
 import { classNames, readFileAsString } from "../utils";
 import {
   ChartTemplate,
-  primaryButtonStyles,
+  // primaryButtonStyles,
   Specification,
 } from "../../container";
 import { TableType } from "../../core/dataset";
@@ -306,8 +305,8 @@ export class MenuBar extends ContextedComponent<
             {strings.dialogs.saveChanges.saveChangesTitle}
           </DialogTitle>
           <DialogActions>
-            <PrimaryButton
-              styles={primaryButtonStyles}
+            <Button
+              // styles={primaryButtonStyles}
               onClick={() => {
                 this.setState({
                   showSaveDialog: false,
@@ -317,17 +316,18 @@ export class MenuBar extends ContextedComponent<
                   this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE)
                 );
               }}
-              text={strings.menuBar.saveButton}
-            />
-            <DefaultButton
+              // text={strings.menuBar.saveButton}
+            >{strings.menuBar.saveButton}
+            </Button>
+            <Button
               onClick={() => {
                 this.setState({
                   showSaveDialog: false,
                 });
                 this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE);
               }}
-              text={strings.menuBar.dontSaveButton}
-            />
+              // text={strings.menuBar.dontSaveButton}
+            >{strings.menuBar.dontSaveButton}</Button>
           </DialogActions>
         </Dialog>
         <MenuButton

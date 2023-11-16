@@ -41,7 +41,14 @@ import {
   getRadialAxisDropZoneLineCenter,
   setRadiiByCenter,
 } from "./utils";
-
+import {
+  AlignBottom20Regular,
+  AlignCenterVertical20Regular,
+  AlignLeft20Regular,
+  AlignRight20Regular,
+  AlignTop20Regular,
+} from "@fluentui/react-icons";
+import React from "react";
 export type PolarAxisMode = "null" | "default" | "numerical" | "categorical";
 
 export interface PolarAttributes extends Region2DAttributes {
@@ -87,12 +94,12 @@ export interface PolarObject extends Specification.PlotSegment {
 }
 
 export const icons: Region2DConfigurationIcons = {
-  xMinIcon: "AlignHorizontalLeft",
-  xMiddleIcon: "AlignHorizontalCenter",
-  xMaxIcon: "AlignHorizontalRight",
-  yMiddleIcon: "AlignHorizontalRight",
-  yMinIcon: "AlignVerticalBottom",
-  yMaxIcon: "AlignVerticalTop",
+  xMinIcon: React.createElement(AlignLeft20Regular),
+  xMiddleIcon: React.createElement(AlignCenterVertical20Regular),
+  xMaxIcon: React.createElement(AlignRight20Regular),
+  yMiddleIcon: React.createElement(AlignRight20Regular),
+  yMinIcon: React.createElement(AlignBottom20Regular),
+  yMaxIcon: React.createElement(AlignTop20Regular),
   dodgeXIcon: "CharticulatorArrangePolar",
   dodgeYIcon: "CharticulatorStackRadial",
   gridIcon: "sublayout/polar-grid",

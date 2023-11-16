@@ -3,9 +3,10 @@
 
 import * as React from "react";
 import { ColorGradient } from "../../core";
-import { Pivot, PivotItem } from "@fluentui/react";
 import { CustomGradientMenu } from "./gradient/custom_gradient_menu";
 import { GradientPalettes } from "./gradient/gradient_palettes";
+
+import { Tab, TabList } from "@fluentui/react-components";
 
 export interface GradientPickerProps {
   defaultValue?: ColorGradient;
@@ -59,7 +60,7 @@ export class FluentUIGradientPicker extends React.Component<
   public render() {
     return (
       <div className="gradient-picker">
-        <Pivot aria-label="Basic Pivot Example">
+        {/* <Pivot aria-label="Basic Pivot Example">
           <PivotItem headerText="Palettes">
             <GradientPalettes selectGradient={this.selectGradient} />
           </PivotItem>
@@ -69,7 +70,33 @@ export class FluentUIGradientPicker extends React.Component<
               selectGradient={this.selectGradient}
             />
           </PivotItem>
-        </Pivot>
+        </Pivot> */}
+        <TabList
+          selectedValue={this.state.currentTab}
+          onTabSelect={(e, { value }) => {
+            this.setState({
+              currentTab: value as string,
+            });
+          }}
+        >
+          <Tab id="Palettes" value="palettes">
+            Palettes
+          </Tab>
+          <Tab id="Custom" value="custom">
+            Palettes
+          </Tab>
+        </TabList>
+        <div>
+          {this.state.currentTab === "palettes" && (
+            <GradientPalettes selectGradient={this.selectGradient} />
+          )}
+          {this.state.currentTab === "custom" && (
+            <CustomGradientMenu
+              currentGradient={this.state.currentGradient}
+              selectGradient={this.selectGradient}
+            />
+          )}
+        </div>
       </div>
     );
   }

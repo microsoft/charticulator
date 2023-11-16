@@ -30,6 +30,12 @@ import { strings } from "../../../strings";
 import { RectangleGlyph } from "../glyphs";
 import { OrientationType } from "../legends/types";
 import { CartesianCoordinates } from "../../graphics";
+import React from "react";
+import {
+  Oval20Regular,
+  RectangleLandscape20Regular,
+  Triangle20Regular,
+} from "@fluentui/react-icons";
 
 export { RectElementAttributes, RectElementProperties };
 
@@ -258,7 +264,11 @@ export class RectElementClass extends EmphasizableMarkClass<
               type: "dropdown",
               showLabel: true,
               label: strings.objects.rect.shape,
-              icons: ["RectangleShape", "TriangleShape", "Ellipse"],
+              icons: [
+                React.createElement(RectangleLandscape20Regular),
+                React.createElement(Triangle20Regular),
+                React.createElement(Oval20Regular),
+              ],
               labels: [
                 strings.objects.rect.shapes.rectangle,
                 strings.objects.rect.shapes.triangle,
@@ -574,7 +584,12 @@ export class RectElementClass extends EmphasizableMarkClass<
         );
       }
       case ShapeType.Triangle: {
-        const path = this.drawTriangleOrCometMarks(helper, offset, `${this.object._id}`, empasized);
+        const path = this.drawTriangleOrCometMarks(
+          helper,
+          offset,
+          `${this.object._id}`,
+          empasized
+        );
         return path;
       }
       case ShapeType.Rectangle:
@@ -885,7 +900,7 @@ export class RectElementClass extends EmphasizableMarkClass<
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
-      rotation: 0
+      rotation: 0,
     };
   }
 
@@ -906,7 +921,7 @@ export class RectElementClass extends EmphasizableMarkClass<
     helper: Graphics.CoordinateSystemHelper,
     offset: Point,
     key: string,
-    empasized?: boolean,
+    empasized?: boolean
   ) {
     const pathMaker = new Graphics.PathMaker();
     const properties = this.object.properties;

@@ -4,6 +4,8 @@
 import * as React from "react";
 import * as globals from "../../globals";
 
+import * as R from "../../resources";
+
 import {
   EventSubscription,
   Geometry,
@@ -17,12 +19,11 @@ import {
   ZoomInfo,
 } from "../../../core";
 import { Actions, DragData } from "../../actions";
-import { ZoomableCanvas } from "../../components";
+import { SVGImageIcon, ZoomableCanvas } from "../../components";
 import { DragContext, DragModifiers, Droppable } from "../../controllers";
 import { renderGraphicalElementSVG, renderSVGDefs } from "../../renderer";
 import { AppStore, MarkSelection } from "../../stores";
 import { classNames } from "../../utils";
-import { Button } from "../panels/widgets/controls";
 import { BoundingBoxView } from "./bounding_box";
 import {
   CreatingComponent,
@@ -45,6 +46,12 @@ import {
   ValueMapping,
 } from "../../../core/specification";
 import { SnappingGuidesVisualTypes } from "../../../core/prototypes";
+import {
+  ZoomFit24Regular,
+  ZoomIn24Regular,
+  ZoomOut24Regular,
+} from "@fluentui/react-icons";
+import { Button } from "@fluentui/react-components";
 
 export interface MarkEditorViewProps {
   height?: number;
@@ -150,6 +157,7 @@ export class MarkEditorView extends ContextedComponent<
     }
   }
 
+  // eslint-disable-next-line max-lines-per-function
   public render() {
     let currentGlyph = this.store.currentGlyph;
     if (
@@ -186,6 +194,48 @@ export class MarkEditorView extends ContextedComponent<
         )}
         <div className="canvas-controls">
           <div className="canvas-controls-left">
+            <Button
+              appearance="subtle"
+              icon={<ZoomIn24Regular />}
+              title={strings.canvas.zoomIn}
+              onClick={() => {
+                this.refSingleMarkView.doZoom(1.1);
+              }}
+            />
+            <Button
+              appearance="subtle"
+              icon={<ZoomOut24Regular />}
+              title={strings.canvas.zoomOut}
+              onClick={() => {
+                this.refSingleMarkView.doZoom(1 / 1.1);
+              }}
+            />
+            <Button
+              appearance="subtle"
+              icon={<ZoomFit24Regular />}
+              title={strings.canvas.zoomAuto}
+              onClick={() => {
+                this.refSingleMarkView.doZoomAuto();
+              }}
+            />
+            <Button
+              appearance="subtle"
+              icon={<SVGImageIcon url={R.getSVGIcon("rect-zoom")} />}
+              title={"Rectangle zoom"}
+              onClick={() => {
+                this.dispatch(new Actions.SetCurrentTool("rectangle-zoom"));
+              }}
+            />
+          </div>
+          <div className="canvas-controls-right">
+            <Button
+              appearance="subtle"
+              icon={<SVGImageIcon url={R.getSVGIcon("general/plus")} />}
+              title={strings.canvas.newGlyph}
+              onClick={() => {
+                this.dispatch(new Actions.AddGlyph("glyph.rectangle"));
+              }}
+            />
             <span className="glyph-tabs">
               {this.store.chart.glyphs.map((glyph) => (
                 <span
@@ -208,43 +258,6 @@ export class MarkEditorView extends ContextedComponent<
                 </span>
               ))}
             </span>
-            <Button
-              icon="general/plus"
-              title={strings.canvas.newGlyph}
-              onClick={() => {
-                this.dispatch(new Actions.AddGlyph("glyph.rectangle"));
-              }}
-            />
-          </div>
-          <div className="canvas-controls-right">
-            <Button
-              icon="ZoomIn"
-              title={strings.canvas.zoomIn}
-              onClick={() => {
-                this.refSingleMarkView.doZoom(1.1);
-              }}
-            />
-            <Button
-              icon="ZoomOut"
-              title={strings.canvas.zoomOut}
-              onClick={() => {
-                this.refSingleMarkView.doZoom(1 / 1.1);
-              }}
-            />
-            <Button
-              icon="ZoomToFit"
-              title={strings.canvas.zoomAuto}
-              onClick={() => {
-                this.refSingleMarkView.doZoomAuto();
-              }}
-            />
-            <Button
-              icon="rect-zoom"
-              title={"Rectangle zoom"}
-              onClick={() => {
-                this.dispatch(new Actions.SetCurrentTool("rectangle-zoom"));
-              }}
-            />
           </div>
         </div>
       </div>
@@ -1080,19 +1093,6 @@ export class SingleMarkView
                     this.setState({
                       snappingCandidates: null,
                     });
-                    // if (handle.type == "text-input") {
-                    //     let textInput = handle as Prototypes.Handles.TextInput;
-                    //     ctx.onEnd(e => {
-                    //         let updates: { [name: string]: Specification.Mapping }
-                    //         new Actions.SetMarkAttribute(this.props.store.mark, element, textInput.attribute, { type: "value", value: e.newValue } as Specification.ValueMapping).dispatch(this.props.store.dispatcher);
-                    //     })
-                    // } else if (handle.type == "text-alignment") {
-                    //     let textAlignment = handle as Prototypes.Handles.TextAlignment;
-                    //     ctx.onEnd(e => {
-                    //         new Actions.SetObjectProperty(element, textAlignment.propertyAlignment, null, e.newAlignment).dispatch(this.props.store.dispatcher);
-                    //         new Actions.SetObjectProperty(element, textAlignment.propertyRotation, null, e.newRotation).dispatch(this.props.store.dispatcher);
-                    //     })
-                    // } else {
                     const action = session.getActions(session.handleEnd(e));
                     if (action) {
                       this.dispatch(action);
@@ -1103,51 +1103,6 @@ export class SingleMarkView
               />
             </g>
           );
-          // } else {
-          //     let bbox = elementClass.getBoundingBox();
-          //     if (bbox) {
-          //         return (
-          //             <BoundingBoxView
-          //                 key={`m${element._id}`}
-          //                 zoom={this.state.zoom}
-          //                 boundingBox={bbox}
-          //                 onClick={() => {
-          //                     new Actions.SelectElement(this.props.store.mark, element).dispatch(this.props.store.dispatcher);
-          //                 }}
-          //             />
-          //         );
-          //     } else {
-          //         let handles = elementClass.getHandles();
-          //         return (
-          //             <HandlesView
-          //                 key={`m${element._id}`}
-          //                 handles={handles}
-          //                 zoom={this.state.zoom}
-          //                 active={true}
-          //                 visible={false}
-          //                 onDragStart={(handle, ctx) => {
-          //                     let guides = this.getSnappingGuides();
-          //                     let session = new MarkSnappingSession(guides, this.props.store.mark, element, elementState, handle, 10 / this.state.zoom.scale);
-          //                     ctx.onDrag((e) => {
-          //                         session.handleDrag(e);
-          //                         this.setState({
-          //                             snappingCandidates: session.getCurrentCandidates()
-          //                         });
-          //                     });
-          //                     ctx.onEnd((e) => {
-          //                         this.setState({
-          //                             snappingCandidates: null
-          //                         });
-          //                         let action = session.getActions(session.handleEnd(e));
-          //                         if (action) {
-          //                             action.dispatch(this.props.store.dispatcher);
-          //                         }
-          //                     });
-          //                 }}
-          //             />
-          //         );
-          //     }
-          // }
         })
     );
   }

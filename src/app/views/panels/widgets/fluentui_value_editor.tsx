@@ -2,16 +2,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import {
-  Callout,
-  DefaultButton,
-  Dropdown,
-  IContextualMenuItem,
-  IContextualMenuListProps,
-  IRenderFunction,
-  Label,
-  TextField,
-} from "@fluentui/react";
 import * as React from "react";
 import {
   Color,
@@ -29,16 +19,21 @@ import { FluentComboBoxFontFamily } from "./controls";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
 import { strings } from "../../../../strings";
-import {
-  defaultLabelStyle,
-  defaultStyle,
-  defultBindButtonSize,
-  defultComponentsHeight,
-  FluentTextField,
-  labelRender,
-} from "./controls/fluentui_customized_components";
+import { FluentColumnLayout } from "./controls/fluentui_customized_components";
 import { InputImage } from "./controls/fluentui_image";
 import { FluentInputNumber } from "./controls/fluentui_input_number";
+import {
+  Button,
+  Dropdown,
+  Input,
+  Label,
+  Popover,
+  PopoverSurface,
+  PopoverTrigger,
+  Option,
+} from "@fluentui/react-components";
+import { IContextualMenuItem } from "../../dataset/data_field_binding_builder";
+import { CheckboxChecked20Regular, CheckboxUnchecked20Filled } from "@fluentui/react-icons";
 
 export interface ValueEditorProps {
   value: Specification.AttributeValue;
@@ -63,7 +58,7 @@ export interface ValueEditorProps {
   numberOptions?: InputNumberOptions;
   stopPropagation?: boolean;
   mainMenuItems?: IContextualMenuItem[];
-  menuRender: IRenderFunction<IContextualMenuListProps>;
+  menuRender: React.JSX.Element;
 }
 
 interface ValueEditorState {
@@ -151,15 +146,17 @@ export class FluentValueEditor extends ContextedComponent<
         const hex = colorToHTMLColorHEX(color);
         return (
           <span className="el-color-value">
-            <FluentTextField>
-              <TextField
-                styles={defaultStyle}
-                label={this.props.label}
+            {/* <FluentTextField> */}
+            <FluentColumnLayout>
+              <Label>{this.props.label}</Label>
+              <Input
+                // styles={defaultStyle}
+                // label={this.props.label}
                 placeholder={this.props.placeholder}
-                onRenderLabel={labelRender}
+                // onRenderLabel={labelRender}
                 value={this.state.value}
                 type="text"
-                onChange={(event, newValue) => {
+                onChange={(event, { value: newValue }) => {
                   newValue = newValue.trim();
                   if (newValue == "") {
                     this.emitClearValue();
@@ -185,16 +182,9 @@ export class FluentValueEditor extends ContextedComponent<
                   }
                 }}
               />
-            </FluentTextField>
-            <span
-              className="el-color-item"
-              style={{ backgroundColor: hex }}
-              id="color_picker"
-              onClick={() => {
-                this.setState({ open: !this.state.open });
-              }}
-            />
-            {this.state.open && (
+            </FluentColumnLayout>
+            {/* </FluentTextField> */}
+            {/* {this.state.open && (
               <Callout
                 target={`#color_picker`}
                 onDismiss={() => this.setState({ open: !this.state.open })}
@@ -216,7 +206,37 @@ export class FluentValueEditor extends ContextedComponent<
                   }}
                 />
               </Callout>
-            )}
+            )} */}
+            <Popover open={this.state.open}>
+              <PopoverTrigger>
+                <span
+                  className="el-color-item"
+                  style={{ backgroundColor: hex, width: 30, height: 30 }}
+                  id="color_picker"
+                  onClick={() => {
+                    this.setState({ open: !this.state.open });
+                  }}
+                />
+              </PopoverTrigger>
+              <PopoverSurface>
+                <ColorPicker
+                  store={this.store}
+                  allowNull={true}
+                  defaultValue={colorFromHTMLColor(hex)}
+                  onPick={(color) => {
+                    if (color == null) {
+                      this.emitClearValue();
+                    } else {
+                      this.emitSetValue(color);
+                    }
+                  }}
+                  parent={this}
+                  closePicker={() => {
+                    this.setState({ open: !this.state.open });
+                  }}
+                />
+              </PopoverSurface>
+            </Popover>
           </span>
         );
       }
@@ -279,28 +299,29 @@ export class FluentValueEditor extends ContextedComponent<
           );
         } else {
           return (
-            <>
-              <TextField
-                label={this.props.label}
-                defaultValue={str}
-                onRenderLabel={labelRender}
+            <FluentColumnLayout>
+              <Label>{this.props.label}</Label>
+              <Input
+                // label={this.props.label}
+                value={str}
+                // onRenderLabel={labelRender}
                 placeholder={placeholderText}
-                onChange={(event, newValue) => {
-                  if (newValue == null) {
+                onChange={(event, { value }) => {
+                  if (value == null) {
                     this.emitClearValue();
                   } else {
-                    this.emitSetValue(newValue);
+                    this.emitSetValue(value);
                   }
                   return true;
                 }}
-                styles={defaultStyle}
+                // styles={defaultStyle}
                 onKeyDown={(e) => {
                   if (this.props.stopPropagation) {
                     e.stopPropagation();
                   }
                 }}
               />
-            </>
+            </FluentColumnLayout>
           );
         }
       }
@@ -308,32 +329,34 @@ export class FluentValueEditor extends ContextedComponent<
         const str = value as string;
         const strings = this.props.hints.rangeEnum;
         return (
-          <Dropdown
-            styles={{
-              ...(defaultStyle as any),
-              title: {
-                ...defaultStyle.title,
-                lineHeight: defultBindButtonSize.height,
-              },
-            }}
-            label={this.props.label}
-            onRenderLabel={labelRender}
-            selectedKey={str}
-            options={strings.map((str) => {
-              return {
-                key: str,
-                text: str,
-              };
-            })}
-            onChange={(event, value) => {
-              if (value == null) {
-                this.emitClearValue();
-              } else {
-                this.emitSetValue(value.key);
-              }
-              return true;
-            }}
-          />
+          <FluentColumnLayout>
+            <Label>{this.props.label}</Label>
+            <Dropdown
+              value={str}
+              onOptionSelect={(event, { optionValue }) => {
+                if (value == null) {
+                  this.emitClearValue();
+                } else {
+                  this.emitSetValue(optionValue);
+                }
+                return true;
+              }}
+            ></Dropdown>
+            {strings
+              .map((str) => {
+                return {
+                  key: str,
+                  text: str,
+                };
+              })
+              .map((o) => {
+                return (
+                  <Option value={o.key} text={o.key}>
+                    {o.text}
+                  </Option>
+                );
+              })}
+          </FluentColumnLayout>
         );
       }
       case Specification.AttributeType.Boolean: {
@@ -341,35 +364,18 @@ export class FluentValueEditor extends ContextedComponent<
         if (this.props.onEmitMapping) {
           return (
             <>
-              <Label styles={defaultLabelStyle}>
-                {strings.objects.visibleOn.visibility}
-              </Label>
-              <DefaultButton
-                styles={{
-                  root: {
-                    ...defultComponentsHeight,
-                  },
-                  menuIcon: { display: "none !important" },
-                }}
-                text={strings.attributesPanel.conditionedBy}
-                menuProps={{
-                  items: this.props.mainMenuItems ?? [],
-                  onRenderMenuList: this.props.menuRender ?? null,
-                }}
-              />
+              <Label>{strings.objects.visibleOn.visibility}</Label>
+              {this.props.menuRender}
             </>
           );
         } else {
           return (
             <>
-              <Label styles={defaultLabelStyle}>
-                {strings.objects.visibleOn.visibility}
-              </Label>
-              <DefaultButton
-                checked={false}
-                iconProps={{
-                  iconName: boolean ? "CheckboxComposite" : "Checkbox",
-                }}
+              <Label>{strings.objects.visibleOn.visibility}</Label>
+              <Button
+                icon={
+                  boolean ? <CheckboxChecked20Regular /> : <CheckboxUnchecked20Filled />
+                }
                 onClick={() => {
                   this.emitSetValue(!boolean);
                 }}

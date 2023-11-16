@@ -13,7 +13,6 @@ import {
   Specification,
 } from "../../../../core";
 import { DragData } from "../../../actions";
-import { ButtonRaised } from "../../../components";
 import {
   DragContext,
   DragModifiers,
@@ -23,8 +22,13 @@ import {
 import { AppStore } from "../../../stores";
 import { classNames } from "../../../utils/index";
 import { ReorderListView } from "../object_list_editor";
-import { Button } from "./controls";
+import { Button } from "@fluentui/react-components";
 import { getSortFunctionByData } from "../../../../container";
+import {
+  ArrowReset24Regular,
+  ArrowSort24Regular,
+  TextSortDescending24Regular,
+} from "@fluentui/react-icons";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -193,15 +197,15 @@ export class ReorderStringsValue extends React.Component<
         </div>
         <div className="el-row">
           <Button
-            icon={"Sort"}
-            text="Reverse"
+            icon={<ArrowSort24Regular />}
             onClick={() => {
               this.setState({ items: this.state.items.reverse() });
             }}
-          />{" "}
+          >
+            "Reverse"
+          </Button>{" "}
           <Button
-            icon={"general/sort"}
-            text="Sort"
+            icon={<TextSortDescending24Regular />}
             onClick={() => {
               this.setState({
                 items: this.state.items.sort(
@@ -210,30 +214,35 @@ export class ReorderStringsValue extends React.Component<
                 customOrder: false,
               });
             }}
-          />
+          >
+            "Sort"
+          </Button>
           {this.props.allowReset && (
             <>
               {" "}
               <Button
-                icon={"general/clear"}
-                text="Reset"
+                icon={<ArrowReset24Regular />}
                 onClick={() => {
                   if (this.props.onReset) {
                     const items = this.props.onReset();
                     this.setState({ items });
                   }
                 }}
-              />
+              >
+                "Reset"
+              </Button>
             </>
           )}
         </div>
         <div className="el-row">
-          <ButtonRaised
-            text="OK"
+          <Button
+            appearance="primary"
             onClick={() => {
               this.props.onConfirm(this.state.items, this.state.customOrder);
             }}
-          />
+          >
+            Ok
+          </Button>
         </div>
       </div>
     );

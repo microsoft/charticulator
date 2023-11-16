@@ -16,7 +16,12 @@ import {
   MarkSelection,
 } from "../../stores";
 import { classNames } from "../../utils";
-import { Button } from "./widgets/controls";
+import {
+  Eraser24Regular,
+  Eye24Regular,
+  EyeOff24Regular,
+} from "@fluentui/react-icons";
+import { Button } from "@fluentui/react-components";
 
 export class ObjectListEditor extends ContextedComponent<
   Record<string, unknown>,
@@ -100,12 +105,14 @@ export class ObjectListEditor extends ContextedComponent<
                 <span className="el-text">{element.properties.name}</span>
                 <Button
                   icon={
-                    element.properties.visible
-                      ? "general/eye"
-                      : "general/eye-faded"
+                    element.properties.visible ? (
+                      <Eye24Regular />
+                    ) : (
+                      <EyeOff24Regular />
+                    )
                   }
                   title="Toggle visibility"
-                  active={false}
+                  appearance="subtle"
                   onClick={() => {
                     this.dispatch(
                       new Actions.SetObjectProperty(
@@ -119,9 +126,9 @@ export class ObjectListEditor extends ContextedComponent<
                   }}
                 />
                 <Button
-                  icon="general/eraser"
+                  icon={<Eraser24Regular />}
                   title="Remove"
-                  active={false}
+                  appearance="subtle"
                   onClick={() => {
                     this.dispatch(new Actions.DeleteChartElement(element));
                   }}
@@ -197,12 +204,14 @@ export class ObjectListEditor extends ContextedComponent<
                   <span className="el-text">{mark.properties.name}</span>
                   <Button
                     icon={
-                      mark.properties.visible
-                        ? "general/eye"
-                        : "general/eye-faded"
+                      mark.properties.visible ? (
+                        <Eye24Regular />
+                      ) : (
+                        <EyeOff24Regular />
+                      )
                     }
+                    appearance="subtle"
                     title="Toggle visibility"
-                    active={false}
                     onClick={() => {
                       this.dispatch(
                         new Actions.SetObjectProperty(
@@ -216,9 +225,9 @@ export class ObjectListEditor extends ContextedComponent<
                     }}
                   />
                   <Button
-                    icon="general/eraser"
-                    active={false}
+                    icon={<Eraser24Regular />}
                     title="Remove"
+                    appearance="subtle"
                     onClick={() => {
                       this.dispatch(
                         new Actions.RemoveMarkFromGlyph(glyph, mark)

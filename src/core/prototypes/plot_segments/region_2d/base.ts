@@ -23,6 +23,15 @@ import { PlotSegmentClass } from "../plot_segment";
 
 import { strings } from "./../../../../strings";
 import { ChartStateManager } from "../../state";
+import {
+  AlignBottom20Regular,
+  AlignCenterHorizontal20Regular,
+  AlignCenterVertical20Regular,
+  AlignLeft20Regular,
+  AlignRight20Regular,
+  AlignTop20Regular,
+} from "@fluentui/react-icons";
+import React from "react";
 
 export enum Region2DSublayoutType {
   Overlap = "overlap",
@@ -155,18 +164,18 @@ export interface Region2DConfigurationTerminology {
 }
 
 export interface Region2DConfigurationIcons {
-  xMinIcon: string;
-  xMiddleIcon: string;
-  xMaxIcon: string;
-  yMinIcon: string;
-  yMiddleIcon: string;
-  yMaxIcon: string;
-  dodgeXIcon: string;
-  dodgeYIcon: string;
-  gridIcon: string;
-  packingIcon: string;
-  jitterIcon: string;
-  overlapIcon: string;
+  xMinIcon: string | React.ReactNode;
+  xMiddleIcon: string | React.ReactNode;
+  xMaxIcon: string | React.ReactNode;
+  yMinIcon: string | React.ReactNode;
+  yMiddleIcon: string | React.ReactNode;
+  yMaxIcon: string | React.ReactNode;
+  dodgeXIcon: string | React.ReactNode;
+  dodgeYIcon: string | React.ReactNode;
+  gridIcon: string | React.ReactNode;
+  packingIcon: string | React.ReactNode;
+  jitterIcon: string | React.ReactNode;
+  overlapIcon: string | React.ReactNode;
 }
 
 export interface Region2DConfiguration {
@@ -345,7 +354,6 @@ export class Region2DConstraintBuilder {
     const order = this.plotSegment.object.properties.sublayout.order;
     const dateRowIndices = this.plotSegment.state.dataRowIndices;
     const table = this.getTableContext();
-    // debugger
     // Sort results
     if (order != null && order.expression) {
       const orderExpression = this.getExpression(order.expression);
@@ -2510,9 +2518,9 @@ export class Region2DConstraintBuilder {
               type: "radio",
               options: ["start", "middle", "end"],
               icons: [
-                "AlignVerticalBottom",
-                "AlignVerticalCenter",
-                "AlignVerticalTop",
+                React.createElement(AlignBottom20Regular),
+                React.createElement(AlignCenterHorizontal20Regular),
+                React.createElement(AlignTop20Regular),
               ],
               labels: [
                 strings.alignment.bottom,
@@ -2533,9 +2541,9 @@ export class Region2DConstraintBuilder {
               type: "radio",
               options: ["start", "middle", "end"],
               icons: [
-                "AlignHorizontalLeft",
-                "AlignHorizontalCenter",
-                "AlignHorizontalRight",
+                React.createElement(AlignLeft20Regular),
+                React.createElement(AlignCenterVertical20Regular),
+                React.createElement(AlignRight20Regular),
               ],
               labels: [
                 strings.alignment.left,
@@ -2897,9 +2905,6 @@ export class Region2DConstraintBuilder {
         ],
         {
           header: mainCollapsePanelHeader,
-          styles: {
-            marginLeft: 5,
-          },
         }
       ),
     ];
@@ -3040,6 +3045,7 @@ export class Region2DConstraintBuilder {
             )
           );
         }
+        // temporary disabled
         if (type != Region2DSublayoutType.Overlap) {
           extra.push(m.sep());
           extra.push(

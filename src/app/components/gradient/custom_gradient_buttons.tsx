@@ -2,15 +2,14 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-import { DefaultButton, Dropdown, IDropdownOption } from "@fluentui/react";
 import { strings } from "../../../strings";
 import { ColorGradient, deepClone } from "../../../core";
-import {
-  CustomGradientButtonsWrapper,
-  defaultActionButtonsStyles,
-  dropdownStyles,
-} from "./styles";
+import { CustomGradientButtonsWrapper } from "./styles";
 import { Colorspace } from "../fluent_ui_gradient_picker";
+// import { SVGImageIcon } from "../icons";
+// import * as R from "../../resources";
+import { Button, Dropdown, Option } from "@fluentui/react-components";
+import { Add20Regular, ReOrder20Regular } from "@fluentui/react-icons";
 
 interface CustomGradientButtonsProps {
   currentGradient: ColorGradient;
@@ -23,52 +22,68 @@ export class CustomGradientButtons extends React.Component<
 > {
   render() {
     const currentGradient = this.props.currentGradient;
-    const dropdownItems: IDropdownOption[] = [
+    const dropdownItems: {
+      key: string;
+      text: string;
+    }[] = [
       { key: Colorspace.HCL, text: "HCL" },
       { key: Colorspace.LAB, text: "Lab" },
     ];
     return (
       <CustomGradientButtonsWrapper>
         <div>
-          <DefaultButton
-            iconProps={{
-              iconName: "Add",
-            }}
-            text={strings.scaleEditor.add}
+          <Button
+            // iconProps={{
+            // iconName: "Add",
+            // }}
+            title={strings.scaleEditor.add}
+            icon={<Add20Regular />}
             onClick={() => {
               const newGradient = deepClone(currentGradient);
               newGradient.colors.push({ r: 150, g: 150, b: 150 });
               this.props.selectGradient(newGradient, true);
             }}
-            styles={defaultActionButtonsStyles}
-          />
+            // styles={defaultActionButtonsStyles}
+          >
+            {strings.scaleEditor.add}
+          </Button>
         </div>
         <div>
-          <DefaultButton
-            iconProps={{
-              iconName: "Sort",
-            }}
-            text={strings.scaleEditor.reverse}
+          <Button
+            // iconProps={{
+            //   iconName: "Sort",
+            // }}
+            icon={<ReOrder20Regular />}
+            title={strings.scaleEditor.reverse}
             onClick={() => {
               const newGradient = deepClone(currentGradient);
               newGradient.colors.reverse();
               this.props.selectGradient(newGradient, true);
             }}
-            styles={defaultActionButtonsStyles}
-          />
+            // styles={defaultActionButtonsStyles}
+          >
+            {strings.scaleEditor.reverse}
+          </Button>
         </div>
         <Dropdown
-          options={dropdownItems}
-          onChange={(event, option) => {
-            if (option) {
+          // options={dropdownItems}
+          onOptionSelect={(event, { optionValue }) => {
+            if (optionValue) {
               const newGradient = deepClone(currentGradient);
-              newGradient.colorspace = option.key as Colorspace;
+              newGradient.colorspace = optionValue as Colorspace;
               this.props.selectGradient(newGradient, true);
             }
           }}
-          defaultSelectedKey={currentGradient.colorspace}
-          styles={dropdownStyles}
-        />
+          // defaultSelectedKey={currentGradient.colorspace}
+          value={currentGradient.colorspace}
+          // styles={dropdownStyles}
+        >
+          {dropdownItems.map((o) => (
+            <Option value={o.key} text={o.text}>
+              {o.text}
+            </Option>
+          ))}
+        </Dropdown>
       </CustomGradientButtonsWrapper>
     );
   }

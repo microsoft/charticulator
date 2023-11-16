@@ -5,7 +5,7 @@ import * as React from "react";
 
 import { EventSubscription, Specification, uniqueID } from "../../../core";
 import { Actions } from "../../actions";
-import { EditableTextView } from "../../components";
+import { EditableTextView, SVGImageIcon } from "../../components";
 
 import { AppStore } from "../../stores";
 import { FluentUIWidgetManager } from "./widgets/fluentui_manager";
@@ -13,9 +13,11 @@ import { ReservedMappingKeyNamePrefix } from "../../../core/prototypes/legends/c
 import { strings } from "../../../strings";
 import { AttributeMap } from "../../../core/specification";
 import { ObjectClass } from "../../../core/prototypes";
-import { DefaultButton } from "@fluentui/react";
 import { EventType } from "./widgets/observer";
 import { ScaleEditorWrapper } from "./panel_styles";
+import { Button } from "@fluentui/react-components";
+import * as R from "../../resources";
+import { Add20Regular, Delete20Regular } from "@fluentui/react-icons";
 
 export interface ScaleEditorProps {
   scale: Specification.Scale;
@@ -96,11 +98,12 @@ export class ScaleEditor extends React.Component<
             <div className="action-buttons">
               {canExtendLegend ? (
                 <>
-                  <DefaultButton
-                    iconProps={{
-                      iconName: "Add",
-                    }}
-                    text={strings.scaleEditor.add}
+                  <Button
+                    // iconProps={{
+                    //   iconName: "Add",
+                    // }}
+                    icon={<Add20Regular />}
+                    title={strings.scaleEditor.add}
                     onClick={() => {
                       manager.eventManager.notify(
                         EventType.UPDATE_FIELD,
@@ -131,13 +134,16 @@ export class ScaleEditor extends React.Component<
                         true
                       ).dispatch(this.props.store.dispatcher);
                     }}
-                  />
-                  <DefaultButton
-                    iconProps={{
-                      iconName: "Remove",
-                    }}
+                  >
+                    {strings.scaleEditor.add}
+                  </Button>
+                  <Button
+                    // iconProps={{
+                    //   iconName: "Remove",
+                    // }}
+                    icon={<Delete20Regular />}
                     disabled={(currentSelection?.length ?? 0) === 0}
-                    text={strings.scaleEditor.removeSelected}
+                    title={strings.scaleEditor.removeSelected}
                     onClick={() => {
                       if (currentSelection?.length > 0) {
                         new Actions.DeleteObjectProperty(
@@ -152,15 +158,20 @@ export class ScaleEditor extends React.Component<
                         );
                       }
                     }}
-                  />
+                  >
+                    {strings.scaleEditor.removeSelected}
+                  </Button>
                 </>
               ) : null}
               {canAddLegend ? (
-                <DefaultButton
-                  iconProps={{
-                    iconName: "CharticulatorLegend",
-                  }}
-                  text={
+                <Button
+                  // iconProps={{
+                  //   iconName: "CharticulatorLegend",
+                  // }}
+                  icon={
+                    <SVGImageIcon url={R.getSVGIcon("CharticulatorLegend")} />
+                  }
+                  title={
                     store.isLegendExistForScale(scale._id)
                       ? strings.scaleEditor.removeLegend
                       : strings.scaleEditor.addLegend
@@ -172,7 +183,11 @@ export class ScaleEditor extends React.Component<
                       this.props.plotSegment
                     ).dispatch(store.dispatcher);
                   }}
-                />
+                >
+                  {store.isLegendExistForScale(scale._id)
+                    ? strings.scaleEditor.removeLegend
+                    : strings.scaleEditor.addLegend}
+                </Button>
               ) : null}
             </div>
           </section>

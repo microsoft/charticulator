@@ -9,7 +9,6 @@ import {
   predefinedPalettes,
 } from "../resources";
 import { AppStore } from "../stores";
-import { Label } from "@fluentui/react";
 import { ColorGrid } from "./colors/color_grid";
 import { NullButton } from "./colors/null_button";
 import { ColorPickerButton, PickerType } from "./colors/color_pickers";
@@ -23,6 +22,7 @@ import {
   PickersSection,
   PickersSectionWrapper,
 } from "./colors/styles";
+import { Label } from "@fluentui/react-components";
 
 export function colorToCSS(color: Color) {
   return `rgb(${color.r.toFixed(0)},${color.g.toFixed(0)},${color.b.toFixed(

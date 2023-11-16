@@ -3,15 +3,10 @@
 
 import * as React from "react";
 import { ColorPalette, predefinedPalettes } from "../../resources";
-import {
-  ColorGradientWrapper,
-  colorPalettesLabelStyles,
-  PalettesWrapper,
-  TabWrapper,
-} from "./styles";
-import { Label } from "@fluentui/react";
+import { ColorGradientWrapper, PalettesWrapper, TabWrapper } from "./styles";
 import { ColorGradient, interpolateColors } from "../../../core";
 import { Colorspace } from "../fluent_ui_gradient_picker";
+import { Label } from "@fluentui/react-components";
 
 interface GradientPalettesProps {
   selectGradient: (gradient: ColorGradient, emit: boolean) => void;
@@ -56,9 +51,7 @@ export class GradientPalettes extends React.Component<
                     onClick={() => this.props.selectGradient(gradient, true)}
                   >
                     <GradientView gradient={gradient} />
-                    <Label styles={colorPalettesLabelStyles}>
-                      {x.name.split("/")[1]}
-                    </Label>
+                    <Label>{x.name.split("/")[1]}</Label>
                   </PalettesWrapper>
                 );
               })}

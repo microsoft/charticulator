@@ -31,6 +31,15 @@ import {
 } from "./icon.attrs";
 import { imagePlaceholder } from "./image";
 import { RectangleGlyph } from "../glyphs";
+import React from "react";
+import {
+  AlignBottom20Regular,
+  AlignCenterHorizontal20Regular,
+  AlignCenterVertical20Regular,
+  AlignLeft20Regular,
+  AlignRight20Regular,
+  AlignTop20Regular,
+} from "@fluentui/react-icons";
 
 export { IconElementAttributes, IconElementProperties };
 
@@ -286,7 +295,7 @@ export class IconElementClass extends EmphasizableMarkClass<
       cy: rect.cy - attrs.y,
       width: rect.width,
       height: rect.height,
-      rotation: rect.rotation
+      rotation: rect.rotation,
     };
   }
 
@@ -361,9 +370,9 @@ export class IconElementClass extends EmphasizableMarkClass<
               {
                 type: "radio",
                 icons: [
-                  "AlignHorizontalLeft",
-                  "AlignHorizontalCenter",
-                  "AlignHorizontalRight",
+                  React.createElement(AlignLeft20Regular),
+                  React.createElement(AlignCenterVertical20Regular),
+                  React.createElement(AlignRight20Regular),
                 ],
                 labels: [
                   strings.alignment.left,
@@ -392,9 +401,9 @@ export class IconElementClass extends EmphasizableMarkClass<
               {
                 type: "radio",
                 icons: [
-                  "AlignVerticalTop",
-                  "AlignVerticalCenter",
-                  "AlignVerticalBottom",
+                  React.createElement(AlignTop20Regular),
+                  React.createElement(AlignCenterHorizontal20Regular),
+                  React.createElement(AlignBottom20Regular),
                 ],
                 labels: [
                   strings.alignment.top,

@@ -23,9 +23,8 @@ import {
   Specification,
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
-import { ButtonRaised } from "../../../components";
 import { SVGImageIcon } from "../../../components/icons";
-import { getAlignment, PopupAlignment, PopupView } from "../../../controllers";
+import { getAlignment, PopupView } from "../../../controllers";
 import {
   DragContext,
   DragModifiers,
@@ -57,36 +56,29 @@ import { ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
 
 import {
-  Checkbox,
-  ComboBox,
-  DatePicker,
-  DayOfWeek,
-  DefaultButton,
   Dropdown,
-  FontIcon,
-  getTheme,
-  IconButton,
+  Combobox,
+  Option,
+  Checkbox,
   Label,
-  TextField,
-  TooltipHost,
-} from "@fluentui/react";
+  Input,
+  Button,
+  PopoverTrigger,
+  Popover,
+  PopoverSurface,
+  ToggleButton,
+  Field,
+  Tooltip,
+} from "@fluentui/react-components";
+
+import { DatePicker } from "@fluentui/react-datepicker-compat";
+
 import { FluentMappingEditor } from "./fluent_mapping_editor";
 import { CharticulatorPropertyAccessors } from "./types";
 import { FluentInputColor } from "./controls/fluentui_input_color";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
-import {
-  defaultLabelStyle,
-  defaultStyle,
-  defultBindButtonSize,
-  defultComponentsHeight,
-  FluentButton,
-  FluentCheckbox,
-  FluentDatePickerWrapper,
-  FluentLabelHeader,
-  labelRender,
-  NestedChartButtonsWrapper,
-} from "./controls/fluentui_customized_components";
+import { FluentColumnLayout } from "./controls/fluentui_customized_components";
 import { FluentInputNumber } from "./controls/fluentui_input_number";
 import {
   InputFontComboboxOptions,
@@ -96,7 +88,6 @@ import {
   SearchWrapperOptions,
 } from "../../../../core/prototypes/controls";
 
-// import { mergeStyles } from "@fluentui/merge-styles";
 import { strings } from "../../../../strings";
 import { InputImage } from "./controls/fluentui_image";
 import { InputImageProperty } from "./controls/fluentui_image_2";
@@ -116,9 +107,8 @@ import { OrderMode } from "../../../../core/specification/types";
 import { CustomCollapsiblePanel } from "./controls/custom_collapsible_panel";
 import { FluentUIReorderStringsValue } from "./controls/fluentui_reorder_string_value";
 import { InputColorGradient } from "./controls/input_gradient";
-import { dropdownStyles, onRenderOption, onRenderTitle } from "./styles";
 import { getDropzoneAcceptTables } from "./utils";
-import { EditorType } from "../../../stores/app_store";
+import { GroupList20Regular } from "@fluentui/react-icons";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -161,44 +151,51 @@ export class FluentUIWidgetManager
 
   public searchInput(options: InputTextOptions = {}) {
     return (
-      <TextField
-        styles={{
-          ...(defaultStyle as any),
-          field: {
-            ...defaultStyle.field,
-            height: null,
-            padding: "unset",
-          },
-          root: {
-            marginBottom: 5,
-            marginTop: 5,
-          },
-          prefix: {
-            backgroundColor: "unset",
-          },
-        }}
-        placeholder={options.placeholder}
-        label={options.label}
-        disabled={options.disabled}
-        onRenderLabel={labelRender}
-        onChange={(event, value) => {
-          let newValue = "";
-          if (value?.length > 0) {
-            newValue = value.trim();
-          }
-          this.store.dispatcher.dispatch(new Actions.SearchUpdated(newValue));
-        }}
-        type="text"
-        underlined={options.underline ?? false}
-        borderless={options.borderless ?? false}
-        style={options.styles}
-        prefix=""
-        onRenderPrefix={() => {
-          return <FontIcon aria-label="Search" iconName="Search" />;
-        }}
-        autoComplete="off"
-        defaultValue={this.store.searchString}
-      />
+      <>
+        <Label>{options.label}</Label>
+        <Input
+          // styles={{
+          //   ...(defaultStyle as any),
+          //   field: {
+          //     ...defaultStyle.field,
+          //     height: null,
+          //     padding: "unset",
+          //   },
+          //   root: {
+          //     marginBottom: 5,
+          //     marginTop: 5,
+          //   },
+          //   prefix: {
+          //     backgroundColor: "unset",
+          //   },
+          // }}
+          placeholder={options.placeholder}
+          // label={options.label}
+          disabled={options.disabled}
+          // onRenderLabel={labelRender}
+          onChange={(event, { value }) => {
+            let newValue = "";
+            if (value?.length > 0) {
+              newValue = value.trim();
+            }
+            this.store.dispatcher.dispatch(new Actions.SearchUpdated(newValue));
+          }}
+          type="text"
+          appearance={options.underline ? "underline" : "outline"}
+          // borderless={options.borderless ?? false}
+          // style={options.styles}
+          prefix=""
+          style={{
+            width: "100%",
+          }}
+          // onRenderPrefix={() => {
+          //   return <FontIcon aria-label="Search" iconName="Search" />;
+          // }}
+          contentBefore={<SVGImageIcon url={R.getSVGIcon("Search")} />}
+          autoComplete="off"
+          defaultValue={this.store.searchString}
+        />
+      </>
     );
   }
 
@@ -271,7 +268,7 @@ export class FluentUIWidgetManager
 
     return (
       <FluentMappingEditor
-        key={name.replace(/\s/g, "_") + attribute}
+        key={`${this.objectClass.object._id}-${attribute}`}
         store={this.store}
         parent={this}
         attribute={attribute}
@@ -514,29 +511,34 @@ export class FluentUIWidgetManager
       return;
     }
     const value = this.getPropertyValue(property) as number;
-    const format = this.getDateFormat(property) as string;
+    // const format = this.getDateFormat(property) as string;
 
     return (
-      <FluentDatePickerWrapper>
-        <DatePicker
-          key={this.getKeyFromProperty(property)}
-          firstDayOfWeek={DayOfWeek.Sunday}
-          placeholder={options.placeholder}
-          ariaLabel={options.placeholder}
-          defaultValue={format}
-          value={new Date(value)}
-          label={options.label}
-          onSelectDate={(value: Date) => {
-            if (value == null) {
-              this.emitSetProperty(property, null);
-              return true;
-            } else {
-              this.emitSetProperty(property, value as any);
-              return true;
-            }
-          }}
-        />
-      </FluentDatePickerWrapper>
+      // <FluentDatePickerWrapper>
+      <FluentColumnLayout>
+        <Label>{options.label}</Label>
+        <Field>
+          <DatePicker
+            key={this.getKeyFromProperty(property)}
+            firstDayOfWeek={0}
+            placeholder={options.placeholder}
+            // ariaLabel={options.placeholder}
+            // defaultValue={format}
+            value={new Date(value)}
+            // label={options.label}
+            onSelectDate={(value: Date) => {
+              if (value == null) {
+                this.emitSetProperty(property, null);
+                return true;
+              } else {
+                this.emitSetProperty(property, value as any);
+                return true;
+              }
+            }}
+          />
+        </Field>
+      </FluentColumnLayout>
+      // </FluentDatePickerWrapper>
     );
   }
 
@@ -555,47 +557,50 @@ export class FluentUIWidgetManager
     }
     let prevKey: string = options.value ?? "";
     return (
-      <TextField
-        styles={{
-          ...(defaultStyle as any),
-          field: {
-            ...defaultStyle.field,
-            height: null,
-          },
-        }}
-        key={this.getKeyFromProperty(property)}
-        value={
-          options.value
-            ? options.value
-            : (this.getPropertyValue(property) as string)
-        }
-        placeholder={options.placeholder}
-        label={options.label}
-        disabled={options.disabled}
-        onRenderLabel={labelRender}
-        onChange={(event, value) => {
-          options.updateProperty
-            ? this.emitUpdateProperty(event, property, prevKey, value)
-            : this.emitSetProperty(property, value);
-          prevKey = value;
-          if (options.emitMappingAction) {
-            new Actions.SetCurrentMappingAttribute(value).dispatch(
-              this.store.dispatcher
-            );
+      <FluentColumnLayout>
+        <Label>{options.label}</Label>
+        <Input
+          // styles={{
+          //   ...(defaultStyle as any),
+          //   field: {
+          //     ...defaultStyle.field,
+          //     height: null,
+          //   },
+          // }}
+          key={this.getKeyFromProperty(property)}
+          value={
+            options.value
+              ? options.value
+              : (this.getPropertyValue(property) as string)
           }
-        }}
-        onClick={() => {
-          if (options.emitMappingAction) {
-            new Actions.SetCurrentMappingAttribute(prevKey).dispatch(
-              this.store.dispatcher
-            );
-          }
-        }}
-        type="text"
-        underlined={options.underline ?? false}
-        borderless={options.borderless ?? false}
-        style={options.styles}
-      />
+          placeholder={options.placeholder}
+          // label={options.label}
+          disabled={options.disabled}
+          // onRenderLabel={labelRender}
+          onChange={(event, { value }) => {
+            options.updateProperty
+              ? this.emitUpdateProperty(event, property, prevKey, value)
+              : this.emitSetProperty(property, value);
+            prevKey = value;
+            if (options.emitMappingAction) {
+              new Actions.SetCurrentMappingAttribute(value).dispatch(
+                this.store.dispatcher
+              );
+            }
+          }}
+          onClick={() => {
+            if (options.emitMappingAction) {
+              new Actions.SetCurrentMappingAttribute(prevKey).dispatch(
+                this.store.dispatcher
+              );
+            }
+          }}
+          type="text"
+          // underlined={options.underline ?? false}
+          // borderless={options.borderless ?? false}
+          // style={options.styles}
+        />
+      </FluentColumnLayout>
     );
   }
 
@@ -633,23 +638,42 @@ export class FluentUIWidgetManager
       return;
     }
     return (
-      <ComboBox
-        styles={defaultStyle as any}
-        key={this.getKeyFromProperty(property)}
-        selectedKey={this.getPropertyValue(property) as string}
-        label={options.label}
-        autoComplete="on"
-        options={options.defaultRange.map((rangeValue) => {
-          return {
-            key: rangeValue,
-            text: rangeValue,
-          };
-        })}
-        onChange={(event, value) => {
-          this.emitSetProperty(property, value.key);
-          return true;
-        }}
-      />
+      <FluentColumnLayout>
+        <Label>{options.label}</Label>
+        <Combobox
+          // styles={defaultStyle as any}
+          key={this.getKeyFromProperty(property)}
+          value={this.getPropertyValue(property) as string}
+          selectedOptions={[this.getPropertyValue(property) as string]}
+          // label={options.label}
+          autoComplete="on"
+          // options={options.defaultRange.map((rangeValue) => {
+          //   return {
+          //     key: rangeValue,
+          //     text: rangeValue,
+          //   };
+          // })}
+          onOptionSelect={(event, { optionValue }) => {
+            this.emitSetProperty(property, optionValue);
+            return true;
+          }}
+        >
+          {options.defaultRange
+            .map((rangeValue) => {
+              return {
+                key: rangeValue,
+                text: rangeValue,
+              };
+            })
+            .map((o) => {
+              return (
+                <Option value={o.key} text={o.text}>
+                  {o.text}
+                </Option>
+              );
+            })}
+        </Combobox>
+      </FluentColumnLayout>
     );
   }
 
@@ -666,46 +690,70 @@ export class FluentUIWidgetManager
     ) {
       return;
     }
-    const theme = getTheme();
+    // const theme = getTheme();
     const isLocalIcons = options.isLocalIcons ?? false;
     if (options.type == "dropdown") {
+      const propertyValue = this.getPropertyValue(property) as string;
+      const propertyIndex = options.options.findIndex(
+        (o) => o === propertyValue
+      );
+      const propertyLabel = options.labels[propertyIndex];
+
       return (
-        <Dropdown
-          key={`${this.getKeyFromProperty(property)}-${options.label}-${
-            options.type
-          }`}
-          selectedKey={this.getPropertyValue(property) as string}
-          defaultValue={this.getPropertyValue(property) as string}
-          label={options.label}
-          onRenderLabel={labelRender}
-          onRenderOption={onRenderOption}
-          onRenderTitle={onRenderTitle}
-          options={options.options.map((rangeValue, index) => {
-            return {
-              key: rangeValue,
-              text: options.labels[index],
-              data: {
-                icon: options.icons?.[index],
-                iconStyles: {
-                  stroke: "gray",
-                },
-                isLocalIcons,
-              },
-            };
-          })}
-          onChange={(event, value) => {
-            this.emitSetProperty(property, value.key);
-            this.defaultNotification(options.observerConfig);
-            if (options.onChange) {
-              options.onChange(value);
-            }
-            return true;
-          }}
-          styles={{
-            ...defaultStyle,
-            ...dropdownStyles(options),
-          }}
-        />
+        <>
+          <FluentColumnLayout>
+            <Label>{options.label}</Label>
+            <Dropdown
+              key={`${this.getKeyFromProperty(property)}-${options.label}-${
+                options.type
+              }`}
+              style={{
+                minWidth: "unset",
+                width: "100%",
+              }}
+              value={propertyLabel}
+              selectedOptions={[this.getPropertyValue(property) as string]}
+              onOptionSelect={(_, { optionValue: value, optionText }) => {
+                this.emitSetProperty(property, value);
+                this.defaultNotification(options.observerConfig);
+                if (options.onChange) {
+                  options.onChange({
+                    key: value,
+                    text: optionText,
+                  });
+                }
+                return true;
+              }}
+            >
+              {options.options
+                .map((rangeValue, index) => {
+                  return {
+                    key: rangeValue,
+                    text: options.labels[index],
+                    data: {
+                      icon: options.icons?.[index],
+                      iconStyles: {
+                        stroke: "gray",
+                      },
+                      isLocalIcons,
+                    },
+                  };
+                })
+                .map((o) => {
+                  return (
+                    <Option text={o.text} value={o.key} key={o.key}>
+                      {typeof o.data.icon === "string" ? (
+                        <SVGImageIcon url={R.getSVGIcon(o.data.icon)} />
+                      ) : (
+                        o.data.icon
+                      )}
+                      {o.text}
+                    </Option>
+                  );
+                })}
+            </Dropdown>
+          </FluentColumnLayout>
+        </>
       );
     } else {
       return (
@@ -715,27 +763,38 @@ export class FluentUIWidgetManager
           }`}
         >
           {options.label && options.label.length > 0 ? (
-            <Label styles={defaultLabelStyle}>{options.label}</Label>
+            <Label>{options.label}</Label>
           ) : null}
           {options.options.map((option, index) => {
             return (
-              <IconButton
+              <ToggleButton
                 key={`${this.getKeyFromProperty(property)}-${options.label}-${
                   options.type
                 }-${index}`}
-                iconProps={{
-                  iconName: options.icons[index],
-                }}
-                style={{
-                  stroke: `${theme.palette.themePrimary} !important`,
-                }}
-                styles={{
-                  label: null,
-                  root: {
-                    minWidth: "unset",
-                    ...defultBindButtonSize,
-                  },
-                }}
+                // iconProps={{
+                //   iconName: options.icons[index],
+                // }}
+                icon={
+                  <>
+                    {typeof options.icons[index] === "string" ? (
+                      <SVGImageIcon
+                        url={R.getSVGIcon(options.icons[index] as string)}
+                      />
+                    ) : (
+                      options.icons[index]
+                    )}
+                  </>
+                }
+                // style={{
+                //   stroke: `${theme.palette.themePrimary} !important`,
+                // }}
+                // styles={{
+                //   label: null,
+                //   root: {
+                //     minWidth: "unset",
+                //     ...defultBindButtonSize,
+                //   },
+                // }}
                 title={options.labels[index]}
                 checked={option === (this.getPropertyValue(property) as string)}
                 onClick={() => {
@@ -773,64 +832,82 @@ export class FluentUIWidgetManager
       case "checkbox": {
         return (
           <React.Fragment key={this.getKeyFromProperty(property)}>
-            {options.headerLabel ? (
-              <Label styles={defaultLabelStyle}>{options.headerLabel}</Label>
-            ) : null}
-            <FluentCheckbox style={options.styles}>
-              <Checkbox
-                checked={this.getPropertyValue(property) as boolean}
-                label={options.label}
-                styles={{
-                  label: defaultLabelStyle,
-                  root: {
-                    ...defultComponentsHeight,
-                  },
-                  ...options.checkBoxStyles,
-                }}
-                onChange={(ev, v) => {
-                  if (properties instanceof Array) {
-                    properties.forEach((property) =>
-                      this.emitSetProperty(property, v)
-                    );
-                  } else {
-                    this.emitSetProperty(property, v);
-                  }
-                  this.defaultNotification(options.observerConfig);
-                  if (options.onChange && !v) {
-                    options.onChange(v);
-                  }
-                }}
-              />
-            </FluentCheckbox>
+            <>
+              <FluentColumnLayout>
+                {options.headerLabel ? (
+                  <Label>{options.headerLabel}</Label>
+                ) : null}
+                {/* <FluentCheckbox style={options.styles}> */}
+                <Checkbox
+                  checked={this.getPropertyValue(property) as boolean}
+                  label={options.label}
+                  // styles={{
+                  //   label: defaultLabelStyle,
+                  //   root: {
+                  //     ...defultComponentsHeight,
+                  //   },
+                  //   ...options.checkBoxStyles,
+                  // }}
+                  onChange={(ev, { checked: v }) => {
+                    if (properties instanceof Array) {
+                      properties.forEach((property) =>
+                        this.emitSetProperty(property, v)
+                      );
+                    } else {
+                      this.emitSetProperty(property, v);
+                    }
+                    this.defaultNotification(options.observerConfig);
+                    if (options.onChange && !v) {
+                      options.onChange(v as boolean);
+                    }
+                  }}
+                />
+                {/* </FluentCheckbox> */}
+              </FluentColumnLayout>
+            </>
           </React.Fragment>
         );
       }
       case "highlight": {
         return (
-          <IconButton
-            key={this.getKeyFromProperty(property)}
-            iconProps={{
-              iconName: options.icon,
-            }}
-            title={options.label}
-            label={options.label}
-            styles={{
-              ...defultBindButtonSize,
-              label: defaultLabelStyle,
-              root: {
-                minWidth: "unset",
-                ...defultBindButtonSize,
-              },
-            }}
-            text={options.label}
-            ariaLabel={options.label}
-            checked={this.getPropertyValue(property) as boolean}
-            onClick={() => {
-              this.defaultNotification(options.observerConfig);
-              const v = this.getPropertyValue(property) as boolean;
-              this.emitSetProperty(property, !v);
-            }}
-          />
+          <FluentColumnLayout>
+            <Label>{options.label}</Label>
+            <ToggleButton
+              key={this.getKeyFromProperty(property)}
+              // iconProps={{
+              //   iconName: options.icon,
+              // }}
+              icon={
+                <>
+                  {typeof options.icon === "string" ? (
+                    <SVGImageIcon url={R.getSVGIcon(options.icon as string)} />
+                  ) : (
+                    options.icon
+                  )}
+                </>
+              }
+              title={options.label}
+              // label={options.label}
+              // styles={{
+              //   ...defultBindButtonSize,
+              //   label: defaultLabelStyle,
+              //   root: {
+              //     minWidth: "unset",
+              //     ...defultBindButtonSize,
+              //   },
+              // }}
+              // text={options.label}
+              // ariaLabel={options.label}
+              checked={this.getPropertyValue(property) as boolean}
+              onClick={() => {
+                this.defaultNotification(options.observerConfig);
+                const v = this.getPropertyValue(property) as boolean;
+                this.emitSetProperty(property, !v);
+              }}
+            >
+              {options.label}
+            </ToggleButton>
+          </FluentColumnLayout>
         );
       }
     }
@@ -1042,33 +1119,31 @@ export class FluentUIWidgetManager
     );
   }
 
-  public clearButton(
-    property: Prototypes.Controls.Property,
-    icon?: string,
-    isHeader?: boolean,
-    styles?: CSSProperties
-  ) {
+  public clearButton(property: Prototypes.Controls.Property, icon?: string) {
     return (
-      <FluentButton
+      <>
+        {/* <FluentButton
         key={this.getKeyFromProperty(property)}
         marginTop={isHeader ? "0px" : null}
         style={styles}
-      >
-        <DefaultButton
-          styles={{
-            root: {
-              minWidth: "unset",
-              ...defultBindButtonSize,
-            },
-          }}
-          iconProps={{
-            iconName: icon || "EraseTool",
-          }}
+      > */}
+        <Button
+          // styles={{
+          //   root: {
+          //     minWidth: "unset",
+          //     ...defultBindButtonSize,
+          //   },
+          // }}
+          // iconProps={{
+          //   iconName: icon || "EraseTool",
+          // }}
+          icon={<SVGImageIcon url={R.getSVGIcon(icon || "general/eraser")} />}
           onClick={() => {
             this.emitSetProperty(property, null);
           }}
         />
-      </FluentButton>
+        {/* </FluentButton> */}
+      </>
     );
   }
 
@@ -1082,16 +1157,19 @@ export class FluentUIWidgetManager
       return;
     }
     return (
-      <DefaultButton
+      <Button
         key={this.getKeyFromProperty(property)}
-        iconProps={{
-          iconName: icon,
-        }}
-        text={text}
+        // iconProps={{
+        //   iconName: icon,
+        // }}
+        icon={<SVGImageIcon url={R.getSVGIcon(icon)} />}
+        title={text}
         onClick={() => {
           this.emitSetProperty(property, value);
         }}
-      />
+      >
+        {text}
+      </Button>
     );
   }
 
@@ -1099,7 +1177,6 @@ export class FluentUIWidgetManager
     if (!this.shouldDrawComponent([text])) {
       return;
     }
-    let mappingButton: Element = null;
 
     const objectClass = this.objectClass;
     const mapping = objectClass.object.mappings[attribute] as ScaleMapping;
@@ -1107,27 +1184,18 @@ export class FluentUIWidgetManager
     const scaleObject = getById(this.store.chart.scales, mapping.scale);
 
     return (
-      <ButtonRaised
-        key={attribute}
-        ref={(e) => (mappingButton = ReactDOM.findDOMNode(e) as Element)}
-        text={text}
-        onClick={() => {
-          globals.popupController.popupAt(
-            (context) => {
-              return (
-                <PopupView context={context}>
-                  <ScaleValueSelector
-                    scale={scaleObject}
-                    scaleMapping={mapping}
-                    store={this.store}
-                  />
-                </PopupView>
-              );
-            },
-            { anchor: mappingButton }
-          );
-        }}
-      />
+      <Popover>
+        <PopoverTrigger>
+          <Button key={attribute}>{text}</Button>
+        </PopoverTrigger>
+        <PopoverSurface>
+          <ScaleValueSelector
+            scale={scaleObject}
+            scaleMapping={mapping}
+            store={this.store}
+          />
+        </PopoverSurface>
+      </Popover>
     );
   }
 
@@ -1162,7 +1230,9 @@ export class FluentUIWidgetManager
       defaultValue,
       this.store
     );
-    const menuRender = this.director.getMenuRender();
+    const menuRender = this.director.menuRender(menu, null, {
+      icon: "SortLines",
+    });
 
     return (
       <DropZoneView
@@ -1173,8 +1243,8 @@ export class FluentUIWidgetManager
         }}
         className={""}
       >
-        <FluentButton marginTop={"0px"}>
-          <IconButton
+        {/* <FluentButton marginTop={"0px"}> */}
+        {/* <IconButton
             styles={{
               root: {
                 minWidth: "unset",
@@ -1195,8 +1265,9 @@ export class FluentUIWidgetManager
               },
               onRenderMenuList: menuRender,
             }}
-          />
-        </FluentButton>
+          /> */}
+        {menuRender}
+        {/* </FluentButton> */}
       </DropZoneView>
     );
   }
@@ -1205,122 +1276,134 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.ReOrderWidgetOptions = {}
   ): JSX.Element {
-    let container: HTMLSpanElement;
+    // let container: HTMLSpanElement;
     return (
-      <FluentButton
-        ref={(e) => (container = e)}
-        key={this.getKeyFromProperty(property)}
-        marginTop={"1px"}
-        paddingRight={"0px"}
-      >
-        <DefaultButton
-          styles={{
-            root: {
-              minWidth: "unset",
-              ...defultComponentsHeight,
-            },
-          }}
-          iconProps={{
-            iconName: "SortLines",
-          }}
-          onClick={() => {
-            globals.popupController.popupAt(
-              (context) => {
-                const items = options.items
+      // <FluentButton
+      //   ref={(e) => (container = e)}
+      //   key={this.getKeyFromProperty(property)}
+      //   marginTop={"1px"}
+      //   paddingRight={"0px"}
+      // >
+      <>
+        <Popover>
+          <PopoverTrigger disableButtonEnhancement>
+            <Button
+              // styles={{
+              //   root: {
+              //     minWidth: "unset",
+              //     ...defultComponentsHeight,
+              //   },
+              // }}
+              // iconProps={{
+              //   iconName: "SortLines",
+              // }}
+              icon={<SVGImageIcon url={R.getSVGIcon("SortLines")} />}
+              // onClick={() => {
+              //   globals.popupController.popupAt(
+              //     (context) => {
+              //       const items = options.items
+              //         ? options.items
+              //         : (this.getPropertyValue(property) as string[]);
+              //       return (
+              //         <PopupView context={context}>
+
+              //         </PopupView>
+              //       );
+              //     },
+              //     { anchor: container }
+              //   );
+              // }}
+            />
+          </PopoverTrigger>
+          <PopoverSurface>
+            <FluentUIReorderStringsValue
+              items={
+                options.items
                   ? options.items
-                  : (this.getPropertyValue(property) as string[]);
-                return (
-                  <PopupView context={context}>
-                    <FluentUIReorderStringsValue
-                      items={items}
-                      onConfirm={(items, customOrder, sortOrder) => {
-                        this.emitSetProperty(property, items);
-                        if (customOrder) {
-                          this.emitSetProperty(
-                            {
-                              property: property.property,
-                              field: "orderMode",
-                            },
-                            OrderMode.order
-                          );
-                          this.emitSetProperty(
-                            {
-                              property: property.property,
-                              field: "order",
-                            },
-                            items
-                          );
-                        } else {
-                          if (sortOrder) {
-                            this.emitSetProperty(
-                              {
-                                property: property.property,
-                                field: "orderMode",
-                              },
-                              OrderMode.alphabetically
-                            );
-                          } else {
-                            this.emitSetProperty(
-                              {
-                                property: property.property,
-                                field: "orderMode",
-                              },
-                              OrderMode.order
-                            );
-                            this.emitSetProperty(
-                              {
-                                property: property.property,
-                                field: "order",
-                              },
-                              items
-                            );
-                          }
-                        }
-                        context.close();
-                      }}
-                      onReset={() => {
-                        const axisDataBinding = {
-                          ...(this.objectClass.object.properties[
-                            property.property
-                          ] as any),
-                        };
+                  : (this.getPropertyValue(property) as string[])
+              }
+              onConfirm={(items, customOrder, sortOrder) => {
+                this.emitSetProperty(property, items);
+                if (customOrder) {
+                  this.emitSetProperty(
+                    {
+                      property: property.property,
+                      field: "orderMode",
+                    },
+                    OrderMode.order
+                  );
+                  this.emitSetProperty(
+                    {
+                      property: property.property,
+                      field: "order",
+                    },
+                    items
+                  );
+                } else {
+                  if (sortOrder) {
+                    this.emitSetProperty(
+                      {
+                        property: property.property,
+                        field: "orderMode",
+                      },
+                      OrderMode.alphabetically
+                    );
+                  } else {
+                    this.emitSetProperty(
+                      {
+                        property: property.property,
+                        field: "orderMode",
+                      },
+                      OrderMode.order
+                    );
+                    this.emitSetProperty(
+                      {
+                        property: property.property,
+                        field: "order",
+                      },
+                      items
+                    );
+                  }
+                }
+                // context.close();
+              }}
+              onReset={() => {
+                const axisDataBinding = {
+                  ...(this.objectClass.object.properties[
+                    property.property
+                  ] as any),
+                };
 
-                        axisDataBinding.table = this.store.chartManager.getTable(
-                          (this.objectClass.object as any).table
-                        );
-                        axisDataBinding.metadata = {
-                          kind: axisDataBinding.dataKind,
-                          orderMode: "order",
-                        };
-
-                        const groupBy: Specification.Types.GroupBy = this.store.getGroupingExpression(
-                          this.objectClass.object
-                        );
-                        const values = this.store.chartManager.getGroupedExpressionVector(
-                          (this.objectClass.object as any).table,
-                          groupBy,
-                          axisDataBinding.expression
-                        );
-
-                        const {
-                          categories,
-                        } = this.store.getCategoriesForDataBinding(
-                          axisDataBinding.metadata,
-                          axisDataBinding.type,
-                          values
-                        );
-                        return categories;
-                      }}
-                      {...options}
-                    />
-                  </PopupView>
+                axisDataBinding.table = this.store.chartManager.getTable(
+                  (this.objectClass.object as any).table
                 );
-              },
-              { anchor: container }
-            );
-          }}
-        />
-      </FluentButton>
+                axisDataBinding.metadata = {
+                  kind: axisDataBinding.dataKind,
+                  orderMode: "order",
+                };
+
+                const groupBy: Specification.Types.GroupBy = this.store.getGroupingExpression(
+                  this.objectClass.object
+                );
+                const values = this.store.chartManager.getGroupedExpressionVector(
+                  (this.objectClass.object as any).table,
+                  groupBy,
+                  axisDataBinding.expression
+                );
+
+                const { categories } = this.store.getCategoriesForDataBinding(
+                  axisDataBinding.metadata,
+                  axisDataBinding.type,
+                  values
+                );
+                return categories;
+              }}
+              {...options}
+            />
+          </PopoverSurface>
+        </Popover>
+      </>
+      // </FluentButton>
     );
   }
 
@@ -1375,22 +1458,23 @@ export class FluentUIWidgetManager
                 </span>
                 {options.allowDelete ? (
                   <span className="charticulator__widget-array-view-control">
-                    <FluentButton marginTop={"0px"}>
-                      <DefaultButton
-                        styles={{
-                          root: {
-                            minWidth: "unset",
-                          },
-                        }}
-                        iconProps={{
-                          iconName: "Delete",
-                        }}
-                        onClick={() => {
-                          items.splice(index, 1);
-                          this.emitSetProperty(property, items);
-                        }}
-                      />
-                    </FluentButton>
+                    {/* <FluentButton marginTop={"0px"}> */}
+                    <Button
+                      // styles={{
+                      //   root: {
+                      //     minWidth: "unset",
+                      //   },
+                      // }}
+                      // iconProps={{
+                      //   iconName: "Delete",
+                      // }}
+                      icon={<SVGImageIcon url={R.getSVGIcon("Delete")} />}
+                      onClick={() => {
+                        items.splice(index, 1);
+                        this.emitSetProperty(property, items);
+                      }}
+                    />
+                    {/* </FluentButton> */}
                   </span>
                 ) : null}
               </div>
@@ -1441,13 +1525,15 @@ export class FluentUIWidgetManager
       return;
     }
     return (
-      <FluentLabelHeader
-        key={title}
-        marginBottom={options?.addMargins ? "5px" : "0px"}
-        marginTop={options?.addMargins ? "5px" : "0px"}
-      >
-        <Label styles={defaultLabelStyle}>{title}</Label>
-      </FluentLabelHeader>
+      <>
+        {/* // <FluentLabelHeader
+      //   key={title}
+      //   marginBottom={options?.addMargins ? "5px" : "0px"}
+      //   marginTop={options?.addMargins ? "5px" : "0px"}
+      // > */}
+        <Label>{title}</Label>
+        {/* // </FluentLabelHeader> */}
+      </>
     );
   }
 
@@ -1518,7 +1604,7 @@ export class FluentUIWidgetManager
         defaultValue,
         this.store
       );
-      const menuRender = this.director.getMenuRender();
+      const menuRender = this.director.menuRender(menu);
 
       const className = options.noLineHeight
         ? "charticulator__widget-section-header-no-height charticulator__widget-section-header-dropzone"
@@ -1555,13 +1641,15 @@ export class FluentUIWidgetManager
           )}
         >
           {title ? (
-            <FluentLabelHeader>
+            <>
+              {/* <FluentLabelHeader> */}
               <Label>{title}</Label>
-            </FluentLabelHeader>
+              {/* </FluentLabelHeader> */}
+            </>
           ) : null}
           {widget}
-          <FluentButton marginTop={"0px"} marginLeft={"6px"}>
-            <DefaultButton
+          {/* <FluentButton marginTop={"0px"} marginLeft={"6px"}> */}
+          {/* <DefaultButton
               key={title}
               iconProps={{
                 iconName: "Link",
@@ -1579,16 +1667,17 @@ export class FluentUIWidgetManager
                   ...defultBindButtonSize,
                 },
               }}
-            />
-          </FluentButton>
+            /> */}
+          {menuRender}
+          {/* </FluentButton> */}
         </DropZoneView>
       );
     } else {
       return (
         <div className="charticulator__widget-section-header">
-          <FluentLabelHeader>
-            <Label>{title}</Label>
-          </FluentLabelHeader>
+          {/* <FluentLabelHeader> */}
+          <Label>{title}</Label>
+          {/* </FluentLabelHeader> */}
           {widget}
         </div>
       );
@@ -1687,44 +1776,48 @@ export class FluentUIWidgetManager
             }
           }
           return (
-            <FluentButton
-              marginTop={"0px"}
-              key={
-                this.getKeyFromProperty(options.target?.property) +
-                options?.table +
-                options?.value
-              }
-            >
-              <DefaultButton
-                styles={{
-                  root: {
-                    minWidth: "unset",
-                    ...defultComponentsHeight,
+            // <FluentButton
+            //   marginTop={"0px"}
+            //   key={
+            //     this.getKeyFromProperty(options.target?.property) +
+            //     options?.table +
+            //     options?.value
+            //   }
+            // >
+            <Button
+              // styles={{
+              //   root: {
+              //     minWidth: "unset",
+              //     ...defultComponentsHeight,
+              //   },
+              // }}
+              // text={text}
+              ref={(e) => (button = e)}
+              // iconProps={{
+              //   iconName: "RowsGroup",
+              // }}
+              // icon={<SVGImageIcon url={R.getSVGIcon("RowsGroup")} />}
+              icon={<GroupList20Regular />}
+              onClick={() => {
+                globals.popupController.popupAt(
+                  (context) => {
+                    return (
+                      <PopupView context={context}>
+                        <GroupByEditor
+                          manager={this}
+                          value={options.value}
+                          options={options}
+                        />
+                      </PopupView>
+                    );
                   },
-                }}
-                text={text}
-                elementRef={(e) => (button = e)}
-                iconProps={{
-                  iconName: "RowsGroup",
-                }}
-                onClick={() => {
-                  globals.popupController.popupAt(
-                    (context) => {
-                      return (
-                        <PopupView context={context}>
-                          <GroupByEditor
-                            manager={this}
-                            value={options.value}
-                            options={options}
-                          />
-                        </PopupView>
-                      );
-                    },
-                    { anchor: button as Element }
-                  );
-                }}
-              />
-            </FluentButton>
+                  { anchor: button as Element }
+                );
+              }}
+            >
+              {text}
+            </Button>
+            // </FluentButton>
           );
         case PanelMode.Panel:
           return (
@@ -1774,47 +1867,39 @@ export class FluentUIWidgetManager
     return (
       <React.Fragment key={this.getKeyFromProperty(property)}>
         {this.vertical(
-          <NestedChartButtonsWrapper>
-            <ButtonRaised
-              text={editNestedChartText}
-              onClick={() => {
-                this.store.dispatcher.dispatch(
-                  new OpenNestedEditor(
-                    this.objectClass.object,
-                    property,
-                    options
-                  )
-                );
-              }}
-            />
-          </NestedChartButtonsWrapper>,
-          <NestedChartButtonsWrapper>
-            <ButtonRaised
-              text={importTemplate}
-              onClick={async () => {
-                const file = await showOpenFileDialog(["tmplt", "json"]);
-                const str = await readFileAsString(file);
-                const data = JSON.parse(str);
-                const template = new ChartTemplate(data);
-                for (const table of options.dataset.tables) {
-                  const tTable = template.getDatasetSchema()[0];
-                  template.assignTable(tTable.name, table.name);
-                  for (const column of tTable.columns) {
-                    template.assignColumn(
-                      tTable.name,
-                      column.name,
-                      column.name
-                    );
-                  }
+          <Button
+            // text={editNestedChartText}
+            onClick={() => {
+              this.store.dispatcher.dispatch(
+                new OpenNestedEditor(this.objectClass.object, property, options)
+              );
+            }}
+          >
+            {editNestedChartText}
+          </Button>,
+          <Button
+            // text={importTemplate}
+            onClick={async () => {
+              const file = await showOpenFileDialog(["tmplt", "json"]);
+              const str = await readFileAsString(file);
+              const data = JSON.parse(str);
+              const template = new ChartTemplate(data);
+              for (const table of options.dataset.tables) {
+                const tTable = template.getDatasetSchema()[0];
+                template.assignTable(tTable.name, table.name);
+                for (const column of tTable.columns) {
+                  template.assignColumn(tTable.name, column.name, column.name);
                 }
-                const instance = template.instantiate(
-                  options.dataset,
-                  false // no scale inference
-                );
-                this.emitSetProperty(property, instance.chart as any);
-              }}
-            />
-          </NestedChartButtonsWrapper>
+              }
+              const instance = template.instantiate(
+                options.dataset,
+                false // no scale inference
+              );
+              this.emitSetProperty(property, instance.chart as any);
+            }}
+          >
+            {importTemplate}
+          </Button>
         )}
       </React.Fragment>
     );
@@ -1838,7 +1923,7 @@ export class FluentUIWidgetManager
     return (
       <div className="charticulator__widget-vertical">
         {widgets.map((x, id) => (
-          <span className="el-layout-item" key={id}>
+          <span className="el-layout-item" key={`${id}-${x.key}`}>
             {x}
           </span>
         ))}
@@ -1928,7 +2013,11 @@ export class FluentUIWidgetManager
     widget: JSX.Element,
     tooltipContent: JSX.Element
   ): JSX.Element {
-    return <TooltipHost content={tooltipContent}>{widget}</TooltipHost>;
+    return (
+      <Tooltip relationship="label" content={tooltipContent}>
+        {widget}
+      </Tooltip>
+    );
   }
 
   public customCollapsiblePanel(
@@ -1955,103 +2044,115 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.ReOrderWidgetOptions = {}
   ): JSX.Element {
-    let container: HTMLSpanElement;
+    // let container: HTMLSpanElement;
     return (
-      <FluentButton
-        ref={(e) => (container = e)}
-        key={this.getKeyFromProperty(property)}
-        marginTop={"0px"}
-        paddingRight={"0px"}
-      >
-        <DefaultButton
-          styles={{
-            root: {
-              minWidth: "unset",
-              ...defultComponentsHeight,
-            },
-          }}
-          iconProps={{
-            iconName: "SortLines",
-          }}
-          onClick={() => {
-            globals.popupController.popupAt(
-              (context) => {
-                const items = options.items
+      // <FluentButton
+      //   ref={(e) => (container = e)}
+      //   key={this.getKeyFromProperty(property)}
+      //   marginTop={"0px"}
+      //   paddingRight={"0px"}
+      // >
+      <>
+        <Popover>
+          <PopoverTrigger disableButtonEnhancement>
+            <Button
+              // styles={{
+              //   root: {
+              //     minWidth: "unset",
+              //     ...defultComponentsHeight,
+              //   },
+              // }}
+              // iconProps={{
+              //   iconName: "SortLines",
+              // }}
+              icon={<SVGImageIcon url={R.getSVGIcon("SortLines")} />}
+              // onClick={() => {
+              //   globals.popupController.popupAt(
+              //     (context) => {
+              //       const items = options.items
+              //         ? options.items
+              //         : (this.getPropertyValue(property) as string[]);
+              //       return (
+              //         <PopupView context={context}>
+
+              //         </PopupView>
+              //       );
+              //     },
+              //     {
+              //       anchor: container,
+              //       alignX:
+              //         this.store.editorType == EditorType.Embedded
+              //           ? PopupAlignment.EndInner
+              //           : PopupAlignment.StartInner,
+              //     }
+              //   );
+              // }}
+            />
+          </PopoverTrigger>
+          <PopoverSurface>
+            <FluentUIReorderStringsValue
+              items={
+                options.items
                   ? options.items
-                  : (this.getPropertyValue(property) as string[]);
-                return (
-                  <PopupView context={context}>
-                    <FluentUIReorderStringsValue
-                      items={items}
-                      onConfirm={(items) => {
-                        this.emitSetProperty(property, items);
-                        if (options.onConfirmClick) {
-                          options.onConfirmClick(items);
-                        }
-                        this.emitSetProperty(
-                          {
-                            property: property.property,
-                            field: "orderMode",
-                          },
-                          OrderMode.order
-                        );
-                        if (options.onConfirmClick) {
-                          options.onConfirmClick(items);
-                        }
-                        context.close();
-                      }}
-                      onReset={() => {
-                        if (options.onResetCategories) {
-                          return options.onResetCategories;
-                        }
-                        const axisDataBinding = {
-                          ...(this.objectClass.object.properties[
-                            property.property
-                          ] as any),
-                        };
-
-                        axisDataBinding.table = this.store.chartManager.getTable(
-                          (this.objectClass.object as any).table
-                        );
-                        axisDataBinding.metadata = {
-                          kind: axisDataBinding.dataKind,
-                          orderMode: "order",
-                        };
-
-                        const groupBy: Specification.Types.GroupBy = this.store.getGroupingExpression(
-                          this.objectClass.object
-                        );
-                        const values = this.store.chartManager.getGroupedExpressionVector(
-                          (this.objectClass.object as any).table,
-                          groupBy,
-                          axisDataBinding.expression
-                        );
-
-                        const {
-                          categories,
-                        } = this.store.getCategoriesForDataBinding(
-                          axisDataBinding.metadata,
-                          axisDataBinding.type,
-                          values
-                        );
-                        return categories;
-                      }}
-                      {...options}
-                    />
-                  </PopupView>
-                );
-              },
-              {
-                anchor: container,
-                alignX:
-                  this.store.editorType == EditorType.Embedded
-                    ? PopupAlignment.EndInner
-                    : PopupAlignment.StartInner,
+                  : (this.getPropertyValue(property) as string[])
               }
-            );
-          }}
-        />
-      </FluentButton>
+              onConfirm={(items) => {
+                this.emitSetProperty(property, items);
+                if (options.onConfirmClick) {
+                  options.onConfirmClick(items);
+                }
+                this.emitSetProperty(
+                  {
+                    property: property.property,
+                    field: "orderMode",
+                  },
+                  OrderMode.order
+                );
+                if (options.onConfirmClick) {
+                  options.onConfirmClick(items);
+                }
+                // context.close();
+              }}
+              onReset={() => {
+                if (options.onResetCategories) {
+                  return options.onResetCategories;
+                }
+                const axisDataBinding = {
+                  ...(this.objectClass.object.properties[
+                    property.property
+                  ] as any),
+                };
+
+                axisDataBinding.table = this.store.chartManager.getTable(
+                  (this.objectClass.object as any).table
+                );
+                axisDataBinding.metadata = {
+                  kind: axisDataBinding.dataKind,
+                  orderMode: "order",
+                };
+
+                const groupBy: Specification.Types.GroupBy = this.store.getGroupingExpression(
+                  this.objectClass.object
+                );
+                const values = this.store.chartManager.getGroupedExpressionVector(
+                  (this.objectClass.object as any).table,
+                  groupBy,
+                  axisDataBinding.expression
+                );
+
+                const { categories } = this.store.getCategoriesForDataBinding(
+                  axisDataBinding.metadata,
+                  axisDataBinding.type,
+                  values
+                );
+                return categories;
+              }}
+              {...options}
+            />
+          </PopoverSurface>
+        </Popover>
+      </>
+      // </FluentButton>
     );
   }
 
@@ -2200,16 +2301,13 @@ export class FluentDetailsButton extends React.Component<
     let btn: Element;
     return (
       <>
-        {this.props.label ? (
-          <Label styles={defaultLabelStyle}>{this.props.label}</Label>
-        ) : null}
-        <DefaultButton
-          iconProps={{
-            iconName: "More",
-          }}
-          componentRef={(e) =>
-            (btn = ReactDOM.findDOMNode(e as any) as Element)
-          }
+        {this.props.label ? <Label>{this.props.label}</Label> : null}
+        <Button
+          // iconProps={{
+          //   iconName: "More",
+          // }}
+          icon={<SVGImageIcon url={R.getSVGIcon("general/more-horizontal")} />}
+          ref={(e) => (btn = ReactDOM.findDOMNode(e as any) as Element)}
           onClick={() => {
             globals.popupController.popupAt(
               (context) => {

@@ -11,7 +11,6 @@ import {
   KeyColumn,
   LinkSourceKeyColumn,
   LinkTargetKeyColumn,
-  primaryButtonStyles,
 } from "../../../core";
 import {
   classNames,
@@ -29,7 +28,8 @@ import { TableType } from "../../../core/dataset";
 import { AppStore } from "../../stores";
 import { AddMessage, RemoveMessage } from "../../actions/actions";
 import { strings } from "../../../strings";
-import { DefaultButton } from "@fluentui/react";
+import { Button } from "@fluentui/react-components";
+import { Check20Regular } from "@fluentui/react-icons";
 
 export interface FileUploaderProps {
   onChange: (file: File) => void;
@@ -403,20 +403,23 @@ export class ImportDataView extends React.Component<
                   }
                 }
               )}
-              <DefaultButton
-                text={strings.fileImport.removeButtonText}
-                iconProps={{
-                  iconName: "ChromeClose",
-                }}
-                styles={primaryButtonStyles}
-                title={strings.fileImport.removeButtonTitle}
+              <Button
+                // text={strings.fileImport.removeButtonText}
+                // iconProps={{
+                //   iconName: "ChromeClose",
+                // }}
+                icon={<SVGImageIcon url={R.getSVGIcon("ChromeClose")} />}
+                // styles={primaryButtonStyles}
+                // title={strings.fileImport.removeButtonTitle}
                 onClick={() => {
                   this.setState({
                     dataTable: null,
                     dataTableOrigin: null,
                   });
                 }}
-              />
+              >
+                {strings.fileImport.removeButtonText}
+              </Button>
             </div>
             {this.state.imagesTable ? (
               <div className="charticulator__import-data-view-table">
@@ -504,13 +507,14 @@ export class ImportDataView extends React.Component<
                 });
               }
             )}
-            <DefaultButton
-              text={strings.fileImport.removeButtonText}
-              iconProps={{
-                iconName: "ChromeClose",
-              }}
+            <Button
+              // text={strings.fileImport.removeButtonText}
+              // iconProps={{
+              //   iconName: "ChromeClose",
+              // }}
+              icon={<SVGImageIcon url={R.getSVGIcon("ChromeClose")} />}
               title={strings.fileImport.removeButtonTitle}
-              styles={primaryButtonStyles}
+              // styles={primaryButtonStyles}
               onClick={() => {
                 this.setState({
                   linkTable: null,
@@ -519,7 +523,9 @@ export class ImportDataView extends React.Component<
                 this.checkSourceAndTargetColumns(null);
                 this.checkKeyColumn(this.state.dataTable, null);
               }}
-            />
+            >
+              {strings.fileImport.removeButtonText}
+            </Button>
           </div>
         ) : (
           <FileUploader
@@ -538,12 +544,13 @@ export class ImportDataView extends React.Component<
           />
         )}
         <div className="el-actions">
-          <DefaultButton
-            text={strings.fileImport.doneButtonText}
-            iconProps={{
-              iconName: "CheckMark",
-            }}
-            styles={primaryButtonStyles}
+          <Button
+            // text={strings.fileImport.doneButtonText}
+            // iconProps={{
+            //   iconName: "CheckMark",
+            // }}
+            icon={<Check20Regular />}
+            // styles={primaryButtonStyles}
             title={strings.fileImport.doneButtonTitle}
             disabled={
               this.state.dataTable == null ||
@@ -570,7 +577,9 @@ export class ImportDataView extends React.Component<
                 this.props.onConfirmImport(dataset);
               }
             }}
-          />
+          >
+            {strings.fileImport.doneButtonText}
+          </Button>
         </div>
         <div className="charticulator__credits">
           <p

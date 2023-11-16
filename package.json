@@ -53,6 +53,8 @@
   "dependencies": {
     "@fluentui/react": "8.8.0",
     "@fluentui/react-components": "^9.37.3",
+    "@fluentui/react-datepicker-compat": "^0.4.4",
+    "@fluentui/react-icons": "^2.0.222",
     "@uifabric/icons": "7.5.22",
     "d3-color": "1.4.1",
     "d3-dsv": "1.0.8",

@@ -120,7 +120,7 @@ export namespace Scale {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public tickFormat(_n: number = 10, specifier?: string) {
+    public tickFormat(_n: number = 10, specifier: string) {
       const fmt = isUtcTimeZone() ? utcFormat(specifier) : timeFormat(specifier);
 
       return (t: number) => fmt(new Date(t));

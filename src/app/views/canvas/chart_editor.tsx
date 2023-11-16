@@ -26,7 +26,6 @@ import {
   MarkSelection,
   Selection,
 } from "../../stores";
-import { Button } from "../panels/widgets/controls";
 import { BoundingBoxView } from "./bounding_box";
 import {
   CreatingComponent,
@@ -48,7 +47,18 @@ import { MappingType, ValueMapping } from "../../../core/specification";
 import { SnappingGuidesVisualTypes } from "../../../core/prototypes";
 import { classNames } from "../../utils";
 import { FluentUIWidgetManager } from "../panels/widgets/fluentui_manager";
-import { Callout, DirectionalHint } from "@fluentui/react";
+import {
+  Button,
+  Popover,
+  PopoverSurface,
+  PopoverTrigger,
+} from "@fluentui/react-components";
+import {
+  ZoomFit24Regular,
+  ZoomIn24Regular,
+  ZoomOut24Regular,
+} from "@fluentui/react-icons";
+import { SVGImageIcon } from "../../components";
 
 export interface ChartEditorViewProps {
   store: AppStore;
@@ -1050,38 +1060,27 @@ export class ChartEditorView
                 }
                 return (
                   <React.Fragment key={`canvas`}>
-                    <div
-                      className="charticulator__canvas-popup"
-                      key={`m${index}`}
-                      id={`anchor${index}`}
-                      style={{
-                        left: pt.x.toFixed(0) + "px",
-                        bottom:
-                          (this.state.viewHeight - pt.y + 5).toFixed(0) + "px",
-                      }}
-                    ></div>
-                    <Callout
-                      target={`#anchor${index}`}
-                      directionalHint={DirectionalHint.topLeftEdge}
-                      styles={{
-                        root: {
-                          padding: 10,
-                        },
-                        calloutMain: {
-                          overflow: "hidden",
-                        },
-                      }}
-                      onDismiss={() =>
-                        this.setState({
-                          canvasToolbar: false,
-                        })
-                      }
-                    >
-                      {manager.horizontal(
-                        controls.widgets.map(() => 0),
-                        ...controls.widgets
-                      )}
-                    </Callout>
+                    <Popover open={true}>
+                      <PopoverTrigger>
+                        <div
+                          className="charticulator__canvas-popup"
+                          key={`m${index}`}
+                          id={`anchor${index}`}
+                          style={{
+                            left: pt.x.toFixed(0) + "px",
+                            bottom:
+                              (this.state.viewHeight - pt.y + 5).toFixed(0) +
+                              "px",
+                          }}
+                        ></div>
+                      </PopoverTrigger>
+                      <PopoverSurface>
+                        {manager.horizontal(
+                          controls.widgets.map(() => 0),
+                          ...controls.widgets
+                        )}
+                      </PopoverSurface>
+                    </Popover>
                   </React.Fragment>
                 );
               }
@@ -1460,19 +1459,24 @@ export class ChartEditorView
           <div className="canvas-controls-left" />
           <div className="canvas-controls-right">
             <Button
-              icon="ZoomIn"
+              appearance="subtle"
+              icon={<ZoomIn24Regular />}
+              title={strings.canvas.zoomIn}
               onClick={() => {
                 this.doZoom(1.1);
               }}
             />
             <Button
-              icon="ZoomOut"
+              appearance="subtle"
+              icon={<ZoomOut24Regular />}
+              title={strings.canvas.zoomOut}
               onClick={() => {
                 this.doZoom(1 / 1.1);
               }}
             />
             <Button
-              icon="ZoomToFit"
+              appearance="subtle"
+              icon={<ZoomFit24Regular />}
               onClick={() => {
                 const newZoom = this.getFitViewZoom(
                   this.state.viewWidth,
@@ -1487,7 +1491,8 @@ export class ChartEditorView
               }}
             />
             <Button
-              icon="rect-zoom"
+              appearance="subtle"
+              icon={<SVGImageIcon url={R.getSVGIcon("rect-zoom")} />}
               title={"Rectangle zoom"}
               onClick={() => {
                 new Actions.SetCurrentTool("rectangle-zoom").dispatch(

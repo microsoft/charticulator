@@ -1,18 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Callout, DefaultButton, DirectionalHint } from "@fluentui/react";
 import * as React from "react";
 import { Prototypes } from "../../../../core";
 import { PanelMode } from "../../../../core/prototypes/controls";
 
 import { strings } from "../../../../strings";
-import {
-  defultComponentsHeight,
-  FluentButton,
-} from "./controls/fluentui_customized_components";
+// import * as R from "../../../resources";
+
 import { FluentUIFilterEditor } from "./fluentui_filter_editor";
 import { CharticulatorPropertyAccessors } from "./types";
+import {
+  Button,
+  Popover,
+  PopoverSurface,
+  PopoverTrigger,
+} from "@fluentui/react-components";
+// import { SVGImageIcon } from "../../../components";
+import { Filter20Regular } from "@fluentui/react-icons";
 
 export const FilterPanel: React.FC<{
   text: string;
@@ -33,37 +38,52 @@ export const FilterPanel: React.FC<{
       }
       return (
         <>
-          <FluentButton marginTop={"0px"}>
-            <DefaultButton
-              id="filterTarget"
-              text={text}
-              iconProps={{
-                iconName: "Filter",
-              }}
-              onClick={() => {
-                setOpen(!isOpen);
-              }}
-              styles={{
-                root: {
-                  minWidth: "unset",
-                  ...defultComponentsHeight,
-                },
-              }}
-            />
-          </FluentButton>
-          {isOpen ? (
-            <Callout
-              onDismiss={() => setOpen(false)}
-              target="#filterTarget"
-              directionalHint={DirectionalHint.topCenter}
-            >
+          <Popover>
+            {/* <FluentButton marginTop={"0px"}> */}
+            <PopoverTrigger disableButtonEnhancement>
+              <Button
+                id="filterTarget"
+                // text={text}
+                // iconProps={{
+                //   iconName: "Filter",
+                // }}
+                // icon={<SVGImageIcon url={R.getSVGIcon("Filter")} />}
+                icon={<Filter20Regular />}
+                onClick={() => {
+                  setOpen(!isOpen);
+                }}
+                // styles={{
+                //   root: {
+                //     minWidth: "unset",
+                //     ...defultComponentsHeight,
+                //   },
+                // }}
+              >
+                {text}
+              </Button>
+            </PopoverTrigger>
+            {/* </FluentButton> */}
+            {/* {isOpen ? (
+              <Callout
+                onDismiss={() => setOpen(false)}
+                target="#filterTarget"
+                directionalHint={DirectionalHint.topCenter}
+              >
+                <FluentUIFilterEditor
+                  manager={manager}
+                  value={options.value}
+                  options={options}
+                />
+              </Callout>
+            ) : null} */}
+            <PopoverSurface>
               <FluentUIFilterEditor
                 manager={manager}
                 value={options.value}
                 options={options}
               />
-            </Callout>
-          ) : null}
+            </PopoverSurface>
+          </Popover>
         </>
       );
     case PanelMode.Panel:

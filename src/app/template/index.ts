@@ -72,6 +72,7 @@ export class ChartTemplateBuilder {
       inference: [],
       properties: [],
       version: this.version,
+      default: false
     };
     this.tableColumns = {};
     this.objectVisited = {};

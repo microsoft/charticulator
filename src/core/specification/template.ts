@@ -31,6 +31,9 @@ export interface ChartTemplate {
 
   /**Template version */
   version: string;
+
+  /**Default */
+  default: boolean;
 }
 
 export interface Column {

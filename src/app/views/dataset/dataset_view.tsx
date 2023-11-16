@@ -10,7 +10,7 @@
 import * as React from "react";
 import { Dataset, Expression, Specification } from "../../../core";
 import { DragData, Actions } from "../../actions";
-import { ButtonFlat, DraggableElement, SVGImageIcon } from "../../components";
+import { DraggableElement, SVGImageIcon } from "../../components";
 import {
   ModalView,
   PopupAlignment,
@@ -37,8 +37,17 @@ import { ChartTemplate } from "../../../container";
 import { FileViewImport, MappingMode } from "../file_view/import_view";
 import { strings } from "../../../strings";
 import { EditorType } from "../../stores/app_store";
-import { Callout, DefaultButton } from "@fluentui/react";
-import { defultBindButtonSize } from "../panels/widgets/controls/fluentui_customized_components";
+import {
+  Button,
+  Popover,
+  PopoverSurface,
+  PopoverTrigger,
+} from "@fluentui/react-components";
+import {
+  ChevronDown24Regular,
+  ChevronLeft24Regular,
+  MoreHorizontal24Regular,
+} from "@fluentui/react-icons";
 
 export interface DatasetViewProps {
   store: AppStore;
@@ -91,15 +100,15 @@ export interface ColumnsViewState {
   tableViewIsOpened: boolean;
 }
 
-const buttonStyles = {
-  root: {
-    height: `${defultBindButtonSize}px`,
-    width: `${defultBindButtonSize}px`,
-    minWidth: `${defultBindButtonSize}px`,
-    padding: "0px",
-    border: "none",
-  },
-};
+// const buttonStyles = {
+//   root: {
+//     height: `${defultBindButtonSize}px`,
+//     width: `${defultBindButtonSize}px`,
+//     minWidth: `${defultBindButtonSize}px`,
+//     padding: "0px",
+//     border: "none",
+//   },
+// };
 
 export class ColumnsView extends React.Component<
   React.PropsWithChildren<ColumnsViewProps>,
@@ -127,11 +136,9 @@ export class ColumnsView extends React.Component<
               {tableTypeName[this.props.table.type]}
             </span>
             {this.props.store.editorType === EditorType.Chart ? (
-              <DefaultButton
-                iconProps={{
-                  iconName: "general/replace",
-                }}
-                styles={buttonStyles}
+              <Button
+                appearance="subtle"
+                icon={<SVGImageIcon url={R.getSVGIcon("general/replace")} />}
                 title={strings.dataset.replaceWithCSV}
                 // eslint-disable-next-line
                 onClick={() => {
@@ -288,29 +295,20 @@ export class ColumnsView extends React.Component<
                 }}
               />
             ) : null}
-            <DefaultButton
-              iconProps={{
-                iconName: "More",
-              }}
-              styles={buttonStyles}
-              id={`charticulator__dataset-view-detail-${this.props.table.displayName}`}
-              title={strings.dataset.showDataValues}
-              // ={false}
-              onClick={() => {
-                this.setState({
-                  tableViewIsOpened: !this.state.tableViewIsOpened,
-                });
-              }}
-            />
-            {this.state.tableViewIsOpened ? (
-              <Callout
-                target={`#charticulator__dataset-view-detail-${this.props.table.displayName}`}
-                onDismiss={() => {
-                  this.setState({
-                    tableViewIsOpened: false,
-                  });
-                }}
-              >
+            <Popover>
+              <PopoverTrigger>
+                <Button
+                  appearance="subtle"
+                  icon={<MoreHorizontal24Regular />}
+                  title={strings.dataset.showDataValues}
+                  onClick={() => {
+                    this.setState({
+                      tableViewIsOpened: !this.state.tableViewIsOpened,
+                    });
+                  }}
+                />
+              </PopoverTrigger>
+              <PopoverSurface>
                 <div className="charticulator__dataset-view-detail">
                   <h2>{table.displayName || table.name}</h2>
                   <p>
@@ -338,8 +336,8 @@ export class ColumnsView extends React.Component<
                     }
                   />
                 </div>
-              </Callout>
-            ) : null}
+              </PopoverSurface>
+            </Popover>
           </h2>
           <p className="el-details">{table.displayName || table.name}</p>
           {table.columns
@@ -551,16 +549,19 @@ export class ColumnView extends React.Component<
               Expression.fields(Expression.variable("x"), c.name)
             ).toString(),
             c.type,
-            <ButtonFlat
+            <Button
+              appearance="subtle"
               title={strings.dataset.showDerivedFields}
-              stopPropagation={true}
-              url={
-                this.state.isExpanded
-                  ? R.getSVGIcon("ChevronDown")
-                  : R.getSVGIcon("ChevronLeft")
+              icon={
+                this.state.isExpanded ? (
+                  <ChevronDown24Regular />
+                ) : (
+                  <ChevronLeft24Regular />
+                )
               }
-              onClick={() => {
+              onClick={(e) => {
                 this.setState({ isExpanded: !this.state.isExpanded });
+                e.stopPropagation();
               }}
             />,
             c.metadata,

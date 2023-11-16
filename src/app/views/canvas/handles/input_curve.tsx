@@ -8,9 +8,9 @@ import * as R from "../../../resources";
 import { toSVGNumber } from "../../../utils";
 import { PopupView } from "../../../controllers";
 import { ButtonRaised } from "../../../components";
-import { InputNumber } from "../../panels/widgets/controls";
 import { HandlesDragContext, HandleViewProps } from "./common";
 import { strings } from "../../../../strings";
+import { FluentInputNumber } from "../../panels/widgets/controls/fluentui_input_number";
 
 export interface InputCurveHandleViewProps extends HandleViewProps {
   handle: Prototypes.Handles.InputCurve;
@@ -211,7 +211,7 @@ export class InputCurveHandleView extends React.Component<
                       <span className="charticulator__widget-row-label">
                         {strings.handles.windings}:
                       </span>
-                      <InputNumber
+                      <FluentInputNumber
                         defaultValue={windings}
                         onEnter={(value) => {
                           windings = value;
@@ -223,7 +223,7 @@ export class InputCurveHandleView extends React.Component<
                       <span className="charticulator__widget-row-label">
                         {strings.handles.startAngle}:
                       </span>
-                      <InputNumber
+                      <FluentInputNumber
                         defaultValue={startAngle}
                         onEnter={(value) => {
                           startAngle = value;

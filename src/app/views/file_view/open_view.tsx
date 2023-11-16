@@ -6,13 +6,18 @@ import * as React from "react";
 import * as R from "../../resources";
 
 import { ItemDescription } from "../../backend/abstract";
-import { ButtonFlat, EditableTextView, SVGImageIcon } from "../../components";
+import { EditableTextView, SVGImageIcon } from "../../components";
 import { Actions } from "../../actions";
 import { showOpenFileDialog, readFileAsString } from "../../utils";
 import { strings } from "../../../strings";
 import { AppStore } from "../../stores";
-import { DefaultButton } from "@fluentui/react";
-import { primaryButtonStyles } from "../../../core";
+import { Button } from "@fluentui/react-components";
+import {
+  ArrowDownload24Regular,
+  Copy24Regular,
+  Delete24Filled,
+  Open20Regular,
+} from "@fluentui/react-icons";
 
 export interface FileViewOpenState {
   chartList: ItemDescription[];
@@ -118,11 +123,12 @@ export class FileViewOpen extends React.Component<
                         {new Date(chart.metadata.timeCreated).toLocaleString()}
                       </div>
                       <div className="actions">
-                        <ButtonFlat
-                          url={R.getSVGIcon("toolbar/trash")}
+                        <Button
+                          appearance="subtle"
+                          icon={<Delete24Filled />}
                           title={strings.fileOpen.delete}
-                          stopPropagation={true}
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             if (
                               confirm(
                                 strings.fileOpen.deleteConfirmation(
@@ -136,11 +142,12 @@ export class FileViewOpen extends React.Component<
                             }
                           }}
                         />
-                        <ButtonFlat
-                          url={R.getSVGIcon("toolbar/copy")}
+                        <Button
+                          appearance="subtle"
+                          icon={<Copy24Regular />}
                           title={strings.fileOpen.copy}
-                          stopPropagation={true}
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             backend.get(chart.id).then((chart) => {
                               backend
                                 .create("chart", chart.data, chart.metadata)
@@ -150,11 +157,12 @@ export class FileViewOpen extends React.Component<
                             });
                           }}
                         />
-                        <ButtonFlat
-                          url={R.getSVGIcon("toolbar/download")}
+                        <Button
+                          appearance="subtle"
+                          icon={<ArrowDownload24Regular />}
                           title={strings.fileOpen.download}
-                          stopPropagation={true}
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             backend.get(chart.id).then((chart) => {
                               const blob = new Blob([
                                 JSON.stringify(chart.data, null, 2),
@@ -187,12 +195,13 @@ export class FileViewOpen extends React.Component<
       <section className="charticulator__file-view-content is-fix-width">
         <h1>{strings.mainTabs.open}</h1>
         <div style={{ marginBottom: "12px" }}>
-          <DefaultButton
-            iconProps={{
-              iconName: "OpenFolderHorizontal",
-            }}
-            styles={primaryButtonStyles}
-            text={strings.fileOpen.open}
+          <Button
+            // iconProps={{
+            //   iconName: "OpenFolderHorizontal",
+            // }}
+            icon={<Open20Regular />}
+            // styles={primaryButtonStyles}
+            title={strings.fileOpen.open}
             onClick={async () => {
               const file = await showOpenFileDialog(["chart"]);
               const str = await readFileAsString(file);
@@ -202,7 +211,9 @@ export class FileViewOpen extends React.Component<
               );
               this.props.onClose();
             }}
-          />
+          >
+            {strings.fileOpen.open}
+          </Button>
         </div>
 
         {this.renderChartList()}

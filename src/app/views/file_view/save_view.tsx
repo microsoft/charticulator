@@ -9,8 +9,8 @@ import { SVGImageIcon } from "../../components";
 import { Actions } from "../../actions";
 import { strings } from "../../../strings";
 import { AppStore } from "../../stores";
-import { DefaultButton } from "@fluentui/react";
-import { primaryButtonStyles } from "../../../container";
+import { Button } from "@fluentui/react-components";
+import { Save20Regular } from "@fluentui/react-icons";
 
 export interface FileViewSaveAsProps {
   onClose: () => void;
@@ -51,12 +51,13 @@ export class FileViewSaveAs extends React.Component<
                 <SVGImageIcon url={R.getSVGIcon("loading")} />
               ) : null}
             </span>
-            <DefaultButton
-              iconProps={{
-                iconName: "Save",
-              }}
-              styles={primaryButtonStyles}
-              text={strings.fileSave.saveButton}
+            <Button
+              // iconProps={{
+              //   iconName: "Save",
+              // }}
+              icon={<Save20Regular />}
+              // styles={primaryButtonStyles}
+              title={strings.fileSave.saveButton}
               onClick={() => {
                 const name = inputSaveChartName.value.trim();
                 this.setState(
@@ -79,7 +80,9 @@ export class FileViewSaveAs extends React.Component<
                   }
                 );
               }}
-            />
+            >
+              {strings.fileSave.saveButton}
+            </Button>
           </div>
           {this.state.error ? (
             <div className="error">{this.state.error}</div>

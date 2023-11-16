@@ -38,6 +38,15 @@ import {
   TextElementProperties,
 } from "./text.attrs";
 import { RectangleGlyph } from "../glyphs";
+import {
+  AlignBottom20Regular,
+  AlignCenterHorizontal20Regular,
+  AlignCenterVertical20Regular,
+  AlignLeft20Regular,
+  AlignRight20Regular,
+  AlignTop20Regular,
+} from "@fluentui/react-icons";
+import React from "react";
 
 export { TextElementAttributes, TextElementProperties };
 
@@ -292,7 +301,7 @@ export class TextElementClass extends EmphasizableMarkClass<
       cy: rect.cy - attrs.y,
       width: rect.width,
       height: rect.height,
-      rotation: rect.rotation
+      rotation: rect.rotation,
     };
   }
 
@@ -354,9 +363,9 @@ export class TextElementClass extends EmphasizableMarkClass<
             {
               type: "radio",
               icons: [
-                "AlignHorizontalLeft",
-                "AlignHorizontalCenter",
-                "AlignHorizontalRight",
+                React.createElement(AlignLeft20Regular),
+                React.createElement(AlignCenterVertical20Regular),
+                React.createElement(AlignRight20Regular),
               ],
               labels: ["Left", "Middle", "Right"],
               options: ["left", "middle", "right"],
@@ -380,9 +389,9 @@ export class TextElementClass extends EmphasizableMarkClass<
             {
               type: "radio",
               icons: [
-                "AlignVerticalTop",
-                "AlignVerticalCenter",
-                "AlignVerticalBottom",
+                React.createElement(AlignTop20Regular),
+                React.createElement(AlignCenterHorizontal20Regular),
+                React.createElement(AlignBottom20Regular),
               ],
               labels: ["Top", "Middle", "Bottom"],
               options: ["top", "middle", "bottom"],

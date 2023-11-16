@@ -9,23 +9,15 @@ import { ContextedComponent } from "../../../../context_component";
 import { PopupView } from "../../../../controllers/popup_controller";
 import { classNames } from "../../../../utils";
 import { strings } from "../../../../../strings";
+import { ImageMappingDragStateWrapper } from "./styles";
+import { SVGImageIcon } from "../../../../components";
+
 import {
-  ActionButton,
+  Button,
+  Input,
   Label,
   Image as FluentUIImage,
-  DefaultButton,
-  TextField,
-} from "@fluentui/react";
-import {
-  defaultLabelStyle,
-  defultBindButtonSize,
-  FluentActionButton,
-  FluentButton,
-} from "./fluentui_customized_components";
-import {
-  ImageMappingDragStateWrapper,
-  ImageMappingTextFieldStyles,
-} from "./styles";
+} from "@fluentui/react-components";
 
 export interface ImageDescription {
   src: string;
@@ -145,9 +137,7 @@ export class InputImage extends ContextedComponent<
         {this.state.dragOver ? (
           <div style={{ width: "100%" }}>
             {this.props.label ? (
-              <Label styles={defaultLabelStyle} style={{ padding: 0 }}>
-                {this.props.label}
-              </Label>
+              <Label style={{ padding: 0 }}>{this.props.label}</Label>
             ) : null}
             <span className="el-drag-over-attrubutes">
               {strings.objects.image.dropImage}
@@ -156,31 +146,40 @@ export class InputImage extends ContextedComponent<
         ) : (
           <div style={{ width: "100%" }}>
             {this.props.label ? (
-              <Label styles={defaultLabelStyle} style={{ padding: 0 }}>
-                {this.props.label}
-              </Label>
+              <Label style={{ padding: 0 }}>{this.props.label}</Label>
             ) : null}
-            <FluentActionButton
+            {/* <FluentActionButton
               style={{ width: "100%", height: defultBindButtonSize.height }}
+            > */}
+            <Button
+              // styles={{
+              //   root: {
+              //     height: defultBindButtonSize.height,
+              //   },
+              // }}
+              // text={isNone ? strings.core.none : imageDisplayURL}
+              // iconProps={{
+              //   imageProps: {
+              //     src: isNone ? R.getSVGIcon("FileImage") : image.src,
+              //     style: {
+              //       height: "16px",
+              //       width: "16px",
+              //     },
+              //   },
+              // }}
+              icon={
+                <SVGImageIcon
+                  height={16}
+                  width={16}
+                  url={R.getSVGIcon(
+                    isNone ? R.getSVGIcon("FileImage") : image.src
+                  )}
+                />
+              }
             >
-              <ActionButton
-                styles={{
-                  root: {
-                    height: defultBindButtonSize.height,
-                  },
-                }}
-                text={isNone ? strings.core.none : imageDisplayURL}
-                iconProps={{
-                  imageProps: {
-                    src: isNone ? R.getSVGIcon("FileImage") : image.src,
-                    style: {
-                      height: "16px",
-                      width: "16px",
-                    },
-                  },
-                }}
-              />
-            </FluentActionButton>
+              {isNone ? strings.core.none : imageDisplayURL}
+            </Button>
+            {/* </FluentActionButton> */}
           </div>
         )}
       </span>
@@ -390,30 +389,31 @@ export class ImageUploader extends React.Component<
           </ImageMappingDragStateWrapper>
         ) : (
           <span className="el-input-wrapper">
-            <TextField
+            <Input
               value={
                 this.props.placeholder ||
                 strings.objects.image.defaultPlaceholder
               }
               disabled
-              styles={ImageMappingTextFieldStyles}
+              // styles={ImageMappingTextFieldStyles}
               onPaste={this.handlePaste}
             />
-            <FluentButton marginTop="0px">
-              <DefaultButton
-                styles={{
-                  root: {
-                    minWidth: "unset",
-                    ...defultBindButtonSize,
-                    marginLeft: 5,
-                  },
-                }}
-                iconProps={{
-                  iconName: "OpenFolderHorizontal",
-                }}
-                onClick={this.handleOpenFile}
-              />
-            </FluentButton>
+            {/* <FluentButton marginTop="0px"> */}
+            <Button
+              // styles={{
+              //   root: {
+              //     minWidth: "unset",
+              //     ...defultBindButtonSize,
+              //     marginLeft: 5,
+              //   },
+              // }}
+              // iconProps={{
+              //   iconName: "OpenFolderHorizontal",
+              // }}
+              icon={<SVGImageIcon url={R.getSVGIcon("OpenFolderHorizontal")} />}
+              onClick={this.handleOpenFile}
+            />
+            {/* </FluentButton> */}
           </span>
         )}
       </div>

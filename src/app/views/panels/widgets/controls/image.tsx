@@ -9,9 +9,10 @@ import { ContextedComponent } from "../../../../context_component";
 import { PopupView } from "../../../../controllers/popup_controller";
 
 import { classNames } from "../../../../utils";
-import { Button } from "./button";
 import { strings } from "../../../../../strings";
 import { noop } from "../../../../utils/noop";
+import { Open24Regular } from "@fluentui/react-icons";
+import { Button } from "@fluentui/react-components";
 
 export interface ImageDescription {
   src: string;
@@ -364,7 +365,7 @@ export class ImageUploader extends React.Component<
               type="text"
               placeholder={this.props.placeholder || "Drop/Paste Image"}
             />
-            <Button icon={"toolbar/open"} onClick={this.handleOpenFile} />
+            <Button icon={<Open24Regular />} onClick={this.handleOpenFile} />
           </span>
         )}
       </div>

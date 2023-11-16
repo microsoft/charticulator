@@ -65,7 +65,7 @@ import { CompiledGroupBy } from "../group_by";
 import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/types";
 import { type2DerivedColumns } from "../../../app/views/dataset/common";
 import { CartesianPlotSegment } from "../plot_segments/region_2d";
-import React = require("react");
+import * as React from "react";
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
@@ -351,7 +351,7 @@ export class AxisRenderer {
     }
     const ticks = scale.ticks(tickNumber);
 
-    const defaultFormat = scale.tickFormat(tickNumber);
+    const defaultFormat = scale.tickFormat(tickNumber, tickFormat);
 
     const resolvedFormat = AxisRenderer.getTickFormat(
       tickFormat,
@@ -452,9 +452,9 @@ export class AxisRenderer {
       }
     }
     const ticks = scale.ticks(tickNumber);
-    const tickFormat = scale.tickFormat(
+    const tickFromatInternal = scale.tickFormat(
       tickNumber,
-      tickFormatString?.replace(tickFormatParserExpression(), "$1")
+      tickFormatString?.replace(tickFormatParserExpression(), "$1") || '%x'
     );
     const r: TickDescription[] = [];
     for (let i = 0; i < ticks.length; i++) {
@@ -465,7 +465,7 @@ export class AxisRenderer {
       if (!isNaN(tx)) {
         r.push({
           position: tx,
-          label: tickFormat(ticks[i]),
+          label: tickFromatInternal(ticks[i]),
         });
       }
     }
@@ -1563,11 +1563,11 @@ export function buildAxisAppearanceWidgets(
               {
                 type: "checkbox",
                 label: strings.objects.axes.showTickLine,
-                checkBoxStyles: {
-                  root: {
-                    marginTop: 5,
-                  },
-                },
+                // checkBoxStyles: {
+                //   root: {
+                //     marginTop: 5,
+                //   },
+                // },
                 searchSection: [
                   strings.objects.style,
                   options.mainCollapsePanelHeader,
@@ -1579,11 +1579,11 @@ export function buildAxisAppearanceWidgets(
               {
                 type: "checkbox",
                 label: strings.objects.axes.showBaseline,
-                checkBoxStyles: {
-                  root: {
-                    marginTop: 5,
-                  },
-                },
+                // checkBoxStyles: {
+                //   root: {
+                //     marginTop: 5,
+                //   },
+                // },
                 searchSection: [
                   strings.objects.style,
                   options.mainCollapsePanelHeader,
@@ -1870,7 +1870,7 @@ export function buildAxisWidgets(
           widgets.push(
             manager.verticalGroup(
               {
-                header: strings.objects.general,
+                header: `${axisName}: ${strings.objects.general}`,
               },
               [
                 manager.searchWrapper(
@@ -2148,7 +2148,7 @@ export function buildAxisWidgets(
           widgets.push(
             manager.verticalGroup(
               {
-                header: strings.objects.general,
+                header: `${axisName}: ${strings.objects.general}`,
                 searchSection: mainCollapsePanelHeader,
               },
               [
@@ -2315,7 +2315,7 @@ export function buildAxisWidgets(
       // )
       manager.verticalGroup(
         {
-          header: strings.objects.general,
+          header: `${axisName}: ${strings.objects.general}`,
         },
         [
           manager.searchWrapper(

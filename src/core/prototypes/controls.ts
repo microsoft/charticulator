@@ -6,7 +6,6 @@ import { Point } from "../common";
 import * as Specification from "../specification";
 import * as Dataset from "../dataset";
 import { CSSProperties } from "react";
-import { ICheckboxStyles, IDropdownOption } from "@fluentui/react";
 import { DataType } from "../specification";
 
 export type Widget = any;
@@ -36,7 +35,7 @@ export interface InputSelectOptions extends SearchSection {
   showLabel?: boolean;
   labelPosition?: LabelPosition;
   options: string[];
-  icons?: string[];
+  icons?: string[] | React.ReactNode[];
   isLocalIcons?: boolean;
   labels?: string[];
   tooltip?: string;
@@ -44,7 +43,7 @@ export interface InputSelectOptions extends SearchSection {
   hideBorder?: boolean;
   shiftCallout?: number;
   observerConfig?: ObserverConfig;
-  onChange?: (value: IDropdownOption) => void;
+  onChange?: (value: { key: string; text: string }) => void;
 }
 
 export interface InputFontComboboxOptions extends SearchSection {
@@ -66,11 +65,11 @@ export interface InputTextOptions extends SearchSection {
 
 export interface InputBooleanOptions extends SearchSection {
   type: "checkbox" | "highlight" | "checkbox-fill-width";
-  icon?: string;
+  icon?: string | React.ReactNode;
   headerLabel?: string;
   label?: string;
   observerConfig?: ObserverConfig;
-  checkBoxStyles?: ICheckboxStyles;
+  // checkBoxStyles?: ICheckboxStyles;
   onChange?: (value: boolean) => void;
   styles?: CSSProperties;
 }

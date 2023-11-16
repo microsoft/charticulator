@@ -2,9 +2,8 @@
 // Licensed under the MIT license.
 import * as React from "react";
 import { useCallback, useState } from "react";
-import { DefaultButton } from "@fluentui/react";
 
-import { Dialog, DialogActions } from "@fluentui/react-components";
+import { Button, Dialog, DialogActions } from "@fluentui/react-components";
 
 import * as R from "../../resources";
 import { strings } from "../../../strings";
@@ -12,10 +11,7 @@ import { isInIFrame } from "../../utils";
 import { Actions } from "../../actions";
 import { MenuButton } from "../../components";
 import { MainContextInterface } from "../../context_component";
-import {
-  getDefaultColorGeneratorResetFunction,
-  primaryButtonStyles,
-} from "../../../core";
+import { getDefaultColorGeneratorResetFunction } from "../../../core";
 
 interface DeleteDialogProps {
   context: MainContextInterface;
@@ -57,12 +53,14 @@ export const DeleteDialog = ({ context }: DeleteDialogProps): JSX.Element => {
           {dialogContentProps.title}
         </DialogTitle> */}
         <DialogActions>
-          <DefaultButton
-            styles={primaryButtonStyles}
+          <Button
+            // styles={primaryButtonStyles}
             onClick={onDeleteChart}
-            text={strings.button.yes}
-          />
-          <DefaultButton onClick={toggleHideDialog} text={strings.button.no} />
+            // text={strings.button.yes}
+          >
+            {strings.button.yes}
+          </Button>
+          <Button onClick={toggleHideDialog}>{strings.button.no}</Button>
         </DialogActions>
       </Dialog>
     </>

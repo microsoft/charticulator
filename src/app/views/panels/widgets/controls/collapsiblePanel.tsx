@@ -1,28 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import {
-  GroupedList,
-  GroupHeader,
-  IGroupHeaderProps,
-  IRenderFunction,
-  Label,
-  SelectionMode,
-} from "@fluentui/react";
+
 import * as React from "react";
 import { useEffect } from "react";
-import {
-  FluentGroupedList,
-  groupHeaderStyles,
-  groupStyles,
-} from "./fluentui_customized_components";
 import { AppStore } from "../../../../../app/stores";
 import { Actions } from "../../../../../app";
 import { CollapseOrExpandPanels } from "../../../../../core/specification/types";
-import { getRandomNumber } from "../../../../../core";
-import { ContextMenuCallout } from "./contextMenuCallout";
+
+import {
+  Label,
+  Accordion,
+  AccordionHeader,
+  AccordionItem,
+  AccordionPanel,
+} from "@fluentui/react-components";
 
 interface CollapsiblePanelProps {
-  header: string | IRenderFunction<IGroupHeaderProps>;
+  header: string;
   widgets: JSX.Element[];
   isCollapsed?: boolean;
   alignVertically?: boolean;
@@ -34,7 +28,6 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
   header,
   widgets,
   isCollapsed,
-  alignVertically,
   store,
 }) => {
   const collapsePanel = store
@@ -54,8 +47,6 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
     setGroupState(collapsePanel);
   }, [store, store?.collapseOrExpandPanelsType, isCollapsed]);
 
-  const calloutId = `calloutId-${getRandomNumber()}`;
-
   const onContextMenu = React.useCallback(
     (event) => {
       event.preventDefault();
@@ -64,8 +55,16 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
     [calloutVisible]
   );
 
+  const items = widgets
+    .filter((w) => (Array.isArray(w) ? w?.[0] != null : w != null))
+    .map((w, i) => ({
+      key: i,
+      item: w,
+    }));
+
   return (
-    <FluentGroupedList marginLeft={alignVertically ? 0 : null}>
+    <>
+      {/* <FluentGroupedList marginLeft={alignVertically ? 0 : null}>
       <GroupedList
         groupProps={{
           onRenderHeader: (props?: IGroupHeaderProps): JSX.Element => {
@@ -73,7 +72,7 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
               <GroupHeader
                 onRenderGroupHeaderCheckbox={() => null}
                 {...props}
-                styles={groupHeaderStyles}
+                // styles={groupHeaderStyles}
                 onToggleCollapse={(group) => {
                   setGroupState(!group.isCollapsed);
                   if (store) {
@@ -91,16 +90,16 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
                 onRenderTitle={
                   typeof header === "string"
                     ? () => (
-                        <Label
-                          onContextMenu={onContextMenu}
-                          id={calloutId}
-                          style={{
-                            width: "100%",
-                          }}
-                        >
-                          {header}
-                        </Label>
-                      )
+                      <Label
+                        onContextMenu={onContextMenu}
+                        id={calloutId}
+                        style={{
+                          width: "100%",
+                        }}
+                      >
+                        {header}
+                      </Label>
+                    )
                     : header
                 }
               />
@@ -146,19 +145,62 @@ export const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = 
         ]}
         compact={true}
         styles={{
-          ...groupStyles,
+          // ...groupStyles,
           groupIsDropping: {},
         }}
         focusZoneProps={{
           handleTabKey: 1,
         }}
       />
-      <ContextMenuCallout
-        store={store}
-        calloutId={calloutId}
-        hideCallout={(value) => setCalloutVisible(value)}
-        calloutVisible={calloutVisible}
-      />
-    </FluentGroupedList>
+    </FluentGroupedList> */}
+      <Accordion
+        collapsible
+        multiple
+        openItems={!groupState ? ["1"] : []}
+        onToggle={(e, data) => {
+          const isCollapsed = !!data.openItems.find((o) => o === "1");
+          setGroupState(!isCollapsed);
+          if (store) {
+            store.dispatcher.dispatch(
+              new Actions.ExpandOrCollapsePanelsUpdated(
+                CollapseOrExpandPanels.Custom
+              )
+            );
+          }
+        }}
+      >
+        <AccordionItem value="1">
+          <AccordionHeader>
+            {typeof header === "string" ? (
+              <Label
+                onContextMenu={onContextMenu}
+                style={{
+                  width: "100%",
+                }}
+              >
+                {header}
+              </Label>
+            ) : (
+              header
+            )}
+          </AccordionHeader>
+          <AccordionPanel>
+            {items.map((item, itemIndex) => {
+              return item &&
+                item.item &&
+                typeof itemIndex === "number" &&
+                itemIndex > -1 ? (
+                <div
+                  className="charticulator__widget-collapsible-panel-item"
+                  key={itemIndex}
+                >
+                  {item.item}
+                </div>
+              ) : null;
+            })}
+          </AccordionPanel>
+        </AccordionItem>
+      </Accordion>
+    </>
   );
 };

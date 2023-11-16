@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { TextField } from "@fluentui/react";
+import { Input, Label } from "@fluentui/react-components";
+
 import * as React from "react";
 import {
   Expression,
@@ -10,7 +11,7 @@ import {
   replaceSymbolByNewLine,
   replaceTabBySymbol,
 } from "../../../../../core";
-import { defaultStyle, labelRender } from "./fluentui_customized_components";
+import { FluentColumnLayout } from "./fluentui_customized_components";
 import { InputExpressionProps } from "./fluentui_input_expression";
 
 export interface InputFormatProps {
@@ -57,51 +58,56 @@ export const FluentInputFormat: React.FC<InputExpressionProps> = (
   }, [props]);
 
   return (
-    <span className="charticulator__widget-control-input-expression">
-      <TextField
-        styles={defaultStyle}
-        label={props.label}
-        onRenderLabel={labelRender}
-        placeholder={props.placeholder}
-        type="text"
-        onGetErrorMessage={() => {
-          const validateResults = props.validate?.(value);
-          if (!validateResults.pass) {
-            return validateResults.error;
-          }
-        }}
-        defaultValue={replaceSymbolByTab(
-          replaceSymbolByNewLine(value || props.defaultValue)
-        )}
-        onChange={(event, newValue) => {
-          // Check for parse errors while input
-          if (props.allowNull && newValue?.trim() == "") {
-            setValue(newValue);
-          } else {
-            Expression.verifyUserExpression(
-              replaceTabBySymbol(replaceNewLineBySymbol(newValue)),
-              {
-                textExpression: props.textExpression,
-              }
-            );
-            setValue(newValue);
-          }
-        }}
-        onBlur={() => {
-          doEnter();
-        }}
-        onFocus={(e) => {
-          e.target.select();
-        }}
-        onKeyDown={(e) => {
-          if (e.key == "Enter") {
+    // <span className="charticulator__widget-control-input-expression">
+    <>
+      <FluentColumnLayout>
+        <Label>{props.label}</Label>
+        <Input
+          // styles={defaultStyle}
+          // label={props.label}
+          // onRenderLabel={labelRender}
+          placeholder={props.placeholder}
+          type="text"
+          // onGetErrorMessage={() => {
+          //   const validateResults = props.validate?.(value);
+          //   if (!validateResults.pass) {
+          //     return validateResults.error;
+          //   }
+          // }}
+          defaultValue={replaceSymbolByTab(
+            replaceSymbolByNewLine(value || props.defaultValue)
+          )}
+          onChange={(event, { value: newValue }) => {
+            // Check for parse errors while input
+            if (props.allowNull && newValue?.trim() == "") {
+              setValue(newValue);
+            } else {
+              Expression.verifyUserExpression(
+                replaceTabBySymbol(replaceNewLineBySymbol(newValue)),
+                {
+                  textExpression: props.textExpression,
+                }
+              );
+              setValue(newValue);
+            }
+          }}
+          onBlur={() => {
             doEnter();
-          }
-          if (e.key == "Escape") {
-            doCancel();
-          }
-        }}
-      />
-    </span>
+          }}
+          onFocus={(e) => {
+            e.target.select();
+          }}
+          onKeyDown={(e) => {
+            if (e.key == "Enter") {
+              doEnter();
+            }
+            if (e.key == "Escape") {
+              doCancel();
+            }
+          }}
+        />
+      </FluentColumnLayout>
+    </>
+    // </span>
   );
 };

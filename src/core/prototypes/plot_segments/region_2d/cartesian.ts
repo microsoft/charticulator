@@ -44,6 +44,15 @@ import {
 import { scaleLinear } from "d3-scale";
 import { FluentUIWidgetManager } from "../../../../app/views/panels/widgets/fluentui_manager";
 import { EventType } from "../../../../app/views/panels/widgets/observer";
+import {
+  AlignBottom20Regular,
+  AlignCenterHorizontal20Regular,
+  AlignCenterVertical20Regular,
+  AlignLeft20Regular,
+  AlignRight20Regular,
+  AlignTop20Regular,
+} from "@fluentui/react-icons";
+import React from "react";
 
 export type CartesianAxisMode =
   | "null"
@@ -66,12 +75,12 @@ export interface CartesianState extends Specification.PlotSegmentState {
 }
 
 const icons: Region2DConfigurationIcons = {
-  xMinIcon: "AlignHorizontalLeft",
-  xMiddleIcon: "AlignHorizontalCenter",
-  xMaxIcon: "AlignHorizontalRight",
-  yMiddleIcon: "AlignVerticalCenter",
-  yMinIcon: "AlignVerticalBottom",
-  yMaxIcon: "AlignVerticalTop",
+  xMinIcon: React.createElement(AlignLeft20Regular),
+  xMiddleIcon: React.createElement(AlignCenterVertical20Regular),
+  xMaxIcon: React.createElement(AlignRight20Regular),
+  yMiddleIcon: React.createElement(AlignCenterHorizontal20Regular),
+  yMinIcon: React.createElement(AlignBottom20Regular),
+  yMaxIcon: React.createElement(AlignTop20Regular),
   dodgeXIcon: "HorizontalDistributeCenter",
   dodgeYIcon: "VerticalDistributeCenter",
   gridIcon: "GridViewSmall",

@@ -30,6 +30,17 @@ import {
 import { PlotSegmentClass } from "../plot_segment";
 import { ChartStateManager } from "../..";
 import { strings } from "../../../../strings";
+import React from "react";
+import {
+  AlignBottom20Regular,
+  AlignCenterHorizontal20Regular,
+  AlignCenterVertical20Regular,
+  AlignLeft20Regular,
+  AlignRight20Regular,
+  AlignTop20Regular,
+  Grid20Regular,
+  Stack20Regular,
+} from "@fluentui/react-icons";
 
 export type CurveAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -67,18 +78,18 @@ export interface CurveObject extends Specification.PlotSegment {
 }
 
 export const icons: Region2DConfigurationIcons = {
-  xMinIcon: "AlignHorizontalLeft",
-  xMiddleIcon: "AlignHorizontalCenter",
-  xMaxIcon: "AlignHorizontalRight",
+  xMinIcon: React.createElement(AlignLeft20Regular),
+  xMiddleIcon: React.createElement(AlignCenterVertical20Regular),
+  xMaxIcon: React.createElement(AlignRight20Regular),
+  yMinIcon: React.createElement(AlignBottom20Regular),
+  yMaxIcon: React.createElement(AlignTop20Regular),
+  dodgeXIcon: React.createElement(AlignCenterHorizontal20Regular),
+  dodgeYIcon: React.createElement(AlignCenterVertical20Regular),
+  gridIcon: React.createElement(Grid20Regular),
+  overlapIcon: React.createElement(Stack20Regular),
   yMiddleIcon: "align/y-middle",
-  yMinIcon: "Bottom",
-  yMaxIcon: "Top",
-  dodgeXIcon: "HorizontalDistributeCenter",
-  dodgeYIcon: "VerticalDistributeCenter",
-  gridIcon: "GridViewSmall",
   packingIcon: "sublayout/packing",
   jitterIcon: "sublayout/jitter",
-  overlapIcon: "Stack",
 };
 
 export class CurvePlotSegment extends PlotSegmentClass<

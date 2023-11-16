@@ -3,11 +3,11 @@
 
 import * as React from "react";
 import { CSSProperties, useCallback, useMemo, useState } from "react";
-import { DefaultButton, Label } from "@fluentui/react";
-import { PanelHeaderStyles } from "./fluentui_customized_components";
 import { AppStore } from "../../../../../app/stores";
 import { getRandomNumber } from "../../../../../core";
-import { ContextMenuCallout } from "./contextMenuCallout";
+import { Button, Label } from "@fluentui/react-components";
+import { SVGImageIcon } from "../../../../components";
+import * as R from "../../../../resources";
 
 interface CollapsiblePanelProps {
   widgets: JSX.Element[];
@@ -21,9 +21,8 @@ export const CustomCollapsiblePanel = ({
   widgets,
   header,
   styles,
-  store,
 }: CollapsiblePanelProps): JSX.Element => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed] = useState(false);
   const [calloutVisible, setCalloutVisible] = useState(false);
 
   const renderAttributes = useMemo(() => {
@@ -56,22 +55,22 @@ export const CustomCollapsiblePanel = ({
   return (
     <div key={`panel-${panelHeader}`}>
       <div id={calloutId} onContextMenu={(e) => onContextMenu(e)}>
-        <PanelHeader
+        {/* <PanelHeader
           header={panelHeader}
           setCollapsed={setCollapsed}
           collapsed={collapsed}
           key={`panelHeader-${panelHeader}`}
-        />
+        /> */}
       </div>
       <div style={styles} key={`panelWidgets-${panelHeader}`}>
         {renderAttributes}
       </div>
-      <ContextMenuCallout
+      {/* <ContextMenuCallout
         store={store}
         calloutId={calloutId}
         hideCallout={(value) => setCalloutVisible(value)}
         calloutVisible={calloutVisible}
-      />
+      /> */}
     </div>
   );
 };
@@ -89,31 +88,27 @@ export const PanelHeader = ({
 }: PanelHeaderProps): JSX.Element => {
   return (
     <div onClick={() => setCollapsed(!collapsed)}>
-      <DefaultButton
-        iconProps={{
-          iconName: collapsed ? "ChevronRight" : "ChevronDown",
-          styles: {
-            root: {
-              fontSize: "unset",
-              height: 12,
-            },
-          },
-        }}
-        styles={PanelHeaderStyles}
+      <Button
+        // iconProps={{
+        //   iconName: collapsed ? "ChevronRight" : "ChevronDown",
+        //   styles: {
+        //     root: {
+        //       fontSize: "unset",
+        //       height: 12,
+        //     },
+        //   },
+        // }}
+        icon={
+          <SVGImageIcon
+            url={R.getSVGIcon(collapsed ? "ChevronRight" : "ChevronDown")}
+          />
+        }
+        // styles={PanelHeaderStyles}
         onClick={() => {
           setCollapsed(!collapsed);
         }}
       />
-      <Label
-        styles={{
-          root: {
-            display: "inline-block",
-            cursor: "pointer",
-          },
-        }}
-      >
-        {header}
-      </Label>
+      <Label>{header}</Label>
     </div>
   );
 };

@@ -2,16 +2,11 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-import { DefaultButton, TextField } from "@fluentui/react";
-import {
-  defaultStyle,
-  defultBindButtonSize,
-  FluentButton,
-  FluentTextField,
-  labelRender,
-} from "./fluentui_customized_components";
+import { FluentColumnLayout } from "./fluentui_customized_components";
 import { strings } from "../../../../../strings";
 import { Prototypes, Specification } from "../../../../../core";
+import { Button, Input, Label } from "@fluentui/react-components";
+import { ColorFill20Regular } from "@fluentui/react-icons";
 
 interface EmptyMappingProps {
   renderColorPicker: () => JSX.Element;
@@ -34,14 +29,16 @@ export const EmptyMapping = ({
           {type === Specification.AttributeType.Color ? (
             <EmptyColorInput onClick={onClick} label={options.label} />
           ) : (
-            <TextField
-              id={`id_${options.label.replace(/\s/g, '_')}`}
-              styles={defaultStyle}
-              label={options.label}
-              onRenderLabel={labelRender}
-              placeholder={strings.core.auto}
-              onClick={onClick}
-            />
+            <>
+              <FluentColumnLayout>
+                <Label>{options.label}</Label>
+                <Input
+                  id={`id_${options.label.replace(/\s/g, "_")}`}
+                  placeholder={strings.core.auto}
+                  onClick={onClick}
+                />
+              </FluentColumnLayout>
+            </>
           )}
         </>
       );
@@ -52,14 +49,16 @@ export const EmptyMapping = ({
           {type === Specification.AttributeType.Color ? (
             <EmptyColorInput onClick={onClick} label={options.label} />
           ) : (
-            <TextField
-              id={`id_${options.label.replace(/\s/g, '_')}`}
-              styles={defaultStyle}
-              label={options.label}
-              onRenderLabel={labelRender}
-              placeholder={strings.core.none}
-              onClick={onClick}
-            />
+            <>
+              <FluentColumnLayout>
+                <Label>{options.label}</Label>
+                <Input
+                  id={`id_${options.label.replace(/\s/g, "_")}`}
+                  placeholder={strings.core.none}
+                  onClick={onClick}
+                />
+              </FluentColumnLayout>
+            </>
           )}
         </>
       );
@@ -79,20 +78,22 @@ const EmptyColorInput = ({
   onClick,
 }: EmptyColorInputProps): JSX.Element => {
   return (
-    <span className="el-color-value">
-      <FluentTextField>
-        <TextField
-          id={`id_${label.replace(/\s/g, '_')}`}
-          styles={defaultStyle}
-          label={label}
-          onRenderLabel={labelRender}
+    <div className="el-color-value">
+      <FluentColumnLayout
+        style={{
+          flex: 1,
+        }}
+      >
+        <Label>{label}</Label>
+        <Input
+          id={`id_${label.replace(/\s/g, "_")}`}
           placeholder={strings.core.none}
           type="text"
           onClick={onClick}
         />
-      </FluentTextField>
+      </FluentColumnLayout>
       <EmptyColorButton onClick={onClick} />
-    </span>
+    </div>
   );
 };
 
@@ -105,24 +106,12 @@ interface EmptyColorButtonProps {
 
 export const EmptyColorButton = ({
   onClick,
-  styles,
 }: EmptyColorButtonProps): JSX.Element => {
   return (
-    <FluentButton marginTop={styles?.marginTop}>
-      <DefaultButton
-        iconProps={{
-          iconName: "UnSetColor",
-        }}
-        styles={{
-          root: {
-            minWidth: "unset",
-            ...defultBindButtonSize,
-            marginLeft: 5,
-          },
-        }}
-        onClick={onClick}
-        title={strings.mappingEditor.chooseColor}
-      />
-    </FluentButton>
+    <Button
+      icon={<ColorFill20Regular />}
+      onClick={onClick}
+      title={strings.mappingEditor.chooseColor}
+    />
   );
 };

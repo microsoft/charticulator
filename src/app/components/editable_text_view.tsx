@@ -1,11 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
-import {
-  FluentTextField,
-  labelRender,
-} from "../views/panels/widgets/controls/fluentui_customized_components";
-import { TextField } from "@fluentui/react";
+import { Input } from "@fluentui/react-components";
 
 export interface EditableTextViewProps {
   text: string;
@@ -63,13 +59,15 @@ export class EditableTextView extends React.Component<
   public render() {
     return (
       <div>
-        <FluentTextField>
-          <TextField
+        {/* <FluentTextField> */}
+        <>
+          {/* <Label>{}</Label> */}
+          <Input
             value={this.state.currentText}
-            onRenderLabel={labelRender}
+            // onRenderLabel={labelRender}
             type="text"
-            onChange={(event, newValue) => {
-              this.setState({ currentText: newValue });
+            onChange={(event, { value }) => {
+              this.setState({ currentText: value });
             }}
             onBlur={() => {
               if (this.state.currentText == this.props.text) {
@@ -89,13 +87,14 @@ export class EditableTextView extends React.Component<
               }
             }}
             autoFocus={false}
-            styles={{
-              fieldGroup: {
-                border: !this.state.editing && "none",
-              },
-            }}
+            // styles={{
+            //   fieldGroup: {
+            //     border: !this.state.editing && "none",
+            //   },
+            // }}
           />
-        </FluentTextField>
+        </>
+        {/* </FluentTextField> */}
       </div>
     );
   }

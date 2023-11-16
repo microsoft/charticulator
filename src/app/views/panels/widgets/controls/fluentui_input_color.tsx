@@ -16,14 +16,15 @@ import { ColorPicker } from "../../../../components/fluentui_color_picker";
 
 import { AppStore } from "../../../../stores";
 
-import { Callout, TextField } from "@fluentui/react";
 import {
-  defaultLabelStyle,
-  defaultStyle,
-  defultComponentsHeight,
-  FluentTextField,
-  labelRender,
-} from "./fluentui_customized_components";
+  Input,
+  Popover,
+  PopoverTrigger,
+  PopoverSurface,
+  Label,
+} from "@fluentui/react-components";
+
+import { FluentColumnLayout } from "./fluentui_customized_components";
 import { strings } from "../../../../../strings";
 import { FluentUIGradientPicker } from "../../../../components/fluent_ui_gradient_picker";
 import { EmptyColorButton } from "./fluentui_empty_mapping";
@@ -114,70 +115,79 @@ export class FluentInputColor extends React.Component<
     );
   }
 
+  /* eslint-disable max-lines-per-function */
   public render() {
     let hex: string = "";
     if (this.props.defaultValue) {
       hex = colorToHTMLColorHEX(this.props.defaultValue);
     }
-    const pickerId = this.props.labelKey.replace(/\W/g, "_");
     const picker: JSX.Element = this.renderPicker();
     const emptyPicker: JSX.Element = this.renderEmptyColorPicker();
     return (
       <span className="charticulator__widget-control-input-color">
         {this.props.pickerBeforeTextField && (hex == "" ? emptyPicker : picker)}
-        <FluentTextField>
-          <TextField
-            label={this.props.label}
-            onRenderLabel={labelRender}
-            onChange={(event, newValue) => {
-              newValue = newValue.trim();
-              if (newValue == "") {
-                if (this.props.allowNull) {
-                  return this.props.onEnter(null);
-                } else {
-                  return false;
+        {/* <FluentTextField> */}
+        <>
+          <FluentColumnLayout
+            style={{
+              flex: 1,
+            }}
+          >
+            <Label>{this.props.label}</Label>
+            <Input
+              // label={this.props.label}
+              // onRenderLabel={labelRender}
+              onChange={(event, { value: newValue }) => {
+                newValue = newValue.trim();
+                if (newValue == "") {
+                  if (this.props.allowNull) {
+                    return this.props.onEnter(null);
+                  } else {
+                    return false;
+                  }
                 }
-              }
-              this.setState({
-                value: newValue,
-              });
-              try {
-                const color = parseColorOrThrowException(newValue);
-                if (color) {
-                  return this.props.onEnter(color);
-                } else {
-                  return false;
+                this.setState({
+                  value: newValue,
+                });
+                try {
+                  const color = parseColorOrThrowException(newValue);
+                  if (color) {
+                    return this.props.onEnter(color);
+                  } else {
+                    return false;
+                  }
+                } catch (ex) {
+                  //ignore
                 }
-              } catch (ex) {
-                //ignore
-              }
-            }}
-            placeholder={this.props.allowNull ? strings.core.none : ""}
-            value={this.state.value}
-            onKeyDown={(e) => {
-              if (this.props.stopPropagation) {
-                e.stopPropagation();
-              }
-            }}
-            styles={{
-              ...defaultStyle,
-              fieldGroup: {
-                ...defultComponentsHeight,
-                width: this.props.width,
-              },
-              root: {
-                ...defultComponentsHeight,
-              },
-              subComponentStyles: {
-                label: {
-                  ...defaultLabelStyle,
-                },
-              },
-            }}
-            underlined={this.props.underline ?? false}
-          />
-        </FluentTextField>
-        {!this.props.pickerBeforeTextField &&
+              }}
+              placeholder={this.props.allowNull ? strings.core.none : ""}
+              value={this.state.value}
+              onKeyDown={(e) => {
+                if (this.props.stopPropagation) {
+                  e.stopPropagation();
+                }
+              }}
+              // styles={{
+              //   ...defaultStyle,
+              //   fieldGroup: {
+              //     ...defultComponentsHeight,
+              //     width: this.props.width,
+              //   },
+              //   root: {
+              //     ...defultComponentsHeight,
+              //   },
+              //   subComponentStyles: {
+              //     label: {
+              //       ...defaultLabelStyle,
+              //     },
+              //   },
+              // }}
+              // underlined={this.props.underline ?? false}
+            />
+          </FluentColumnLayout>
+        </>
+        {/* </FluentTextField> */}
+        {/* {!this.props.pickerBeforeTextField &&
           (hex == "" ? emptyPicker : picker)}
         {this.state.open && (
           <Callout
@@ -201,7 +211,31 @@ export class FluentInputColor extends React.Component<
               }}
             />
           </Callout>
-        )}
+        )} */}
+        <Popover open={this.state.open}>
+          <PopoverTrigger>
+            {!this.props.pickerBeforeTextField &&
+              (hex == "" ? emptyPicker : picker)}
+          </PopoverTrigger>
+          <PopoverSurface>
+            <ColorPicker
+              store={this.props.store}
+              allowNull={true}
+              onPick={(color) => {
+                if (color == null) {
+                  this.props.onEnter(null);
+                } else {
+                  this.props.onEnter(color);
+                }
+              }}
+              defaultValue={colorFromHTMLColor(hex)}
+              parent={this}
+              closePicker={() => {
+                this.setState({ open: !this.state.open });
+              }}
+            />
+          </PopoverSurface>
+        </Popover>
       </span>
     );
   }

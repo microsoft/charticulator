@@ -14,17 +14,6 @@ import {
 } from "../../../core";
 import { AppStore } from "../../stores";
 import {
-  Callout,
-  ContextualMenu,
-  DirectionalHint,
-  Dropdown,
-  getTheme,
-  IContextualMenuItem,
-  IContextualMenuListProps,
-  IRenderFunction,
-  Label,
-} from "@fluentui/react";
-import {
   DerivedColumnDescription,
   isKindAcceptable,
   type2DerivedColumns,
@@ -37,21 +26,50 @@ import {
 import { strings } from "../../../strings";
 import { DataType, MappingType } from "../../../core/specification";
 import { AggregationFunctionDescription } from "../../../core/expression";
+import { FluentRowLayout } from "../panels/widgets/controls/fluentui_customized_components";
+import * as React from "react";
 import {
-  defaultLabelStyle,
-  defaultStyle,
-  defultBindButtonSize,
-  FluentDataBindingMenuItem,
-  FluentDataBindingMenuLabel,
-} from "../panels/widgets/controls/fluentui_customized_components";
-import { CollapsiblePanel } from "../panels/widgets/controls/collapsiblePanel";
-import React = require("react");
+  Label,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  MenuPopover,
+  MenuTrigger,
+  Popover,
+  PopoverSurface,
+  PopoverTrigger,
+} from "@fluentui/react-components";
+import { SVGImageIcon } from "../../components";
+import * as R from "../../resources";
 
 export interface IDefaultValue {
   table: string;
   // lambdaExpression?: string;
   expression?: string;
   type?: MappingType;
+}
+
+export interface IContextualMenuItem {
+  key: string;
+  text?: string;
+  split?: boolean;
+  disabled?: boolean;
+  checked?: boolean;
+  isChecked?: boolean;
+  canCheck?: boolean;
+  data?: any;
+  onClick?: (
+    ev?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
+    item?: IContextualMenuItem
+  ) => boolean | void;
+  subMenuProps?: {
+    items: IContextualMenuItem[];
+  };
+}
+
+export interface IContextualMenuListProps {
+  items: IContextualMenuItem[];
 }
 
 interface Builder {
@@ -593,7 +611,7 @@ class MenuItemsCreator {
                               isChecked: isSelected,
                               canCheck: true,
                               onClick: onClickFn,
-                              split: mappingConfig.isMappingEditor,
+                              // split: mappingConfig.isMappingEditor,
                               subMenuProps:
                                 mappingConfig.scaleEditorSubMenuProps,
                             };
@@ -797,92 +815,20 @@ export class Director {
     return this.builder.getMenuItems();
   }
 
-  public getMenuRender(): IRenderFunction<IContextualMenuListProps> {
-    const theme = getTheme();
+  // TODO handle derived columns
+  public menuRender(
+    mainMenuItems: IContextualMenuItem[],
+    scaleMapping?: Specification.Mapping,
+    options?: {
+      icon: string;
+    }
+  ) {
+    let anchor = null;
 
-    const CustomMenuRender: React.FC<{
-      item: IContextualMenuItem;
-      defaultKey: string;
-    }> = ({ item, defaultKey }) => {
-      let currentFunction: IContextualMenuItem;
-      if (item.subMenuProps) {
-        currentFunction = item.subMenuProps.items.find((i) => i.isChecked);
-        if (currentFunction) {
-          defaultKey = currentFunction.key;
-        }
-      }
-
-      return (
-        <FluentDataBindingMenuItem
-          key={item.key}
-          backgroundColor={
-            currentFunction
-              ? theme.semanticColors.buttonBackgroundChecked
-              : null
-          }
-          backgroundColorHover={theme.semanticColors.buttonBackgroundHovered}
-        >
-          <FluentDataBindingMenuLabel>
-            <Label
-              onClick={(e) => {
-                const agr = item.subMenuProps?.items.find(
-                  (item) => item.key === defaultKey
-                );
-                if (agr) {
-                  agr.onClick(e as any, agr);
-                } else {
-                  item.onClick(e as any, item);
-                }
-              }}
-              styles={defaultLabelStyle}
-            >
-              {item.text}
-            </Label>
-          </FluentDataBindingMenuLabel>
-          {item.subMenuProps ? (
-            <Dropdown
-              styles={{
-                ...(defaultStyle as any),
-                title: {
-                  ...defaultStyle.title,
-                  lineHeight: defultBindButtonSize.height,
-                  borderWidth: "0px",
-                },
-                dropdownOptionText: {
-                  boxSizing: "unset",
-                  lineHeight: defultBindButtonSize.height,
-                },
-                callout: {
-                  minWidth: 180,
-                },
-              }}
-              selectedKey={defaultKey}
-              options={item.subMenuProps.items.map((i) => ({
-                key: i.key,
-                text: i.text,
-              }))}
-              onChange={(e, opt) => {
-                const agr = item.subMenuProps.items.find(
-                  (item) => item.key === opt.key
-                );
-                if (agr) {
-                  agr.onClick(e as any, agr);
-                } else {
-                  item.onClick(e as any, item);
-                }
-              }}
-            />
-          ) : null}
-        </FluentDataBindingMenuItem>
-      );
-    };
-
-    return (props) => {
-      const calloutKey = "mappingMenuAnchor";
-
+    function getCurrentMapping(items) {
       // find current mapping
       let mapping = null;
-      const currentColumn = props.items
+      const currentColumn = items
         .filter((item) => item.subMenuProps) // exclude None
         .flatMap((items) => {
           if (
@@ -913,61 +859,121 @@ export class Director {
         mapping = currentMapping;
       }
 
-      return (
-        <div id={calloutKey}>
-          {mapping ? (
-            <Callout
-              target={`#${calloutKey}`}
-              directionalHint={DirectionalHint.leftCenter}
-            >
-              {mapping.onRender(mapping, () => null)}
-            </Callout>
-          ) : null}
-          {!props.items.find(
-            (item) => item.key === "first" || item.key === "avg"
-          ) ? (
-            <>
-              {props.items.map((item) => {
-                if (item.subMenuProps?.items.find((i) => i.key === "year")) {
-                  const expand = item.subMenuProps.items.find((columns) =>
-                    columns.subMenuProps.items.find((func) => func.isChecked)
-                  );
-                  return (
-                    <CollapsiblePanel
-                      key={item.key}
-                      header={() => (
-                        <Label styles={defaultLabelStyle}>{item.text}</Label>
-                      )}
-                      isCollapsed={expand === null}
-                      widgets={item.subMenuProps.items.map((item) => {
-                        const currentKey = item.subMenuProps?.items[0].key;
-                        return (
-                          <CustomMenuRender
-                            key={item.key}
-                            item={item}
-                            defaultKey={currentKey}
-                          />
-                        );
-                      })}
-                    />
-                  );
-                } else {
-                  const currentKey = item.subMenuProps?.items[0].key;
-                  return (
-                    <CustomMenuRender
-                      key={item.key}
-                      item={item}
-                      defaultKey={currentKey}
-                    />
-                  );
-                }
-              })}
-            </>
-          ) : (
-            <ContextualMenu {...props} />
-          )}
-        </div>
-      );
-    };
+      return { mapping, currentColumn };
+    }
+
+    return (
+      <Menu persistOnItemClick>
+        <MenuTrigger>
+          <MenuButton
+            style={{
+              flex: 1,
+            }}
+            ref={(r) => (anchor = r)}
+            title={strings.mappingEditor.bindData}
+            icon={<SVGImageIcon url={R.getSVGIcon(options?.icon)} />}
+          >
+            {(scaleMapping as Specification.ScaleMapping)?.expression || ""}
+          </MenuButton>
+        </MenuTrigger>
+        <MenuPopover>
+          <MenuList>
+            {mainMenuItems.map((menuItemParent) => {
+              const { mapping, currentColumn } = getCurrentMapping(
+                mainMenuItems
+              );
+              if (menuItemParent.subMenuProps) {
+                return (
+                  <MenuItem key={menuItemParent.key}>
+                    <FluentRowLayout
+                      style={{
+                        alignItems: "center",
+                      }}
+                    >
+                      {!mapping ? (
+                        <Label
+                          style={{
+                            flex: 1,
+                          }}
+                        >
+                          {menuItemParent.text}
+                        </Label>
+                      ) : null}
+                      <Popover positioning={anchor} open={mapping != null}>
+                        <PopoverTrigger>
+                          <Label
+                            style={{
+                              flex: 1,
+                            }}
+                          >
+                            {menuItemParent.text}
+                          </Label>
+                        </PopoverTrigger>
+                        {mapping && menuItemParent === currentColumn ? (
+                          <PopoverSurface>
+                            {mapping.onRender(mapping, () => null)}
+                          </PopoverSurface>
+                        ) : null}
+                      </Popover>
+                      <Menu>
+                        <MenuTrigger>
+                          <MenuButton
+                            style={{
+                              flex: 1,
+                            }}
+                          >
+                            {menuItemParent.subMenuProps.items.find((i) => i.isChecked)
+                              ?.text || "Unselected"}
+                          </MenuButton>
+                        </MenuTrigger>
+                        <MenuPopover>
+                          <MenuList>
+                            {menuItemParent.subMenuProps.items.map((menuItemChild) => {
+                              return (
+                                <MenuItem
+                                  key={`${menuItemParent}-${menuItemChild.key}`}
+                                  onClick={(e) => {
+                                    menuItemChild.onClick(e, menuItemChild);
+                                  }}
+                                >
+                                  {menuItemChild.text}
+                                </MenuItem>
+                              );
+                            })}
+                          </MenuList>
+                        </MenuPopover>
+                      </Menu>
+                    </FluentRowLayout>
+                  </MenuItem>
+                );
+              } else {
+                return (
+                  <>
+                    <MenuItem
+                      key={menuItemParent.key}
+                      onClick={(e) => {
+                        if (
+                          scaleMapping &&
+                          (scaleMapping as Specification.ScaleMapping).expression.startsWith(
+                            "get"
+                          )
+                        ) {
+                          event.preventDefault();
+                          // this.changeDataFieldValueSelectionState();
+                        } else {
+                          menuItemParent.onClick(e, menuItemParent);
+                        }
+                      }}
+                    >
+                      {menuItemParent.text}
+                    </MenuItem>
+                  </>
+                );
+              }
+            })}
+          </MenuList>
+        </MenuPopover>
+      </Menu>
+    );
   }
 }

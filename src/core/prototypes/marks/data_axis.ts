@@ -32,7 +32,7 @@ import {
   DataAxisProperties,
   DataAxisExpression,
 } from "./data_axis.attrs";
-import React = require("react");
+import * as React from "react";
 import { strings } from "../../../strings";
 import { ChartStateManager } from "../../prototypes";
 

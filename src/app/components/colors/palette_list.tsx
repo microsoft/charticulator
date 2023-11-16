@@ -3,8 +3,7 @@
 
 import { ColorPalette } from "../../resources";
 import * as React from "react";
-import { DefaultButton, Label } from "@fluentui/react";
-import { defaultPaletteButtonsStyles } from "./styles";
+import { Label, ToggleButton } from "@fluentui/react-components";
 
 export interface PaletteListProps {
   selected: ColorPalette;
@@ -39,13 +38,15 @@ export class PaletteList extends React.PureComponent<
             <React.Fragment key={`palette-group-wrapper-${index}`}>
               <Label key={`palette-label-${index}`}>{group[0]}</Label>
               {group[1].map((x) => (
-                <DefaultButton
+                <ToggleButton
                   key={x.name}
                   onClick={() => this.props.onClick(x)}
-                  text={x.name.split("/")[1]}
-                  styles={defaultPaletteButtonsStyles}
+                  title={x.name.split("/")[1]}
+                  // styles={defaultPaletteButtonsStyles}
                   checked={this.props.selected == x}
-                />
+                >
+                  {x.name.split("/")[1]}
+                </ToggleButton>
               ))}
             </React.Fragment>
           );
