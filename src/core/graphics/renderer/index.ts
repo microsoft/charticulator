@@ -83,7 +83,7 @@ export class ChartRenderer {
       const g = cls.getGraphics(
         coordinateSystem,
         offset,
-        index,
+        glyphIndex,
         this.manager,
         state.emphasized
       );
@@ -95,8 +95,8 @@ export class ChartRenderer {
         }
         g.selectable = {
           plotSegment,
-          glyphIndex: index,
-          rowIndices: plotSegmentState.dataRowIndices[index],
+          glyphIndex: glyphIndex,
+          rowIndices: plotSegmentState.dataRowIndices[glyphIndex],
           enableTooltips: <boolean>cls.object.properties.enableTooltips,
           enableContextMenu: <boolean>cls.object.properties.enableContextMenu,
           enableSelection: <boolean>cls.object.properties.enableSelection,
