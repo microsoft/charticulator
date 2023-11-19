@@ -139,7 +139,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
           x2: w / 2,
           y2: w / 2,
           rotation: rotation,
-          key: `${this.object._id}`
+          key: `${glyphIndex}-${this.object._id}`
         };
         const gr = makeGroup([elem]);
         gr.transform.x = pc.x;
@@ -184,7 +184,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
         path.transformRotation(rotation);
         path.closePath();
         const gr = makeGroup([path.path]);
-        gr.key = `${this.object._id}`;
+        gr.key = `${glyphIndex}-${this.object._id}`;
         gr.transform.x = pc.x;
         gr.transform.y = pc.y;
         return gr;
@@ -226,6 +226,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
         const gr = makeGroup([path.path]);
         gr.transform.x = pc.x;
         gr.transform.y = pc.y;
+        gr.key = `${glyphIndex}-${this.object._id}`;
         return gr;
       }
       case "wye": {
@@ -255,6 +256,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
         const gr = makeGroup([path.path]);
         gr.transform.x = pc.x;
         gr.transform.y = pc.y;
+        gr.key = `${glyphIndex}-${this.object._id}`;
         return gr;
       }
       default: {
@@ -264,6 +266,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
           cx: pc.x,
           cy: pc.y,
           r: Math.sqrt(attrs.size / Math.PI),
+          key: `${glyphIndex}-${this.object._id}`
         };
       }
     }

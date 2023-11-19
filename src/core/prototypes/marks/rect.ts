@@ -580,14 +580,14 @@ export class RectElementClass extends EmphasizableMarkClass<
             opacity: attrs.opacity,
             ...this.generateEmphasisStyle(empasized),
           },
-          `${this.object._id}`
+          `glyph:${glyphIndex}-obj:${this.object._id}`
         );
       }
       case ShapeType.Triangle: {
         const path = this.drawTriangleOrCometMarks(
           helper,
           offset,
-          `${this.object._id}`,
+          `glyph:${glyphIndex}-obj:${this.object._id}`,
           empasized
         );
         return path;
@@ -599,7 +599,7 @@ export class RectElementClass extends EmphasizableMarkClass<
           attrs.y1 + offset.y,
           attrs.x2 + offset.x,
           attrs.y2 + offset.y,
-          `${this.object._id}`,
+          `glyph:${glyphIndex}-obj:${this.object._id}`,
           {
             strokeColor: attrs.stroke,
             strokeWidth: attrs.strokeWidth,

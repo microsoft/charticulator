@@ -59,7 +59,7 @@ export abstract class PlotSegmentClass<
     manager: ChartStateManager
   ): Graphics.Element {
     const group = Graphics.makeGroup([glyphGraphics, this.getGraphics(manager)]);
-    group.key = `ps-${this.object._id}`;
+    group.key = `ps:${this.object._id}-glg:${glyphGraphics.key}`;
     return group;
   }
 

@@ -1,10 +1,7 @@
 ####################################################################################################
 # Charticulator configuration file
 ####################################################################################################
-MainView:
-  ColumnsPosition: "right"
-  EditorPanelsPosition: "right"
-  ToolbarPosition: "top"
+
 #------------------------------------------------
 # Configure extensions if any
 #------------------------------------------------
@@ -23,7 +20,6 @@ MainView:
 #       let extension = new MyExtensionClass(); // defined in extension.js
 #       application.addExtension(extension);
 
-
 #------------------------------------------------
 # Configure sample datasets if any
 #------------------------------------------------
@@ -39,7 +35,7 @@ MainView:
 #------------------------------------------------
 # Configure the map service
 #------------------------------------------------
-MapService:
+# MapService:
   ## Option 1: Use Bing Map Service
   ##   a. Obtain an API key here: https://msdn.microsoft.com/en-us/library/ff428642.aspx
   ##   b. Uncomment the following:
@@ -54,13 +50,23 @@ MapService:
   # provider: Google
   # apiKey: "TODO: put your api key here"
 
+# CorsPolicy:
+#   TargetOrigins: https://charticulator.com
+CorsPolicy:
+  Embedded: true
+
 #------------------------------------------------
 # Configure panels layout
 #------------------------------------------------
-  MainView:
-    ColumnsPosition: left
-    EditorPanelsPosition: left
-    ToolbarPosition: top
+MainView:
+  ColumnsPosition: right
+  EditorPanelsPosition: right
+  ToolbarPosition: top
+  ToolbarLabels: true
+  Name: Microsoft Charticulator
+  MenuBarButtons: right
+  MenuBarSaveButtons: left
+  UndoRedoLocation: toolbar
 
 #------------------------------------------------
 # Configure the display of legal notices
@@ -84,5 +90,5 @@ LegalNotices:
       <a href="https://go.microsoft.com/fwlink/?LinkID=760869">Terms of use</a> |
       <a href="http://go.microsoft.com/fwlink/?LinkId=506942">Trademarks</a> |
       <a href="http://choice.microsoft.com/">About our ads</a> |
-      Copyright 2022 Microsoft Corporation
+      Copyright 2021 Microsoft Corporation
     </p>

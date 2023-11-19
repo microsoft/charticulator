@@ -579,8 +579,8 @@ export class AxisRenderer {
     side: number,
     axisOffset?: number
   ): Group {
-    const g = makeGroup([]);
-    g.key = `text-x-${x}-y-${y}-ang-${angle}-side-${side}-${axisOffset}`;
+    const axisGraphics = makeGroup([]);
+    axisGraphics.key = `text-x-${x}-y-${y}-ang-${angle}-side-${side}-${axisOffset}`;
     const style = this.style;
     const rangeMin = this.rangeMin;
     const rangeMax = this.rangeMax;
@@ -614,7 +614,9 @@ export class AxisRenderer {
 
     // Base line
     if (style.showBaseline) {
-      g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
+      const line = makeLine(x1, y1, x2, y2, lineStyle);
+      line.key = `${axisGraphics.key}-line`;
+      axisGraphics.elements.push();
     }
     // Ticks
     const visibleTicks = this.ticks.map((x) => x.position);
@@ -627,11 +629,13 @@ export class AxisRenderer {
         const ty = y + tickPosition * sin;
         const dx = side * tickSize * sin;
         const dy = -side * tickSize * cos;
-        g.elements.push(makeLine(tx, ty, tx + dx, ty + dy, lineStyle));
+        const tickGraphics = makeLine(tx, ty, tx + dx, ty + dy, lineStyle);
+        tickGraphics.key = `${axisGraphics.key}-tick-${tickPosition}`;
+        axisGraphics.elements.push();
       }
     }
     // Tick texts
-    const ticks = this.ticks.map((x) => {
+    const ticksText = this.ticks.map((x) => {
       return {
         position: x.position,
         label: x.label,
@@ -640,16 +644,16 @@ export class AxisRenderer {
     });
     let maxTextWidth = 0;
     let maxTickDistance = 0;
-    for (let i = 0; i < ticks.length; i++) {
-      maxTextWidth = Math.max(maxTextWidth, ticks[i].measure.width);
+    for (let i = 0; i < ticksText.length; i++) {
+      maxTextWidth = Math.max(maxTextWidth, ticksText[i].measure.width);
       if (i > 0) {
         maxTickDistance = Math.max(
           maxTickDistance,
-          Math.abs(ticks[i - 1].position - ticks[i].position)
+          Math.abs(ticksText[i - 1].position - ticksText[i].position)
         );
       }
     }
-    for (const tick of ticks) {
+    for (const tick of ticksText) {
       const tx = x + tick.position * cos,
         ty = y + tick.position * sin;
       const offset = 3;
@@ -719,17 +723,17 @@ export class AxisRenderer {
                 backgroundColorId: style.tickTextBackgroudColorId,
               }
             );
-            text.key = `tick-text-pos-${tick.position}-i-${index}`;
+            text.key = `${axisGraphics.key}-tick-text-${tick.position}-i-${index}`;
             lines.push(text);
           }
           const gText = makeGroup(lines);
-          gText.key = `tick-text-pos-${tick.position}`;
+          gText.key = `${axisGraphics.key}-tick-${tick.position}`;
           gText.transform = {
             x: tx + dx,
             y: ty + dy,
             angle: style.verticalText ? angle : 0,
           };
-          g.elements.push(gText);
+          axisGraphics.elements.push(gText);
         } else {
           // 60 ~ 120 degree
           const [px, py] = TextMeasurer.ComputeTextPosition(
@@ -759,7 +763,7 @@ export class AxisRenderer {
                     rowIndices: applySelectionFilter(
                       this.data,
                       this.plotSegment.table,
-                      ticks.indexOf(tick),
+                      ticksText.indexOf(tick),
                       this.dataFlow
                     ),
                     plotSegment: this.plotSegment,
@@ -774,7 +778,7 @@ export class AxisRenderer {
             y: ty + dy,
             angle: style.verticalText ? (sin > 0 ? angle - 90 : angle + 90) : 0,
           };
-          g.elements.push(gText);
+          axisGraphics.elements.push(gText);
         }
       } else if (Math.abs(cos) < Math.sqrt(3) / 2) {
         const [px, py] = TextMeasurer.ComputeTextPosition(
@@ -804,7 +808,7 @@ export class AxisRenderer {
                   rowIndices: applySelectionFilter(
                     this.data,
                     this.plotSegment.table,
-                    ticks.indexOf(tick),
+                    ticksText.indexOf(tick),
                     this.dataFlow
                   ),
                   plotSegment: this.plotSegment,
@@ -819,7 +823,7 @@ export class AxisRenderer {
           y: ty + dy,
           angle: style.verticalText ? (sin > 0 ? angle - 90 : angle + 90) : 0,
         };
-        g.elements.push(gText);
+        axisGraphics.elements.push(gText);
       } else {
         if (
           !style.wordWrap &&
@@ -868,7 +872,7 @@ export class AxisRenderer {
                     rowIndices: applySelectionFilter(
                       this.data,
                       this.plotSegment.table,
-                      ticks.indexOf(tick),
+                      ticksText.indexOf(tick),
                       this.dataFlow
                     ),
                     plotSegment: this.plotSegment,
@@ -889,7 +893,7 @@ export class AxisRenderer {
               ? 36 + angle
               : 36 + angle - 180,
           };
-          g.elements.push(gText);
+          axisGraphics.elements.push(gText);
         } else {
           if (
             style.wordWrap ||
@@ -941,7 +945,7 @@ export class AxisRenderer {
                       rowIndices: applySelectionFilter(
                         this.data,
                         this.plotSegment.table,
-                        ticks.indexOf(tick),
+                        ticksText.indexOf(tick),
                         this.dataFlow
                       ),
                       plotSegment: this.plotSegment,
@@ -969,7 +973,7 @@ export class AxisRenderer {
                 ? 36 + angle
                 : 36 + angle - 180,
             };
-            g.elements.push(gText);
+            axisGraphics.elements.push(gText);
           } else {
             const [px, py] = TextMeasurer.ComputeTextPosition(
               0,
@@ -1002,7 +1006,7 @@ export class AxisRenderer {
                       rowIndices: applySelectionFilter(
                         this.data,
                         this.plotSegment.table,
-                        ticks.indexOf(tick),
+                        ticksText.indexOf(tick),
                         this.dataFlow
                       ),
                       plotSegment: this.plotSegment,
@@ -1017,20 +1021,20 @@ export class AxisRenderer {
               y: ty + dy,
               angle: style.verticalText ? 90 + angle : 0,
             };
-            g.elements.push(gText);
+            axisGraphics.elements.push(gText);
           }
         }
       }
     }
 
     if (axisOffset) {
-      g.transform = {
+      axisGraphics.transform = {
         x: angle == 90 ? axisOffset : 0,
         y: angle == 90 ? 0 : axisOffset,
         angle: 0,
       };
     }
-    return g;
+    return axisGraphics;
   }
 
   public renderCartesian(
@@ -1257,8 +1261,9 @@ export class AxisRenderer {
       strokeLinecap: "round",
       strokeColor: style.lineColor,
     };
-    const g = makeGroup([]);
-    g.transform = coordinateSystem.getBaseTransform();
+    const curveAxisGraphics = makeGroup([]);
+    curveAxisGraphics.key = `curve:-y:${y}-s:${side}`;
+    curveAxisGraphics.transform = coordinateSystem.getBaseTransform();
 
     AxisRenderer.textMeasurer.setFontFamily(style.fontFamily);
     AxisRenderer.textMeasurer.setFontSize(style.fontSize);
@@ -1277,19 +1282,23 @@ export class AxisRenderer {
         2
       );
       const line = makeLine(0, 0, 0, -style.tickSize * side, lineStyle);
-      const gt = makeGroup([
+      const text = makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
+        fillColor: style.tickColor,
+        backgroundColor: style.tickTextBackgroudColor,
+        backgroundColorId: style.tickTextBackgroudColorId,
+      });
+      line.key = `${curveAxisGraphics.key}-line:${tick.position}`;
+      text.key = `${curveAxisGraphics.key}-text:${tick.position}`
+      const tickGroup = makeGroup([
         style.showTicks ? line : null,
-        makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
-          fillColor: style.tickColor,
-          backgroundColor: style.tickTextBackgroudColor,
-          backgroundColorId: style.tickTextBackgroudColorId,
-        }),
+        text,
       ]);
 
-      gt.transform = coordinateSystem.getLocalTransform(tangent, y);
-      g.elements.push(gt);
+      tickGroup.key = `${curveAxisGraphics.key}-tg:${tick.position}`
+      tickGroup.transform = coordinateSystem.getLocalTransform(tangent, y);
+      curveAxisGraphics.elements.push(tickGroup);
     }
-    return g;
+    return curveAxisGraphics;
   }
 
   public renderVirtualScrollBar(

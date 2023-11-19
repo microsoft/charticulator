@@ -502,7 +502,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
         )
       );
     }
-    g.key = `${this.object._id}`;
+    g.key = `polar:${this.object._id}`;
     return g;
   }
 

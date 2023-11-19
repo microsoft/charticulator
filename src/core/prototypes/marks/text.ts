@@ -172,7 +172,7 @@ export class TextElementClass extends EmphasizableMarkClass<
               ...this.generateEmphasisStyle(empasized),
             },
             undefined,
-            `${this.object._id}-line-${index}`
+            `${glyphIndex}-${this.object._id}-line-${index}`
           )
         );
       }
@@ -196,7 +196,9 @@ export class TextElementClass extends EmphasizableMarkClass<
         `${this.object._id}`
       );
     }
+    text.key = `${glyphIndex}-${this.object._id}-tobj`;
     const g = Graphics.makeGroup([text]);
+    g.key = `${glyphIndex}-${this.object._id}-tobj-gr`;
     g.transform = p;
     return g;
   }

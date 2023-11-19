@@ -324,20 +324,20 @@ export class CartesianPlotSegment extends PlotSegmentClass<
 
   public getGraphics(manager: ChartStateManager): Graphics.Group {
     this.chartManager = manager;
-    const g = Graphics.makeGroup([]);
+    const cartesianGraphics = Graphics.makeGroup([]);
+    cartesianGraphics.key = `cartesian:${this.object._id}`;
     const props = this.object.properties;
     if (props.xData && props.xData.visible) {
       if (props.xData.onTop) {
-        g.elements.push(this.getPlotSegmentAxisXDataGraphics(manager));
+        cartesianGraphics.elements.push(this.getPlotSegmentAxisXDataGraphics(manager));
       }
     }
     if (props.yData && props.yData.visible) {
       if (props.yData.onTop) {
-        g.elements.push(this.getPlotSegmentAxisYDataGraphics(manager));
+        cartesianGraphics.elements.push(this.getPlotSegmentAxisYDataGraphics(manager));
       }
     }
-    g.key = `${this.object._id}`;
-    return g;
+    return cartesianGraphics;
   }
 
   private getTickData = (
@@ -364,8 +364,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     manager: ChartStateManager
   ): Graphics.Group {
     this.chartManager = manager;
-    const g = Graphics.makeGroup([]);
-    g.key = `x-gr-${this.object._id}`;
+    const xDataGraphics = Graphics.makeGroup([]);
+    xDataGraphics.key = `x-gr-${this.object._id}`;
     const attrs = this.state.attributes;
     const props = this.object.properties;
     if (props.xData && props.xData.visible) {
@@ -385,7 +385,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           props.xData.tickFormat
         );
       }
-      g.elements.push(
+      xDataGraphics.elements.push(
         axisRenderer.renderCartesian(
           attrs.x1,
           props.xData.side != "default" ? attrs.y2 : attrs.y1,
@@ -394,7 +394,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         )
       );
     }
-    return g;
+    return xDataGraphics;
   }
 
   private getPlotSegmentAxisYDataGraphics(

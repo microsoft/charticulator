@@ -259,7 +259,7 @@ export class DataAxisClass extends MarkClass<
           attrs.x1 + offset.x,
           attrs.y1 + offset.y
         );
-        g.key = `${this.object._id}`;
+        g.key = `${glyphIndex}-${this.object._id}`;
         return g;
       } else {
         return null;
@@ -286,7 +286,7 @@ export class DataAxisClass extends MarkClass<
         attrs.x1 + offset.x,
         attrs.y1 + offset.y
       );
-      g.key = `${this.object._id}`;
+      g.key = `${glyphIndex}-${this.object._id}`;
       return g;
     }
   }

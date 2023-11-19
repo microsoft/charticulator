@@ -192,6 +192,7 @@ export class IconElementClass extends EmphasizableMarkClass<
         width: layout.width,
         height: layout.height,
         mode: "stretch",
+        key: `${glyphIndex}-${this.object._id}`
       },
     ]);
     gImage.transform = cs.getLocalTransform(
@@ -204,7 +205,6 @@ export class IconElementClass extends EmphasizableMarkClass<
     gImage.style = {
       opacity: attrs.opacity,
     };
-    gImage.key = `${this.object._id}`;
     return gImage;
   }
 

@@ -40,10 +40,6 @@ import { makeDefaultDataset } from "./default_dataset";
 import { strings } from "../strings";
 import { LocalStorageKeys } from "./globals";
 
-// Also available from @uifabric/icons (7 and earlier) and @fluentui/font-icons-mdl2 (8+)
-import { initializeIcons } from "../fabric-icons/src/index";
-initializeIcons();
-
 import { defaultVersionOfTemplate } from "./stores/defaults";
 import { MenuBarHandlers, MenubarTabButton } from "./views/menubar";
 import { TelemetryRecorder } from "./components";

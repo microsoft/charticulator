@@ -341,8 +341,8 @@ export class FluentValueEditor extends ContextedComponent<
                 }
                 return true;
               }}
-            ></Dropdown>
-            {strings
+            >
+              {strings
               .map((str) => {
                 return {
                   key: str,
@@ -356,6 +356,7 @@ export class FluentValueEditor extends ContextedComponent<
                   </Option>
                 );
               })}
+            </Dropdown>
           </FluentColumnLayout>
         );
       }

@@ -75,25 +75,28 @@ export class ChartRenderer {
     state: Specification.GlyphState,
     glyphIndex: number
   ): Group[] {
-    return zipArray(glyph.marks, state.marks).map(([mark, markState], index) => {
+    return zipArray(glyph.marks, state.marks).map(([mark, markState], markIndex) => {
       if (!mark.properties.visible) {
         return null;
       }
       const cls = this.manager.getMarkClass(markState);
-      const g = cls.getGraphics(
+      const markGraphics = cls.getGraphics(
         coordinateSystem,
         offset,
         glyphIndex,
         this.manager,
         state.emphasized
       );
-      if (g != null) {
-        if (g.key) {
-          g.key += `ps-${plotSegment._id}-gl-${glyphIndex}`
+      if (markGraphics != null) {
+        if (markGraphics.key) {
+          //ps:${plotSegment._id}-gl:${glyph._id-mi:${markIndex}-glyph:1-obj:h1dkom6xzog
+          //ps:auvmancnohe-gl:8tbq6db1yst-mi:1-h1dkom6xzog-glyph:1-obj:h1dkom6xzog
+          markGraphics.key = `ps:${plotSegment._id}-gl:${glyph._id}-${mark._id}-${markGraphics.key}`
         } else {
-          g.key = `ps-${plotSegment._id}-gl-${glyphIndex}`
+          console.log('no key at', markGraphics, cls);
+          // g.key = `ps:${plotSegment._id}-${markIndex}`
         }
-        g.selectable = {
+        markGraphics.selectable = {
           plotSegment,
           glyphIndex: glyphIndex,
           rowIndices: plotSegmentState.dataRowIndices[glyphIndex],
@@ -101,8 +104,8 @@ export class ChartRenderer {
           enableContextMenu: <boolean>cls.object.properties.enableContextMenu,
           enableSelection: <boolean>cls.object.properties.enableSelection,
         };
-        const group = makeGroup([g]);
-        group.key = `${g.key}-${index}`;
+        const group = makeGroup([markGraphics]);
+        group.key = `gl:${glyph._id}-mkst-gr:${markIndex}-${markGraphics.key}`;
         return group;
       } else {
         return null;
@@ -186,8 +189,10 @@ export class ChartRenderer {
         const gBackgroundElements = makeGroup([]);
         const plotSegmentBackgroundElements = plotSegmentClass.getPlotSegmentBackgroundGraphics(
           this.manager
-          );
-        gBackgroundElements.key = `bg-ps-${plotSegmentBackgroundElements.key}`;
+        );
+        if (plotSegmentBackgroundElements) {
+          gBackgroundElements.key = `bg-ps-${plotSegmentBackgroundElements.key}`;
+        }
         gBackgroundElements.elements.push(plotSegmentBackgroundElements);
         const gElement = makeGroup([]);
         gElement.key = `warpper-${element._id}`
@@ -197,23 +202,22 @@ export class ChartRenderer {
       } else if (Prototypes.isType(element.classID, "mark")) {
         const cs = new CartesianCoordinates({ x: 0, y: 0 });
         const gElement = makeGroup([]);
-        gElement.key = `${element._id}-${elementState.attributes['x']}-${elementState.attributes['y']}`;
         const elementClass = this.manager.getMarkClass(elementState);
-        const g = elementClass.getGraphics(
+        const markGraphics = elementClass.getGraphics(
           cs,
           { x: 0, y: 0 },
           null,
           this.manager
-        );
-        gElement.elements.push(g);
+          );
+        gElement.key = `mw-${markGraphics.key}`;
+        gElement.elements.push(markGraphics);
         graphics.push(gElement);
       } else {
         const gElement = makeGroup([]);
-        gElement.key = `${element._id}-${elementState.attributes['x']}-${elementState.attributes['y']}`;
         const elementClass = this.manager.getChartElementClass(elementState);
-        const g = elementClass.getGraphics(this.manager);
-        gElement.elements.push(g);
-        gElement.key = element._id;
+        const elementGraphic = elementClass.getGraphics(this.manager);
+        gElement.key = `ew-${elementGraphic}`;
+        gElement.elements.push(elementGraphic);
         graphics.push(gElement);
       }
     }

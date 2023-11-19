@@ -361,12 +361,12 @@ export class CurvePlotSegment extends PlotSegmentClass<
   public getGraphics(manager: ChartStateManager): Graphics.Group {
     const { tangent1, tangent2, normal1, normal2 } = this.state.attributes;
 
-    const g = Graphics.makeGroup([]);
+    const curveGraphics = Graphics.makeGroup([]);
     const props = this.object.properties;
     const cs = this.getCoordinateSystem();
 
     if (props.xData && props.xData.visible) {
-      g.elements.push(
+      curveGraphics.elements.push(
         new AxisRenderer()
           .setAxisDataBinding(
             props.xData,
@@ -389,7 +389,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
         0
       );
       tr = Graphics.concatTransform(cs.getBaseTransform(), tr);
-      g.elements.push(
+      curveGraphics.elements.push(
         new AxisRenderer()
           .setAxisDataBinding(
             props.yData,
@@ -407,8 +407,8 @@ export class CurvePlotSegment extends PlotSegmentClass<
           )
       );
     }
-    g.key = `${this.object._id}`;
-    return g;
+    curveGraphics.key = `curve:${this.object._id}`;
+    return curveGraphics;
   }
 
   public getCoordinateSystem(): Graphics.CoordinateSystem {
