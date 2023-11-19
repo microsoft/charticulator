@@ -81,58 +81,9 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
             <script type="text/javascript">
               CharticulatorContainer.initialize().then(function() {
                 const currentChart = ${JSON.stringify(this.chart)};
-                const chartState = ${JSON.stringify(this.chartState)};
                 const dataset = ${JSON.stringify(this.dataset)};
-                const template = ${JSON.stringify(template)};
-                const chartTemplate = new CharticulatorContainer.ChartTemplate(
-                  template
-                );
-                chartTemplate.reset();
 
-                const defaultTable = dataset.tables[0];
-                const columns = defaultTable.columns;
-                chartTemplate.assignTable(defaultTable.name, defaultTable.name);
-                for (const column of columns) {
-                  chartTemplate.assignColumn(
-                    defaultTable.name,
-                    column.name,
-                    column.name
-                  );
-                }
-
-                // links table
-                const linksTable = dataset.tables[1];
-                const links = linksTable && (linksTable.columns);
-                if (links) {
-                  chartTemplate.assignTable(linksTable.name, linksTable.name);
-                  for (const column of links) {
-                    chartTemplate.assignColumn(
-                      linksTable.name,
-                      column.name,
-                      column.name
-                    );
-                  }
-                }
-                const instance = chartTemplate.instantiate(dataset);
-
-                const { chart } = instance;
-
-                for (const property of template.properties) {
-                  if (property.target.attribute) {
-                    CharticulatorContainer.ChartTemplate.SetChartAttributeMapping(
-                      chart,
-                      property.objectID,
-                      property.target.attribute,
-                      {
-                        type: "value",
-                        value: property.default,
-                      }
-                    );
-                  }
-                  
-                }
-
-                const container = new CharticulatorContainer.ChartContainer({ chart: chart }, dataset);
+                const container = new CharticulatorContainer.ChartContainer({ chart: currentChart }, dataset);
                 const width = document.getElementById("container").getBoundingClientRect().width;
                 const height = document.getElementById("container").getBoundingClientRect().height;
                 container.mount("container", width, height);

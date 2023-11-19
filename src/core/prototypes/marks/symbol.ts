@@ -165,7 +165,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
         path.transformRotation(rotation);
         path.closePath();
         const gr = makeGroup([path.path]);
-        gr.key = `${this.object._id}`;
+        gr.key = `${glyphIndex}-${this.object._id}`;
         gr.transform.x = pc.x;
         gr.transform.y = pc.y;
         return gr;
@@ -210,6 +210,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
         path.transformRotation(rotation);
         path.closePath();
         const gr = makeGroup([path.path]);
+        gr.key = `${glyphIndex}-${this.object._id}`;
         gr.transform.x = pc.x;
         gr.transform.y = pc.y;
         return gr;
