@@ -24,7 +24,7 @@ import {
   parentOfType,
 } from "../panels/widgets/fluent_mapping_editor";
 import { strings } from "../../../strings";
-import { DataType, MappingType } from "../../../core/specification";
+import { DataType, MappingType, ScaleMapping } from "../../../core/specification";
 import { AggregationFunctionDescription } from "../../../core/expression";
 import { FluentRowLayout } from "../panels/widgets/controls/fluentui_customized_components";
 import * as React from "react";
@@ -482,6 +482,9 @@ class MenuItemsCreator {
         ? {
             items: [
               {
+                data: {
+                  mapping
+                },
                 key: "mapping",
                 onRender: () => this.renderScaleEditor(this.parent, this.store),
               },
@@ -820,7 +823,8 @@ export class Director {
     mainMenuItems: IContextualMenuItem[],
     scaleMapping?: Specification.Mapping,
     options?: {
-      icon: string;
+      icon?: string | React.ReactElement;
+      text?: string;
     }
   ) {
     let anchor = null;
@@ -862,26 +866,34 @@ export class Director {
       return { mapping, currentColumn };
     }
 
+    const { mapping, currentColumn } = getCurrentMapping(
+      mainMenuItems
+    );
+
     return (
       <Menu persistOnItemClick>
         <MenuTrigger>
           <MenuButton
             style={{
               flex: 1,
-            }}
+              maxHeight: '32px',
+              textWrap: 'nowrap'
+            } as any}
+            className="data-field-button"
             ref={(r) => (anchor = r)}
             title={strings.mappingEditor.bindData}
-            icon={<SVGImageIcon url={R.getSVGIcon(options?.icon)} />}
+            icon={typeof options?.icon === 'string' ? <SVGImageIcon url={R.getSVGIcon(options?.icon)} /> : options?.icon}
           >
-            {(scaleMapping as Specification.ScaleMapping)?.expression || ""}
+            {
+              options.text ? options.text :
+              scaleMapping ? (scaleMapping as Specification.ScaleMapping)?.expression :
+              mapping ? (mapping as Specification.ScaleMapping)?.expression : ''
+            }
           </MenuButton>
         </MenuTrigger>
         <MenuPopover>
           <MenuList>
             {mainMenuItems.map((menuItemParent) => {
-              const { mapping, currentColumn } = getCurrentMapping(
-                mainMenuItems
-              );
               if (menuItemParent.subMenuProps) {
                 return (
                   <MenuItem key={menuItemParent.key}>

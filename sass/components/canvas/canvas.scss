@@ -17,8 +17,8 @@
     .el-item {
       display: inline-block;
       cursor: pointer;
-      height: 32px;
-      line-height: 32px;
+      height: 20px;
+      line-height: 20px;
       padding: 0 4px;
       border-radius: 0 0 2px 2px;
       &.is-active {
@@ -27,6 +27,7 @@
       &:hover {
         background: $gray-220;
       }
+      margin-top: 2px;
       margin-right: 1px;
       transition: background-color $transition-default;
     }
@@ -100,8 +101,8 @@
 
 .canvas-controls {
   background: $gray-230;
-  line-height: 42px;
-  height: 42px;
+  line-height: 32px;
+  height: 32px;
   font-size: 12px;
   display: flex;
   margin-top: 5px;

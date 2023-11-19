@@ -2,6 +2,12 @@
 // Licensed under the MIT license.
 @use 'sass:math';
 
+.fui-Button__icon.data-field-button {
+  .el-svg-icon {
+    margin-top: 6px;
+  }
+}
+
 .el-svg-icon {
   vertical-align: top;
   width: 24px;

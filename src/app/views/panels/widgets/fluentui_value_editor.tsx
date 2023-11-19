@@ -364,23 +364,25 @@ export class FluentValueEditor extends ContextedComponent<
         const boolean = value as boolean;
         if (this.props.onEmitMapping) {
           return (
-            <>
+            <FluentColumnLayout>
               <Label>{strings.objects.visibleOn.visibility}</Label>
               {this.props.menuRender}
-            </>
+            </FluentColumnLayout>
           );
         } else {
           return (
             <>
-              <Label>{strings.objects.visibleOn.visibility}</Label>
-              <Button
-                icon={
-                  boolean ? <CheckboxChecked20Regular /> : <CheckboxUnchecked20Filled />
-                }
-                onClick={() => {
-                  this.emitSetValue(!boolean);
-                }}
-              />
+              <FluentColumnLayout>
+                <Label>{strings.objects.visibleOn.visibility}</Label>
+                <Button
+                  icon={
+                    boolean ? <CheckboxChecked20Regular /> : <CheckboxUnchecked20Filled />
+                  }
+                  onClick={() => {
+                    this.emitSetValue(!boolean);
+                  }}
+                />
+              </FluentColumnLayout>
             </>
           );
         }

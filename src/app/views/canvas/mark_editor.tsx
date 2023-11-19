@@ -47,9 +47,9 @@ import {
 } from "../../../core/specification";
 import { SnappingGuidesVisualTypes } from "../../../core/prototypes";
 import {
-  ZoomFit24Regular,
-  ZoomIn24Regular,
-  ZoomOut24Regular,
+  ZoomFit20Regular,
+  ZoomIn20Regular,
+  ZoomOut20Regular,
 } from "@fluentui/react-icons";
 import { Button } from "@fluentui/react-components";
 
@@ -195,32 +195,36 @@ export class MarkEditorView extends ContextedComponent<
         <div className="canvas-controls">
           <div className="canvas-controls-left">
             <Button
+              size="small"
               appearance="subtle"
-              icon={<ZoomIn24Regular />}
+              icon={<ZoomIn20Regular />}
               title={strings.canvas.zoomIn}
               onClick={() => {
                 this.refSingleMarkView.doZoom(1.1);
               }}
             />
             <Button
+              size="small"
               appearance="subtle"
-              icon={<ZoomOut24Regular />}
+              icon={<ZoomOut20Regular />}
               title={strings.canvas.zoomOut}
               onClick={() => {
                 this.refSingleMarkView.doZoom(1 / 1.1);
               }}
             />
             <Button
+              size="small"
               appearance="subtle"
-              icon={<ZoomFit24Regular />}
+              icon={<ZoomFit20Regular />}
               title={strings.canvas.zoomAuto}
               onClick={() => {
                 this.refSingleMarkView.doZoomAuto();
               }}
             />
             <Button
+              size="small"
               appearance="subtle"
-              icon={<SVGImageIcon url={R.getSVGIcon("rect-zoom")} />}
+              icon={<SVGImageIcon height={20} url={R.getSVGIcon("rect-zoom")} />}
               title={"Rectangle zoom"}
               onClick={() => {
                 this.dispatch(new Actions.SetCurrentTool("rectangle-zoom"));
@@ -229,8 +233,9 @@ export class MarkEditorView extends ContextedComponent<
           </div>
           <div className="canvas-controls-right">
             <Button
+              size="small"
               appearance="subtle"
-              icon={<SVGImageIcon url={R.getSVGIcon("general/plus")} />}
+              icon={<SVGImageIcon height={20} url={R.getSVGIcon("general/plus")} />}
               title={strings.canvas.newGlyph}
               onClick={() => {
                 this.dispatch(new Actions.AddGlyph("glyph.rectangle"));

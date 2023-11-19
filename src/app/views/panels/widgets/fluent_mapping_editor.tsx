@@ -50,7 +50,7 @@ import { getDropzoneAcceptTables } from "./utils";
 import { SVGImageIcon } from "../../../../app/components";
 
 import * as R from "../../../resources";
-import { Eraser20Regular, LinkMultiple20Regular } from "@fluentui/react-icons";
+import { ArrowTrending20Regular, Eraser20Regular, LinkMultiple20Regular } from "@fluentui/react-icons";
 
 export interface MappingEditorProps {
   parent: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
@@ -224,7 +224,10 @@ export class FluentMappingEditor extends React.Component<
       table,
       options.acceptKinds
     );
-    const menuRender = this.director.menuRender(mainMenuItems, mapping);
+    const menuRender = this.director.menuRender(mainMenuItems, mapping, {
+      text: this.props.type == Specification.AttributeType.Boolean ?
+      strings.attributesPanel.conditionedBy : null
+    });
 
     return (
       <>
@@ -408,7 +411,7 @@ export class FluentMappingEditor extends React.Component<
                   ) : null}
                   <>
                     {this.director.menuRender(mainMenuItems, scaleMapping, {
-                      icon: "ColumnFunction",
+                      icon: React.createElement(ArrowTrending20Regular),
                     })}
                   </>
                 </FluentColumnLayout>
@@ -422,7 +425,7 @@ export class FluentMappingEditor extends React.Component<
                 ) : null}
                 <Button
                   ref={(e) => (this.mappingButton = e)}
-                  icon={<SVGImageIcon url={R.getSVGIcon("ColumnFunction")} />}
+                  icon={<ArrowTrending20Regular />}
                 >
                   {scaleMapping.expression}
                 </Button>
@@ -466,7 +469,7 @@ export class FluentMappingEditor extends React.Component<
                   ) : null}
                   <>
                     {this.director.menuRender(mainMenuItems, scaleMapping, {
-                      icon: "ColumnFunction",
+                      icon: <ArrowTrending20Regular/>,
                     })}
                   </>
                 </FluentColumnLayout>

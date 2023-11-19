@@ -54,9 +54,9 @@ import {
   PopoverTrigger,
 } from "@fluentui/react-components";
 import {
-  ZoomFit24Regular,
-  ZoomIn24Regular,
-  ZoomOut24Regular,
+  ZoomFit20Regular,
+  ZoomIn20Regular,
+  ZoomOut20Regular,
 } from "@fluentui/react-icons";
 import { SVGImageIcon } from "../../components";
 
@@ -1459,24 +1459,27 @@ export class ChartEditorView
           <div className="canvas-controls-left" />
           <div className="canvas-controls-right">
             <Button
+              size="small"
               appearance="subtle"
-              icon={<ZoomIn24Regular />}
+              icon={<ZoomIn20Regular />}
               title={strings.canvas.zoomIn}
               onClick={() => {
                 this.doZoom(1.1);
               }}
             />
             <Button
+              size="small"
               appearance="subtle"
-              icon={<ZoomOut24Regular />}
+              icon={<ZoomOut20Regular />}
               title={strings.canvas.zoomOut}
               onClick={() => {
                 this.doZoom(1 / 1.1);
               }}
             />
             <Button
+              size="small"
               appearance="subtle"
-              icon={<ZoomFit24Regular />}
+              icon={<ZoomFit20Regular />}
               onClick={() => {
                 const newZoom = this.getFitViewZoom(
                   this.state.viewWidth,
@@ -1491,8 +1494,9 @@ export class ChartEditorView
               }}
             />
             <Button
+              size="small"
               appearance="subtle"
-              icon={<SVGImageIcon url={R.getSVGIcon("rect-zoom")} />}
+              icon={<SVGImageIcon height={20} url={R.getSVGIcon("rect-zoom")} />}
               title={"Rectangle zoom"}
               onClick={() => {
                 new Actions.SetCurrentTool("rectangle-zoom").dispatch(
