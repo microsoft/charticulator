@@ -29,6 +29,7 @@ import { AggregationFunctionDescription } from "../../../core/expression";
 import { FluentRowLayout } from "../panels/widgets/controls/fluentui_customized_components";
 import * as React from "react";
 import {
+  Button,
   Label,
   Menu,
   MenuButton,
@@ -871,9 +872,9 @@ export class Director {
     );
 
     return (
-      <Menu persistOnItemClick>
-        <MenuTrigger>
-          <MenuButton
+      <Popover trapFocus>
+        <PopoverTrigger>
+          <Button
             style={{
               flex: 1,
               maxHeight: '32px',
@@ -889,44 +890,59 @@ export class Director {
               scaleMapping ? (scaleMapping as Specification.ScaleMapping)?.expression :
               mapping ? (mapping as Specification.ScaleMapping)?.expression : ''
             }
-          </MenuButton>
-        </MenuTrigger>
-        <MenuPopover>
-          <MenuList>
+          </Button>
+        </PopoverTrigger>
+        <PopoverSurface>
+          {/* <MenuList> */}
             {mainMenuItems.map((menuItemParent) => {
               if (menuItemParent.subMenuProps) {
                 return (
-                  <MenuItem key={menuItemParent.key}>
+                  // <MenuItem key={menuItemParent.key}>
                     <FluentRowLayout
                       style={{
                         alignItems: "center",
                       }}
+                      key={menuItemParent.key}
                     >
-                      {!mapping ? (
-                        <Label
+                      {/* {!mapping ? (
+                        <Button
                           style={{
                             flex: 1,
                           }}
+                          appearance="subtle"
                         >
-                          {menuItemParent.text}
-                        </Label>
-                      ) : null}
-                      <Popover positioning={anchor} open={mapping != null}>
-                        <PopoverTrigger>
-                          <Label
+                          ???{menuItemParent.text}
+                        </Button>
+                      ) : null} */}
+                      {mapping != null ?
+                      <Popover trapFocus
+                        // open={mapping != null && menuItemParent === currentColumn}
+                        >
+                        <PopoverTrigger disableButtonEnhancement>
+                          <Button
                             style={{
                               flex: 1,
                             }}
+                            appearance="subtle"
+                            disabled={!mapping || menuItemParent !== currentColumn}
                           >
                             {menuItemParent.text}
-                          </Label>
+                          </Button>
                         </PopoverTrigger>
-                        {mapping && menuItemParent === currentColumn ? (
-                          <PopoverSurface>
-                            {mapping.onRender(mapping, () => null)}
-                          </PopoverSurface>
-                        ) : null}
+                        <PopoverSurface>
+                            {mapping && menuItemParent === currentColumn ? mapping.onRender(mapping, () => null) : null}
+                        </PopoverSurface>
                       </Popover>
+                      : 
+                      <Button
+                        style={{
+                          flex: 1,
+                        }}
+                        appearance="subtle"
+                      >
+                        {menuItemParent.text}
+                      </Button>
+                      }
                       <Menu>
                         <MenuTrigger>
                           <MenuButton
@@ -956,12 +972,13 @@ export class Director {
                         </MenuPopover>
                       </Menu>
                     </FluentRowLayout>
-                  </MenuItem>
+                  // </MenuItem>
                 );
               } else {
                 return (
                   <>
-                    <MenuItem
+                    <Button
+                      appearance="subtle"
                       key={menuItemParent.key}
                       onClick={(e) => {
                         if (
@@ -978,14 +995,14 @@ export class Director {
                       }}
                     >
                       {menuItemParent.text}
-                    </MenuItem>
+                    </Button>
                   </>
                 );
               }
             })}
-          </MenuList>
-        </MenuPopover>
-      </Menu>
+          {/* </MenuList> */}
+        </PopoverSurface>
+      </Popover>
     );
   }
 }
