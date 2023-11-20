@@ -44,9 +44,9 @@ import {
   PopoverTrigger,
 } from "@fluentui/react-components";
 import {
-  ChevronDown24Regular,
-  ChevronLeft24Regular,
-  MoreHorizontal24Regular,
+  ChevronDown20Regular,
+  ChevronLeft20Regular,
+  MoreHorizontal20Regular,
 } from "@fluentui/react-icons";
 
 export interface DatasetViewProps {
@@ -299,7 +299,7 @@ export class ColumnsView extends React.Component<
               <PopoverTrigger>
                 <Button
                   appearance="subtle"
-                  icon={<MoreHorizontal24Regular />}
+                  icon={<MoreHorizontal20Regular />}
                   title={strings.dataset.showDataValues}
                   onClick={() => {
                     this.setState({
@@ -554,9 +554,9 @@ export class ColumnView extends React.Component<
               title={strings.dataset.showDerivedFields}
               icon={
                 this.state.isExpanded ? (
-                  <ChevronDown24Regular />
+                  <ChevronDown20Regular />
                 ) : (
-                  <ChevronLeft24Regular />
+                  <ChevronLeft20Regular />
                 )
               }
               onClick={(e) => {

@@ -338,7 +338,9 @@ export class CoordinateSystemHelper {
   ): Element {
     const cs = this.coordinateSystem;
     if (cs instanceof CartesianCoordinates) {
-      return makeLine(x1, y1, x2, y2, style);
+      const line = makeLine(x1, y1, x2, y2, style);
+      line.key = key;
+      return line;
     } else {
       const path = makePath(style);
       this.lineTo(path, x1, y1, x2, y2, true);

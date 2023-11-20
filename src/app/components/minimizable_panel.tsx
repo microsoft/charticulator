@@ -8,7 +8,7 @@ import { Button } from "@fluentui/react-components";
 
 import * as R from "../resources";
 import { SVGImageIcon } from "./icons";
-import { ArrowMinimize24Regular, Stack24Regular } from "@fluentui/react-icons";
+import { ArrowMinimize20Regular, Stack20Regular } from "@fluentui/react-icons";
 
 export class MinimizablePanelView extends React.Component<
   React.PropsWithChildren<Record<string, unknown>>,
@@ -313,7 +313,7 @@ export class FloatingPanel extends React.Component<
           <span className="buttons" onClick={(e) => e.stopPropagation()}>
             <Button
               appearance="subtle"
-              icon={<ArrowMinimize24Regular />}
+              icon={<ArrowMinimize20Regular />}
               title="Minimize"
               onClick={() =>
                 this.setState({ minimized: !this.state.minimized })
@@ -322,7 +322,7 @@ export class FloatingPanel extends React.Component<
             {this.props.onClose ? (
               <Button
                 appearance="subtle"
-                icon={<Stack24Regular />}
+                icon={<Stack20Regular />}
                 title="Restore to panel"
                 onClick={() => this.props.onClose()}
               />

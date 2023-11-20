@@ -26,7 +26,7 @@ import {
 import { SVGImageIcon } from "./icons";
 
 import * as R from "../resources";
-import { ArrowSort24Regular } from "@fluentui/react-icons";
+import { ArrowSort20Regular } from "@fluentui/react-icons";
 
 export interface GradientPickerProps {
   defaultValue?: ColorGradient;
@@ -268,7 +268,7 @@ export class GradientPicker extends React.Component<
                 "Add"
               </Button>{" "}
               <Button
-                icon={<ArrowSort24Regular />}
+                icon={<ArrowSort20Regular />}
                 onClick={() => {
                   const newGradient = deepClone(this.state.currentGradient);
                   newGradient.colors.reverse();

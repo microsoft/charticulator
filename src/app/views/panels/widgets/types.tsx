@@ -25,9 +25,9 @@ import { ReorderListView } from "../object_list_editor";
 import { Button } from "@fluentui/react-components";
 import { getSortFunctionByData } from "../../../../container";
 import {
-  ArrowReset24Regular,
-  ArrowSort24Regular,
-  TextSortDescending24Regular,
+  ArrowReset20Regular,
+  ArrowSort20Regular,
+  TextSortDescending20Regular,
 } from "@fluentui/react-icons";
 
 export type OnEditMappingHandler = (
@@ -197,7 +197,7 @@ export class ReorderStringsValue extends React.Component<
         </div>
         <div className="el-row">
           <Button
-            icon={<ArrowSort24Regular />}
+            icon={<ArrowSort20Regular />}
             onClick={() => {
               this.setState({ items: this.state.items.reverse() });
             }}
@@ -205,7 +205,7 @@ export class ReorderStringsValue extends React.Component<
             "Reverse"
           </Button>{" "}
           <Button
-            icon={<TextSortDescending24Regular />}
+            icon={<TextSortDescending20Regular />}
             onClick={() => {
               this.setState({
                 items: this.state.items.sort(
@@ -221,7 +221,7 @@ export class ReorderStringsValue extends React.Component<
             <>
               {" "}
               <Button
-                icon={<ArrowReset24Regular />}
+                icon={<ArrowReset20Regular />}
                 onClick={() => {
                   if (this.props.onReset) {
                     const items = this.props.onReset();

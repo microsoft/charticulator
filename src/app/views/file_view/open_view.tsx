@@ -13,8 +13,8 @@ import { strings } from "../../../strings";
 import { AppStore } from "../../stores";
 import { Button } from "@fluentui/react-components";
 import {
-  ArrowDownload24Regular,
-  Copy24Regular,
+  ArrowDownload20Regular,
+  Copy20Regular,
   Delete24Filled,
   Open20Regular,
 } from "@fluentui/react-icons";
@@ -144,7 +144,7 @@ export class FileViewOpen extends React.Component<
                         />
                         <Button
                           appearance="subtle"
-                          icon={<Copy24Regular />}
+                          icon={<Copy20Regular />}
                           title={strings.fileOpen.copy}
                           onClick={(e) => {
                             e.stopPropagation();
@@ -159,7 +159,7 @@ export class FileViewOpen extends React.Component<
                         />
                         <Button
                           appearance="subtle"
-                          icon={<ArrowDownload24Regular />}
+                          icon={<ArrowDownload20Regular />}
                           title={strings.fileOpen.download}
                           onClick={(e) => {
                             e.stopPropagation();

@@ -17,9 +17,9 @@ import {
 } from "../../stores";
 import { classNames } from "../../utils";
 import {
-  Eraser24Regular,
-  Eye24Regular,
-  EyeOff24Regular,
+  Eraser20Regular,
+  Eye20Regular,
+  EyeOff20Regular,
 } from "@fluentui/react-icons";
 import { Button } from "@fluentui/react-components";
 
@@ -106,9 +106,9 @@ export class ObjectListEditor extends ContextedComponent<
                 <Button
                   icon={
                     element.properties.visible ? (
-                      <Eye24Regular />
+                      <Eye20Regular />
                     ) : (
-                      <EyeOff24Regular />
+                      <EyeOff20Regular />
                     )
                   }
                   title="Toggle visibility"
@@ -126,7 +126,7 @@ export class ObjectListEditor extends ContextedComponent<
                   }}
                 />
                 <Button
-                  icon={<Eraser24Regular />}
+                  icon={<Eraser20Regular />}
                   title="Remove"
                   appearance="subtle"
                   onClick={() => {
@@ -167,7 +167,7 @@ export class ObjectListEditor extends ContextedComponent<
           />
           <span className="el-text">{glyph.properties.name}</span>
           <Button
-            icon={<Eraser24Regular />}
+            icon={<Eraser20Regular />}
             title="Remove"
             disabled={this.store.chart.glyphs.length === 1}
             appearance="subtle"
@@ -216,9 +216,9 @@ export class ObjectListEditor extends ContextedComponent<
                   <Button
                     icon={
                       mark.properties.visible ? (
-                        <Eye24Regular />
+                        <Eye20Regular />
                       ) : (
-                        <EyeOff24Regular />
+                        <EyeOff20Regular />
                       )
                     }
                     appearance="subtle"
@@ -236,7 +236,7 @@ export class ObjectListEditor extends ContextedComponent<
                     }}
                   />
                   <Button
-                    icon={<Eraser24Regular />}
+                    icon={<Eraser20Regular />}
                     title="Remove"
                     appearance="subtle"
                     onClick={() => {
