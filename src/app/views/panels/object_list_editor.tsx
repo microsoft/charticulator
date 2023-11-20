@@ -166,6 +166,17 @@ export class ObjectListEditor extends ContextedComponent<
             )}
           />
           <span className="el-text">{glyph.properties.name}</span>
+          <Button
+            icon={<Eraser24Regular />}
+            title="Remove"
+            disabled={this.store.chart.glyphs.length === 1}
+            appearance="subtle"
+            onClick={() => {
+              this.dispatch(
+                new Actions.RemoveGlyph(glyph)
+              );
+            }}
+          />
         </div>
         <ReorderListView
           enabled={true}

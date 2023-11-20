@@ -645,6 +645,9 @@ export class ChartStateManager {
   }
   /** Remove a glyph */
   public removeGlyph(glyph: Specification.Glyph) {
+    if (this.chart.glyphs.length === 1) {
+      return;
+    }
     const idx = this.chart.glyphs.indexOf(glyph);
     if (idx < 0) {
       return;
