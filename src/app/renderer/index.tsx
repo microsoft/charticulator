@@ -359,7 +359,7 @@ export function renderSVGDefs(element: Graphics.Element): JSX.Element {
   switch (element.type) {
     case "text": {
       const text = element as Graphics.Text;
-      if (text.style.backgroundColor) {
+      if (text.style?.backgroundColor) {
         return (
           <filter
             key={`filter-${text.style.backgroundColorId}`}
@@ -781,7 +781,7 @@ export function renderGraphicalElementSVG(
       const text = element as Graphics.Text;
       style.fontFamily = text.fontFamily;
       style.fontSize = text.fontSize + "px";
-      const filter = text.style.backgroundColor
+      const filter = text.style?.backgroundColor
         ? `url(#${text.style.backgroundColorId})`
         : null;
       if (style.stroke != "none") {

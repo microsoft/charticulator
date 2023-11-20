@@ -4,7 +4,7 @@
 import { strings } from "../../../strings";
 import { Color, Point, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
-import { makeGroup } from "../../graphics";
+import { makeCircleSymbol, makeCross, makeDiamond, makeSquare, makeStar, makeTriangle, makeWye } from "../../graphics";
 import * as Specification from "../../specification";
 import { DataKind, MappingType } from "../../specification";
 import {
@@ -120,155 +120,50 @@ export class SymbolElementClass extends EmphasizableMarkClass<
     const pc = cs.transformPoint(attrs.x + offset.x, attrs.y + offset.y);
     const rotation = this.object.properties.rotation;
 
-    const style = {
+    const style: Graphics.Style = {
       strokeColor: attrs.stroke,
       strokeWidth: attrs.strokeWidth,
       fillColor: attrs.fill,
       opacity: attrs.opacity,
       ...this.generateEmphasisStyle(emphasize),
     };
-
+    
+    const key = `${glyphIndex}-${this.object._id}`;
     switch (attrs.symbol) {
       case "square": {
-        const w = Math.sqrt(attrs.size);
-        const elem = <Graphics.Rect>{
-          type: "rect",
-          style,
-          x1: -w / 2,
-          y1: -w / 2,
-          x2: w / 2,
-          y2: w / 2,
-          rotation: rotation,
-          key: `${glyphIndex}-${this.object._id}`
-        };
-        const gr = makeGroup([elem]);
-        gr.transform.x = pc.x;
-        gr.transform.y = pc.y;
-        return gr;
+        const size = attrs.size;
+        return makeSquare(pc.x, pc.y, size, rotation, key, style);
       }
       case "cross": {
-        const r = Math.sqrt(attrs.size / 5) / 2;
-        const path = Graphics.makePath(style);
-        path.moveTo(-3 * r, -r);
-        path.lineTo(-r, -r);
-        path.lineTo(-r, -3 * r);
-        path.lineTo(-r, -3 * r);
-        path.lineTo(+r, -3 * r);
-        path.lineTo(+r, -r);
-        path.lineTo(+3 * r, -r);
-        path.lineTo(+3 * r, +r);
-        path.lineTo(+r, +r);
-        path.lineTo(+r, +3 * r);
-        path.lineTo(-r, +3 * r);
-        path.lineTo(-r, +r);
-        path.lineTo(-3 * r, +r);
-        path.transformRotation(rotation);
-        path.closePath();
-        const gr = makeGroup([path.path]);
-        gr.key = `${glyphIndex}-${this.object._id}`;
-        gr.transform.x = pc.x;
-        gr.transform.y = pc.y;
-        return gr;
+        return makeCross(pc.x, pc.y, attrs.size, rotation, key, style);
       }
       case "diamond": {
-        const tan30 = 0.5773502691896257; // Math.sqrt(1 / 3);
-        const tan30_2 = 1.1547005383792515; // tan30 * 2;
-        const y = Math.sqrt(attrs.size / tan30_2),
-          x = y * tan30;
-        const path = Graphics.makePath(style);
-
-        path.moveTo(0, -y);
-        path.lineTo(x, 0);
-        path.lineTo(0, y);
-        path.lineTo(-x, 0);
-        path.transformRotation(rotation);
-        path.closePath();
-        const gr = makeGroup([path.path]);
-        gr.key = `${glyphIndex}-${this.object._id}`;
-        gr.transform.x = pc.x;
-        gr.transform.y = pc.y;
-        return gr;
+        const size = attrs.size;
+        return makeDiamond(pc.x, pc.y, size, rotation, key, style);
       }
       case "star": {
-        const ka = 0.8908130915292852281;
-        // const kr = 0.3819660112501051; // Math.sin(Math.PI / 10) / Math.sin(7 * Math.PI / 10),
-        const kx = 0.22451398828979266; // Math.sin(2 * Math.PI / 10) * kr;
-        const ky = -0.3090169943749474; // -Math.cos(2 * Math.PI / 10) * kr;
-        const r = Math.sqrt(attrs.size * ka),
-          x = kx * r,
-          y = ky * r;
-        const path = Graphics.makePath(style);
-        path.moveTo(0, -r);
-        path.lineTo(x, y);
-        for (let i = 1; i < 5; ++i) {
-          const a = (Math.PI * 2 * i) / 5,
-            c = Math.cos(a),
-            s = Math.sin(a);
-          path.lineTo(s * r, -c * r);
-          path.lineTo(c * x - s * y, s * x + c * y);
-        }
-        path.transformRotation(rotation);
-        path.closePath();
-        const gr = makeGroup([path.path]);
-        gr.key = `${glyphIndex}-${this.object._id}`;
-        gr.transform.x = pc.x;
-        gr.transform.y = pc.y;
-        return gr;
+        const size = attrs.size;
+        const x = pc.x;
+        const y = pc.y;
+        return makeStar(x, y, size, rotation, key, style);
       }
       case "triangle": {
-        const sqrt3 = Math.sqrt(3);
-        const y = -Math.sqrt(attrs.size / (sqrt3 * 3));
-        const path = Graphics.makePath(style);
-        path.moveTo(0, y * 2);
-        path.lineTo(-sqrt3 * y, -y);
-        path.lineTo(sqrt3 * y, -y);
-        path.transformRotation(rotation);
-        path.closePath();
-        const gr = makeGroup([path.path]);
-        gr.transform.x = pc.x;
-        gr.transform.y = pc.y;
-        gr.key = `${glyphIndex}-${this.object._id}`;
-        return gr;
+        const size = attrs.size;
+        const x = pc.x;
+        const y = pc.y;
+        return makeTriangle(x, y, size, rotation, key, style);
       }
       case "wye": {
-        const c = -0.5,
-          s = Math.sqrt(3) / 2,
-          k = 1 / Math.sqrt(12),
-          a = (k / 2 + 1) * 3;
-        const r = Math.sqrt(attrs.size / a),
-          x0 = r / 2,
-          y0 = r * k,
-          x1 = x0,
-          y1 = r * k + r,
-          x2 = -x1,
-          y2 = y1;
-        const path = Graphics.makePath(style);
-        path.moveTo(x0, y0);
-        path.lineTo(x1, y1);
-        path.lineTo(x2, y2);
-        path.lineTo(c * x0 - s * y0, s * x0 + c * y0);
-        path.lineTo(c * x1 - s * y1, s * x1 + c * y1);
-        path.lineTo(c * x2 - s * y2, s * x2 + c * y2);
-        path.lineTo(c * x0 + s * y0, c * y0 - s * x0);
-        path.lineTo(c * x1 + s * y1, c * y1 - s * x1);
-        path.lineTo(c * x2 + s * y2, c * y2 - s * x2);
-        path.transformRotation(rotation);
-        path.closePath();
-        const gr = makeGroup([path.path]);
-        gr.transform.x = pc.x;
-        gr.transform.y = pc.y;
-        gr.key = `${glyphIndex}-${this.object._id}`;
-        return gr;
+        const x = pc.x;
+        const y = pc.y;
+        const size = attrs.size;
+        return makeWye(x, y, size, rotation, key, style);
       }
       default: {
-        return <Graphics.Circle>{
-          type: "circle",
-          style,
-          cx: pc.x,
-          cy: pc.y,
-          r: Math.sqrt(attrs.size / Math.PI),
-          key: `${glyphIndex}-${this.object._id}`
-        };
+        const size = attrs.size;
+        const x = pc.x;
+        const y = pc.y;
+        return makeCircleSymbol(x, y, size, key, style);
       }
     }
   }

@@ -991,7 +991,8 @@ export class AppStore extends BaseStore {
     }
     let newLegend: Specification.ChartElement;
     // Categorical-color scale
-    if (scaleObject.classID == "scale.categorical<string,color>") {
+    if (scaleObject.classID == "scale.categorical<string,color>" ||
+    scaleObject.classID == "scale.categorical<string,enum>") {
       if (mapping && mapping.valueIndex != undefined) {
         newLegend = this.chartManager.createObject(`legend.custom`);
       } else {

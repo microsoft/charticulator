@@ -250,6 +250,169 @@ export function makeGroup(elements: Element[]): Group {
   return { type: "group", elements, transform: { x: 0, y: 0, angle: 0 } };
 }
 
+
+export function makeSquare(x: number, y: number, size: number, rotation: number, key?: string, style?: Style) {
+  const w = Math.sqrt(size);
+  const gr = makeGroup([<Rect>{
+    type: "rect",
+    style,
+    x1: -w / 2,
+    y1: -w / 2,
+    x2: w / 2,
+    y2: w / 2,
+    rotation: rotation,
+    key: `${key}-rect`
+  }]);
+  gr.key = key;
+  gr.transform.x = x;
+  gr.transform.y = y;
+
+  return gr;
+}
+
+export function makeCross(
+  x: number,
+  y: number,
+  size: number,
+  rotation: number,
+  key?: string,
+  style?: Style) {
+  const r = Math.sqrt(size / 5) / 2;
+  const path = makePath(style);
+  path.moveTo(-3 * r, -r);
+  path.lineTo(-r, -r);
+  path.lineTo(-r, -3 * r);
+  path.lineTo(-r, -3 * r);
+  path.lineTo(+r, -3 * r);
+  path.lineTo(+r, -r);
+  path.lineTo(+3 * r, -r);
+  path.lineTo(+3 * r, +r);
+  path.lineTo(+r, +r);
+  path.lineTo(+r, +3 * r);
+  path.lineTo(-r, +3 * r);
+  path.lineTo(-r, +r);
+  path.lineTo(-3 * r, +r);
+  path.transformRotation(rotation);
+  path.closePath();
+  path.path.key = `${key}-path`;
+  const gr = makeGroup([path.path]);
+  gr.key = key;
+  gr.transform.x = x;
+  gr.transform.y = y;
+
+  return gr;
+}
+
+
+export function makeDiamond(x: number, y: number, size: number, rotation: number, key: string, style: Style) {
+  const tan30 = 0.5773502691896257; // Math.sqrt(1 / 3);
+  const tan30_2 = 1.1547005383792515; // tan30 * 2;
+  const fy = Math.sqrt(size / tan30_2);
+  const fx = fy * tan30;
+  const path = makePath(style);
+
+  path.moveTo(0, -fy);
+  path.lineTo(fx, 0);
+  path.lineTo(0, fy);
+  path.lineTo(-fx, 0);
+  path.transformRotation(rotation);
+  path.closePath();
+  path.path.key = `${key}-path`;
+  const gr = makeGroup([path.path]);
+  gr.key = key;
+  gr.transform.x = x;
+  gr.transform.y = y;
+  return gr;
+}
+
+export function makeStar(x: number, y: number, size: number, rotation: number, key: string, style: Style) {
+  const ka = 0.8908130915292852281;
+  // const kr = 0.3819660112501051; // Math.sin(Math.PI / 10) / Math.sin(7 * Math.PI / 10),
+  const kx = 0.22451398828979266; // Math.sin(2 * Math.PI / 10) * kr;
+  const ky = -0.3090169943749474; // -Math.cos(2 * Math.PI / 10) * kr;
+  const r = Math.sqrt(size * ka);
+  const xs = kx * r;
+  const ys = ky * r;
+  const path = makePath(style);
+  path.moveTo(0, -r);
+  path.lineTo(xs, ys);
+  for (let i = 1; i < 5; ++i) {
+    const a = (Math.PI * 2 * i) / 5, c = Math.cos(a), s = Math.sin(a);
+    path.lineTo(s * r, -c * r);
+    path.lineTo(c * xs - s * ys, s * xs + c * ys);
+  }
+  path.transformRotation(rotation);
+  path.closePath();
+  path.path.key = `${key}-path`;
+  const gr = makeGroup([path.path]);
+  gr.key = key;
+  gr.transform.x = x;
+  gr.transform.y = y;
+  return gr;
+}
+
+export function makeTriangle(x: number, y: number, size: number, rotation: number, key: string, style: Style) {
+  const sqrt3 = Math.sqrt(3);
+  const yt = -Math.sqrt(size / (sqrt3 * 3));
+  const path = makePath(style);
+  path.moveTo(0, yt * 2);
+  path.lineTo(-sqrt3 * yt, -yt);
+  path.lineTo(sqrt3 * yt, -yt);
+  path.transformRotation(rotation);
+  path.closePath();
+  path.path.key = `${key}-path`;
+  const gr = makeGroup([path.path]);
+  gr.transform.x = x;
+  gr.transform.y = y;
+  gr.key = key;
+  return gr;
+}
+
+
+export function makeWye(x: number, y: number, size: number, rotation: number, key: string, style: Style) {
+  const c = -0.5;
+  const s = Math.sqrt(3) / 2;
+  const k = 1 / Math.sqrt(12);
+  const a = (k / 2 + 1) * 3;
+  const r = Math.sqrt(size / a);
+  const x0 = r / 2;
+  const y0 = r * k;
+  const x1 = x0;
+  const y1 = r * k + r;
+  const x2 = -x1;
+  const y2 = y1;
+  const path = makePath(style);
+  path.moveTo(x0, y0);
+  path.lineTo(x1, y1);
+  path.lineTo(x2, y2);
+  path.lineTo(c * x0 - s * y0, s * x0 + c * y0);
+  path.lineTo(c * x1 - s * y1, s * x1 + c * y1);
+  path.lineTo(c * x2 - s * y2, s * x2 + c * y2);
+  path.lineTo(c * x0 + s * y0, c * y0 - s * x0);
+  path.lineTo(c * x1 + s * y1, c * y1 - s * x1);
+  path.lineTo(c * x2 + s * y2, c * y2 - s * x2);
+  path.transformRotation(rotation);
+  path.closePath();
+  path.path.key = `${key}-path`;
+  const gr = makeGroup([path.path]);
+  gr.transform.x = x;
+  gr.transform.y = y;
+  gr.key = key;
+  return gr;
+}
+
+
+export function makeCircleSymbol(x: number, y: number, size: number, key: string, style: Style) {
+  return <Circle>{
+    type: "circle",
+    style,
+    cx: x,
+    cy: y,
+    r: Math.sqrt(size / Math.PI),
+    key: key
+  };
+}
+
 export function makeLine(
   x1: number,
   y1: number,

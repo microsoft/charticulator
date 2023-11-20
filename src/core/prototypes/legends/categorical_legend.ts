@@ -11,9 +11,9 @@ import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widget
 import { OrientationType } from "./types";
 
 export interface CategoricalLegendItem {
-  type: "number" | "color" | "boolean";
+  type: "number" | "color" | "boolean" | "enum";
   label: string;
-  value: number | Color | boolean;
+  value: number | Color | boolean | string;
 }
 
 export const ReservedMappingKeyNamePrefix = "reserved_";
@@ -37,7 +37,7 @@ export class CategoricalLegendClass extends LegendClass {
         {
           [name: string]: Color;
         }
-      >scaleObject.properties.mapping;
+        >scaleObject.properties.mapping;
       const items: CategoricalLegendItem[] = [];
       for (const key in mapping) {
         if (
@@ -62,6 +62,11 @@ export class CategoricalLegendClass extends LegendClass {
             case "scale.categorical<string,color>":
               {
                 items.push({ type: "color", label: key, value: mapping[key] });
+              }
+              break;
+            case "scale.categorical<string,enum>":
+              {
+                items.push({ type: "enum", label: key, value: mapping[key] });
               }
               break;
           }
@@ -144,8 +149,8 @@ export class CategoricalLegendClass extends LegendClass {
     const items = this.getLegendItems();
     const horizontalGap = 10;
     let itemGroupOffset = 0;
-    for (let i = 0; i < items.length; i++) {
-      const item = items[i];
+    for (let index = 0; index < items.length; index++) {
+      const item = items[index];
       const metrics = this.textMeasure.measure(item.label);
       const offsets = Graphics.TextMeasurer.ComputeTextPosition(
         lineHeight,
@@ -162,7 +167,9 @@ export class CategoricalLegendClass extends LegendClass {
         item.label,
         fontFamily,
         fontSize,
-        { fillColor: this.object.properties.textColor }
+        { fillColor: this.object.properties.textColor },
+        undefined,
+        `legend:${this.object._id}-label:${index}`
       );
       const gItem = Graphics.makeGroup([textLabel]);
       switch (item.type) {
@@ -215,6 +222,69 @@ export class CategoricalLegendClass extends LegendClass {
             }
           }
           break;
+        case "enum":
+          {
+            const figureHeight = this.object.properties.fontSize * this.object.properties.fontSize - 5;
+            const figureVerticalShift = lineHeight / 2;
+
+            switch (<string>item.value) {
+              case 'cross': {
+                gItem.elements.push(
+                  Graphics.makeCross(10, figureVerticalShift, figureHeight, 0, `legend-i-${item.value}-${index}`, {
+                    fillColor: this.object.properties.textColor,
+                  })
+                );
+                break;
+              }
+              case "square": {
+                gItem.elements.push(
+                  Graphics.makeSquare(10, figureVerticalShift, figureHeight, 0, `legend-i-${item.value}-${index}`, {
+                    fillColor: this.object.properties.textColor,
+                  })
+                );
+                break;
+              }
+              case "diamond": {
+                gItem.elements.push(
+                  Graphics.makeDiamond(10, figureVerticalShift, figureHeight, 0, `legend-i-${item.value}-${index}`, {
+                    fillColor: this.object.properties.textColor,
+                  })
+                );
+                break;
+              }
+              case "star": {
+                gItem.elements.push(
+                  Graphics.makeStar(10, figureVerticalShift, figureHeight, 0, `legend-i-${item.value}-${index}`, {
+                    fillColor: this.object.properties.textColor,
+                  })
+                );
+                break;
+              }
+              case "triangle": {
+                gItem.elements.push(
+                  Graphics.makeTriangle(10, figureVerticalShift, figureHeight, 0, `legend-i-${item.value}-${index}`, {
+                    fillColor: this.object.properties.textColor,
+                  })
+                );
+                break;
+              }
+              case "wye": {
+                gItem.elements.push(
+                  Graphics.makeWye(10, figureVerticalShift, figureHeight, 0, `legend-i-${item.value}-${index}`, {
+                    fillColor: this.object.properties.textColor,
+                  })
+                );
+                break;
+              }
+              default:
+                gItem.elements.push(
+                  Graphics.makeCircleSymbol(10, figureVerticalShift, figureHeight, `legend-i-${item.value}-${index}`, {
+                    fillColor: this.object.properties.textColor,
+                  })
+                );
+            }
+          }
+          break;
       }
       if (this.object.properties.orientation === OrientationType.HORIZONTAL) {
         gItem.transform = {
@@ -226,7 +296,7 @@ export class CategoricalLegendClass extends LegendClass {
       } else {
         gItem.transform = {
           x: 0,
-          y: lineHeight * (items.length - 1 - i),
+          y: lineHeight * (items.length - 1 - index),
           angle: 0,
         };
       }

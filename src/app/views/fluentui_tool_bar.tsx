@@ -691,7 +691,6 @@ export class ObjectButton extends ContextedComponent<
   }
 
   public render() {
-    console.log("this.props.icon", this.props.icon);
     return (
       <>
         <DraggableElement
