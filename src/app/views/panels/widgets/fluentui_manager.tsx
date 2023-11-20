@@ -1642,9 +1642,7 @@ export class FluentUIWidgetManager
         >
           {title ? (
             <>
-              {/* <FluentLabelHeader> */}
               <Label>{title}</Label>
-              {/* </FluentLabelHeader> */}
             </>
           ) : null}
           {widget}
