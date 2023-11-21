@@ -130,7 +130,6 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
       if (deltaYHandler > 0 && deltaYHandler < handleSize * zoom.scale) {
         deltaY = deltaY - deltaYHandler;
       }
-      // debugger
       let newPosition = position;
       if (vertical) {
         const trackSize = Math.abs(trackElement.bottom - trackElement.top);
