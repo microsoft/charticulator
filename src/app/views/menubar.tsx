@@ -73,7 +73,7 @@ export class HelpButton extends React.Component<
                     <div className="el-item">
                       <a
                         target="_blank"
-                        href="https://charticulator.com/docs/getting-started.html"
+                        href="https://ilfat-galiev.im/docs/charticulator/"
                       >
                         {strings.help.gettingStarted}
                       </a>
@@ -90,14 +90,14 @@ export class HelpButton extends React.Component<
                       <div className="el-item">
                         <a
                           target="_blank"
-                          href="https://github.com/Microsoft/charticulator/issues/new"
+                          href="https://github.com/zbritva/charticulator/issues/new"
                         >
                           {strings.help.issues}
                         </a>
                       </div>
                     )}
                     <div className="el-item">
-                      <a target="_blank" href="https://charticulator.com/">
+                      <a target="_blank" href="https://ilfat-galiev.im/">
                         {strings.help.home}
                       </a>
                     </div>
