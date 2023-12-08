@@ -688,7 +688,7 @@ class MenuItemsCreator {
     let expressionAggregation = null;
     if (defaultValue != null) {
       if (defaultValue.expression != null) {
-        let parsed;
+        let parsed: Expression.Expression;
         if (mappingType === MappingType.text) {
           parsed = Expression.parseTextExpression(defaultValue.expression)
             ?.parts[0]?.expression;
@@ -827,15 +827,15 @@ export class Director {
       text?: string;
     }
   ) {
-    function getCurrentMapping(items) {
+    function getCurrentMapping(items: any[]) {
       // find current mapping
       let mapping = null;
       const currentColumn = items
-        .filter((item) => item.subMenuProps) // exclude None
-        .flatMap((items) => {
+        .filter((item: any) => item.subMenuProps) // exclude None
+        .flatMap((items: any) => {
           if (
             items.subMenuProps &&
-            items.subMenuProps.items.find((i) => i.key === "year")
+            items.subMenuProps.items.find((i: any) => i.key === "year")
           ) {
             return items.subMenuProps.items;
           } else {
@@ -843,18 +843,18 @@ export class Director {
           }
         })
         .find(
-          (item) =>
-            item.subMenuProps.items.filter((i) => i.isChecked && i.subMenuProps)
+          (item: any) =>
+            item.subMenuProps.items.filter((i: any) => i.isChecked && i.subMenuProps)
               .length > 0
         ); // Exclude unselected columns
 
       if (currentColumn) {
         const aggregationFunction = currentColumn.subMenuProps.items.find(
-          (i) => i.isChecked && i.subMenuProps
+          (i: any) => i.isChecked && i.subMenuProps
         );
 
         const currentMapping = aggregationFunction.subMenuProps.items.find(
-          (i) => i.key === "mapping"
+          (i: { key: string; }) => i.key === "mapping"
         ); // Select mapping of column
 
         // set current mapping
@@ -976,7 +976,7 @@ export class Director {
                     <Button
                       appearance="subtle"
                       key={menuItemParent.key}
-                      onClick={(e) => {
+                      onClick={(e: React.MouseEvent<HTMLElement, MouseEvent> | React.KeyboardEvent<HTMLElement>) => {
                         if (
                           scaleMapping &&
                           (scaleMapping as Specification.ScaleMapping).expression.startsWith(
