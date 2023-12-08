@@ -4,7 +4,7 @@ import { expect } from "chai";
 import { setTimeZone } from "../../container";
 import * as Expression from "../../core/expression";
 
-setTimeZone(true);
+setTimeZone(false);
 
 describe("Basic Expression", () => {
   const test_cases: Array<[string, any]> = [

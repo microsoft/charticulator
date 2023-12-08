@@ -669,7 +669,7 @@ var formatOptions: FormatLocaleDefinition = {
 
 // eslint-disable-next-line no-var
 var utcTimeZoneOption = {
-  utcTimeZone: true,
+  utcTimeZone: false,
 };
 
 export function getFormatOptions(): FormatLocaleDefinition {

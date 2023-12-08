@@ -3,7 +3,7 @@
 import { ValueType } from "./classes";
 import { parseDate } from "../dataset/datetime";
 import { getFormat, isUtcTimeZone } from "../common";
-import { timeFormat, utcFormat, utcParse } from "d3-time-format";
+import { timeFormat, utcFormat } from "d3-time-format";
 
 export const constants: { [name: string]: ValueType } = {};
 export const functions: {
@@ -275,13 +275,15 @@ operators["unary:not"] = makeArrayCapable1((a: boolean) => !a);
 //   timestamp: makeArrayCapable1((d: Date) => d.getTime() / 1000),
 // };
 
+// const utcDateParse = utcParse('%Y-%m-%d %HH:%MM:%SS')
+
 class DateFunction {
   get hour() {
     return makeArrayCapable1(isUtcTimeZone() ? utcFormat("%H") : timeFormat("%H"));
   }
 
   get parse() {
-    return makeArrayCapable1((x: string) => isUtcTimeZone() ? utcParse(x) : parseDate(x))
+    return makeArrayCapable1((x: string) => parseDate(x))
   }
 
   get year() {
