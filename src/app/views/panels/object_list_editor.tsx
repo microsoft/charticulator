@@ -141,6 +141,7 @@ export class ObjectListEditor extends ContextedComponent<
     );
   }
 
+  /* eslint-disable max-lines-per-function */
   public renderGlyph(glyph: Specification.Glyph) {
     const sel = this.store.currentSelection;
     return (

@@ -3,13 +3,13 @@
 import * as React from "react";
 import { useCallback, useState } from "react";
 
-import { Button, Dialog, DialogActions, Popover, PopoverSurface, PopoverTrigger } from "@fluentui/react-components";
+import { Button, Popover, PopoverSurface, PopoverTrigger } from "@fluentui/react-components";
 
 import * as R from "../../resources";
 import { strings } from "../../../strings";
 import { isInIFrame } from "../../utils";
 import { Actions } from "../../actions";
-import { MenuButton, SVGImageIcon } from "../../components";
+import { SVGImageIcon } from "../../components";
 import { MainContextInterface } from "../../context_component";
 import { getDefaultColorGeneratorResetFunction } from "../../../core";
 
@@ -53,12 +53,6 @@ export const DeleteDialog = ({ context }: DeleteDialogProps): JSX.Element => {
           >
           {strings.menuBar.reset}
           </Button>
-          {/* <MenuButton
-            url={R.getSVGIcon("toolbar/trash")}
-            title={strings.menuBar.reset}
-            text={strings.menuBar.reset}
-            onClick={onClick}
-          /> */}
         </PopoverTrigger>
         <PopoverSurface>
           {strings.fileOpen.deleteConfirmation('')}
@@ -71,22 +65,6 @@ export const DeleteDialog = ({ context }: DeleteDialogProps): JSX.Element => {
           <Button onClick={toggleHideDialog}>{strings.button.no}</Button>
         </PopoverSurface>
       </Popover>
-      {/* <MenuButton
-        url={R.getSVGIcon("toolbar/trash")}
-        title={strings.menuBar.reset}
-        text={strings.menuBar.reset}
-        onClick={onClick}
-      />
-      <Dialog modalType="modal" open={!isHidden} defaultOpen={false}>
-        <DialogActions>
-          <Button
-            onClick={onDeleteChart}
-          >
-            {strings.button.yes}
-          </Button>
-          <Button onClick={toggleHideDialog}>{strings.button.no}</Button>
-        </DialogActions>
-      </Dialog> */}
     </>
   );
 };

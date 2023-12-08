@@ -24,13 +24,12 @@ import {
   parentOfType,
 } from "../panels/widgets/fluent_mapping_editor";
 import { strings } from "../../../strings";
-import { DataType, MappingType, ScaleMapping } from "../../../core/specification";
+import { DataType, MappingType } from "../../../core/specification";
 import { AggregationFunctionDescription } from "../../../core/expression";
 import { FluentRowLayout } from "../panels/widgets/controls/fluentui_customized_components";
 import * as React from "react";
 import {
   Button,
-  Label,
   Menu,
   MenuButton,
   MenuItem,
@@ -828,8 +827,6 @@ export class Director {
       text?: string;
     }
   ) {
-    let anchor = null;
-
     function getCurrentMapping(items) {
       // find current mapping
       let mapping = null;
@@ -881,7 +878,6 @@ export class Director {
               textWrap: 'nowrap'
             } as any}
             className="data-field-button"
-            ref={(r) => (anchor = r)}
             title={strings.mappingEditor.bindData}
             icon={typeof options?.icon === 'string' ? <SVGImageIcon url={R.getSVGIcon(options?.icon)} /> : options?.icon}
           >

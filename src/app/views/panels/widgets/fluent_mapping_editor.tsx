@@ -47,9 +47,7 @@ import { MappingType } from "../../../../core/specification";
 import { EmptyMapping } from "./controls/fluentui_empty_mapping";
 import { FluentUIWidgetManager } from "./fluentui_manager";
 import { getDropzoneAcceptTables } from "./utils";
-import { SVGImageIcon } from "../../../../app/components";
 
-import * as R from "../../../resources";
 import { ArrowTrending20Regular, Eraser20Regular, LinkMultiple20Regular } from "@fluentui/react-icons";
 
 export interface MappingEditorProps {

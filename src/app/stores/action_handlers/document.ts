@@ -59,8 +59,6 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
           await fetch(getConfig().ContainerURL)
         ).text();
 
-        const template = deepClone(this.buildChartTemplate());
-
         const htmlString = `
           <!DOCTYPE html>
           <html>
