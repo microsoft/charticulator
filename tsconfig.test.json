@@ -11,7 +11,7 @@
     "jsx": "react",
     "noImplicitAny": true,
     "sourceMap": true,
-    "lib": ["es2017", "dom", "esnext.array"],
+    "lib": ["es2020", "dom", "esnext.array"],
     "baseUrl": "./src",
     "rootDir": "./src",
     "paths": {
