@@ -559,7 +559,7 @@ export class ColumnView extends React.Component<
                   <ChevronLeft20Regular />
                 )
               }
-              onClick={(e) => {
+              onClick={(e: { stopPropagation: () => void; }) => {
                 this.setState({ isExpanded: !this.state.isExpanded });
                 e.stopPropagation();
               }}

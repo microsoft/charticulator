@@ -9,7 +9,7 @@
     "moduleResolution": "node",
     "target": "es6",
     "jsx": "react",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "sourceMap": true,
     "lib": ["es2020", "dom", "esnext.array"],
     "baseUrl": "./src",
