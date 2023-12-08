@@ -199,7 +199,7 @@ export const strings = {
   fileOpen: {
     copy: "Copy this chart",
     deleteConfirmation: (chartName: string) =>
-      `Do you want to delete the chart "${chartName}"?`,
+      `Do you want to delete the chart ${chartName ? `"${chartName}"` : '' }?`,
     delete: "Delete this chart",
     download: "Download this chart",
     open: "Open Chart",

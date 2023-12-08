@@ -8,7 +8,7 @@ import { SVGImageIcon } from "./icons";
 
 import * as R from "../resources";
 import { strings } from "../../strings";
-import { ToolbarButton } from "@fluentui/react-components";
+import { Button, ToolbarButton } from "@fluentui/react-components";
 
 // import { FluentButton } from "../views/panels/widgets/controls/fluentui_customized_components";
 
@@ -166,43 +166,57 @@ export interface IconButtonProps extends ButtonProps {
 export class MenuButton extends BaseButton<IconButtonProps> {
   public render() {
     const props = this.props;
-    if (props.text) {
-      return (
-        <span
-          tabIndex={0}
-          className={classNames("charticulator__button-menu-text", [
-            "is-disabled",
-            this.props.disabled,
-          ])}
+    // if (props.text) {
+    //   return (
+    //     <span
+    //       tabIndex={0}
+    //       className={classNames("charticulator__button-menu-text", [
+    //         "is-disabled",
+    //         this.props.disabled,
+    //       ])}
+    //       title={props.title}
+    //       onClick={this._doClick}
+    //       onKeyPress={(e) => {
+    //         if (e.key === "Enter") {
+    //           this._doClick();
+    //         }
+    //       }}
+    //     >
+    //       <SVGImageIcon url={props.url} />
+    //       <span className="el-text">{props.text}</span>
+    //     </span>
+    //   );
+    // } else {
+    //   return (
+    //     <span
+    //       tabIndex={0}
+    //       className="charticulator__button-menu"
+    //       title={props.title}
+    //       onClick={this._doClick}
+    //       onKeyPress={(e) => {
+    //         if (e.key === "Enter") {
+    //           this._doClick();
+    //         }
+    //       }}
+    //     >
+    //       <SVGImageIcon url={props.url} />
+    //     </span>
+    //   );
+    // }
+
+    return (
+      <>
+        <Button
+          icon={<SVGImageIcon url={props.url} />}
           title={props.title}
           onClick={this._doClick}
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              this._doClick();
-            }
-          }}
+          appearance="transparent"
+          className="charticulator__button-menu-fluent"
         >
-          <SVGImageIcon url={props.url} />
-          <span className="el-text">{props.text}</span>
-        </span>
-      );
-    } else {
-      return (
-        <span
-          tabIndex={0}
-          className="charticulator__button-menu"
-          title={props.title}
-          onClick={this._doClick}
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              this._doClick();
-            }
-          }}
-        >
-          <SVGImageIcon url={props.url} />
-        </span>
-      );
-    }
+          {props.text}
+        </Button>
+      </>
+    )
   }
 }
 

@@ -3,13 +3,13 @@
 import * as React from "react";
 import { useCallback, useState } from "react";
 
-import { Button, Dialog, DialogActions } from "@fluentui/react-components";
+import { Button, Dialog, DialogActions, Popover, PopoverSurface, PopoverTrigger } from "@fluentui/react-components";
 
 import * as R from "../../resources";
 import { strings } from "../../../strings";
 import { isInIFrame } from "../../utils";
 import { Actions } from "../../actions";
-import { MenuButton } from "../../components";
+import { MenuButton, SVGImageIcon } from "../../components";
 import { MainContextInterface } from "../../context_component";
 import { getDefaultColorGeneratorResetFunction } from "../../../core";
 
@@ -42,27 +42,51 @@ export const DeleteDialog = ({ context }: DeleteDialogProps): JSX.Element => {
 
   return (
     <>
-      <MenuButton
+      <Popover open={!isHidden}>
+        <PopoverTrigger>
+          <Button
+            icon={<SVGImageIcon url={R.getSVGIcon("toolbar/trash")} />}
+            title={strings.menuBar.reset}
+            onClick={onClick}
+            appearance="transparent"
+            className="charticulator__button-menu-fluent"
+          >
+          {strings.menuBar.reset}
+          </Button>
+          {/* <MenuButton
+            url={R.getSVGIcon("toolbar/trash")}
+            title={strings.menuBar.reset}
+            text={strings.menuBar.reset}
+            onClick={onClick}
+          /> */}
+        </PopoverTrigger>
+        <PopoverSurface>
+          {strings.fileOpen.deleteConfirmation('')}
+          <br/>
+          <Button
+            onClick={onDeleteChart}
+          >
+            {strings.button.yes}
+          </Button>
+          <Button onClick={toggleHideDialog}>{strings.button.no}</Button>
+        </PopoverSurface>
+      </Popover>
+      {/* <MenuButton
         url={R.getSVGIcon("toolbar/trash")}
         title={strings.menuBar.reset}
         text={strings.menuBar.reset}
         onClick={onClick}
       />
       <Dialog modalType="modal" open={!isHidden} defaultOpen={false}>
-        {/* <DialogTitle >
-          {dialogContentProps.title}
-        </DialogTitle> */}
         <DialogActions>
           <Button
-            // styles={primaryButtonStyles}
             onClick={onDeleteChart}
-            // text={strings.button.yes}
           >
             {strings.button.yes}
           </Button>
           <Button onClick={toggleHideDialog}>{strings.button.no}</Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
     </>
   );
 };

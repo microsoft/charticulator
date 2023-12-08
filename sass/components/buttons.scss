@@ -326,6 +326,27 @@
     }
   }
 
+  &-menu-fluent {
+    color: white !important;
+    .el-svg-icon {
+      filter: invert(100%);
+      @include disable-user-drag;
+    }
+    &:hover {
+      background: $theme-hover-background;
+      .el-svg-icon {
+        filter: invert(100%);
+      }
+    }
+    &.is-active,
+    &:active {
+      background: $gray-020;
+      .el-svg-icon {
+        filter: invert(100%);
+      }
+    }
+  }
+
   &-menu {
     $button-size: 20px;
     width: $button-size;

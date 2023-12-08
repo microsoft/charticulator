@@ -1276,43 +1276,12 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.ReOrderWidgetOptions = {}
   ): JSX.Element {
-    // let container: HTMLSpanElement;
     return (
-      // <FluentButton
-      //   ref={(e) => (container = e)}
-      //   key={this.getKeyFromProperty(property)}
-      //   marginTop={"1px"}
-      //   paddingRight={"0px"}
-      // >
       <>
         <Popover>
           <PopoverTrigger disableButtonEnhancement>
             <Button
-              // styles={{
-              //   root: {
-              //     minWidth: "unset",
-              //     ...defultComponentsHeight,
-              //   },
-              // }}
-              // iconProps={{
-              //   iconName: "SortLines",
-              // }}
               icon={<SVGImageIcon url={R.getSVGIcon("SortLines")} />}
-              // onClick={() => {
-              //   globals.popupController.popupAt(
-              //     (context) => {
-              //       const items = options.items
-              //         ? options.items
-              //         : (this.getPropertyValue(property) as string[]);
-              //       return (
-              //         <PopupView context={context}>
-
-              //         </PopupView>
-              //       );
-              //     },
-              //     { anchor: container }
-              //   );
-              // }}
             />
           </PopoverTrigger>
           <PopoverSurface>
@@ -1365,7 +1334,6 @@ export class FluentUIWidgetManager
                     );
                   }
                 }
-                // context.close();
               }}
               onReset={() => {
                 const axisDataBinding = {
@@ -1403,7 +1371,6 @@ export class FluentUIWidgetManager
           </PopoverSurface>
         </Popover>
       </>
-      // </FluentButton>
     );
   }
 
@@ -1436,14 +1403,6 @@ export class FluentUIWidgetManager
               >
                 {options.allowReorder ? (
                   <span className="charticulator__widget-array-view-control charticulator__widget-array-view-order">
-                    {/* <FontIcon
-                      className={mergeStyles({
-                        fontSize: "20px",
-                        margin: "5px",
-                      })}
-                      iconName={"CheckListText"}
-                    /> */}
-                    {/* <SVGImageIcon url={R.getSVGIcon("general/order")} /> */}
                   </span>
                 ) : null}
                 <span className="charticulator__widget-array-view-content">
@@ -1458,23 +1417,13 @@ export class FluentUIWidgetManager
                 </span>
                 {options.allowDelete ? (
                   <span className="charticulator__widget-array-view-control">
-                    {/* <FluentButton marginTop={"0px"}> */}
                     <Button
-                      // styles={{
-                      //   root: {
-                      //     minWidth: "unset",
-                      //   },
-                      // }}
-                      // iconProps={{
-                      //   iconName: "Delete",
-                      // }}
                       icon={<SVGImageIcon url={R.getSVGIcon("Delete")} />}
                       onClick={() => {
                         items.splice(index, 1);
                         this.emitSetProperty(property, items);
                       }}
                     />
-                    {/* </FluentButton> */}
                   </span>
                 ) : null}
               </div>
@@ -1526,13 +1475,7 @@ export class FluentUIWidgetManager
     }
     return (
       <>
-        {/* // <FluentLabelHeader
-      //   key={title}
-      //   marginBottom={options?.addMargins ? "5px" : "0px"}
-      //   marginTop={options?.addMargins ? "5px" : "0px"}
-      // > */}
         <Label>{title}</Label>
-        {/* // </FluentLabelHeader> */}
       </>
     );
   }
