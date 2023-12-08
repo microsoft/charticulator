@@ -62,7 +62,7 @@ describe("Charticulator", () => {
         true
       )
       .then(() => {
-        closeStartMenuPanel();
+        // closeStartMenuPanel();
         done();
       });
   });
