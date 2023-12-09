@@ -30,9 +30,9 @@ export interface ChartContainerComponentProps {
   defaultAttributes?: Prototypes.DefaultAttributes;
   defaultWidth: number;
   defaultHeight: number;
-  onSelectionChange?: (data: { table: string; rowIndices: number[] }) => void;
-  onMouseEnterGlyph?: (data: { table: string; rowIndices: number[] }) => void;
-  onMouseLeaveGlyph?: (data: { table: string; rowIndices: number[] }) => void;
+  onSelectionChange?: (data: { table: string; rowIndices: number[] }, modifiers?: any) => void;
+  onMouseEnterGlyph?: (data: { table: string; rowIndices: number[] }, modifiers?: any) => void;
+  onMouseLeaveGlyph?: (data: { table: string; rowIndices: number[] }, modifiers?: any) => void;
   onMouseContextMenuClickGlyph?: (
     data: { table: string; rowIndices: number[] },
     modifiers: any
@@ -164,15 +164,15 @@ export class ChartContainerComponent extends React.Component<
     }
   };
 
-  protected handleGlyphMouseEnter: GlyphEventHandler = (data) => {
+  protected handleGlyphMouseEnter: GlyphEventHandler = (data, modifiers) => {
     if (this.props.onMouseEnterGlyph) {
-      this.props.onMouseEnterGlyph(data);
+      this.props.onMouseEnterGlyph(data, modifiers);
     }
   };
 
-  protected handleGlyphMouseLeave: GlyphEventHandler = (data) => {
+  protected handleGlyphMouseLeave: GlyphEventHandler = (data, modifiers) => {
     if (this.props.onMouseLeaveGlyph) {
-      this.props.onMouseLeaveGlyph(data);
+      this.props.onMouseLeaveGlyph(data, modifiers);
     }
   };
 
@@ -348,18 +348,20 @@ export class ChartContainer extends EventEmitter {
             );
           }
         }}
-        onMouseEnterGlyph={(data) => {
+        onMouseEnterGlyph={(data, modifiers) => {
           this.emit(
             ChartContainerEvent.MouseEnter,
             data.table,
-            data.rowIndices
+            data.rowIndices,
+            modifiers
           );
         }}
-        onMouseLeaveGlyph={(data) => {
+        onMouseLeaveGlyph={(data, modifiers) => {
           this.emit(
             ChartContainerEvent.MouseLeave,
             data.table,
-            data.rowIndices
+            data.rowIndices,
+            modifiers
           );
         }}
         onMouseContextMenuClickGlyph={(data, modifiers) => {
