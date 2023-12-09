@@ -327,8 +327,11 @@
   }
 
   &-menu-fluent {
+    $button-size: 20px;
     color: white !important;
     .el-svg-icon {
+      width: $button-size;
+      height: $button-size;
       filter: invert(100%);
       @include disable-user-drag;
     }
