@@ -65,7 +65,7 @@ const polarTerminology: Region2DConfigurationTerminology = {
 export const strings = {
   app: {
     loading: "Loading...",
-    name: "Microsoft Charticulator",
+    name: "Charticulator (Community)",
     nestedChartTitle: "Nested Chart | Charticulator",
     working: "Working...",
   },
