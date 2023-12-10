@@ -27,6 +27,7 @@ for (const path of args) {
     currency: '["$",""]',
     group: "[3]",
     utcTimeZone: true,
+    billionsFormat: 'giga'
   });
   console.log(JSON.stringify(result.columns, null, 2));
   console.log(JSON.stringify(result.rows.slice(0, 2), null, 2));

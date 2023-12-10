@@ -196,6 +196,10 @@ export class Application {
           defaultNumberFormat.remove,
         defaultNumberFormat.remove
       );
+      const BillionsFormat = parseSafe(
+        window.localStorage.getItem(LocalStorageKeys.bFormat),
+        "giga"
+      );
 
       this.appStore.setLocaleFileFormat({
         currency: parseSafe(CurrencySymbol, defaultCurrency),
@@ -206,12 +210,14 @@ export class Application {
           remove: NumberFormatRemove === "," ? "," : ".",
         },
         utcTimeZone: utcTimeZone !== undefined ? utcTimeZone : UtcTimeZone,
+        billionsFormat: BillionsFormat
       });
       setFormatOptions({
         currency: parseSafe(CurrencySymbol, defaultCurrency),
         grouping: parseSafe(GroupSymbol, defaultDigitsGroup),
         decimal: NumberFormatRemove === "," ? "." : ",",
         thousands: NumberFormatRemove === "," ? "," : ".",
+        billionsFormat: BillionsFormat
       });
       setTimeZone(utcTimeZone !== undefined ? utcTimeZone : UtcTimeZone);
     } catch (ex) {
@@ -221,6 +227,7 @@ export class Application {
         decimal: localizaiton?.decemalDelimiter ?? defaultNumberFormat.decimal,
         thousands:
           localizaiton?.thousandsDelimiter ?? defaultNumberFormat.decimal,
+        billionsFormat: "giga"
       });
       console.warn("Loadin localization settings failed");
     }
@@ -435,6 +442,7 @@ export class Application {
         currency: null,
         group: null,
         utcTimeZone: true,
+        billionsFormat: "giga"
       };
       const spec: DatasetSourceSpecification = {
         tables: hashParsed.loadCSV

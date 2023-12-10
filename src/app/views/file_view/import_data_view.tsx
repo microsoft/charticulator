@@ -283,6 +283,7 @@ export class ImportDataView extends React.Component<
               currency: null,
               group: null,
               utcTimeZone: true,
+              billionsFormat: 'giga'
             }),
             null,
           ];

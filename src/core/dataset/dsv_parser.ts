@@ -42,6 +42,7 @@ export interface LocaleFileFormat {
   currency: string;
   group: string;
   utcTimeZone: boolean;
+  billionsFormat: "giga" | "billions";
 }
 
 /**

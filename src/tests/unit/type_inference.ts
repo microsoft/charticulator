@@ -78,6 +78,7 @@ describe("Data Type Inference", () => {
         currency: '["$",""]',
         group: "[3]",
         utcTimeZone: true,
+        billionsFormat: "giga"
       });
       if (expectedResult.type) {
         expect(r.type).to.equals(expectedResult.type);

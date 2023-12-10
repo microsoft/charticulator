@@ -5,9 +5,11 @@ import * as React from "react";
 import { useContext } from "react";
 
 import {
+  BillionsFormat,
   defaultCurrency,
   defaultDigitsGroup,
   parseSafe,
+  setBillionsFormatOption,
   setFormatOptions,
   setTimeZone,
 } from "../../../core/common";
@@ -39,6 +41,10 @@ export const FileViewOptionsView: React.FC<FileViewOptionsProps> = () => {
   const [utcTimeZone, setUtcTimeZone] = useLocalStorage<boolean>(
     localeFileFormat.utcTimeZone,
     LocalStorageKeys.UtcTimeZone
+  );
+  const [billionsFormat, setBillionsFormat] = useLocalStorage<BillionsFormat>(
+    'giga',
+    LocalStorageKeys.bFormat
   );
 
   // const [currencySymbol, setCurrencySymbol] = useLocalStorage<string>(
@@ -105,6 +111,7 @@ export const FileViewOptionsView: React.FC<FileViewOptionsProps> = () => {
                     localeFileFormat.group,
                     defaultDigitsGroup
                   ),
+                  billionsFormat: billionsFormat
                 });
               }}
               value={numberFormatRemove}
@@ -136,6 +143,20 @@ export const FileViewOptionsView: React.FC<FileViewOptionsProps> = () => {
               <option value="false">{strings.options.local}</option>
             </select>
             <label>{strings.options.timeZone}</label>
+          </div>
+
+          <div className="form-group">
+            <select
+              onChange={(e) => {
+                setBillionsFormat(e.target.options[e.target.selectedIndex].value as BillionsFormat);
+                setBillionsFormatOption(e.target.options[e.target.selectedIndex].value as BillionsFormat);
+              }}
+              value={billionsFormat}
+            >
+              <option value="giga">{strings.options.giga}</option>
+              <option value="billions">{strings.options.billions}</option>
+            </select>
+            <label>{strings.options.bFormat}</label>
           </div>
           {/* Uncomment to enable configuration for locale: currency symbol and groupping digits */}
           {/*

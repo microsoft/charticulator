@@ -659,12 +659,19 @@ export function replaceSymbolByTab(str: string) {
   return str?.replace(/\t/g, "\\t");
 }
 
+export type BillionsFormat = "giga" | "billions"
+
+export interface FormatLocaleDefinitionExtension extends FormatLocaleDefinition {
+  billionsFormat?: BillionsFormat;
+}
+
 // eslint-disable-next-line no-var
-var formatOptions: FormatLocaleDefinition = {
+var formatOptions: FormatLocaleDefinitionExtension = {
   decimal: ".",
   thousands: ",",
   grouping: [3],
   currency: ["$", ""],
+  billionsFormat: 'giga'
 };
 
 // eslint-disable-next-line no-var
@@ -672,16 +679,27 @@ var utcTimeZoneOption = {
   utcTimeZone: false,
 };
 
-export function getFormatOptions(): FormatLocaleDefinition {
+export function getFormatOptions(): FormatLocaleDefinitionExtension {
   return {
     ...formatOptions,
   };
 }
 
-export function setFormatOptions(options: FormatLocaleDefinition) {
-  formatOptions = {
-    ...options,
-  };
+export function setFormatOptions(options: FormatLocaleDefinitionExtension, merge: boolean = false) {
+  if (merge) {
+    formatOptions = {
+      ...formatOptions,
+      ...options,
+    };
+  } else {
+    formatOptions = {
+      ...options,
+    };
+  }
+}
+
+export function setBillionsFormatOption(format: "giga" | "billions") {
+  formatOptions.billionsFormat = format
 }
 
 export function setTimeZone(utcTimeZone: boolean) {
@@ -703,7 +721,15 @@ export function getTimeFormatFunction(): (
 export const tickFormatParserExpression = () => /\{([^}]+)\}/g;
 
 export function getFormat() {
-  return formatLocale(formatOptions).format;
+  return (format: string) => {
+    return (n: number | { valueOf(): number; }) => {
+      const formattedValue = formatLocale(formatOptions).format(format)(n);
+      if (format === 's' && formatOptions.billionsFormat === 'billions') {
+        return formattedValue.replace('G', 'B') 
+      }
+      return formattedValue;
+    }
+  };
 }
 
 export function parseSafe(value: string, defaultValue: any = null) {
