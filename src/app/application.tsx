@@ -23,6 +23,8 @@ import {
   parseSafe,
   Prototypes,
   setTimeZone,
+  getFormatOptions,
+  isUtcTimeZone,
 } from "../core";
 import { ExtensionContext, Extension } from "./extension";
 import { Action } from "./actions/actions";
@@ -142,36 +144,6 @@ export class Application {
       };
     }
   ) {
-    this.config = config;
-    this.containerID = containerID;
-    await initialize(config);
-
-    this.root = ReactDOM.createRoot(document.getElementById(this.containerID));
-
-    if (workerConfig.worker) {
-      this.worker = workerConfig.worker;
-    } else {
-      this.worker = new CharticulatorWorker(workerConfig.workerScriptContent);
-    }
-    await this.worker.initialize(config);
-
-    this.appStore = new AppStore(this.worker, makeDefaultDataset());
-
-    if (handlers?.nestedEditor) {
-      this.nestedEditor = handlers?.nestedEditor;
-      if (handlers?.nestedEditor.onOpenEditor) {
-        this.appStore.addListener(
-          AppStore.EVENT_OPEN_NESTED_EDITOR,
-          (
-            options: NestedChartEditorOptions,
-            object: Specification.IObject<AttributeMap>,
-            property: Prototypes.Controls.Property
-          ) => {
-            this.nestedEditor.onOpenEditor(options, object, property);
-          }
-        );
-      }
-    }
 
     try {
       const UtcTimeZone = parseSafe(
@@ -181,11 +153,6 @@ export class Application {
       const CurrencySymbol = parseSafe(
         window.localStorage.getItem(LocalStorageKeys.CurrencySymbol),
         defaultCurrency
-      );
-      const DelimiterSymbol = parseSafe(
-        window.localStorage.getItem(LocalStorageKeys.DelimiterSymbol) ||
-          defaultDelimiter,
-        defaultDelimiter
       );
       const GroupSymbol = parseSafe(
         window.localStorage.getItem(LocalStorageKeys.GroupSymbol),
@@ -200,18 +167,6 @@ export class Application {
         window.localStorage.getItem(LocalStorageKeys.bFormat),
         "giga"
       );
-
-      this.appStore.setLocaleFileFormat({
-        currency: parseSafe(CurrencySymbol, defaultCurrency),
-        delimiter: DelimiterSymbol,
-        group: parseSafe(GroupSymbol, defaultDigitsGroup),
-        numberFormat: {
-          decimal: NumberFormatRemove === "," ? "." : ",",
-          remove: NumberFormatRemove === "," ? "," : ".",
-        },
-        utcTimeZone: utcTimeZone !== undefined ? utcTimeZone : UtcTimeZone,
-        billionsFormat: BillionsFormat
-      });
       setFormatOptions({
         currency: parseSafe(CurrencySymbol, defaultCurrency),
         grouping: parseSafe(GroupSymbol, defaultDigitsGroup),
@@ -230,6 +185,83 @@ export class Application {
         billionsFormat: "giga"
       });
       console.warn("Loadin localization settings failed");
+    }
+
+    this.config = config;
+    this.containerID = containerID;
+
+    const formattingOptions = getFormatOptions();
+
+    debugger;
+    await initialize({
+      ...config,
+      localization: {
+        billionsFormat: formattingOptions.billionsFormat,
+        currency: formattingOptions.currency[0],
+        decemalDelimiter: formattingOptions.decimal,
+        thousandsDelimiter: formattingOptions.thousands,
+        grouping: [formattingOptions.grouping[0]]
+      }
+    });
+
+    this.root = ReactDOM.createRoot(document.getElementById(this.containerID));
+
+    if (workerConfig.worker) {
+      this.worker = workerConfig.worker;
+    } else {
+      this.worker = new CharticulatorWorker(workerConfig.workerScriptContent);
+    }
+
+    await this.worker.initialize({
+      ...config,
+      localization: {
+        billionsFormat: formattingOptions.billionsFormat,
+        currency: formattingOptions.currency[0],
+        decemalDelimiter: formattingOptions.decimal,
+        thousandsDelimiter: formattingOptions.thousands,
+        grouping: [formattingOptions.grouping[0]]
+      }
+    });
+
+    this.appStore = new AppStore(this.worker, makeDefaultDataset());
+
+    let DelimiterSymbol = ",";
+    try {
+      DelimiterSymbol = parseSafe(
+        window.localStorage.getItem(LocalStorageKeys.DelimiterSymbol) ||
+          defaultDelimiter,
+        defaultDelimiter
+      );
+    } catch(e) {
+      DelimiterSymbol = ","
+    }
+
+    this.appStore.setLocaleFileFormat({
+      currency: formattingOptions.currency[0],
+      delimiter: DelimiterSymbol,
+      group: formattingOptions.grouping.toString(),
+      numberFormat: {
+        decimal: formattingOptions.decimal,
+        remove: formattingOptions.thousands,
+      },
+      utcTimeZone: isUtcTimeZone(),
+      billionsFormat: formattingOptions.billionsFormat
+    });
+
+    if (handlers?.nestedEditor) {
+      this.nestedEditor = handlers?.nestedEditor;
+      if (handlers?.nestedEditor.onOpenEditor) {
+        this.appStore.addListener(
+          AppStore.EVENT_OPEN_NESTED_EDITOR,
+          (
+            options: NestedChartEditorOptions,
+            object: Specification.IObject<AttributeMap>,
+            property: Prototypes.Controls.Property
+          ) => {
+            this.nestedEditor.onOpenEditor(options, object, property);
+          }
+        );
+      }
     }
 
     (window as any).mainStore = this.appStore;

@@ -58,6 +58,7 @@ describe("Charticulator", () => {
           currency: "$",
           thousandsDelimiter: ",",
           decemalDelimiter: ".",
+          billionsFormat: "giga"
         },
         true
       )

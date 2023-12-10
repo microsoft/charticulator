@@ -15,6 +15,8 @@ import {
   defaultCurrency,
   defaultDigitsGroup,
   defaultNumberFormat,
+  BillionsFormat,
+  setBillionsFormatOption,
 } from "../core";
 import { RenderEvents } from "../core/graphics";
 import {
@@ -44,6 +46,8 @@ export interface LocalizationConfig {
   currency: string;
   thousandsDelimiter: string;
   decemalDelimiter: string;
+  billionsFormat: BillionsFormat;
+  grouping?: [number]
 }
 
 export interface ChartContainerComponentState {
@@ -229,6 +233,7 @@ export class ChartContainer extends EventEmitter {
       thousands:
         localizaiton?.thousandsDelimiter ?? defaultNumberFormat.decimal,
     });
+    setBillionsFormatOption(localizaiton.billionsFormat);
     setTimeZone(utcTimeZone);
   }
 

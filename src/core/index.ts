@@ -105,5 +105,12 @@ import { initialize as initialize_WASMSolver } from "./solver/wasm_solver";
 
 export function initialize(config?: CharticulatorCoreConfig): Promise<void> {
   setConfig(config);
+  Utils.setBillionsFormatOption(config.localization.billionsFormat);
+  Utils.setFormatOptions({
+    currency: [config.localization.currency, ""],
+    decimal: config.localization.decemalDelimiter,
+    thousands: config.localization.thousandsDelimiter,
+    grouping: [3]
+  }, true);
   return initialize_WASMSolver();
 }
